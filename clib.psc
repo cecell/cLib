@@ -1602,6 +1602,7 @@ endfunction
 Alias  function cPseudoSwitchAlias(Int case, Alias elseDefault, Alias case0, Alias case1 = None, Alias case2 = None, \
     Alias case3 = None, Alias case4 = None, Alias case5 = None, Alias case6 = None, Alias case7 = None, \
       Alias case8 = None, Alias case9 = None) global
+  {Requirements: None}
   if !cIsBetweenInt(case, 0, 9)
     cErrInvalidArg("cPseudoSwitchAlias", "!cIsBetweenInt(case, 0, 9)", "None")
   else
@@ -1634,6 +1635,7 @@ endfunction
 Bool   function cPseudoSwitchBool(Int case, Bool elseDefault, Bool case0, Bool case1 = False, Bool case2 = False, \
     Bool case3 = False, Bool case4 = False, Bool case5 = False, Bool case6 = False, Bool case7 = False, \
       Bool case8 = False, Bool case9 = False) global
+  {Requirements: None}
   if !cIsBetweenInt(case, 0, 9)
     cErrInvalidArg("cPseudoSwitchBool", "!cIsBetweenInt(case, 0, 9)", "False")
   else
@@ -1666,6 +1668,7 @@ endfunction
 Float  function cPseudoSwitchFloat(Int case, Float elseDefault, Float case0, Float case1 = 0.0, Float case2 = 0.0, \
     Float case3 = 0.0, Float case4 = 0.0, Float case5 = 0.0, Float case6 = 0.0, Float case7 = 0.0, \
       Float case8 = 0.0, Float case9 = 0.0) global
+  {Requirements: None}
   if !cIsBetweenInt(case, 0, 9)
     cErrInvalidArg("cPseudoSwitchFloat", "!cIsBetweenInt(case, 0, 9)", "0.0")
   else
@@ -1698,6 +1701,7 @@ endfunction
 Form   function cPseudoSwitchForm(Int case, Form elseDefault, Form case0, Form case1 = None, Form case2 = None, \
     Form case3 = None, Form case4 = None, Form case5 = None, Form case6 = None, Form case7 = None, \
       Form case8 = None, Form case9 = None) global
+  {Requirements: None}
   if !cIsBetweenInt(case, 0, 9)
     cErrInvalidArg("cPseudoSwitchForm", "!cIsBetweenInt(case, 0, 9)", "None")
   else
@@ -1730,6 +1734,7 @@ endfunction
 Int    function cPseudoSwitchInt(Int case, Int elseDefault, Int case0, Int case1 = 0, Int case2 = 0, \
     Int case3 = 0, Int case4 = 0, Int case5 = 0, Int case6 = 0, Int case7 = 0, \
       Int case8 = 0, Int case9 = 0) global
+  {Requirements: None}
   if !cIsBetweenInt(case, 0, 9)
     cErrInvalidArg("cPseudoSwitchInt", "!cIsBetweenInt(case, 0, 9)", "0")
   else
@@ -1762,6 +1767,7 @@ endfunction
 String function cPseudoSwitchString(Int case, String elseDefault, String case0, String case1 = "", String case2 = "", \
     String case3 = "", String case4 = "", String case5 = "", String case6 = "", String case7 = "", \
       String case8 = "", String case9 = "") global
+  {Requirements: None}
   if !cIsBetweenInt(case, 0, 9)
     cErrInvalidArg("cPseudoSwitchString", "!cIsBetweenInt(case, 0, 9)", "\"\"")
   else
@@ -3190,6 +3196,7 @@ endfunction
   ;>>> Returns what it says
 ; 21-11-08 - Test Success
 Float function cArraySmallestFloat(Float[] aArray) global
+  {Requirements: None}
   Float smallestValue = 214748364.0
   if !aArray
     cErrInvalidArg("cArraySmallestFloat", "aArray", "0.0")
@@ -3206,6 +3213,7 @@ Float function cArraySmallestFloat(Float[] aArray) global
 endfunction
 ; 21-11-08 - Test Success
 Int   function cArraySmallestInt(Int[] aArray) global
+  {Requirements: None}
   Int smallestValue = 214748364
   if !aArray
     cErrInvalidArg("cArraySmallestInt", "aArray", "0")
@@ -3222,6 +3230,7 @@ Int   function cArraySmallestInt(Int[] aArray) global
 endfunction
 ; 21-11-08 - Test Success, Corrections
 Float function cArrayLargestFloat(Float[] aArray) global
+  {Requirements: None}
   Float largestValue = -214748364.0
   if !aArray
     cErrInvalidArg("cArrayLargestFloat", "aArray", "0.0")
@@ -3238,6 +3247,7 @@ Float function cArrayLargestFloat(Float[] aArray) global
 endfunction
 ; 21-11-08 - Test Success, Corrections
 Int   function cArrayLargestInt(Int[] aArray) global
+  {Requirements: None}
   Int largestValue = -214748364
   if !aArray
     cErrInvalidArg("cArrayLargestInt", "aArray", "0")
@@ -3252,111 +3262,7 @@ Int   function cArrayLargestInt(Int[] aArray) global
   endif
   return largestValue
 endfunction
-  ;/
-  ;>>> Returns index of first non-matching values
-Int   function cArrayCompareBool(Bool[] aArray1, Bool[] aArray2, Bool ignoreLength = False) global
-  {Requirements: None}
-  ; ignoreLength == TRUE checks values index for index only
-  ; returns first non-matching index
-  if !aArray1 || !aArray2
-    cErrInvalidArg("cArrayCompareBool", "aArray1 || aArray2", "")
-  else
-    if !ignoreLength && aArray1.length != aArray2.length
-      return -1
-    endif
-    
-    Int i = 0
-    while i < aArray1.length && i < aArray2.length
-      if aArray1[i] != aArray2[i]
-        return i
-      endif
-      i += 1
-    endwhile
-  endif
-  return -1
-endfunction
-Int   function cArrayCompareFloat(Float[] aArray1, Float[] aArray2, Bool ignoreLength = False) global
-  {Requirements: None}
-  ; ignoreLength == TRUE checks values index for index only and ends after last index of shortest 
-  ; returns first non-matching index
-  if !aArray1 || !aArray2
-    cErrInvalidArg("cArrayCompareFloat", "aArray1 || aArray2", "")
-  else
-    if !ignoreLength && aArray1.length != aArray2.length
-      return -1
-    endif
-    Int i = 0
-    while i < aArray1.length && i < aArray2.length
-      if aArray1[i] != aArray2[i]
-        return i
-      endif
-      i += 1
-    endwhile
-  endif
-  return -1
-endfunction
-Int   function cArrayCompareForm(Form[] aArray1, Form[] aArray2, Bool ignoreLength = False) global
-  {Requirements: None}
-  ; ignoreLength == TRUE checks values index for index only and ends after last index of shortest 
-  ; returns first non-matching index
-  if !aArray1 || !aArray2
-    cErrInvalidArg("cArrayCompareForm", "aArray1 || aArray2", "")
-  else
-    if !ignoreLength && aArray1.length != aArray2.length
-      return -1
-    endif
-    Int i = 0
-    while i < aArray1.length && i < aArray2.length
-      if aArray1[i] != aArray2[i]
-        return i
-      endif
-      i += 1
-    endwhile
-  endif
-  return -1
-endfunction
-Int   function cArrayCompareInt(Int[] aArray1, Int[] aArray2, Bool ignoreLength = False) global
-  {Requirements: None}
-  ; ignoreLength == TRUE checks values index for index only and ends after last index of shortest 
-  ; returns first non-matching index
-  if !aArray1 || !aArray2
-    cErrInvalidArg("cArrayCompareInt", "aArray1 || aArray2", "")
-  else
-    if !ignoreLength && aArray1.length != aArray2.length
-      return -1
-    endif
-    Int i = 0
-    while i < aArray1.length && i < aArray2.length
-      if aArray1[i] != aArray2[i]
-        return i
-      endif
-      i += 1
-    endwhile
-  endif
-  return -1
-endfunction
-Int   function cArrayCompareString(String[] aArray1, String[] aArray2, Bool ignoreLength = False) global
-  {Requirements: None}
-  ; ignoreLength == TRUE checks values index for index only and ends after last index of shortest 
-  ; returns first non-matching index
-  if !aArray1 || !aArray2
-    cErrInvalidArg("cArrayCompareString", "aArray1 || aArray2", "")
-  else
-    if !ignoreLength && aArray1.length != aArray2.length
-      return -1
-    endif
-    Int i = 0
-    while i < aArray1.length && i < aArray2.length
-      if aArray1[i] != aArray2[i]
-        return i
-      endif
-      i += 1
-    endwhile
-  endif
-  return -1
-endfunction
-/;
-  
+ 
   ;>>> Returns array of indices == valueToFind, also can provide the inverse
 ; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int[] function cArrayGetValueIndicesActor(Actor[] aArray, Actor valueToFind = None, Bool invertIt = False) global
@@ -4550,6 +4456,7 @@ endfunction
   ;--- 'convenience' alternate name for cArrayClearEmptyString
 ; 21-11-08 - Test Success
 String[] function cArrayClearBlank(String[] aArray) global
+  {Requirements: None}
   return cArrayClearEmptyString(aArray)
 endfunction
 
@@ -4755,48 +4662,56 @@ endfunction
   ;>>> Swap Indices
 ; 21-11-08 - Success-bp
 function cArraySwapIndexActor(Actor[] aArray, Int index1, Int index2) global
+  {Requirements: None}
   Actor tempValue = aArray[index1]
   aArray[index1] = aArray[index2]
   aArray[index2] = tempValue
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexAlias(Alias[] aArray, Int index1, Int index2) global
+  {Requirements: None}
   Alias tempValue = aArray[index1]
   aArray[index1] = aArray[index2]
   aArray[index2] = tempValue
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexBool(Bool[] aArray, Int index1, Int index2) global
+  {Requirements: None}
   Bool tempValue = aArray[index1]
   aArray[index1] = aArray[index2]
   aArray[index2] = tempValue
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexFloat(Float[] aArray, Int index1, Int index2) global
+  {Requirements: None}
   Float tempValue = aArray[index1]
   aArray[index1] = aArray[index2]
   aArray[index2] = tempValue
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexForm(Form[] aArray, Int index1, Int index2) global
+  {Requirements: None}
   Form tempValue = aArray[index1]
   aArray[index1] = aArray[index2]
   aArray[index2] = tempValue
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexInt(Int[] aArray, Int index1, Int index2) global
+  {Requirements: None}
   Int tempValue = aArray[index1]
   aArray[index1] = aArray[index2]
   aArray[index2] = tempValue
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexObjRef(ObjectReference[] aArray, Int index1, Int index2) global
+  {Requirements: None}
   ObjectReference tempValue = aArray[index1]
   aArray[index1] = aArray[index2]
   aArray[index2] = tempValue
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexString(String[] aArray, Int index1, Int index2) global
+  {Requirements: None}
   String tempValue = aArray[index1]
   aArray[index1] = aArray[index2]
   aArray[index2] = tempValue
@@ -4805,6 +4720,7 @@ endfunction
   ;>>> Quick sort assets
 ; 21-11-08 - Test Success
 Int function cArrayPartitionFloat(Float[] aArray, Int low, Int high) global
+  {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayPartitionFloat", "!aArray")
   else
@@ -4825,6 +4741,7 @@ Int function cArrayPartitionFloat(Float[] aArray, Int low, Int high) global
 endfunction
 ; 21-11-08 - Test Success
 function cArraySortFloat(Float[] aArray, Int low = -1, Int high = -1) global
+  {Requirements: None}
   if !aArray
     cErrInvalidArg("cArraySortFloat", "!aArray")
   else
@@ -4844,6 +4761,7 @@ function cArraySortFloat(Float[] aArray, Int low = -1, Int high = -1) global
 endfunction
 ; 21-11-08 - Test Success
 Int function cArrayPartitionInt(Int[] aArray, Int low, Int high) global
+  {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayPartitionInt", "!aArray")
   else
@@ -4864,6 +4782,7 @@ Int function cArrayPartitionInt(Int[] aArray, Int low, Int high) global
 endfunction
 ; 21-11-08 - Test Success
 function cArraySortInt(Int[] aArray, Int low = -1, Int high = -1) global
+  {Requirements: None}
   if !aArray
     cErrInvalidArg("cArraySortInt", "!aArray")
   else
@@ -4884,6 +4803,7 @@ endfunction
 ; Bugged, will have to sort out
 ;/
 Int function cArrayPartitionString(String[] aArray, Int low, Int high) global
+  {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayPartitionString", "!aArray")
   else
@@ -4903,6 +4823,7 @@ Int function cArrayPartitionString(String[] aArray, Int low, Int high) global
   return -1
 endfunction
 function cArrayQuickSortString(String[] aArray, Int low = -1, Int high = -1) global
+  {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayQuickSortString", "!aArray")
   else
@@ -5278,6 +5199,7 @@ Int[]    function cArrayBubbleSortInt(Int[] aArray, Bool invertIt = False) globa
 endfunction
 ; 21-11-08 - Test Success
 String[] function cArrayBubbleSortString(String[] aArray, Bool invertIt = False, Bool usePapUtil = TRUE) global
+  {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayBubbleSortString", "aArray")
   elseif usePapUtil
@@ -9270,6 +9192,7 @@ String[] function cMapSet(String keyName, String aValue, String[] aArray) global
   return aArray
 endfunction
 String   function cMapGet(String keyName, String[] aArray) global
+  {Requirements: None}
   if !aArray
     cErrInvalidArg("cMapGet", "!aArray")
   elseif !keyName
@@ -9360,9 +9283,11 @@ String[] function cMapAddForm(String keyName, Form aForm, String[] aArray, Bool 
   return aArray
 endfunction
 Bool     function cMapHasKey(String keyName, String[] aArray) global
+  {Requirements: None}
   return aArray.Find(keyName) > -1
 endfunction
 Int      function cMapFirstFree(String[] aArray) global
+  {Requirements: None}
   Int i = 0
   while i < aArray.length
     if aArray[i] == ""
@@ -9416,6 +9341,7 @@ String[] function cArrayListSkillNames() global
 endfunction
 ;***CONFIRMED WORKING 21-11-02
 String[] function cArrayHexDigits() global
+  {Requirements: None}
   String[] digits = New String[17]
   digits[0] = "0"
   digits[1] = "1"
@@ -9438,9 +9364,8 @@ String[] function cArrayHexDigits() global
 endfunction
 ;***CONFIRMED WORKING 21-11-02
 String[] function cArrayDecDigits() global
-  
+  {Requirements: None}
   String[] digits = New String[10]
-
   digits[0] = "0"
   digits[1] = "1"
   digits[2] = "2"
@@ -9456,7 +9381,7 @@ String[] function cArrayDecDigits() global
 endfunction
 ;***CONFIRMED WORKING 21-11-02
 String[] function cArrayASCIIChars() global
-  
+  {Requirements: None}
   String[] ascii = New String[69]
 
   ascii[0] = " "
@@ -9539,7 +9464,7 @@ String[] function cArrayASCIIChars() global
 endfunction
 ;***CONFIRMED WORKING 21-11-02
 String[] function cArrayLetterChars() global
-  
+  {Requirements: None}
   String[] letters = New String[26]
   letters[0] = "A"
   letters[1] = "B"
