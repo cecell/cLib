@@ -1639,11 +1639,11 @@ endfunction
 
 ;====== Math 
 ; 21-11-09 - Test Success
-Float    function cArraySumFloat(Float[] aArray) global
+Float function cArraySumFloat(Float[] aArray) global
   {Requirements: None}
   Float aFloat
   if !aArray
-    cErrInvalidArg("cArraySumFloat", "aArray", "0.0")
+    cErrInvalidArg("cArraySumFloat", "!aArray", "0.0")
   else
     Int i = 0
     while i < aArray.length
@@ -1654,7 +1654,7 @@ Float    function cArraySumFloat(Float[] aArray) global
   return aFloat
 endfunction
 ; 21-11-09 - Test Success
-Int      function cArraySumInt(Int[] aArray) global
+Int   function cArraySumInt(Int[] aArray) global
   {Requirements: None}
   Int aInt
   if !aArray
@@ -1669,7 +1669,7 @@ Int      function cArraySumInt(Int[] aArray) global
   return aInt
 endfunction
 ; 21-11-09 - Test Success
-Float    function cArrayAverageFloat(Float[] aArray) global
+Float function cArrayAverageFloat(Float[] aArray) global
   {Requirements: None}
   Float aFloat
   if !aArray
@@ -1685,7 +1685,7 @@ Float    function cArrayAverageFloat(Float[] aArray) global
   return aFloat
 endfunction
 ; 21-11-09 - Test Success
-Int      function cArrayAverageInt(Int[] aArray) global
+Int   function cArrayAverageInt(Int[] aArray) global
   {Requirements: None}
   ; remainder is dropped!
   Int aInt
@@ -4308,58 +4308,154 @@ endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexActor(Actor[] aArray, Int index1, Int index2) global
   {Requirements: None}
-  Actor tempValue = aArray[index1]
-  aArray[index1] = aArray[index2]
-  aArray[index2] = tempValue
+  if !aArray
+    cErrInvalidArg("cArraySwapIndexActor", "!aArray", "")
+  elseif index1 < 0
+    cErrInvalidArg("cArraySwapIndexActor", "index1 < 0", "")
+  elseif index1 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexActor", "index1 > (aArray.length - 1)", "")
+  elseif index2 < 0
+    cErrInvalidArg("cArraySwapIndexActor", "index2 < 0", "")
+  elseif index2 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexActor", "index2 > (aArray.length - 1)", "")
+  else
+    Actor tempValue = aArray[index1]
+    aArray[index1] = aArray[index2]
+    aArray[index2] = tempValue
+  endif
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexAlias(Alias[] aArray, Int index1, Int index2) global
   {Requirements: None}
-  Alias tempValue = aArray[index1]
-  aArray[index1] = aArray[index2]
-  aArray[index2] = tempValue
+  if !aArray
+    cErrInvalidArg("cArraySwapIndexAlias", "!aArray", "")
+  elseif index1 < 0
+    cErrInvalidArg("cArraySwapIndexAlias", "index1 < 0", "")
+  elseif index1 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexAlias", "index1 > (aArray.length - 1)", "")
+  elseif index2 < 0
+    cErrInvalidArg("cArraySwapIndexAlias", "index2 < 0", "")
+  elseif index2 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexAlias", "index2 > (aArray.length - 1)", "")
+  else
+    Alias tempValue = aArray[index1]
+    aArray[index1] = aArray[index2]
+    aArray[index2] = tempValue
+  endif
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexBool(Bool[] aArray, Int index1, Int index2) global
   {Requirements: None}
-  Bool tempValue = aArray[index1]
-  aArray[index1] = aArray[index2]
-  aArray[index2] = tempValue
+  if !aArray
+    cErrInvalidArg("cArraySwapIndexBool", "!aArray", "")
+  elseif index1 < 0
+    cErrInvalidArg("cArraySwapIndexBool", "index1 < 0", "")
+  elseif index1 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexBool", "index1 > (aArray.length - 1)", "")
+  elseif index2 < 0
+    cErrInvalidArg("cArraySwapIndexBool", "index2 < 0", "")
+  elseif index2 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexBool", "index2 > (aArray.length - 1)", "")
+  else
+    Bool tempValue = aArray[index1]
+    aArray[index1] = aArray[index2]
+    aArray[index2] = tempValue
+  endif
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexFloat(Float[] aArray, Int index1, Int index2) global
   {Requirements: None}
-  Float tempValue = aArray[index1]
-  aArray[index1] = aArray[index2]
-  aArray[index2] = tempValue
+  if !aArray
+    cErrInvalidArg("cArraySwapIndexFloat", "!aArray", "")
+  elseif index1 < 0
+    cErrInvalidArg("cArraySwapIndexFloat", "index1 < 0", "")
+  elseif index1 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexFloat", "index1 > (aArray.length - 1)", "")
+  elseif index2 < 0
+    cErrInvalidArg("cArraySwapIndexFloat", "index2 < 0", "")
+  elseif index2 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexFloat", "index2 > (aArray.length - 1)", "")
+  else
+    Float tempValue = aArray[index1]
+    aArray[index1] = aArray[index2]
+    aArray[index2] = tempValue
+  endif
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexForm(Form[] aArray, Int index1, Int index2) global
   {Requirements: None}
-  Form tempValue = aArray[index1]
-  aArray[index1] = aArray[index2]
-  aArray[index2] = tempValue
+  if !aArray
+    cErrInvalidArg("cArraySwapIndexForm", "!aArray", "")
+  elseif index1 < 0
+    cErrInvalidArg("cArraySwapIndexForm", "index1 < 0", "")
+  elseif index1 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexForm", "index1 > (aArray.length - 1)", "")
+  elseif index2 < 0
+    cErrInvalidArg("cArraySwapIndexForm", "index2 < 0", "")
+  elseif index2 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexForm", "index2 > (aArray.length - 1)", "")
+  else
+    Form tempValue = aArray[index1]
+    aArray[index1] = aArray[index2]
+    aArray[index2] = tempValue
+  endif
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexInt(Int[] aArray, Int index1, Int index2) global
   {Requirements: None}
-  Int tempValue = aArray[index1]
-  aArray[index1] = aArray[index2]
-  aArray[index2] = tempValue
+  if !aArray
+    cErrInvalidArg("cArraySwapIndexInt", "!aArray", "")
+  elseif index1 < 0
+    cErrInvalidArg("cArraySwapIndexInt", "index1 < 0", "")
+  elseif index1 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexInt", "index1 > (aArray.length - 1)", "")
+  elseif index2 < 0
+    cErrInvalidArg("cArraySwapIndexInt", "index2 < 0", "")
+  elseif index2 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexInt", "index2 > (aArray.length - 1)", "")
+  else
+    Int tempValue = aArray[index1]
+    aArray[index1] = aArray[index2]
+    aArray[index2] = tempValue
+  endif
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexObjRef(ObjectReference[] aArray, Int index1, Int index2) global
   {Requirements: None}
-  ObjectReference tempValue = aArray[index1]
-  aArray[index1] = aArray[index2]
-  aArray[index2] = tempValue
+  if !aArray
+    cErrInvalidArg("cArraySwapIndexObjRef", "!aArray", "")
+  elseif index1 < 0
+    cErrInvalidArg("cArraySwapIndexObjRef", "index1 < 0", "")
+  elseif index1 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexObjRef", "index1 > (aArray.length - 1)", "")
+  elseif index2 < 0
+    cErrInvalidArg("cArraySwapIndexObjRef", "index2 < 0", "")
+  elseif index2 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexObjRef", "index2 > (aArray.length - 1)", "")
+  else
+    ObjectReference tempValue = aArray[index1]
+    aArray[index1] = aArray[index2]
+    aArray[index2] = tempValue
+  endif
 endfunction
 ; 21-11-08 - Success-bp
 function cArraySwapIndexString(String[] aArray, Int index1, Int index2) global
   {Requirements: None}
-  String tempValue = aArray[index1]
-  aArray[index1] = aArray[index2]
-  aArray[index2] = tempValue
+  if !aArray
+    cErrInvalidArg("cArraySwapIndexString", "!aArray", "")
+  elseif index1 < 0
+    cErrInvalidArg("cArraySwapIndexString", "index1 < 0", "")
+  elseif index1 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexString", "index1 > (aArray.length - 1)", "")
+  elseif index2 < 0
+    cErrInvalidArg("cArraySwapIndexString", "index2 < 0", "")
+  elseif index2 > (aArray.length - 1)
+    cErrInvalidArg("cArraySwapIndexString", "index2 > (aArray.length - 1)", "")
+  else
+    String tempValue = aArray[index1]
+    aArray[index1] = aArray[index2]
+    aArray[index2] = tempValue
+  endif
 endfunction
 
   ;>>> Quick sort assets
@@ -4490,7 +4586,7 @@ endfunction
   
   ;>>> Remove all trailing indices == trailingValue
 ; 21-11-09 - Success-bp, manual review
-Actor[]   function cArrayRemoveTrailingActor(Actor[] aArray, Actor trailingValue = None) global
+Actor[]  function cArrayRemoveTrailingActor(Actor[] aArray, Actor trailingValue = None) global
   {Requirements: None}
   ; this assumes that the last indices are not *supposed* to be trailingValue
   Actor[] newArray
@@ -4668,7 +4764,7 @@ endfunction
 
   ;>>> Shift all !values to the end
 ; 21-11-09 - Success-bp
-Actor[] function cArrayCompactActor(Actor[] aArray, Actor shiftValue = None) global
+Actor[]  function cArrayCompactActor(Actor[] aArray, Actor shiftValue = None) global
   {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayCompactActor", "!aArray")
@@ -4686,7 +4782,7 @@ Actor[] function cArrayCompactActor(Actor[] aArray, Actor shiftValue = None) glo
   return aArray
 endfunction
 ; 21-11-09 - Success-bp
-Alias[] function cArrayCompactAlias(Alias[] aArray, Alias shiftValue = None) global
+Alias[]  function cArrayCompactAlias(Alias[] aArray, Alias shiftValue = None) global
   {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayCompactAlias", "!aArray")
@@ -4704,7 +4800,7 @@ Alias[] function cArrayCompactAlias(Alias[] aArray, Alias shiftValue = None) glo
   return aArray
 endfunction
 ; 21-11-09 - Success-bp
-Float[] function cArrayCompactFloat(Float[] aArray, Float shiftValue = 0.0) global
+Float[]  function cArrayCompactFloat(Float[] aArray, Float shiftValue = 0.0) global
   {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayCompactFloat", "!aArray")
@@ -4722,7 +4818,7 @@ Float[] function cArrayCompactFloat(Float[] aArray, Float shiftValue = 0.0) glob
   return aArray
 endfunction
 ; 21-11-09 - Success-bp
-Form[] function cArrayCompactForm(Form[] aArray, Form shiftValue = None) global
+Form[]   function cArrayCompactForm(Form[] aArray, Form shiftValue = None) global
   {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayCompactForm", "!aArray")
@@ -4740,7 +4836,7 @@ Form[] function cArrayCompactForm(Form[] aArray, Form shiftValue = None) global
   return aArray
 endfunction
 ; 21-11-09 - Success-bp
-Int[] function cArrayCompactInt(Int[] aArray, Int shiftValue = 0) global
+Int[]    function cArrayCompactInt(Int[] aArray, Int shiftValue = 0) global
   {Requirements: None}
   if !aArray
     cErrInvalidArg("cArrayCompactInt", "!aArray")
@@ -4871,7 +4967,7 @@ endfunction
   
   ;>>> Fill 'empty' values
 ; 21-11-09 - Success-bp
-Actor[]   function cArrayFillActor(Actor[] aArray, Actor filler, Bool forceAll = False) global
+Actor[]  function cArrayFillActor(Actor[] aArray, Actor filler, Bool forceAll = False) global
   {Requirements: None}
   ; if forceAll == TRUE sets every index to filler value
   if !aArray
@@ -4993,7 +5089,7 @@ endfunction
 
   ;>>> Sets all indices to None, False, 0.0, 0 or ""
 ; 21-11-09 - Success-bp, correction
-Actor[]   function cArrayClearActor(Actor[] aArray) global
+Actor[]  function cArrayClearActor(Actor[] aArray) global
   {Requirements: None}
   if!aArray
     cErrInvalidArg("cArrayClearActor", "!aArray")
@@ -5500,7 +5596,7 @@ Int[]    function cArrayRemoveValueInt(Int[] aArray, Int toRemove = 0, Bool useP
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[]  function cArrayRemoveValueObjRef(ObjectReference[] aArray, ObjectReference toRemove = None, \
+ObjectReference[] function cArrayRemoveValueObjRef(ObjectReference[] aArray, ObjectReference toRemove = None, \
   Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
@@ -5748,7 +5844,7 @@ endfunction
   
   ;>>> Remove Index [way to do Pop & Shift also] (returns new array)
 ; 21-11-09 - Success-bp
-Actor[]   function cArrayRemoveIndexActor(Actor[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+Actor[]  function cArrayRemoveIndexActor(Actor[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
   ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
@@ -5792,7 +5888,7 @@ Actor[]   function cArrayRemoveIndexActor(Actor[] aArray, Int indexToRemove = 0,
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-Alias[]   function cArrayRemoveIndexAlias(Alias[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+Alias[]  function cArrayRemoveIndexAlias(Alias[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
   ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
@@ -5929,7 +6025,7 @@ Form[]   function cArrayRemoveIndexForm(Form[] aArray, Int indexToRemove = 0, Bo
   {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveIndexForm", "aArray", "")
+    cErrInvalidArg("cArrayRemoveIndexForm", "!aArray", "")
   else
     if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
       indexToRemove = aArray.length - 1
@@ -6017,7 +6113,7 @@ ObjectReference[] function cArrayRemoveIndexObjRef(ObjectReference[] aArray, Int
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveIndexObjRef", "aArray", "")
+    cErrInvalidArg("cArrayRemoveIndexObjRef", "!aArray", "")
   else
     if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
       indexToRemove = aArray.length - 1
@@ -6061,7 +6157,7 @@ String[] function cArrayRemoveIndexString(String[] aArray, Int indexToRemove = 0
   {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveIndexString", "aArray")
+    cErrInvalidArg("cArrayRemoveIndexString", "!aArray")
   else
     if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
       indexToRemove = aArray.length - 1
@@ -6107,7 +6203,7 @@ Actor[]  function cArrayShiftActor(Actor[] aArray) global
   {Requirements: None}
   Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArrayShiftActor", "aArray")
+    cErrInvalidArg("cArrayShiftActor", "!aArray")
   else
     newArray = cArrayRemoveIndexActor(aArray, 0)
   endif
@@ -6118,7 +6214,7 @@ Alias[]  function cArrayShiftAlias(Alias[] aArray) global
   {Requirements: None}
   Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArrayShiftAlias", "aArray")
+    cErrInvalidArg("cArrayShiftAlias", "!aArray")
   else
     newArray = cArrayRemoveIndexAlias(aArray, 0)
   endif
@@ -6129,7 +6225,7 @@ Bool[]   function cArrayShiftBool(Bool[] aArray) global
   {Requirements: None}
   Bool[] newArray
   if !aArray
-    cErrInvalidArg("cArrayShiftBool", "aArray")
+    cErrInvalidArg("cArrayShiftBool", "!aArray")
   else
     newArray = cArrayRemoveIndexBool(aArray, 0)
   endif
@@ -6140,7 +6236,7 @@ Float[]  function cArrayShiftFloat(Float[] aArray) global
   {Requirements: None}
   Float[] newArray
   if !aArray
-    cErrInvalidArg("cArrayShiftFloat", "aArray")
+    cErrInvalidArg("cArrayShiftFloat", "!aArray")
   else
     newArray = cArrayRemoveIndexFloat(aArray, 0)
   endif
@@ -6151,7 +6247,7 @@ Form[]   function cArrayShiftForm(Form[] aArray) global
   {Requirements: None}
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayShiftForm", "aArray")
+    cErrInvalidArg("cArrayShiftForm", "!aArray")
   else
     newArray = cArrayRemoveIndexForm(aArray, 0)
   endif
@@ -6162,18 +6258,18 @@ Int[]    function cArrayShiftInt(Int[] aArray) global
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayShiftInt", "aArray")
+    cErrInvalidArg("cArrayShiftInt", "!aArray")
   else
     newArray = cArrayRemoveIndexInt(aArray, 0)
   endif
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[]  function cArrayShiftObjRef(ObjectReference[] aArray) global
+ObjectReference[] function cArrayShiftObjRef(ObjectReference[] aArray) global
   {Requirements: None}
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayShiftObjRef", "aArray")
+    cErrInvalidArg("cArrayShiftObjRef", "!aArray")
   else
     newArray = cArrayRemoveIndexObjRef(aArray, 0)
   endif
@@ -6184,7 +6280,7 @@ String[] function cArrayShiftString(String[] aArray) global
   {Requirements: None}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayShiftString", "aArray")
+    cErrInvalidArg("cArrayShiftString", "!aArray")
   else
     newArray = cArrayRemoveIndexString(aArray, 0)
   endif
@@ -6650,7 +6746,7 @@ Actor[]  function cArraySliceActor(Actor[] aArray, Int fromIndex, Int toIndex = 
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArraySliceActor", "aArray")
+    cErrInvalidArg("cArraySliceActor", "!aArray")
   elseif fromIndex < 0
     cErrInvalidArg("cArraySliceActor", "fromIndex < 0")
   elseif toIndex < fromIndex
@@ -6687,7 +6783,7 @@ Alias[]  function cArraySliceAlias(Alias[] aArray, Int fromIndex, Int toIndex = 
   {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArraySliceAlias", "aArray")
+    cErrInvalidArg("cArraySliceAlias", "!aArray")
   elseif fromIndex < 0
     cErrInvalidArg("cArraySliceAlias", "fromIndex < 0")
   elseif toIndex < fromIndex
@@ -6720,11 +6816,11 @@ Alias[]  function cArraySliceAlias(Alias[] aArray, Int fromIndex, Int toIndex = 
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-Bool[]  function cArraySliceBool(Bool[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
+Bool[]   function cArraySliceBool(Bool[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Bool[] newArray
   if !aArray
-    cErrInvalidArg("cArraySliceBool", "aArray")
+    cErrInvalidArg("cArraySliceBool", "!aArray")
   elseif fromIndex < 0
     cErrInvalidArg("cArraySliceBool", "fromIndex < 0")
   elseif toIndex < fromIndex
@@ -6761,7 +6857,7 @@ Float[]  function cArraySliceFloat(Float[] aArray, Int fromIndex, Int toIndex = 
   {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
   if !aArray
-    cErrInvalidArg("cArraySliceFloat", "aArray")
+    cErrInvalidArg("cArraySliceFloat", "!aArray")
   elseif fromIndex < 0
     cErrInvalidArg("cArraySliceFloat", "fromIndex < 0")
   elseif toIndex < fromIndex
@@ -6794,11 +6890,11 @@ Float[]  function cArraySliceFloat(Float[] aArray, Int fromIndex, Int toIndex = 
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-Form[]  function cArraySliceForm(Form[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
+Form[]   function cArraySliceForm(Form[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArraySliceForm", "aArray")
+    cErrInvalidArg("cArraySliceForm", "!aArray")
   elseif fromIndex < 0
     cErrInvalidArg("cArraySliceForm", "fromIndex < 0")
   elseif toIndex < fromIndex
@@ -6831,11 +6927,11 @@ Form[]  function cArraySliceForm(Form[] aArray, Int fromIndex, Int toIndex = 0, 
   return newArray
 endfunction
 ; 21-11-09 - Test Success
-Int[]  function cArraySliceInt(Int[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
+Int[]    function cArraySliceInt(Int[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArraySliceInt", "aArray")
+    cErrInvalidArg("cArraySliceInt", "!aArray")
   elseif fromIndex < 0
     cErrInvalidArg("cArraySliceInt", "fromIndex < 0")
   elseif toIndex < fromIndex
@@ -6868,11 +6964,11 @@ Int[]  function cArraySliceInt(Int[] aArray, Int fromIndex, Int toIndex = 0, Boo
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[]  function cArraySliceObjRef(ObjectReference[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
+ObjectReference[] function cArraySliceObjRef(ObjectReference[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArraySliceObjectReference", "aArray")
+    cErrInvalidArg("cArraySliceObjectReference", "!aArray")
   elseif fromIndex < 0
     cErrInvalidArg("cArraySliceObjectReference", "fromIndex < 0")
   elseif toIndex < fromIndex
@@ -6905,11 +7001,11 @@ ObjectReference[]  function cArraySliceObjRef(ObjectReference[] aArray, Int from
   return newArray
 endfunction
 ; 21-11-09 - Test Success
-String[]  function cArraySliceString(String[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
+String[] function cArraySliceString(String[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArraySliceString", "aArray")
+    cErrInvalidArg("cArraySliceString", "!aArray")
   elseif fromIndex < 0
     cErrInvalidArg("cArraySliceString", "fromIndex < 0")
   elseif toIndex < fromIndex
@@ -7184,7 +7280,7 @@ Int[]    function cArraySpliceInt(Int[] aArray, Int[] toInsert, Int insertAtInde
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[]  function cArraySpliceObjRef(ObjectReference[] aArray, ObjectReference[] toInsert, Int insertAtIndex = 0) global
+ObjectReference[] function cArraySpliceObjRef(ObjectReference[] aArray, ObjectReference[] toInsert, Int insertAtIndex = 0) global
   {Requirements: None}
   ObjectReference[] newArray
   if !aArray
@@ -7266,11 +7362,11 @@ endfunction
   
   ;>>> Reverse order (returns new array)
 ; 21-11-09 - Success-bp
-Actor[]   function cArrayReverseActor(Actor[] aArray) global
+Actor[]  function cArrayReverseActor(Actor[] aArray) global
   {Requirements: None}
   Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArrayReverseActor", "aArray", "")
+    cErrInvalidArg("cArrayReverseActor", "!aArray", "")
   else 
     newArray = cArrayCreateActor(aArray.length)
     if newArray.length
@@ -7288,11 +7384,11 @@ Actor[]   function cArrayReverseActor(Actor[] aArray) global
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-Alias[]   function cArrayReverseAlias(Alias[] aArray) global
+Alias[]  function cArrayReverseAlias(Alias[] aArray) global
   {Requirements: None}
   Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArrayReverseAlias", "aArray", "")
+    cErrInvalidArg("cArrayReverseAlias", "!aArray", "")
   else 
     newArray = cArrayCreateAlias(aArray.length)
     if newArray.length
@@ -7314,7 +7410,7 @@ Bool[]   function cArrayReverseBool(Bool[] aArray) global
   {Requirements: None}
   Bool[] newArray
   if !aArray
-    cErrInvalidArg("cArrayReverseBool", "aArray", "")
+    cErrInvalidArg("cArrayReverseBool", "!aArray", "")
   else
     newArray = cArrayCreateBool(aArray.length)
     if newArray.length
@@ -7336,7 +7432,7 @@ Float[]  function cArrayReverseFloat(Float[] aArray) global
   {Requirements: None}
   Float[] newArray
   if !aArray
-    cErrInvalidArg("cArrayReverseFloat", "aArray", "")
+    cErrInvalidArg("cArrayReverseFloat", "!aArray", "")
   else 
     newArray = cArrayCreateFloat(aArray.length)
     if newArray.length
@@ -7358,7 +7454,7 @@ Form[]   function cArrayReverseForm(Form[] aArray) global
   {Requirements: None}
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayReverseForm", "aArray", "")
+    cErrInvalidArg("cArrayReverseForm", "!aArray", "")
   else 
     newArray = cArrayCreateForm(aArray.length)
     if newArray.length
@@ -7380,7 +7476,7 @@ Int[]    function cArrayReverseInt(Int[] aArray) global
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayReverseInt", "aArray", "")
+    cErrInvalidArg("cArrayReverseInt", "!aArray", "")
   else 
     newArray = cArrayCreateInt(aArray.length)
     if newArray.length
@@ -7398,11 +7494,11 @@ Int[]    function cArrayReverseInt(Int[] aArray) global
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[]   function cArrayReverseObjRef(ObjectReference[] aArray) global
+ObjectReference[] function cArrayReverseObjRef(ObjectReference[] aArray) global
   {Requirements: None}
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayReverseObjectReference", "aArray", "")
+    cErrInvalidArg("cArrayReverseObjectReference", "!aArray", "")
   else 
     newArray = cArrayCreateObjRef(aArray.length)
     if newArray.length
@@ -7424,7 +7520,7 @@ String[] function cArrayReverseString(String[] aArray) global
   {Requirements: None}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayReverseString", "aArray", "")
+    cErrInvalidArg("cArrayReverseString", "!aArray", "")
   else 
     newArray = cArrayCreateString(aArray.length)
     if newArray.length
@@ -7771,11 +7867,11 @@ endfunction
   
   ;>>> Copying to newly created array which is then returned
 ; 21-11-09 - Success-bp
-Actor[]   function cArrayCopyActor(Actor[] aArray) global
+Actor[]  function cArrayCopyActor(Actor[] aArray) global
   {Requirements: None}
   Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArrayCopyActor", "aArray", "")
+    cErrInvalidArg("cArrayCopyActor", "!aArray", "")
   else
     newArray = cArrayCreateActor(aArray.length)
     if newArray.length
@@ -7791,11 +7887,11 @@ Actor[]   function cArrayCopyActor(Actor[] aArray) global
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-Alias[]   function cArrayCopyAlias(Alias[] aArray) global
+Alias[]  function cArrayCopyAlias(Alias[] aArray) global
   {Requirements: None}
   Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArrayCopyAlias", "aArray", "")
+    cErrInvalidArg("cArrayCopyAlias", "!aArray", "")
   else
     newArray = cArrayCreateAlias(aArray.length)
     if newArray.length
@@ -7815,7 +7911,7 @@ Bool[]   function cArrayCopyBool(Bool[] aArray) global
   {Requirements: None}
   Bool[] newArray
   if !aArray
-    cErrInvalidArg("cArrayCopyBool", "aArray", "")
+    cErrInvalidArg("cArrayCopyBool", "!aArray", "")
   else
     newArray = cArrayCreateBool(aArray.length)
     if newArray.length
@@ -7835,7 +7931,7 @@ Float[]  function cArrayCopyFloat(Float[] aArray) global
   {Requirements: None}
   Float[] newArray
   if !aArray
-    cErrInvalidArg("cArrayCopyFloat", "aArray", "")
+    cErrInvalidArg("cArrayCopyFloat", "!aArray", "")
   else
     newArray = cArrayCreateFloat(aArray.length)
     if newArray.length
@@ -7855,7 +7951,7 @@ Form[]   function cArrayCopyForm(Form[] aArray) global
   {Requirements: None}
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayCopyForm", "aArray", "")
+    cErrInvalidArg("cArrayCopyForm", "!aArray", "")
   else
     newArray = cArrayCreateForm(aArray.length)
     if newArray.length
@@ -7875,7 +7971,7 @@ Int[]    function cArrayCopyInt(Int[] aArray) global
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayCopyInt", "aArray", "")
+    cErrInvalidArg("cArrayCopyInt", "!aArray", "")
   else
     newArray = cArrayCreateInt(aArray.length)
     if newArray.length
@@ -7891,11 +7987,11 @@ Int[]    function cArrayCopyInt(Int[] aArray) global
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[]   function cArrayCopyObjRef(ObjectReference[] aArray) global
+ObjectReference[] function cArrayCopyObjRef(ObjectReference[] aArray) global
   {Requirements: None}
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayCopyObjRef", "aArray", "")
+    cErrInvalidArg("cArrayCopyObjRef", "!aArray", "")
   else
     newArray = cArrayCreateObjectReference(aArray.length)
     if newArray.length
@@ -7915,7 +8011,7 @@ String[] function cArrayCopyString(String[] aArray) global
   {Requirements: None}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayCopyString", "aArray", "")
+    cErrInvalidArg("cArrayCopyString", "!aArray", "")
   else
     newArray = cArrayCreateString(aArray.length)
     if newArray.length
@@ -7932,6 +8028,66 @@ String[] function cArrayCopyString(String[] aArray) global
 endfunction
   
   ;>>> Merging (returns new array)
+Actor[]  function cArrayMergeActor(Actor[] aArray1, Actor[] aArray2, Bool useSKSE = TRUE, Bool usePapUtil = TRUE) global
+  {Requirements: None, SKSE:Soft, PapyrusUtil:Soft}
+  Actor[] newArray
+  ;if !aArray1 && !aArray2
+  ;  cErrInvalidArg("cArrayMergeActor", "aArray1 && aArray2", "")
+  ;else
+  ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
+    if usePapUtil
+      return PapyrusUtil.MergeActorArray(aArray1, aArray2)
+    endif
+    Int newSize = aArray1.length + aArray2.length
+    newArray = cArrayCreateActor(newSize)
+    if newArray.length
+      Int i = 0
+      Int j = 0
+      while i < newArray.length
+        if i < aArray1.length
+          newArray[i] = aArray1[i]
+        else
+          newArray[i] = aArray2[j]
+          j += 1
+        endif
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayMergeActor")
+    endif
+  ;endif
+  return newArray
+endfunction
+Alias[]  function cArrayMergeAlias(Alias[] aArray1, Alias[] aArray2, Bool useSKSE = TRUE, Bool usePapUtil = TRUE) global
+  {Requirements: None, SKSE:Soft, PapyrusUtil:Soft}
+  Alias[] newArray
+  ;if !aArray1 && !aArray2
+  ;  cErrInvalidArg("cArrayMergeAlias", "aArray1 && aArray2", "")
+  ;else
+  ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
+    if usePapUtil
+      return PapyrusUtil.MergeAliasArray(aArray1, aArray2)
+    endif
+    Int newSize = aArray1.length + aArray2.length
+    newArray = cArrayCreateAlias(newSize)
+    if newArray.length
+      Int i = 0
+      Int j = 0
+      while i < newArray.length
+        if i < aArray1.length
+          newArray[i] = aArray1[i]
+        else
+          newArray[i] = aArray2[j]
+          j += 1
+        endif
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayMergeAlias")
+    endif
+  ;endif
+  return newArray
+endfunction
 Bool[]   function cArrayMergeBool(Bool[] aArray1, Bool[] aArray2, Bool useSKSE = TRUE, Bool usePapUtil = TRUE) global
   {Requirements: None, SKSE:Soft, PapyrusUtil:Soft}
   Bool[] newArray
@@ -8047,6 +8203,36 @@ Int[]    function cArrayMergeInt(Int[] aArray1, Int[] aArray2, Bool useSKSE = TR
       endwhile
     else
       cErrArrInitFail("cArrayMergeInt")
+    endif
+  ;endif
+  return newArray
+endfunction
+ObjectReference[] function cArrayMergeObjRef(ObjectReference[] aArray1, ObjectReference[] aArray2, Bool useSKSE = TRUE, Bool usePapUtil = TRUE) global
+  {Requirements: None, SKSE:Soft, PapyrusUtil:Soft}
+  ObjectReference[] newArray
+  ;if !aArray1 && !aArray2
+  ;  cErrInvalidArg("cArrayMergeObjRef", "aArray1 && aArray2", "")
+  ;else
+  ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
+    if usePapUtil
+      return PapyrusUtil.MergeObjRefArray(aArray1, aArray2)
+    endif
+    Int newSize = aArray1.length + aArray2.length
+    newArray = cArrayCreateObjRef(newSize)
+    if newArray.length
+      Int i = 0
+      Int j = 0
+      while i < newArray.length
+        if i < aArray1.length
+          newArray[i] = aArray1[i]
+        else
+          newArray[i] = aArray2[j]
+          j += 1
+        endif
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayMergeObjRef")
     endif
   ;endif
   return newArray
@@ -8288,6 +8474,10 @@ Outfit[]  function cArrayCreateOTFT(Int indices, Outfit filler = None) global
   {Requirements: None}
   return cArrayOutfit.cArrayCreateOutfit(indices, filler)
 endfunction
+Outfit[]  function cArrayCreateOutfit(Int indices, Outfit filler = None) global
+  {Requirements: None}
+  return cArrayOutfit.cArrayCreateOutfit(indices, filler)
+endfunction
 Package[] function cArrayCreatePACK(Int indices, Package filler = None) global
   {Requirements: None}
   return cArrayPackage.cArrayCreatePackage(indices, filler)
@@ -8324,6 +8514,10 @@ ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias
   {Requirements: None}
   return cArrayReferenceAlias.cArrayCreateReferenceAlias(indices, filler)
 endfunction
+ReferenceAlias[] function cArrayCreateRefAlias(Int indices, ReferenceAlias filler = None) global
+  {Requirements: None}
+  return cArrayReferenceAlias.cArrayCreateReferenceAlias(indices, filler)
+endfunction
 Scroll[]  function cArrayCreateSCRL(Int indices, Scroll filler = None) global
   {Requirements: None}
   return cArrayScroll.cArrayCreateScroll(indices, filler)
@@ -8341,6 +8535,10 @@ Shout[]   function cArrayCreateShout(Int indices, Shout filler = None) global
   return cArrayShout.cArrayCreateShout(indices, filler)
 endfunction
 SoulGem[] function cArrayCreateSLGM(Int indices, SoulGem filler = None) global
+  {Requirements: None}
+  return cArraySoulGem.cArrayCreateSoulGem(indices, filler)
+endfunction
+SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None) global
   {Requirements: None}
   return cArraySoulGem.cArrayCreateSoulGem(indices, filler)
 endfunction
@@ -8364,11 +8562,23 @@ TextureSet[]  function cArrayCreateTXST(Int indices, TextureSet filler = None) g
   {Requirements: None}
   return cArrayTextureSet.cArrayCreateTextureSet(indices, filler)
 endfunction
+TextureSet[]  function cArrayCreateTextureSet(Int indices, TextureSet filler = None) global
+  {Requirements: None}
+  return cArrayTextureSet.cArrayCreateTextureSet(indices, filler)
+endfunction
 Topic[]       function cArrayCreateDIAL(Int indices, Topic filler = None) global
   {Requirements: None}
   return cArrayTopic.cArrayCreateTopic(indices, filler)
 endfunction
+Topic[]       function cArrayCreateTopic(Int indices, Topic filler = None) global
+  {Requirements: None}
+  return cArrayTopic.cArrayCreateTopic(indices, filler)
+endfunction
 TopicInfo[]   function cArrayCreateDLBR(Int indices, TopicInfo filler = None) global
+  {Requirements: None}
+  return cArrayTopicInfo.cArrayCreateTopicInfo(indices, filler)
+endfunction
+TopicInfo[]   function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None) global
   {Requirements: None}
   return cArrayTopicInfo.cArrayCreateTopicInfo(indices, filler)
 endfunction
@@ -8384,7 +8594,15 @@ Weather[]     function cArrayCreateWTHR(Int indices, Weather filler = None) glob
   {Requirements: None}
   return cArrayWeather.cArrayCreateWeather(indices, filler)
 endfunction
+Weather[]     function cArrayCreateWeather(Int indices, Weather filler = None) global
+  {Requirements: None}
+  return cArrayWeather.cArrayCreateWeather(indices, filler)
+endfunction
 WordOfPower[] function cArrayCreateWOOP(Int indices, WordOfPower filler = None) global
+  {Requirements: None}
+  return cArrayWordOfPower.cArrayCreateWordOfPower(indices, filler)
+endfunction
+WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler = None) global
   {Requirements: None}
   return cArrayWordOfPower.cArrayCreateWordOfPower(indices, filler)
 endfunction
