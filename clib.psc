@@ -9638,7 +9638,7 @@ String[] function cArrayHexDigits() global
   digits[13] = "D"
   digits[14] = "E"
   digits[15] = "F"
-  digits[16] = "G" ; makes nabbing F easier
+  digits[16] = "G" ; makes nabbing F more accurate ('else' will also allow invalid values to pass through)
   return digits
 endfunction
 ;***CONFIRMED WORKING 21-11-02
@@ -9656,13 +9656,11 @@ String[] function cArrayDecDigits() global
   digits[8] = "8"
   digits[9] = "9"
   return digits
-  
 endfunction
 ;***CONFIRMED WORKING 21-11-02
 String[] function cArrayASCIIChars() global
   {Requirements: None}
   String[] ascii = New String[69]
-
   ascii[0] = " "
   ascii[1] = "!"
   ascii[2] = "\""
@@ -9732,14 +9730,183 @@ String[] function cArrayASCIIChars() global
   ascii[66] = "|"
   ascii[67] = "}"
   ascii[68] = "~"
-
-  ;Int i = 1
-  ;while i < 69
-  ;  cLibTrace("cArrayASCIIChars", "ascii[" + (i - 1) + "] < ascii[" + i + "]: " + ascii[i - 1] + " < " + ascii[i] + ": " + (ascii[i - 1] < ascii[i]), 0)
-  ;  i += 1
-  ;endwhile
   return ascii
-  
+endfunction
+String   function cASCII2Hex(String char)
+  String[] ascii = cArrayASCIIChars()
+  String[] hexArray
+  String returnString
+  Int idx = ascii.Find(char)
+  if idx == -1
+    cErrInvalidArg("cASCII2Hex", "ascii.Find(char) == -1")
+  else
+    hexArray = cArrayASCIIAsHex()
+    returnString = hexArray[idx]
+  endif
+  return returnString
+endfunction
+String   function cASCII2Binary(String char)
+  String[] ascii = cArrayASCIIChars()
+  String[] binaryArray
+  String returnString
+  Int idx = ascii.Find(char)
+  if idx == -1
+    cErrInvalidArg("cASCII2Binary", "ascii.Find(char) == -1")
+  else
+    binaryArray = cArrayASCIIAsBinary()
+    returnString = binaryArray[idx]
+  endif
+  return returnString
+endfunction
+String   function cArrayASCIIAsBinary() global
+  {Requirements: None}
+  ; aligned with cArrayASCIIChars()
+  String[] charAsBin = New String[69]
+  charAsBin[0] = "100000"
+  charAsBin[1] = "100001"
+  charAsBin[2] = "100010"
+  charAsBin[3] = "100011"
+  charAsBin[4] = "100100"
+  charAsBin[5] = "100101"
+  charAsBin[6] = "100110"
+  charAsBin[7] = "100111"
+  charAsBin[8] = "101000"
+  charAsBin[9] = "101001"
+  charAsBin[10] = "101010"
+  charAsBin[11] = "101011"
+  charAsBin[12] = "101100"
+  charAsBin[13] = "101101"
+  charAsBin[14] = "101110"
+  charAsBin[15] = "101111"
+  charAsBin[16] = "110000"
+  charAsBin[17] = "110001"
+  charAsBin[18] = "110010"
+  charAsBin[19] = "110011"
+  charAsBin[20] = "110100"
+  charAsBin[21] = "110101"
+  charAsBin[22] = "110110"
+  charAsBin[23] = "110111"
+  charAsBin[24] = "111000"
+  charAsBin[25] = "111001"
+  charAsBin[26] = "111010"
+  charAsBin[27] = "111011"
+  charAsBin[28] = "111100"
+  charAsBin[29] = "111101"
+  charAsBin[30] = "111110"
+  charAsBin[31] = "111111"
+  charAsBin[32] = "1000000"
+  charAsBin[33] = "1011011"
+  charAsBin[34] = "1011100"
+  charAsBin[35] = "1011101"
+  charAsBin[36] = "1011110"
+  charAsBin[37] = "1011111"
+  charAsBin[38] = "1100000"
+  charAsBin[39] = "1000001"
+  charAsBin[40] = "1000010"
+  charAsBin[41] = "1000011"
+  charAsBin[42] = "1000100"
+  charAsBin[43] = "1000101"
+  charAsBin[44] = "1000110"
+  charAsBin[45] = "1000111"
+  charAsBin[46] = "1001000"
+  charAsBin[47] = "1001001"
+  charAsBin[48] = "1001010"
+  charAsBin[49] = "1001011"
+  charAsBin[50] = "1001100"
+  charAsBin[51] = "1001101"
+  charAsBin[52] = "1001110"
+  charAsBin[53] = "1001111"
+  charAsBin[54] = "1010000"
+  charAsBin[55] = "1010001"
+  charAsBin[56] = "1010010"
+  charAsBin[57] = "1010011"
+  charAsBin[58] = "1010100"
+  charAsBin[59] = "1010101"
+  charAsBin[60] = "1010110"
+  charAsBin[61] = "1010111"
+  charAsBin[62] = "1011000"
+  charAsBin[63] = "1011001"
+  charAsBin[64] = "1011010"
+  charAsBin[65] = "1111011"
+  charAsBin[66] = "1111100"
+  charAsBin[67] = "1111101"
+  charAsBin[68] = "1111110"
+  return charAsBin
+endfunction
+String[] function cArrayASCIIAsHex() global
+  {Requirements: None}
+  ; aligned with cArrayASCIIChars()
+  String[] charAsHex = New String[69]
+  charAsHex[0] = "20"
+  charAsHex[1] = "21"
+  charAsHex[2] = "22"
+  charAsHex[3] = "23"
+  charAsHex[4] = "24"
+  charAsHex[5] = "25"
+  charAsHex[6] = "26"
+  charAsHex[7] = "27"
+  charAsHex[8] = "28"
+  charAsHex[9] = "29"
+  charAsHex[10] = "2A"
+  charAsHex[11] = "2B"
+  charAsHex[12] = "2C"
+  charAsHex[13] = "2D"
+  charAsHex[14] = "2E"
+  charAsHex[15] = "2F"
+  charAsHex[16] = "30"
+  charAsHex[17] = "31"
+  charAsHex[18] = "32"
+  charAsHex[19] = "33"
+  charAsHex[20] = "34"
+  charAsHex[21] = "35"
+  charAsHex[22] = "36"
+  charAsHex[23] = "37"
+  charAsHex[24] = "38"
+  charAsHex[25] = "39"
+  charAsHex[26] = "3A"
+  charAsHex[27] = "3B"
+  charAsHex[28] = "3C"
+  charAsHex[29] = "3D"
+  charAsHex[30] = "3E"
+  charAsHex[31] = "3F"
+  charAsHex[32] = "40"
+  charAsHex[33] = "5B"
+  charAsHex[34] = "5C"
+  charAsHex[35] = "5D"
+  charAsHex[36] = "5E"
+  charAsHex[37] = "5F"
+  charAsHex[38] = "60"
+  charAsHex[39] = "41"
+  charAsHex[40] = "42"
+  charAsHex[41] = "43"
+  charAsHex[42] = "44"
+  charAsHex[43] = "45"
+  charAsHex[44] = "46"
+  charAsHex[45] = "47"
+  charAsHex[46] = "48"
+  charAsHex[47] = "49"
+  charAsHex[48] = "4A"
+  charAsHex[49] = "4B"
+  charAsHex[50] = "4C"
+  charAsHex[51] = "4D"
+  charAsHex[52] = "4E"
+  charAsHex[53] = "4F"
+  charAsHex[54] = "50"
+  charAsHex[55] = "51"
+  charAsHex[56] = "52"
+  charAsHex[57] = "53"
+  charAsHex[58] = "54"
+  charAsHex[59] = "55"
+  charAsHex[60] = "56"
+  charAsHex[61] = "57"
+  charAsHex[62] = "58"
+  charAsHex[63] = "59"
+  charAsHex[64] = "5A"
+  charAsHex[65] = "7B"
+  charAsHex[66] = "7C"
+  charAsHex[67] = "7D"
+  charAsHex[68] = "7E"
+  return charAsHex
 endfunction
 ;***CONFIRMED WORKING 21-11-02
 String[] function cArrayLetterChars() global
@@ -9771,9 +9938,7 @@ String[] function cArrayLetterChars() global
   letters[23] = "X"
   letters[24] = "Y"
   letters[25] = "Z"
-
   return letters
-  
 endfunction
 
 ; Misc reference info
