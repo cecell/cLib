@@ -3745,11 +3745,14 @@ endfunction
   
   ;>>> Tally
 ; 21-11-08 - Success-bp
-Int function cArrayCountValueActor(Actor[] aArray, Actor valueToCount = None, Bool invertIt = False) global
+Int function cArrayCountValueActor(Actor[] aArray, Actor valueToCount = None, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
   {Requirements: None}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueActor", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountActor(aArray, valueToCount)
   else
     returnInt = 0
     Int i = 0
@@ -3761,11 +3764,14 @@ Int function cArrayCountValueActor(Actor[] aArray, Actor valueToCount = None, Bo
   return returnInt
 endfunction
 ; 21-11-08 - Success-bp
-Int function cArrayCountValueAlias(Alias[] aArray, Alias valueToCount = None, Bool invertIt = False) global
+Int function cArrayCountValueAlias(Alias[] aArray, Alias valueToCount = None, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
   {Requirements: None}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueAlias", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountAlias(aArray, valueToCount)
   else
     returnInt = 0
     Int i = 0
@@ -3777,11 +3783,14 @@ Int function cArrayCountValueAlias(Alias[] aArray, Alias valueToCount = None, Bo
   return returnInt
 endfunction
 ; 21-11-08 - Success-bp && Manual Review
-Int function cArrayCountValueBool(Bool[] aArray, Bool valueToCount = TRUE, Bool invertIt = False) global
+Int function cArrayCountValueBool(Bool[] aArray, Bool valueToCount = TRUE, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
   {Requirements: None}
   Int returnInt = 0
   if !aArray
     cErrInvalidArg("cArrayCountValueBool", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountBool(aArray, valueToCount)
   else
     Int i = 0
     while i < aArray.length
@@ -3792,11 +3801,14 @@ Int function cArrayCountValueBool(Bool[] aArray, Bool valueToCount = TRUE, Bool 
   return returnInt
 endfunction
 ; 21-11-08 - Success-bp && Manual Review
-Int function cArrayCountValueFloat(Float[] aArray, Float valueToCount = 0.0, Bool invertIt = False) global
+Int function cArrayCountValueFloat(Float[] aArray, Float valueToCount = 0.0, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
   {Requirements: None}
   Int returnInt = 0
   if !aArray
     cErrInvalidArg("cArrayCountValueFloat", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountFloat(aArray, valueToCount)
   else
     Int i = 0
     while i < aArray.length
@@ -3807,11 +3819,14 @@ Int function cArrayCountValueFloat(Float[] aArray, Float valueToCount = 0.0, Boo
   return returnInt
 endfunction
 ; 21-11-08 - Success-bp && Manual Review
-Int function cArrayCountValueForm(Form[] aArray, Form valueToCount = None, Bool invertIt = False) global
+Int function cArrayCountValueForm(Form[] aArray, Form valueToCount = None, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
   {Requirements: None}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueForm", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountForm(aArray, valueToCount)
   else
     returnInt = 0
     Int i = 0
@@ -3823,11 +3838,14 @@ Int function cArrayCountValueForm(Form[] aArray, Form valueToCount = None, Bool 
   return returnInt
 endfunction
 ; 21-11-08 - Success-bp && Manual Review
-Int function cArrayCountValueInt(Int[] aArray, Int valueToCount = 0, Bool invertIt = False) global
+Int function cArrayCountValueInt(Int[] aArray, Int valueToCount = 0, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
   {Requirements: None}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueInt", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountInt(aArray, valueToCount)
   else
     returnInt = 0
     Int i = 0
@@ -3840,11 +3858,13 @@ Int function cArrayCountValueInt(Int[] aArray, Int valueToCount = 0, Bool invert
 endfunction
 ; 21-11-08 - Success-bp
 Int function cArrayCountValueObjRef(ObjectReference[] aArray, ObjectReference valueToCount = None, \
-  Bool invertIt = False) global
+  Bool invertIt = False, Bool usePapUtil = TRUE) global
   {Requirements: None}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueObjRef", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountObjRef(aArray, valueToCount)
   else
     returnInt = 0
     Int i = 0
@@ -3856,11 +3876,14 @@ Int function cArrayCountValueObjRef(ObjectReference[] aArray, ObjectReference va
   return returnInt
 endfunction
 ; 21-11-08 - Test Success
-Int function cArrayCountValueString(String[] aArray, String valueToCount = "", Bool invertIt = False) global
+Int function cArrayCountValueString(String[] aArray, String valueToCount = "", Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
   {Requirements: None}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueString", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountString(aArray, valueToCount)
   else
     returnInt = 0
     Int i = 0
