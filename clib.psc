@@ -8,378 +8,6 @@ Int    function cGetVersion() global
   {Requirements: None}
   return 9001
 endfunction
-;Functions used to output error messages
-function clibTrace(String functionName, String msg, Int errorLevel, Bool condition = TRUE, \
-    Bool tryConsoleUtil = TRUE) global
-  {Requirements: None, ConsoleUtil:Soft}
-  condition = TRUE ; change this to false to disable all trace messages
-  if condition
-    Debug.Trace(cGetScriptName() + "::" + functionName + "():: " + msg, errorLevel)
-    if tryConsoleUtil && ConsoleUtil.GetVersion()
-      ConsoleUtil.PrintMessage(cTernaryString(errorLevel == 2, "Error! ", \
-        cTernaryString(errorLevel == 1, "Warning: ", \
-          cTernaryString(errorLevel == 0, "Info: ", ""))) + "clib::" + functionName + "() " + msg)
-    endif
-  endif
-endfunction
-function cErrInvalidArg(String functionName, String argName = "", String returnValue = "", \
-    Int errorLevel = 2, Bool condition = TRUE, Bool useSKSE = TRUE, Bool tryConsoleUtil = TRUE) global
-  {Requirements: None, ConsoleUtil:Soft}
-  if useSKSE && StringUtil.Find(functionName, "array") != -1
-    returnValue = "arrayNone"
-  endif
-  clibTrace(functionName, "Argument(s)" + cTernaryString(argName != "", ": " + argName, "") + " invalid!" + \
-    cTernaryString(returnValue != "", " Returning " + returnValue, ""), errorLevel, condition, tryConsoleUtil)
-endfunction
-function cErrArrInitFail(String functionName, String arrayName = "newArray", String returnValue = "ArrayNone", \
-    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
-  {Requirements: None, ConsoleUtil:Soft}
-  clibTrace(functionName, "Variable: " + arrayName + " failed to initialize! Returning " + returnValue, errorLevel, \
-    condition, tryConsoleUtil)
-endfunction
-function cErrReqDisabled(String functionName, String modName = "SKSE", String returnValue = "", \
-    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
-  {Requirements: None, ConsoleUtil:Soft}
-  clibTrace(functionName, modName + " functionality is disabled; This function cannot operate without it!" + \
-    cTernaryString(returnValue == "", " Returning \"\"", ""), errorLevel, condition, tryConsoleUtil)
-endfunction
-
-;--------------------------SKSE:HARD-------------------------------------------
-
-String function cGetModName(String hexForm = "", Int decForm = 0,Form formVar = None, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  String returnString
-  if useSKSE
-    String modIndex
-    if formVar
-      returnString = cGetModNameForm(formVar)
-    else
-      if decForm
-        hexForm = cD2H(decForm)
-      endif
-      if cIsLight(hexForm)
-        modIndex = StringUtil.SubString(hexForm,2,3)
-        returnString = Game.GetLightModName(cH2D(modIndex))
-      else
-        if StringUtil.GetLength(hexForm) == 10
-          modIndex = StringUtil.SubString(hexForm,2,2)
-        elseif StringUtil.GetLength(hexForm) == 8
-          modIndex = StringUtil.SubString(hexForm,0,2)
-        endif
-        returnString = Game.GetModName(cH2D(modIndex))
-      endif
-    endif
-  else
-    cErrReqDisabled("cGetTheModName")
-  endif
-  return returnString
-endFunction
-String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  ; This function came from Mr Octopus!! Thank you!!!
-  if useSKSE
-    Int intFormID = aForm.GetFormID()
-    Int index = Math.RightShift(intFormID, 24)
-    ; Light (Comment out and recompile if using Classic Edition)
-    if index == 254
-        return Game.GetLightModName(Math.RightShift(intFormID, 12) - 0xFE000)
-    endif
-    ; Normal
-    return Game.GetModName(index)
-  else
-    cErrReqDisabled("cGetFormModName")
-    return ""
-  endif
-endfunction
-Bool   function cIsInAnyMenu(Bool useSKSE = TRUE) global ; .IsInMenuMode() returns different sometimes! Use this if incorrect return
-  {Requirements: SKSE}
-  if useSKSE
-    return !UI.IsMenuOpen("Console") && !UI.IsMenuOpen("RaceSex Menu") && \
-        !UI.IsMenuOpen("Sleep/Wait Menu") && !UI.IsMenuOpen("ContainerMenu") && !UI.IsMenuOpen("FavoritesMenu") && \
-          !UI.IsMenuOpen("Crafting Menu") && !UI.IsMenuOpen("MainMenu") && !UI.IsMenuOpen("JournalMenu") && \
-            !UI.IsMenuOpen("InventoryMenu") && !UI.IsMenuOpen("Console Native UI Menu") && \
-              !UI.IsMenuOpen("Dialogue Menu")
-  else
-    cErrReqDisabled("cIsInAnyMenu")
-  endif
-endfunction
-Bool[] function cArePluginsInstalled(String[] listOfPlugins, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  Bool[] newArray
-  if !listOfPlugins
-    cErrInvalidArg("cAreFilesInstalled", "!listOfPlugins")
-  elseif useSKSE
-    newArray = cArrayCreateBool(listOfPlugins.length)
-    if newArray.length
-      Int numPlugins = listOfPlugins.length
-      Int i = 0
-      while i < numPlugins
-        newArray[i] = Game.IsPluginInstalled(listOfPlugins[i])
-        i+= 1
-      endwhile
-    else
-      cErrArrInitFail("cAreFilesInstalled")
-    endif
-  else
-    cErrReqDisabled("cAreFilesInstalled")
-  endif
-  return newArray
-endfunction
-  ;>>> Returns text with MCM menu color formatting
-String function cColoredText(String aString, Bool ddInstalled = False, String textColorHex = "", String trimWhere = "", \
-    Bool useSKSE = TRUE) global
-  {Requirements: SKSE:Hard, SkyUI:Soft unsure if hard}
-  ; Valid options for trimWhere are "left", "right", "both"
-  ; Unsure what other applications there are for color formatted text like this
-  if !aString && !textColorHex
-    cErrInvalidArg("cColoredText", "!aString && !textColorHex", "\"\"")
-  else
-    if useSKSE
-      if !ddInstalled ; optional catch for DearDiary which does not play well with colored text
-        String trimmedS = aString
-        String colorOrange = "FFA600"
-        String colorYellow = "ECF01D"
-        String colorRed = "D41717"
-        String colorBlue = "2D4BB5"
-        String colorGray = "A6A6A6"
-        String colorGreen = "52AB1F"
-        ; if only want the hex code back
-        if !aString
-          if textColorHex == "orange"
-            return colorOrange
-          elseif textColorHex == "yellow"
-            return colorYellow
-          elseif textColorHex == "red"
-            return colorRed
-          elseif textColorHex == "blue"
-            return colorBlue
-          elseif textColorHex == "gray"
-            return colorGray
-          elseif textColorHex == "green"
-            return colorGreen
-          endif
-        else
-          ; Trim to get color from contextual command below
-          if StringUtil.SubString(trimmedS, 0, 1) == " "
-            trimmedS = StringUtil.SubString(trimmedS, 1, StringUtil.GetLength(trimmedS) - 1)
-          endif
-          if StringUtil.SubString(trimmedS,StringUtil.GetLength(trimmedS) - 1, 1) == " "
-            trimmedS = StringUtil.SubString(trimmedS, 0, StringUtil.GetLength(trimmedS) - 1)
-          endif
-          
-          ; For reserved words that must have spaces in front or behind to prevent their case from being changed
-          ; Trim whitespace only for response string as directed
-          if (trimWhere == "front" || trimWhere == "left") && StringUtil.SubString(aString, 0, 1) == " "
-            aString = StringUtil.SubString(aString, 1, StringUtil.GetLength(aString) - 1)
-          elseif (trimWhere == "end" || trimWhere == "right") && \
-              StringUtil.SubString(aString,StringUtil.GetLength(aString) - 1, 1) == " "
-            aString = StringUtil.SubString(aString, 0, StringUtil.GetLength(aString) - 1)
-          endif
-
-          ; convert from string color
-          if textColorHex == "orange"
-            textColorHex = colorOrange
-          elseif textColorHex == "yellow"
-            textColorHex = colorYellow
-          elseif textColorHex == "red"
-            textColorHex = colorRed
-          elseif textColorHex == "blue"
-            textColorHex = colorBlue
-          elseif textColorHex == "gray"
-            textColorHex = colorGray
-          elseif textColorHex == "green"
-            textColorHex = colorGreen
-          elseif !textColorHex
-            ; Choose color by text content
-            if trimmedS == "Unassign" || trimmedS == "Restore"
-              textColorHex = colorYellow
-            elseif trimmedS == "Assign" || trimmedS == "Add" || trimmedS == "Save"
-              textColorHex = colorGreen
-            elseif trimmedS == "Unassigned" || trimmedS == "Assigned" || trimmedS == "N/A"
-              textColorHex = colorGray
-            elseif trimmedS == "Reassign"
-              textColorHex = colorOrange
-            elseif trimmedS == "Clear" || trimmedS == "Remove"
-              textColorHex = colorRed
-            endif
-          endif
-          aString = "<font color='#" + textColorHex + "'>" + aString + "</font>"
-        endif
-      endif
-    else
-      cErrReqDisabled("cColoredText")
-    endif
-  endif
-  return aString
-endfunction
-
-Int function cStringCountSubstring(String countThis, String inThis, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  Int returnInt
-  if !countThis || !inThis
-    cErrInvalidArg("cStringCountSubstring", "!countThis || !inThis", "-1")
-    returnInt = -1
-  else
-    if useSKSE
-      Int charIndex = 0
-      Int numOccurences = 0
-      while StringUtil.Find(inThis, countThis, charIndex) > 0
-        charIndex = StringUtil.Find(inThis, countThis, charIndex) + StringUtil.GetLength(countThis)
-        numOccurences += 1
-      endwhile
-      returnInt = numOccurences
-    else
-      cErrReqDisabled("cStringCountSubstring")
-    endif
-  endif
-  return returnInt
-endfunction
-
-Enchantment[]  function cArrayBaseEnchantment(Enchantment[] aArray, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  if !aArray
-    cErrInvalidArg("cArrayBaseEnchantment", "!aArray")
-  else
-    if useSKSE
-      Enchantment aEnchantment
-      Int numEnchantments = aArray.length
-      Int i = 0
-      while i < numEnchantments
-        aEnchantment = aArray[i] as Enchantment
-        if aEnchantment
-          aArray[i] = aEnchantment.GetBaseEnchantment()
-        else
-          aArray[i] = None
-        endif
-      endwhile
-    else
-      cErrReqDisabled("cArrayBaseEnchantment")
-    endif
-  endif
-  return aArray
-endfunction
-
-Bool     function cModPerkPoints(Int number = 1, Bool useSKSE = TRUE) global ; NOT compatible with Vokriinator Black!!
-  {Requirements: SKSE}
-  Bool returnBool
-  if useSKSE
-    Int beforePerkPoints = Game.GetPerkPoints()
-    if number == 0
-      cErrInvalidArg("cModPerkPoints", "number == 0")
-    elseif number < 0 && beforePerkPoints < number
-      cErrInvalidArg("cModPerkPoints", "number < 0 && beforePerkPoints < number")
-    else
-      Game.ModPerkPoints(number)
-      if Game.GetPerkPoints() == beforePerkPoints + number
-        returnBool = TRUE
-      else
-        clibTrace("cModPerkPoints", " Unknown error! Perk point balance unchanged! Returning False", 2)
-      endif
-    endif
-  else
-    cErrReqDisabled("cModPerkPoints")
-  endif
-  return returnBool
-endfunction
-Int      function cTotalPerkPoints(Actor aActor, String singleSkill = "", Bool useSKSE = TRUE, \
-    Bool usePO3 = TRUE) global
-  {Requirements: SKSE}
-  ; This function was found online and adapted. I do not recall where but this is the only solution I've found that
-  ;   is moderately accurate without cataloging each and every perk mod.
-  Int perks = 0
-  if !aActor
-    cErrInvalidArg("cTotalPerkPoints", "!aActor")
-  elseif usePO3
-    perks = PO3_SKSEFunctions.GetPerkCount(aActor.GetActorBase())
-  elseif useSKSE
-    String perkArray
-    Int perkCount
-    Int charIndex
-    ActorValueInfo avi
-    String[] skillList
-    if singleSkill
-      skillList = New String[1]
-      skillList[0] = singleSkill
-    else
-      skillList = cArrayListSkillNames()
-    endif
-    Int i = 0
-    while i < skillList.length
-      avi = ActorValueInfo.GetActorValueInfobyName(skillList[i])
-      perkArray = avi.GetPerks(aActor,false,true)
-      charIndex = 0
-      perkCount = 0
-      while StringUtil.Find(perkArray,"<",charIndex) > 0
-        charIndex = StringUtil.Find(perkArray,"<",charIndex) + 1
-        perkCount += 1
-      endwhile
-      perks += perkCount
-      i += 1
-    endwhile
-    perks += Game.GetPerkPoints()
-  else
-    cErrReqDisabled("cTotalPerkPoints")
-  endif
-  return perks
-endfunction
-Form[]   function cGetAllEquippedForms(Actor aActor, Bool useSKSE = TRUE, Bool usePO3 = TRUE) global
-  {Requirements: SKSE}
-  ; Got this function online somewhere don't recall where. Credit goes to that coder not me!
-  Form[] itemsArray
-  if !aActor
-    cErrInvalidArg("cGetAllEquippedForms", "!aActor")
-  elseif usePO3
-    itemsArray = PO3_SKSEFunctions.AddAllEquippedItemsToArray(aActor)
-  elseif useSKSE
-    Form curForm
-    Int i
-    Int slotschecked
-    slotschecked += 0x00100000
-    slotschecked += 0x00200000 ;ignore reserved slots
-    slotschecked += 0x80000000
-    Int thisSlot = 0x01
-    while thisSlot < 0x80000000
-      ;only check slots we haven't found anything equipped on already
-      if Math.LogicalAnd(slotschecked, thisSlot) != thisSlot
-        curForm = aActor.GetWornForm(thisSlot)
-        if curForm
-          itemsArray = PapyrusUtil.PushForm(itemsArray, curForm)
-        else ;no armor was found on this slot
-          slotschecked += thisSlot
-        endif
-      endif
-      thisSlot *= 2 ;double the number to move on to the next slot
-    endwhile
-  else
-    cErrReqDisabled("cGetAllEquippedForms")
-  endif
-  return itemsArray
-endfunction
-
-String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  String[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayStringFromKeywords", "!aArray")
-  else
-    if useSKSE
-      newArray = cArrayCreateString(aArray.length)
-      if newArray.length
-        Int i = 0
-        while i < aArray.length
-          newArray[i] = cTernaryString(aArray[i], aArray[i].GetString(), "") ; ..GetString() requires SKSE
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayStringFromKeywords")
-      endif
-    else
-      cErrReqDisabled("cArrayStringFromKeywords")
-    endif
-  endif
-  return newArray
-endfunction
-
 ;------------------------------------------------------------------------------
 ;---------------------NOTHING AFTER HERE REQUIRES SKSE-------------------------
 ;------------------------------------------------------------------------------
@@ -9841,3 +9469,375 @@ SKSE Item Type Names just a reference list
     type == 133 "kColorForm"
     type == 134 "kReverbParam"
 /;
+
+;Functions used to output error messages
+function clibTrace(String functionName, String msg, Int errorLevel, Bool condition = TRUE, \
+    Bool tryConsoleUtil = TRUE) global
+  {Requirements: None, ConsoleUtil:Soft}
+  condition = TRUE ; change this to false to disable all trace messages
+  if condition
+    Debug.Trace(cGetScriptName() + "::" + functionName + "():: " + msg, errorLevel)
+    if tryConsoleUtil && ConsoleUtil.GetVersion()
+      ConsoleUtil.PrintMessage(cTernaryString(errorLevel == 2, "Error! ", \
+        cTernaryString(errorLevel == 1, "Warning: ", \
+          cTernaryString(errorLevel == 0, "Info: ", ""))) + "clib::" + functionName + "() " + msg)
+    endif
+  endif
+endfunction
+function cErrInvalidArg(String functionName, String argName = "", String returnValue = "", \
+    Int errorLevel = 2, Bool condition = TRUE, Bool useSKSE = TRUE, Bool tryConsoleUtil = TRUE) global
+  {Requirements: None, ConsoleUtil:Soft}
+  if useSKSE && StringUtil.Find(functionName, "array") != -1
+    returnValue = "arrayNone"
+  endif
+  clibTrace(functionName, "Argument(s)" + cTernaryString(argName != "", ": " + argName, "") + " invalid!" + \
+    cTernaryString(returnValue != "", " Returning " + returnValue, ""), errorLevel, condition, tryConsoleUtil)
+endfunction
+function cErrArrInitFail(String functionName, String arrayName = "newArray", String returnValue = "ArrayNone", \
+    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
+  {Requirements: None, ConsoleUtil:Soft}
+  clibTrace(functionName, "Variable: " + arrayName + " failed to initialize! Returning " + returnValue, errorLevel, \
+    condition, tryConsoleUtil)
+endfunction
+function cErrReqDisabled(String functionName, String modName = "SKSE", String returnValue = "", \
+    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
+  {Requirements: None, ConsoleUtil:Soft}
+  clibTrace(functionName, modName + " functionality is disabled; This function cannot operate without it!" + \
+    cTernaryString(returnValue == "", " Returning \"\"", ""), errorLevel, condition, tryConsoleUtil)
+endfunction
+
+;--------------------------SKSE:HARD-------------------------------------------
+
+String function cGetModName(String hexForm = "", Int decForm = 0,Form formVar = None, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  String returnString
+  if useSKSE
+    String modIndex
+    if formVar
+      returnString = cGetModNameForm(formVar)
+    else
+      if decForm
+        hexForm = cD2H(decForm)
+      endif
+      if cIsLight(hexForm)
+        modIndex = StringUtil.SubString(hexForm,2,3)
+        returnString = Game.GetLightModName(cH2D(modIndex))
+      else
+        if StringUtil.GetLength(hexForm) == 10
+          modIndex = StringUtil.SubString(hexForm,2,2)
+        elseif StringUtil.GetLength(hexForm) == 8
+          modIndex = StringUtil.SubString(hexForm,0,2)
+        endif
+        returnString = Game.GetModName(cH2D(modIndex))
+      endif
+    endif
+  else
+    cErrReqDisabled("cGetTheModName")
+  endif
+  return returnString
+endFunction
+String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  ; This function came from Mr Octopus!! Thank you!!!
+  if useSKSE
+    Int intFormID = aForm.GetFormID()
+    Int index = Math.RightShift(intFormID, 24)
+    ; Light (Comment out and recompile if using Classic Edition)
+    if index == 254
+        return Game.GetLightModName(Math.RightShift(intFormID, 12) - 0xFE000)
+    endif
+    ; Normal
+    return Game.GetModName(index)
+  else
+    cErrReqDisabled("cGetFormModName")
+    return ""
+  endif
+endfunction
+Bool   function cIsInAnyMenu(Bool useSKSE = TRUE) global ; .IsInMenuMode() returns different sometimes! Use this if incorrect return
+  {Requirements: SKSE}
+  if useSKSE
+    return !UI.IsMenuOpen("Console") && !UI.IsMenuOpen("RaceSex Menu") && \
+        !UI.IsMenuOpen("Sleep/Wait Menu") && !UI.IsMenuOpen("ContainerMenu") && !UI.IsMenuOpen("FavoritesMenu") && \
+          !UI.IsMenuOpen("Crafting Menu") && !UI.IsMenuOpen("MainMenu") && !UI.IsMenuOpen("JournalMenu") && \
+            !UI.IsMenuOpen("InventoryMenu") && !UI.IsMenuOpen("Console Native UI Menu") && \
+              !UI.IsMenuOpen("Dialogue Menu")
+  else
+    cErrReqDisabled("cIsInAnyMenu")
+  endif
+endfunction
+Bool[] function cArePluginsInstalled(String[] listOfPlugins, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  Bool[] newArray
+  if !listOfPlugins
+    cErrInvalidArg("cAreFilesInstalled", "!listOfPlugins")
+  elseif useSKSE
+    newArray = cArrayCreateBool(listOfPlugins.length)
+    if newArray.length
+      Int numPlugins = listOfPlugins.length
+      Int i = 0
+      while i < numPlugins
+        newArray[i] = Game.IsPluginInstalled(listOfPlugins[i])
+        i+= 1
+      endwhile
+    else
+      cErrArrInitFail("cAreFilesInstalled")
+    endif
+  else
+    cErrReqDisabled("cAreFilesInstalled")
+  endif
+  return newArray
+endfunction
+  ;>>> Returns text with MCM menu color formatting
+String function cColoredText(String aString, Bool ddInstalled = False, String textColorHex = "", String trimWhere = "", \
+    Bool useSKSE = TRUE) global
+  {Requirements: SKSE:Hard, SkyUI:Soft unsure if hard}
+  ; Valid options for trimWhere are "left", "right", "both"
+  ; Unsure what other applications there are for color formatted text like this
+  if !aString && !textColorHex
+    cErrInvalidArg("cColoredText", "!aString && !textColorHex", "\"\"")
+  else
+    if useSKSE
+      if !ddInstalled ; optional catch for DearDiary which does not play well with colored text
+        String trimmedS = aString
+        String colorOrange = "FFA600"
+        String colorYellow = "ECF01D"
+        String colorRed = "D41717"
+        String colorBlue = "2D4BB5"
+        String colorGray = "A6A6A6"
+        String colorGreen = "52AB1F"
+        ; if only want the hex code back
+        if !aString
+          if textColorHex == "orange"
+            return colorOrange
+          elseif textColorHex == "yellow"
+            return colorYellow
+          elseif textColorHex == "red"
+            return colorRed
+          elseif textColorHex == "blue"
+            return colorBlue
+          elseif textColorHex == "gray"
+            return colorGray
+          elseif textColorHex == "green"
+            return colorGreen
+          endif
+        else
+          ; Trim to get color from contextual command below
+          if StringUtil.SubString(trimmedS, 0, 1) == " "
+            trimmedS = StringUtil.SubString(trimmedS, 1, StringUtil.GetLength(trimmedS) - 1)
+          endif
+          if StringUtil.SubString(trimmedS,StringUtil.GetLength(trimmedS) - 1, 1) == " "
+            trimmedS = StringUtil.SubString(trimmedS, 0, StringUtil.GetLength(trimmedS) - 1)
+          endif
+          
+          ; For reserved words that must have spaces in front or behind to prevent their case from being changed
+          ; Trim whitespace only for response string as directed
+          if (trimWhere == "front" || trimWhere == "left") && StringUtil.SubString(aString, 0, 1) == " "
+            aString = StringUtil.SubString(aString, 1, StringUtil.GetLength(aString) - 1)
+          elseif (trimWhere == "end" || trimWhere == "right") && \
+              StringUtil.SubString(aString,StringUtil.GetLength(aString) - 1, 1) == " "
+            aString = StringUtil.SubString(aString, 0, StringUtil.GetLength(aString) - 1)
+          endif
+
+          ; convert from string color
+          if textColorHex == "orange"
+            textColorHex = colorOrange
+          elseif textColorHex == "yellow"
+            textColorHex = colorYellow
+          elseif textColorHex == "red"
+            textColorHex = colorRed
+          elseif textColorHex == "blue"
+            textColorHex = colorBlue
+          elseif textColorHex == "gray"
+            textColorHex = colorGray
+          elseif textColorHex == "green"
+            textColorHex = colorGreen
+          elseif !textColorHex
+            ; Choose color by text content
+            if trimmedS == "Unassign" || trimmedS == "Restore"
+              textColorHex = colorYellow
+            elseif trimmedS == "Assign" || trimmedS == "Add" || trimmedS == "Save"
+              textColorHex = colorGreen
+            elseif trimmedS == "Unassigned" || trimmedS == "Assigned" || trimmedS == "N/A"
+              textColorHex = colorGray
+            elseif trimmedS == "Reassign"
+              textColorHex = colorOrange
+            elseif trimmedS == "Clear" || trimmedS == "Remove"
+              textColorHex = colorRed
+            endif
+          endif
+          aString = "<font color='#" + textColorHex + "'>" + aString + "</font>"
+        endif
+      endif
+    else
+      cErrReqDisabled("cColoredText")
+    endif
+  endif
+  return aString
+endfunction
+
+Int function cStringCountSubstring(String countThis, String inThis, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  Int returnInt
+  if !countThis || !inThis
+    cErrInvalidArg("cStringCountSubstring", "!countThis || !inThis", "-1")
+    returnInt = -1
+  else
+    if useSKSE
+      Int charIndex = 0
+      Int numOccurences = 0
+      while StringUtil.Find(inThis, countThis, charIndex) > 0
+        charIndex = StringUtil.Find(inThis, countThis, charIndex) + StringUtil.GetLength(countThis)
+        numOccurences += 1
+      endwhile
+      returnInt = numOccurences
+    else
+      cErrReqDisabled("cStringCountSubstring")
+    endif
+  endif
+  return returnInt
+endfunction
+
+Enchantment[]  function cArrayBaseEnchantment(Enchantment[] aArray, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  if !aArray
+    cErrInvalidArg("cArrayBaseEnchantment", "!aArray")
+  else
+    if useSKSE
+      Enchantment aEnchantment
+      Int numEnchantments = aArray.length
+      Int i = 0
+      while i < numEnchantments
+        aEnchantment = aArray[i] as Enchantment
+        if aEnchantment
+          aArray[i] = aEnchantment.GetBaseEnchantment()
+        else
+          aArray[i] = None
+        endif
+      endwhile
+    else
+      cErrReqDisabled("cArrayBaseEnchantment")
+    endif
+  endif
+  return aArray
+endfunction
+
+Bool     function cModPerkPoints(Int number = 1, Bool useSKSE = TRUE) global ; NOT compatible with Vokriinator Black!!
+  {Requirements: SKSE}
+  Bool returnBool
+  if useSKSE
+    Int beforePerkPoints = Game.GetPerkPoints()
+    if number == 0
+      cErrInvalidArg("cModPerkPoints", "number == 0")
+    elseif number < 0 && beforePerkPoints < number
+      cErrInvalidArg("cModPerkPoints", "number < 0 && beforePerkPoints < number")
+    else
+      Game.ModPerkPoints(number)
+      if Game.GetPerkPoints() == beforePerkPoints + number
+        returnBool = TRUE
+      else
+        clibTrace("cModPerkPoints", " Unknown error! Perk point balance unchanged! Returning False", 2)
+      endif
+    endif
+  else
+    cErrReqDisabled("cModPerkPoints")
+  endif
+  return returnBool
+endfunction
+Int      function cTotalPerkPoints(Actor aActor, String singleSkill = "", Bool useSKSE = TRUE, \
+    Bool usePO3 = TRUE) global
+  {Requirements: SKSE}
+  ; This function was found online and adapted. I do not recall where but this is the only solution I've found that
+  ;   is moderately accurate without cataloging each and every perk mod.
+  Int perks = 0
+  if !aActor
+    cErrInvalidArg("cTotalPerkPoints", "!aActor")
+  elseif usePO3
+    perks = PO3_SKSEFunctions.GetPerkCount(aActor.GetActorBase())
+  elseif useSKSE
+    String perkArray
+    Int perkCount
+    Int charIndex
+    ActorValueInfo avi
+    String[] skillList
+    if singleSkill
+      skillList = New String[1]
+      skillList[0] = singleSkill
+    else
+      skillList = cArrayListSkillNames()
+    endif
+    Int i = 0
+    while i < skillList.length
+      avi = ActorValueInfo.GetActorValueInfobyName(skillList[i])
+      perkArray = avi.GetPerks(aActor,false,true)
+      charIndex = 0
+      perkCount = 0
+      while StringUtil.Find(perkArray,"<",charIndex) > 0
+        charIndex = StringUtil.Find(perkArray,"<",charIndex) + 1
+        perkCount += 1
+      endwhile
+      perks += perkCount
+      i += 1
+    endwhile
+    perks += Game.GetPerkPoints()
+  else
+    cErrReqDisabled("cTotalPerkPoints")
+  endif
+  return perks
+endfunction
+Form[]   function cGetAllEquippedForms(Actor aActor, Bool useSKSE = TRUE, Bool usePO3 = TRUE) global
+  {Requirements: SKSE}
+  ; Got this function online somewhere don't recall where. Credit goes to that coder not me!
+  Form[] itemsArray
+  if !aActor
+    cErrInvalidArg("cGetAllEquippedForms", "!aActor")
+  elseif usePO3
+    itemsArray = PO3_SKSEFunctions.AddAllEquippedItemsToArray(aActor)
+  elseif useSKSE
+    Form curForm
+    Int i
+    Int slotschecked
+    slotschecked += 0x00100000
+    slotschecked += 0x00200000 ;ignore reserved slots
+    slotschecked += 0x80000000
+    Int thisSlot = 0x01
+    while thisSlot < 0x80000000
+      ;only check slots we haven't found anything equipped on already
+      if Math.LogicalAnd(slotschecked, thisSlot) != thisSlot
+        curForm = aActor.GetWornForm(thisSlot)
+        if curForm
+          itemsArray = PapyrusUtil.PushForm(itemsArray, curForm)
+        else ;no armor was found on this slot
+          slotschecked += thisSlot
+        endif
+      endif
+      thisSlot *= 2 ;double the number to move on to the next slot
+    endwhile
+  else
+    cErrReqDisabled("cGetAllEquippedForms")
+  endif
+  return itemsArray
+endfunction
+
+String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  String[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayStringFromKeywords", "!aArray")
+  else
+    if useSKSE
+      newArray = cArrayCreateString(aArray.length)
+      if newArray.length
+        Int i = 0
+        while i < aArray.length
+          newArray[i] = cTernaryString(aArray[i], aArray[i].GetString(), "") ; ..GetString() requires SKSE
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayStringFromKeywords")
+      endif
+    else
+      cErrReqDisabled("cArrayStringFromKeywords")
+    endif
+  endif
+  return newArray
+endfunction
