@@ -593,7 +593,7 @@ Int     function cGetCellFormIDFromCoords(Int ckX, Int ckY, Float xVar = 0.0, Fl
   return returnInt
 endfunction
 
-  ;>>> get the distance for from array of objects
+  ;>>> get the distances of array of objects from object aObj
 Float[] function cArrayGetDistancesObjRef(ObjectReference aObj, ObjectReference[] aArray) global
   {Requirements:None}
   Float[] newArray 
@@ -944,7 +944,8 @@ Int[]    function cTernaryArrayInt(Bool ifThis, Int[] returnThis, Int[] elseThis
   endif
   return elseThis
 endfunction
-ObjectReference[] function cTernaryArrayObjRef(Bool ifThis, ObjectReference[] returnThis, ObjectReference[] elseThis) global
+ObjectReference[] function cTernaryArrayObjRef(Bool ifThis, ObjectReference[] returnThis, \
+  ObjectReference[] elseThis) global
   {Requirements: None}
   if ifThis
     return returnThis
@@ -1471,7 +1472,8 @@ Int     function cRandomNumberGenInt(Int this, Int that) global
   return returnInt
 endfunction
   ;>>> Create array of random numbers, capped at 128 indices
-Float[] function cArrayRandomFloats(Int arraySize = 128, Float this = 0.0, Float that = 100.0, Bool eachDiff = False) global 
+Float[] function cArrayRandomFloats(Int arraySize = 128, Float this = 0.0, Float that = 100.0, \
+  Bool eachDiff = False) global 
   {Requirements: None}
   ; array limited to 128
   ; if eachDiff, each random number must be completely new (the smaller the difference between this and that 
@@ -3232,7 +3234,8 @@ Int function cArrayFindInt(Int[] aArray, Int aValue = 0, Int startAt = 0, Bool i
   return -1
 endfunction
 ; 21-11-08 - Test Success, Optimizations
-Int function cArrayFindObjRef(ObjectReference[] aArray, ObjectReference aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
+Int function cArrayFindObjRef(ObjectReference[] aArray, ObjectReference aValue = None, Int startAt = 0, \
+  Bool invertIt = TRUE) global
   {Requirements: None}
   ; kept for invert
   if !aArray
@@ -3396,7 +3399,8 @@ Int function cArrayRFindInt(Int[] aArray, Int aValue = 0, Int startAt = 0, Bool 
   return -1
 endfunction
 ; 21-11-08 - Success-bp, Manual Review, Optimizations
-Int function cArrayRFindObjRef(ObjectReference[] aArray, ObjectReference aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
+Int function cArrayRFindObjRef(ObjectReference[] aArray, ObjectReference aValue = None, Int startAt = 0, \
+  Bool invertIt = TRUE) global
   {Requirements: None}
   ; use it for invertIt
   ; startAt requires a positive int and counts backwards from the end
@@ -3835,7 +3839,8 @@ Int function cArrayCountValueInt(Int[] aArray, Int valueToCount = 0, Bool invert
   return returnInt
 endfunction
 ; 21-11-08 - Success-bp
-Int function cArrayCountValueObjRef(ObjectReference[] aArray, ObjectReference valueToCount = None, Bool invertIt = False) global
+Int function cArrayCountValueObjRef(ObjectReference[] aArray, ObjectReference valueToCount = None, \
+  Bool invertIt = False) global
   {Requirements: None}
   Int returnInt
   if !aArray
@@ -4718,7 +4723,8 @@ Int[]    function cArrayRemoveTrailingInt(Int[] aArray, Int trailingValue = 0) g
   return newArray
 endfunction
 ; 21-11-09 - Success-bp, manual review
-ObjectReference[] function cArrayRemoveTrailingObjRef(ObjectReference[] aArray, ObjectReference trailingValue = None) global
+ObjectReference[] function cArrayRemoveTrailingObjRef(ObjectReference[] aArray, \
+  ObjectReference trailingValue = None) global
   {Requirements: None}
   ; this assumes that the last indices are not *supposed* to be trailingValue
   ObjectReference[] newArray
@@ -5057,7 +5063,8 @@ Int[]    function cArrayFillInt(Int[] aArray, Int filler, Bool forceAll = False)
   return aArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[] function cArrayFillObjRef(ObjectReference[] aArray, ObjectReference filler, Bool forceAll = False) global
+ObjectReference[] function cArrayFillObjRef(ObjectReference[] aArray, ObjectReference filler, \
+  Bool forceAll = False) global
   {Requirements: None}
   ; if forceAll == TRUE sets every index to filler value
   if !aArray
@@ -5797,7 +5804,8 @@ Int[]    function cArrayCopyToInt(Int[] aArray1, Int[] aArray2, Int filler = 0) 
   endif
   return aArray2
 endfunction
-ObjectReference[] function cArrayCopyToObjRef(ObjectReference[] aArray1, ObjectReference[] aArray2, ObjectReference filler = None) global
+ObjectReference[] function cArrayCopyToObjRef(ObjectReference[] aArray1, ObjectReference[] aArray2, \
+  ObjectReference filler = None) global
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
   if !aArray1
@@ -6108,7 +6116,8 @@ Int[]    function cArrayRemoveIndexInt(Int[] aArray, Int indexToRemove = 0, Bool
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[] function cArrayRemoveIndexObjRef(ObjectReference[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+ObjectReference[] function cArrayRemoveIndexObjRef(ObjectReference[] aArray, Int indexToRemove = 0, \
+  Bool usePapUtil = TRUE) global 
   ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
@@ -6493,7 +6502,8 @@ Int[]    function cArrayRemoveIndicesInt(Int[] aArray, Int[] indicesToRemove, In
   return newArray
 endfunction
 ; 21-11-08 - Success-bp, correction
-ObjectReference[] function cArrayRemoveIndicesObjRef(ObjectReference[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
+ObjectReference[] function cArrayRemoveIndicesObjRef(ObjectReference[] aArray, Int[] indicesToRemove, \
+  Int stopLength = 0) global
   {Requirements: None}
   ObjectReference[] newArray
   if !indicesToRemove
@@ -6964,7 +6974,8 @@ Int[]    function cArraySliceInt(Int[] aArray, Int fromIndex, Int toIndex = 0, B
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[] function cArraySliceObjRef(ObjectReference[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
+ObjectReference[] function cArraySliceObjRef(ObjectReference[] aArray, Int fromIndex, Int toIndex = 0, \
+  Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
   if !aArray
@@ -7280,7 +7291,8 @@ Int[]    function cArraySpliceInt(Int[] aArray, Int[] toInsert, Int insertAtInde
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[] function cArraySpliceObjRef(ObjectReference[] aArray, ObjectReference[] toInsert, Int insertAtIndex = 0) global
+ObjectReference[] function cArraySpliceObjRef(ObjectReference[] aArray, ObjectReference[] toInsert, \
+  Int insertAtIndex = 0) global
   {Requirements: None}
   ObjectReference[] newArray
   if !aArray
@@ -7541,6 +7553,176 @@ endfunction
 ;====== CREATION
   ;>>> See cStringToArray() in "String" section above
   ;>>> Array from separated values (10 each)
+; 21-11-09 - Success bp
+Actor[]  function cArrayFromActors(Actor aActor0, Actor aActor1 = None, Actor aActor2 = None, \
+    Actor aActor3 = None, Actor aActor4 = None, Actor aActor5 = None, Actor aActor6 = None, Actor aActor7 = None, \
+      Actor aActor8 = None, Actor aActor9 = None, Bool skipTrailingNone = TRUE) global
+  {Requirements: None}
+  Int arrayLength
+  if skipTrailingNone
+    if aActor0 != None
+      arrayLength = 1
+    endif
+    if aActor1 != None
+      arrayLength = 2
+    endif
+    if aActor2 != None
+      arrayLength = 3
+    endif
+    if aActor3 != None
+      arrayLength = 4
+    endif
+    if aActor4 != None
+      arrayLength = 5
+    endif
+    if aActor5 != None
+      arrayLength = 6
+    endif
+    if aActor6 != None
+      arrayLength = 7
+    endif
+    if aActor7 != None
+      arrayLength = 8
+    endif
+    if aActor8 != None
+      arrayLength = 9
+    endif
+    if aActor9 != None
+      arrayLength = 10
+    endif
+  endif
+  Actor[] newArray = cArrayCreateActor(arrayLength)
+  if newArray.length
+    Int i = 0
+    if i < arrayLength
+      newArray[i] = aActor0
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor1
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor2
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor3
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor4
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor5
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor6
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor7
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor8
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor9
+    endif
+  else
+    cErrArrInitFail("cArrayFromActors")
+  endif
+  return newArray
+endfunction
+; 21-11-09 - Success bp
+Alias[]  function cArrayFromAliases(Alias aAlias0, Alias aAlias1 = None, Alias aAlias2 = None, \
+    Alias aAlias3 = None, Alias aAlias4 = None, Alias aAlias5 = None, Alias aAlias6 = None, Alias aAlias7 = None, \
+      Alias aAlias8 = None, Alias aAlias9 = None, Bool skipTrailingNone = TRUE) global
+  {Requirements: None}
+  Int arrayLength
+  if skipTrailingNone
+    if aAlias0 != None
+      arrayLength = 1
+    endif
+    if aAlias1 != None
+      arrayLength = 2
+    endif
+    if aAlias2 != None
+      arrayLength = 3
+    endif
+    if aAlias3 != None
+      arrayLength = 4
+    endif
+    if aAlias4 != None
+      arrayLength = 5
+    endif
+    if aAlias5 != None
+      arrayLength = 6
+    endif
+    if aAlias6 != None
+      arrayLength = 7
+    endif
+    if aAlias7 != None
+      arrayLength = 8
+    endif
+    if aAlias8 != None
+      arrayLength = 9
+    endif
+    if aAlias9 != None
+      arrayLength = 10
+    endif
+  endif
+  Alias[] newArray = cArrayCreateAlias(arrayLength)
+  if newArray.length
+    Int i = 0
+    if i < arrayLength
+      newArray[i] = aAlias0
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias1
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias2
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias3
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias4
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias5
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias6
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias7
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias8
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias9
+    endif
+  else
+    cErrArrInitFail("cArrayFromAliass")
+  endif
+  return newArray
+endfunction
 ; 21-11-09 - Test Success
 Float[]  function cArrayFromFloats(Float aFloat0, Float aFloat1 = 0.0, Float aFloat2 = 0.0, \
     Float aFloat3 = 0.0, Float aFloat4 = 0.0, Float aFloat5 = 0.0, Float aFloat6 = 0.0, Float aFloat7 = 0.0, \
@@ -7623,6 +7805,91 @@ Float[]  function cArrayFromFloats(Float aFloat0, Float aFloat1 = 0.0, Float aFl
     endif
   else
     cErrArrInitFail("cArrayFromFloats")
+  endif
+  return newArray
+endfunction
+; 21-11-09 - Success-bp
+Form[]   function cArrayFromForms(Form aForm0, Form aForm1 = None, Form aForm2 = None, Form aForm3 = None, \
+    Form aForm4 = None, Form aForm5 = None, Form aForm6 = None, Form aForm7 = None, Form aForm8 = None, \
+      Form aForm9 = None, Bool skipTrailingNone = TRUE) global
+  {Requirements: None}
+  Int arrayLength
+  if skipTrailingNone
+    if aForm0 != None
+      arrayLength = 1
+    endif
+    if aForm1 != None
+      arrayLength = 2
+    endif
+    if aForm2 != None
+      arrayLength = 3
+    endif
+    if aForm3 != None
+      arrayLength = 4
+    endif
+    if aForm4 != None
+      arrayLength = 5
+    endif
+    if aForm5 != None
+      arrayLength = 6
+    endif
+    if aForm6 != None
+      arrayLength = 7
+    endif
+    if aForm7 != None
+      arrayLength = 8
+    endif
+    if aForm8 != None
+      arrayLength = 9
+    endif
+    if aForm9 != None
+      arrayLength = 10
+    endif
+  endif
+  Form[] newArray = cArrayCreateForm(arrayLength)
+  if newArray.length
+    Int i = 0
+    if i < arrayLength
+      newArray[i] = aForm0
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm1
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm2
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm3
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm4
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm5
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm6
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm7
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm8
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm9
+    endif
+  else
+    cErrArrInitFail("cArrayFromForms")
   endif
   return newArray
 endfunction
@@ -7712,88 +7979,89 @@ Int[]    function cArrayFromInts(Int aInt0, Int aInt1 = 0, Int aInt2 = 0, \
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayFromForms(Form aForm0, Form aForm1 = None, Form aForm2 = None, Form aForm3 = None, \
-    Form aForm4 = None, Form aForm5 = None, Form aForm6 = None, Form aForm7 = None, Form aForm8 = None, \
-      Form aForm9 = None, Bool skipTrailingNone = TRUE) global
+; 21-11-09 - Success bp
+ObjectReference[]  function cArrayFromObjRefs(ObjectReference aObjRef0, ObjectReference aObjRef1 = None, \
+   ObjectReference aObjRef2 = None, ObjectReference aObjRef3 = None, ObjectReference aObjRef4 = None, \
+    ObjectReference aObjRef5 = None, ObjectReference aObjRef6 = None, ObjectReference aObjRef7 = None, \
+      ObjectReference aObjRef8 = None, ObjectReference aObjRef9 = None, Bool skipTrailingNone = TRUE) global
   {Requirements: None}
   Int arrayLength
   if skipTrailingNone
-    if aForm0 != None
+    if aObjRef0 != None
       arrayLength = 1
     endif
-    if aForm1 != None
+    if aObjRef1 != None
       arrayLength = 2
     endif
-    if aForm2 != None
+    if aObjRef2 != None
       arrayLength = 3
     endif
-    if aForm3 != None
+    if aObjRef3 != None
       arrayLength = 4
     endif
-    if aForm4 != None
+    if aObjRef4 != None
       arrayLength = 5
     endif
-    if aForm5 != None
+    if aObjRef5 != None
       arrayLength = 6
     endif
-    if aForm6 != None
+    if aObjRef6 != None
       arrayLength = 7
     endif
-    if aForm7 != None
+    if aObjRef7 != None
       arrayLength = 8
     endif
-    if aForm8 != None
+    if aObjRef8 != None
       arrayLength = 9
     endif
-    if aForm9 != None
+    if aObjRef9 != None
       arrayLength = 10
     endif
   endif
-  Form[] newArray = cArrayCreateForm(arrayLength)
+  ObjectReference[] newArray = cArrayCreateObjRef(arrayLength)
   if newArray.length
     Int i = 0
     if i < arrayLength
-      newArray[i] = aForm0
+      newArray[i] = aObjRef0
       i += 1
     endif
     if i < arrayLength
-      newArray[i] = aForm1
+      newArray[i] = aObjRef1
       i += 1
     endif
     if i < arrayLength
-      newArray[i] = aForm2
+      newArray[i] = aObjRef2
       i += 1
     endif
     if i < arrayLength
-      newArray[i] = aForm3
+      newArray[i] = aObjRef3
       i += 1
     endif
     if i < arrayLength
-      newArray[i] = aForm4
+      newArray[i] = aObjRef4
       i += 1
     endif
     if i < arrayLength
-      newArray[i] = aForm5
+      newArray[i] = aObjRef5
       i += 1
     endif
     if i < arrayLength
-      newArray[i] = aForm6
+      newArray[i] = aObjRef6
       i += 1
     endif
     if i < arrayLength
-      newArray[i] = aForm7
+      newArray[i] = aObjRef7
       i += 1
     endif
     if i < arrayLength
-      newArray[i] = aForm8
+      newArray[i] = aObjRef8
       i += 1
     endif
     if i < arrayLength
-      newArray[i] = aForm9
+      newArray[i] = aObjRef9
     endif
   else
-    cErrArrInitFail("cArrayFromForms")
+    cErrArrInitFail("cArrayFromObjRefs")
   endif
   return newArray
 endfunction
@@ -8207,7 +8475,8 @@ Int[]    function cArrayMergeInt(Int[] aArray1, Int[] aArray2, Bool useSKSE = TR
   ;endif
   return newArray
 endfunction
-ObjectReference[] function cArrayMergeObjRef(ObjectReference[] aArray1, ObjectReference[] aArray2, Bool useSKSE = TRUE, Bool usePapUtil = TRUE) global
+ObjectReference[] function cArrayMergeObjRef(ObjectReference[] aArray1, ObjectReference[] aArray2, Bool useSKSE = TRUE,\
+  Bool usePapUtil = TRUE) global
   {Requirements: None, SKSE:Soft, PapyrusUtil:Soft}
   ObjectReference[] newArray
   ;if !aArray1 && !aArray2
@@ -8237,7 +8506,8 @@ ObjectReference[] function cArrayMergeObjRef(ObjectReference[] aArray1, ObjectRe
   ;endif
   return newArray
 endfunction
-String[] function cArrayMergeString(String[] aArray1, String[] aArray2, Bool useSKSE = TRUE, Bool usePapUtil = TRUE) global
+String[] function cArrayMergeString(String[] aArray1, String[] aArray2, Bool useSKSE = TRUE, \
+  Bool usePapUtil = TRUE) global
   {Requirements: None, SKSE:Soft, PapyrusUtil:Soft}
   String[] newArray
   ;if !aArray1 && !aArray2
@@ -9788,7 +10058,7 @@ String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
     return ""
   endif
 endfunction
-Bool   function cIsInAnyMenu(Bool useSKSE = TRUE) global ; .IsInMenuMode() returns different sometimes! Use this if incorrect return
+Bool   function cIsInAnyMenu(Bool useSKSE = TRUE) global ; In my experience more accurate thatn .IsInMenuMode()
   {Requirements: SKSE}
   if useSKSE
     return !UI.IsMenuOpen("Console") && !UI.IsMenuOpen("RaceSex Menu") && \
