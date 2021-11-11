@@ -9758,7 +9758,7 @@ String   function cASCII2Binary(String char)
   endif
   return returnString
 endfunction
-String   function cArrayASCIIAsBinary() global
+String[] function cArrayASCIIAsBinary() global
   {Requirements: None}
   ; aligned with cArrayASCIIChars()
   String[] charAsBin = New String[69]
