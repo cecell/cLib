@@ -483,7 +483,7 @@ Bool   function cIsLight(String hexForm = "", Int decForm = 0,Form formVar = Non
       return False
     endif
   endif
-endFunction
+endfunction
 
 ;====== Map/Spatial
   ;>>> Map positions
@@ -774,25 +774,50 @@ endfunction
 
 ;====== Manipulation
 ; 21-11-09 - Test Success
-Float function cClampFloat(Float aValue, Float minV, Float maxV) global
-	{Requirements: None}
+Float function cClampFloat(Float aValue, Float minV, Float maxV, Bool usePapUtil = TRUE) global
+	{Requirements: None, PapyrusUtil:Soft}
+  Float returnFloat
   if minV > maxV
     cErrInvalidArg("cClampFloat", "minV > maxV", "False")
+  elseif usePapUtil
+    returnFloat = PapyrusUtil.ClampFloat(aValue, minV, maxV)
   else
-    return cTernaryFloat(aValue > maxV, maxV, cTernaryFloat(aValue < minV, minV, aValue))
+    returnFloat = cTernaryFloat(aValue > maxV, maxV, cTernaryFloat(aValue < minV, minV, aValue))
   endif
-  return aValue
-EndFunction
+  return returnFloat
+endfunction
 ; 21-11-09 - Test Success
-Int   function cClampInt(Int aValue, Int minV, Int maxV) global
-	{Requirements: None}
+Int   function cClampInt(Int aValue, Int minV, Int maxV, Bool usePapUtil = TRUE) global
+	{Requirements: None, PapyrusUtil:Soft}
+  Int returnInt
   if minV > maxV
     cErrInvalidArg("cClampInt", "minV > maxV", "False")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.ClampInt(aValue, minV, maxV)
   else
-    return cTernaryInt(aValue > maxV, maxV, cTernaryInt(aValue < minV, minV, aValue))
+    returnInt = cTernaryInt(aValue > maxV, maxV, cTernaryInt(aValue < minV, minV, aValue))
   endif
-  return aValue
-EndFunction
+  return returnInt
+endfunction
+Int   function cWrapInt(Int aValue, Int endIndex, Int startIndex = 0, Bool usePapUtil = TRUE) global
+	{Requirements: None, PapyrusUtil:Soft}
+  ; Adapted from PapyrusUtil function, awesome function!
+  Int returnInt
+  if endIndex < startIndex
+    cErrInvalidArg("cWrapInt", "endIndex < startIndex")
+  elseif endIndex < 0
+    cErrInvalidArg("cWrapInt", "endIndex < 0")
+  elseif startIndex < 0
+    cErrInvalidArg("cWrapInt", "startIndex < 0")
+  elseif endIndex == 0
+    cErrInvalidArg("cWrapInt", "endIndex == 0")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.WrapInt(aValue, endIndex, startIndex)
+  else
+    returnInt = aValue % endIndex
+  endif
+  return returnInt
+endfunction
 
 ;====== Rounding
 ; 21-11-09 - Test Success
@@ -1641,11 +1666,13 @@ endfunction
 
 ;====== Math 
 ; 21-11-09 - Test Success
-Float function cArraySumFloat(Float[] aArray) global
-  {Requirements: None}
+Float function cArraySumFloat(Float[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Float aFloat
   if !aArray
     cErrInvalidArg("cArraySumFloat", "!aArray", "0.0")
+  elseif usePapUtil
+    aFloat = PapyrusUtil.AddFloatValues(aArray)
   else
     Int i = 0
     while i < aArray.length
@@ -1656,11 +1683,13 @@ Float function cArraySumFloat(Float[] aArray) global
   return aFloat
 endfunction
 ; 21-11-09 - Test Success
-Int   function cArraySumInt(Int[] aArray) global
+Int   function cArraySumInt(Int[] aArray, Bool usePapUtil = TRUE) global
   {Requirements: None}
   Int aInt
   if !aArray
     cErrInvalidArg("cArraySumInt", "!aArray", "0")
+  elseif usePapUtil
+    aInt = PapyrusUtil.AddIntValues(aArray)
   else
     Int i = 0
     while i < aArray.length
@@ -2297,6 +2326,9 @@ String   function cArrayJoinString(String[] aArray, String delimiterString = "",
   endif
   return returnString
 endfunction
+String   function cStringJoin(String[] aArray, String delimiterString = "", Bool usePapUtil = TRUE) global
+  return cArrayJoinString(aArray, delimiterString)
+endfunction
 ;CONFIRMED WORKING 21-11-02
 String[] function cStringToArray(String aString, Int numChars = -1, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
@@ -2310,12 +2342,14 @@ String[] function cStringToArray(String aString, Int numChars = -1, Bool useSKSE
       stringBuild = New String[1] ; returns single index array containing aString
       stringBuild[0] = aString
     else
-      stringBuild = Utility.CreateStringArray(stringLength)
-      Int i = 0
-      while i < stringLength
-        stringBuild[i] = StringUtil.SubString(aString, i, 1)
-        i += 1
-      endwhile
+      ; Updated to use .Split()
+      stringBuild = StringUtil.Split(aString,"")
+      ;stringBuild = Utility.CreateStringArray(stringLength)
+      ;Int i = 0
+      ;while i < stringLength
+      ;  stringBuild[i] = StringUtil.SubString(aString, i, 1)
+      ;  i += 1
+      ;endwhile
     endif
   else
     String[] asciiChars = cArrayASCIIChars()
@@ -3747,7 +3781,7 @@ endfunction
 ; 21-11-08 - Success-bp
 Int function cArrayCountValueActor(Actor[] aArray, Actor valueToCount = None, Bool invertIt = False, \
   Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueActor", "!aArray", "")
@@ -3766,7 +3800,7 @@ endfunction
 ; 21-11-08 - Success-bp
 Int function cArrayCountValueAlias(Alias[] aArray, Alias valueToCount = None, Bool invertIt = False, \
   Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueAlias", "!aArray", "")
@@ -3785,7 +3819,7 @@ endfunction
 ; 21-11-08 - Success-bp && Manual Review
 Int function cArrayCountValueBool(Bool[] aArray, Bool valueToCount = TRUE, Bool invertIt = False, \
   Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   Int returnInt = 0
   if !aArray
     cErrInvalidArg("cArrayCountValueBool", "!aArray", "")
@@ -3803,7 +3837,7 @@ endfunction
 ; 21-11-08 - Success-bp && Manual Review
 Int function cArrayCountValueFloat(Float[] aArray, Float valueToCount = 0.0, Bool invertIt = False, \
   Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   Int returnInt = 0
   if !aArray
     cErrInvalidArg("cArrayCountValueFloat", "!aArray", "")
@@ -3821,7 +3855,7 @@ endfunction
 ; 21-11-08 - Success-bp && Manual Review
 Int function cArrayCountValueForm(Form[] aArray, Form valueToCount = None, Bool invertIt = False, \
   Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueForm", "!aArray", "")
@@ -3840,7 +3874,7 @@ endfunction
 ; 21-11-08 - Success-bp && Manual Review
 Int function cArrayCountValueInt(Int[] aArray, Int valueToCount = 0, Bool invertIt = False, \
   Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueInt", "!aArray", "")
@@ -3859,7 +3893,7 @@ endfunction
 ; 21-11-08 - Success-bp
 Int function cArrayCountValueObjRef(ObjectReference[] aArray, ObjectReference valueToCount = None, \
   Bool invertIt = False, Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueObjRef", "!aArray", "")
@@ -3878,7 +3912,7 @@ endfunction
 ; 21-11-08 - Test Success
 Int function cArrayCountValueString(String[] aArray, String valueToCount = "", Bool invertIt = False, \
   Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueString", "!aArray", "")
@@ -4050,77 +4084,91 @@ endfunction
   ;>>> Removes the described indices and returns new array
     ;Single purpose versions of RemoveValue (returns new array)
 ; 21-11-08 - Success-bp
-Actor[] function cArrayClearNoneActor(Actor[] aArray) global
-  {Requirements: None}
+Actor[] function cArrayClearNoneActor(Actor[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
   if !aArray
     cErrInvalidArg("cArrayClearNoneActor", "!aArray")
+  elseif usePapUtil
+    newArray = PapyrusUtil.RemoveActor(aArray, None)
   else
     newArray = cArrayRemoveValueActor(aArray, None)
   endif
   return newArray
 endfunction
 ; 21-11-08 - Success-bp
-Alias[] function cArrayClearNoneAlias(Alias[] aArray) global
-  {Requirements: None}
+Alias[] function cArrayClearNoneAlias(Alias[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
   if !aArray
     cErrInvalidArg("cArrayClearNoneAlias", "!aArray")
+  elseif usePapUtil
+    newArray = PapyrusUtil.RemoveAlias(aArray, None)
   else
     newArray = cArrayRemoveValueAlias(aArray, None)
   endif
   return newArray
 endfunction
 ; 21-11-08 - Test Success
-Float[] function cArrayClearZeroFloat(Float[] aArray) global
-  {Requirements: None}
+Float[] function cArrayClearZeroFloat(Float[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
   if !aArray
     cErrInvalidArg("cArrayClearZeroFloat", "!aArray")
+  elseif usePapUtil
+    newArray = PapyrusUtil.RemoveFloat(aArray, 0.0)
   else
     newArray = cArrayRemoveValueFloat(aArray, 0.0)
   endif
   return newArray
 endfunction
 ; 21-11-08 - Success-bp
-Form[]  function cArrayClearNoneForm(Form[] aArray) global
-  {Requirements: None}
+Form[]  function cArrayClearNoneForm(Form[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
   if !aArray
     cErrInvalidArg("cArrayClearNoneForm", "!aArray")
+  elseif usePapUtil
+    newArray = PapyrusUtil.RemoveForm(aArray, None)
   else
     newArray = cArrayRemoveValueForm(aArray, None)
   endif
   return newArray
 endfunction
 ; 21-11-08 - Test Success
-Int[]   function cArrayClearZeroInt(Int[] aArray) global
-  {Requirements: None}
+Int[]   function cArrayClearZeroInt(Int[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
   if !aArray
     cErrInvalidArg("cArrayClearZeroInt", "!aArray")
+  elseif usePapUtil
+    newArray = PapyrusUtil.RemoveInt(aArray, 0)
   else
     newArray = cArrayRemoveValueInt(aArray, 0)
   endif
   return newArray
 endfunction
 ; 21-11-08 - Success-bp
-ObjectReference[] function cArrayClearNoneObjRef(ObjectReference[] aArray) global
-  {Requirements: None}
+ObjectReference[] function cArrayClearNoneObjRef(ObjectReference[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
   if !aArray
     cErrInvalidArg("cArrayClearNoneObjRef", "!aArray")
+  elseif usePapUtil
+    newArray = PapyrusUtil.RemoveObjRef(aArray, None)
   else
     newArray = cArrayRemoveValueObjRef(aArray, None)
   endif
   return newArray
 endfunction
 ; 21-11-08 - Test Success
-String[] function cArrayClearEmptyString(String[] aArray) global
-  {Requirements: None}
+String[] function cArrayClearEmptyString(String[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
   if !aArray
     cErrInvalidArg("cArrayClearEmptyString", "!aArray")
+  elseif usePapUtil
+    newArray = PapyrusUtil.RemoveString(aArray, "")
   else
     newArray = cArrayRemoveValueString(aArray, "")
   endif
@@ -4128,9 +4176,17 @@ String[] function cArrayClearEmptyString(String[] aArray) global
 endfunction
   ;--- 'convenience' alternate name for cArrayClearEmptyString
 ; 21-11-08 - Test Success
-String[] function cArrayClearBlank(String[] aArray) global
-  {Requirements: None}
-  return cArrayClearEmptyString(aArray)
+String[] function cArrayClearBlank(String[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  String[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayClearBlank", "!aArray")
+  elseif usePapUtil
+    newArray = PapyrusUtil.RemoveString(aArray, "")
+  else
+    newArray = cArrayRemoveValueString(aArray, "")
+  endif
+  return newArray
 endfunction
 
   ;>>> Remove duplicate records
@@ -4490,6 +4546,7 @@ endfunction
 ; 21-11-08 - Test Success
 Int function cArrayPartitionFloat(Float[] aArray, Int low, Int high) global
   {Requirements: None}
+  ; Only for use as part of the cArraySortFloat function
   if !aArray
     cErrInvalidArg("cArrayPartitionFloat", "!aArray")
   else
@@ -4509,10 +4566,12 @@ Int function cArrayPartitionFloat(Float[] aArray, Int low, Int high) global
   return -1
 endfunction
 ; 21-11-08 - Test Success
-function cArraySortFloat(Float[] aArray, Int low = -1, Int high = -1) global
-  {Requirements: None}
+function cArraySortFloat(Float[] aArray, Int low = -1, Int high = -1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArraySortFloat", "!aArray")
+  elseif usePapUtil
+    PapyrusUtil.SortFloatArray(aArray)
   else
     if high == -1
       high = aArray.length - 1
@@ -4531,6 +4590,7 @@ endfunction
 ; 21-11-08 - Test Success
 Int function cArrayPartitionInt(Int[] aArray, Int low, Int high) global
   {Requirements: None}
+    ; Only for use as part of the cArraySortInt function
   if !aArray
     cErrInvalidArg("cArrayPartitionInt", "!aArray")
   else
@@ -4550,10 +4610,12 @@ Int function cArrayPartitionInt(Int[] aArray, Int low, Int high) global
   return -1
 endfunction
 ; 21-11-08 - Test Success
-function cArraySortInt(Int[] aArray, Int low = -1, Int high = -1) global
-  {Requirements: None}
+function cArraySortInt(Int[] aArray, Int low = -1, Int high = -1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArraySortInt", "!aArray")
+  elseif usePapUtil
+    PapyrusUtil.SortIntArray(aArray)
   else
     if high == -1
       high = aArray.length - 1
@@ -4922,9 +4984,14 @@ endfunction
   ;>>> Sorts arrays
 ; Float and Int are deprecated! Use cArraySortFloat() and cArraySortInt() They're QuickSort now
 ; 21-11-08 - Test Success
-Float[]  function cArrayBubbleSortFloat(Float[] aArray, Bool invertIt = False) global
+Float[]  function cArrayBubbleSortFloat(Float[] aArray, Bool invertIt = False, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArrayBubbleSortFloat", "!aArray")
+  elseif usePapUtil && invertIt
+    PapyrusUtil.SortFloatArray(aArray, TRUE)
+  elseif usePapUtil
+    PapyrusUtil.SortFloatArray(aArray)
   else
     Float tempData
     Int j = aArray.length - 1
@@ -4945,9 +5012,14 @@ Float[]  function cArrayBubbleSortFloat(Float[] aArray, Bool invertIt = False) g
   return aArray
 endfunction
 ; 21-11-08 - Test Success
-Int[]    function cArrayBubbleSortInt(Int[] aArray, Bool invertIt = False) global
+Int[]    function cArrayBubbleSortInt(Int[] aArray, Bool invertIt = False, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArrayBubbleSortInt", "!aArray")
+  elseif usePapUtil && invertIt
+    PapyrusUtil.SortIntArray(aArray, TRUE)
+  elseif usePapUtil
+    PapyrusUtil.SortIntArray(aArray)
   else
     Int tempData
     Int j = aArray.length - 1
@@ -4969,9 +5041,11 @@ Int[]    function cArrayBubbleSortInt(Int[] aArray, Bool invertIt = False) globa
 endfunction
 ; 21-11-08 - Test Success
 String[] function cArrayBubbleSortString(String[] aArray, Bool invertIt = False, Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArrayBubbleSortString", "!aArray")
+  elseif usePapUtil && invertIt
+    PapyrusUtil.SortStringArray(aArray, TRUE)
   elseif usePapUtil
     PapyrusUtil.SortStringArray(aArray)
   else
@@ -5233,13 +5307,19 @@ endfunction
 
   ;>>> Appends values to end
 ; 21-11-09 - Success-bp
-Actor[]  function cArrayPushActor(Actor[] aArray, Actor aActor = None, Int numTimes = 1) global
-  {Requirements: None}
+Actor[]  function cArrayPushActor(Actor[] aArray, Actor aActor = None, Int numTimes = 1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
   if !aArray
     cErrInvalidArg("cArrayPushActor", "!aArray")
   elseif numTimes < 1
     cErrInvalidArg("cArrayPushActor", "numTimes < 1")
+  elseif usePapUtil
+    Int i = 0
+    while i < numTimes
+      newArray = PapyrusUtil.PushActor(aArray, aActor)
+      i += 1
+    endwhile
   else
     newArray = cArrayResizeActor(aArray, aArray.length + numtimes, aActor)
     if newArray.length
@@ -5257,13 +5337,19 @@ Actor[]  function cArrayPushActor(Actor[] aArray, Actor aActor = None, Int numTi
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-Alias[]  function cArrayPushAlias(Alias[] aArray, Alias aAlias = None, Int numTimes = 1) global
-  {Requirements: None}
+Alias[]  function cArrayPushAlias(Alias[] aArray, Alias aAlias = None, Int numTimes = 1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
   if !aArray
     cErrInvalidArg("cArrayPushAlias", "!aArray")
   elseif numTimes < 1
     cErrInvalidArg("cArrayPushAlias", "numTimes < 1")
+  elseif usePapUtil
+    Int i = 0
+    while i < numTimes
+      newArray = PapyrusUtil.PushAlias(aArray, aAlias)
+      i += 1
+    endwhile
   else
     newArray = cArrayResizeAlias(aArray, aArray.length + numtimes, aAlias)
     if newArray.length
@@ -5281,13 +5367,19 @@ Alias[]  function cArrayPushAlias(Alias[] aArray, Alias aAlias = None, Int numTi
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-Bool[]   function cArrayPushBool(Bool[] aArray, Bool aBool = False, Int numTimes = 1) global
-  {Requirements: None}
+Bool[]   function cArrayPushBool(Bool[] aArray, Bool aBool = False, Int numTimes = 1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Bool[] newArray
   if !aArray
     cErrInvalidArg("cArrayPushBool", "!aArray")
   elseif numTimes < 1
     cErrInvalidArg("cArrayPushBool", "numTimes < 1")
+  elseif usePapUtil
+    Int i = 0
+    while i < numTimes
+      newArray = PapyrusUtil.PushBool(aArray, aBool)
+      i += 1
+    endwhile
   else
     newArray = cArrayResizeBool(aArray, aArray.length + numtimes, aBool)
     if newArray.length
@@ -5305,13 +5397,19 @@ Bool[]   function cArrayPushBool(Bool[] aArray, Bool aBool = False, Int numTimes
   return newArray
 endfunction
 ; 21-11-09 - Test Success
-Float[]  function cArrayPushFloat(Float[] aArray, Float aFloat = 0.0, Int numTimes = 1) global
-  {Requirements: None}
+Float[]  function cArrayPushFloat(Float[] aArray, Float aFloat = 0.0, Int numTimes = 1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
   if !aArray
     cErrInvalidArg("cArrayPushFloat", "!aArray")
   elseif numTimes < 1
     cErrInvalidArg("cArrayPushFloat", "numTimes < 1")
+  elseif usePapUtil
+    Int i = 0
+    while i < numTimes
+      newArray = PapyrusUtil.PushFloat(aArray, aFloat)
+      i += 1
+    endwhile
   else
     newArray = cArrayResizeFloat(aArray, aArray.length + numtimes, aFloat)
     if newArray.length
@@ -5329,13 +5427,19 @@ Float[]  function cArrayPushFloat(Float[] aArray, Float aFloat = 0.0, Int numTim
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-Form[]   function cArrayPushForm(Form[] aArray, Form aForm = None, Int numTimes = 1) global
-  {Requirements: None}
+Form[]   function cArrayPushForm(Form[] aArray, Form aForm = None, Int numTimes = 1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
   if !aArray
     cErrInvalidArg("cArrayPushForm", "!aArray")
   elseif numTimes < 1
     cErrInvalidArg("cArrayPushForm", "numTimes < 1")
+  elseif usePapUtil
+    Int i = 0
+    while i < numTimes
+      newArray = PapyrusUtil.PushForm(aArray, aForm)
+      i += 1
+    endwhile
   else
     newArray = cArrayResizeForm(aArray, aArray.length + numtimes, aForm)
     if newArray.length
@@ -5353,13 +5457,19 @@ Form[]   function cArrayPushForm(Form[] aArray, Form aForm = None, Int numTimes 
   return newArray
 endfunction
 ; 21-11-09 - Test Success
-Int[]    function cArrayPushInt(Int[] aArray, Int aInt = 0, Int numTimes = 1) global
-  {Requirements: None}
+Int[]    function cArrayPushInt(Int[] aArray, Int aInt = 0, Int numTimes = 1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
   if !aArray
     cErrInvalidArg("cArrayPushInt", "!aArray")
   elseif numTimes < 1
     cErrInvalidArg("cArrayPushInt", "numTimes < 1")
+  elseif usePapUtil
+    Int i = 0
+    while i < numTimes
+      newArray = PapyrusUtil.PushInt(aArray, aInt)
+      i += 1
+    endwhile
   else
     newArray = cArrayResizeInt(aArray, aArray.length + numtimes, aInt)
     if newArray.length
@@ -5377,19 +5487,25 @@ Int[]    function cArrayPushInt(Int[] aArray, Int aInt = 0, Int numTimes = 1) gl
   return newArray
 endfunction
 ; 21-11-09 - Success-bp
-ObjectReference[] function cArrayPushObjRef(ObjectReference[] aArray, ObjectReference aObjectReference = None, \
-    Int numTimes = 1) global
-  {Requirements: None}
+ObjectReference[] function cArrayPushObjRef(ObjectReference[] aArray, ObjectReference aObjRef = None, \
+    Int numTimes = 1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
   if !aArray
     cErrInvalidArg("cArrayPushObjRef", "!aArray")
   elseif numTimes < 1
     cErrInvalidArg("cArrayPushObjRef", "numTimes < 1")
+  elseif usePapUtil
+    Int i = 0
+    while i < numTimes
+      newArray = PapyrusUtil.PushObjRef(aArray, aObjRef)
+      i += 1
+    endwhile
   else
-    newArray = cArrayResizeObjRef(aArray, aArray.length + numtimes, aObjectReference)
+    newArray = cArrayResizeObjRef(aArray, aArray.length + numtimes, aObjRef)
     if newArray.length
       Int newLength = newArray.length
-      newArray[newLength - 1] = aObjectReference
+      newArray[newLength - 1] = aObjRef
       Int i = 0
       while i < aArray.length
         newArray[i] = aArray[i]
@@ -5402,13 +5518,20 @@ ObjectReference[] function cArrayPushObjRef(ObjectReference[] aArray, ObjectRefe
   return newArray
 endfunction
 ; 21-11-09 - Test Success
-String[] function cArrayPushString(String[] aArray, String aString = "", Int numTimes = 1) global
-  {Requirements: None}
+String[] function cArrayPushString(String[] aArray, String aString = "", Int numTimes = 1, \
+  Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
   if !aArray
     cErrInvalidArg("cArrayPushString", "!aArray")
   elseif numTimes < 1
     cErrInvalidArg("cArrayPushString", "numTimes < 1")
+  elseif usePapUtil
+    Int i = 0
+    while i < numTimes
+      newArray = PapyrusUtil.PushString(aArray, aString)
+      i += 1
+    endwhile
   else
     newArray = cArrayResizeString(aArray, aArray.length + numtimes, aString)
     if newArray.length
@@ -8741,7 +8864,7 @@ MiscObject[]   function cArrayCreateMiscObject(Int indices, MiscObject filler = 
   return cArrayMiscObject.cArrayCreateMiscObject(indices, filler)
 endfunction
 ObjectReference[] function cArrayCreateREFR(Int indices, ObjectReference filler = None, Bool usePapUtil = TRUE) global
-  {Requirements: None}
+  {Requirements: None, PapyrusUtil:Soft}
   if usePapUtil
     return PapyrusUtil.ObjRefArray(indices, filler)
   endif
@@ -10063,7 +10186,7 @@ String function cGetModName(String hexForm = "", Int decForm = 0,Form formVar = 
     cErrReqDisabled("cGetTheModName")
   endif
   return returnString
-endFunction
+endfunction
 String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
   {Requirements: SKSE}
   ; This function came from Mr Octopus!! Thank you!!!
