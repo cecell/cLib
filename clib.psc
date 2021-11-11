@@ -799,7 +799,7 @@ String[] function cArrayDecimalsToHexStrings(Int[] aArray) global
   {Requirements: None}
   String[] newArray
   if !aArray
-    ;ADDTRACE
+    cErrInvalidArg("cArrayDecimalsToHexStrings", "!aArray")
   else
     newArray = cArrayCreateString(aArray.length, "")
     if newArray.length
@@ -830,7 +830,7 @@ Bool     function cIDInVanillaRange(Int decForm, String hexForm = "", Form aForm
     elseif hexForm
       decForm = cH2D(hexForm)
     endif
-    returnBool = cIsBetweenInt(decForm,1,67232578)
+    returnBool = cIsBetweenInt(decForm, 1, 67232578)
   endif
   return returnBool
 endfunction
@@ -840,7 +840,7 @@ endfunction
 Bool   function cIsLight(String hexForm = "", Int decForm = 0,Form formVar = None, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   if !hexForm && !decForm && !formVar
-    cErrInvalidArg("cArrayHexStringsToDecimal", "!hexForm && !decForm && !formVar")
+    cErrInvalidArg("cIsLight", "!hexForm && !decForm && !formVar")
   elseif useSKSE
     if hexForm
       return cStringLeft(hexForm, 2) == "FE"
@@ -904,9 +904,9 @@ Int[]   function cGetCKCoordsFromXY(Float xVar, Float yVar, ObjectReference aObj
   ;https://docs.google.com/spreadsheets/d/1yhsNb12btLWpRNRIpZ2DfjVsWR946qEZTmVML_Wi9U8/edit?usp=sharing
   Int[] returnArray
   if !aObjectRef && !cIsBetweenFloat(xVar, -235520.0, 247808.0) 
-    cErrInvalidArg("cGetCKCoordsFromXY", "!cIsBetweenFloat(xVar, -235520.0, 247808.0)", "arrayNone")
+    cErrInvalidArg("cGetCKCoordsFromXY", "!aObjectRef && !cIsBetweenFloat(xVar, -235520.0, 247808.0)", "arrayNone")
   elseif !aObjectRef && !cIsBetweenFloat(yVar, 206848.0, -178176.0)
-    cErrInvalidArg("cGetCKCoordsFromXY", "!cIsBetweenFloat(yVar, 206848.0, -178176.0)", "arrayNone")
+    cErrInvalidArg("cGetCKCoordsFromXY", "!aObjectRef && !cIsBetweenFloat(yVar, 206848.0, -178176.0)", "arrayNone")
   else
     if aObjectRef
       xVar = aObjectRef.GetPositionX()
@@ -946,9 +946,9 @@ Cell    function cGetCellFromCoords(Int ckX, Int ckY, Float xVar = 0.0, Float yV
   ;https://docs.google.com/spreadsheets/d/1yhsNb12btLWpRNRIpZ2DfjVsWR946qEZTmVML_Wi9U8/edit?usp=sharing
   Cell returnCell
   if !cIsBetweenInt(ckX, -57, 60)
-    cErrInvalidArg("GetCellFromCoords", "!cIsBetweenInt(ckX, -57, 60)", None)
+    cErrInvalidArg("GetCellFromCoords", "!cIsBetweenInt(ckX, -57, 60)")
   elseif !cIsBetweenInt(ckY, -43, 50)
-    cErrInvalidArg("GetCellFromCoords", "!cIsBetweenInt(ckY, -43, 50)", None)
+    cErrInvalidArg("GetCellFromCoords", "!cIsBetweenInt(ckY, -43, 50)")
   else
     returnCell = cGetCell.GetCellFromCoords(ckX, ckY, xVar, yVar) as Cell
   endif
@@ -977,9 +977,9 @@ Float[] function cArrayGetDistancesObjRef(ObjectReference aObj, ObjectReference[
   {Requirements:None}
   Float[] newArray 
   if !aObj
-    ;ADDTRACE
+    cErrInvalidArg("cArrayGetDistancesObjRef", "!aObj")
   elseif !aArray
-    ;ADDTRACE
+    cErrInvalidArg("cArrayGetDistancesObjRef", "!aArray")
   else
     newArray = cArrayCreateFloat(aArray.length)
     if newArray.length
@@ -1179,7 +1179,7 @@ Float function cRoundFloat(Float aFloat, Int places = 1) global
   {Requirements: None}
   Float returnFloat
   if places < 0
-    cErrInvalidArg("cTruncateFloat", "places < 0", "0.0")
+    cErrInvalidArg("cRoundFloat", "places < 0", "0.0")
   else
     places = Math.Pow(10.0, places as Float) as Int
     Float workingFloat = aFloat * places
@@ -1863,7 +1863,7 @@ Float[] function cArrayRandomFloats(Int arraySize = 128, Float this = 0.0, Float
   elseif this == that && eachDiff
     cErrInvalidArg("cArrayRandomFloats", "this == that")
   elseif (that - this < 1.0) && eachDiff ; need a larger margin to ensure there are enough different values
-    cErrInvalidArg("cArrayRandomFloats", "(that - this < 1.0)")
+    cErrInvalidArg("cArrayRandomFloats", "(that - this < 1.0) && eachDiff")
   else
     Int i = 0
     while i < arraySize
