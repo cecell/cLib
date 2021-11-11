@@ -1,388 +1,9 @@
 ScriptName clib Hidden
 
-String function cGetScriptName() global
-  {Requirements: None}
-  return "clib"
-endfunction
 Int    function cGetVersion() global
   {Requirements: None}
   return 9001
 endfunction
-;Functions used to output error messages
-function clibTrace(String functionName, String msg, Int errorLevel, Bool condition = TRUE, \
-    Bool tryConsoleUtil = TRUE) global
-  {Requirements: None, ConsoleUtil:Soft}
-  condition = TRUE ; change this to false to disable all trace messages
-  if condition
-    Debug.Trace(cGetScriptName() + "::" + functionName + "():: " + msg, errorLevel)
-    if tryConsoleUtil && ConsoleUtil.GetVersion()
-      ConsoleUtil.PrintMessage(cTernaryString(errorLevel == 2, "Error! ", \
-        cTernaryString(errorLevel == 1, "Warning: ", \
-          cTernaryString(errorLevel == 0, "Info: ", ""))) + "clib::" + functionName + "() " + msg)
-    endif
-  endif
-endfunction
-function cErrInvalidArg(String functionName, String argName = "", String returnValue = "", \
-    Int errorLevel = 2, Bool condition = TRUE, Bool useSKSE = TRUE, Bool tryConsoleUtil = TRUE) global
-  {Requirements: None, ConsoleUtil:Soft}
-  if useSKSE && StringUtil.Find(functionName, "array") != -1
-    returnValue = "arrayNone"
-  endif
-  clibTrace(functionName, "Argument(s)" + cTernaryString(argName != "", ": " + argName, "") + " invalid!" + \
-    cTernaryString(returnValue != "", " Returning " + returnValue, ""), errorLevel, condition, tryConsoleUtil)
-endfunction
-function cErrArrInitFail(String functionName, String arrayName = "newArray", String returnValue = "ArrayNone", \
-    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
-  {Requirements: None, ConsoleUtil:Soft}
-  clibTrace(functionName, "Variable: " + arrayName + " failed to initialize! Returning " + returnValue, errorLevel, \
-    condition, tryConsoleUtil)
-endfunction
-function cErrReqDisabled(String functionName, String modName = "SKSE", String returnValue = "", \
-    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
-  {Requirements: None, ConsoleUtil:Soft}
-  clibTrace(functionName, modName + " functionality is disabled; This function cannot operate without it!" + \
-    cTernaryString(returnValue == "", " Returning \"\"", ""), errorLevel, condition, tryConsoleUtil)
-endfunction
-
-;--------------------------SKSE:HARD-------------------------------------------
-
-String function cGetModName(String hexForm = "", Int decForm = 0,Form formVar = None, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  String returnString
-  if useSKSE
-    String modIndex
-    if formVar
-      returnString = cGetModNameForm(formVar)
-    else
-      if decForm
-        hexForm = cD2H(decForm)
-      endif
-      if cIsLight(hexForm)
-        modIndex = StringUtil.SubString(hexForm,2,3)
-        returnString = Game.GetLightModName(cH2D(modIndex))
-      else
-        if StringUtil.GetLength(hexForm) == 10
-          modIndex = StringUtil.SubString(hexForm,2,2)
-        elseif StringUtil.GetLength(hexForm) == 8
-          modIndex = StringUtil.SubString(hexForm,0,2)
-        endif
-        returnString = Game.GetModName(cH2D(modIndex))
-      endif
-    endif
-  else
-    cErrReqDisabled("cGetTheModName")
-  endif
-  return returnString
-endFunction
-String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  ; This function came from Mr Octopus!! Thank you!!!
-  if useSKSE
-    Int intFormID = aForm.GetFormID()
-    Int index = Math.RightShift(intFormID, 24)
-    ; Light (Comment out and recompile if using Classic Edition)
-    if index == 254
-        return Game.GetLightModName(Math.RightShift(intFormID, 12) - 0xFE000)
-    endif
-    ; Normal
-    return Game.GetModName(index)
-  else
-    cErrReqDisabled("cGetFormModName")
-    return ""
-  endif
-endfunction
-Bool   function cIsInAnyMenu(Bool useSKSE = TRUE) global ; .IsInMenuMode() returns different sometimes! Use this if incorrect return
-  {Requirements: SKSE}
-  if useSKSE
-    return !UI.IsMenuOpen("Console") && !UI.IsMenuOpen("RaceSex Menu") && \
-        !UI.IsMenuOpen("Sleep/Wait Menu") && !UI.IsMenuOpen("ContainerMenu") && !UI.IsMenuOpen("FavoritesMenu") && \
-          !UI.IsMenuOpen("Crafting Menu") && !UI.IsMenuOpen("MainMenu") && !UI.IsMenuOpen("JournalMenu") && \
-            !UI.IsMenuOpen("InventoryMenu") && !UI.IsMenuOpen("Console Native UI Menu") && \
-              !UI.IsMenuOpen("Dialogue Menu")
-  else
-    cErrReqDisabled("cIsInAnyMenu")
-  endif
-endfunction
-Bool[] function cArePluginsInstalled(String[] listOfPlugins, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  Bool[] newArray
-  if !listOfPlugins
-    cErrInvalidArg("cAreFilesInstalled", "!listOfPlugins")
-  elseif useSKSE
-    newArray = cArrayCreateBool(listOfPlugins.length)
-    if newArray.length
-      Int numPlugins = listOfPlugins.length
-      Int i = 0
-      while i < numPlugins
-        newArray[i] = Game.IsPluginInstalled(listOfPlugins[i])
-        i+= 1
-      endwhile
-    else
-      cErrArrInitFail("cAreFilesInstalled")
-    endif
-  else
-    cErrReqDisabled("cAreFilesInstalled")
-  endif
-  return newArray
-endfunction
-  ;>>> Returns text with MCM menu color formatting
-String function cColoredText(String aString, Bool ddInstalled = False, String textColorHex = "", String trimWhere = "", \
-    Bool useSKSE = TRUE) global
-  {Requirements: SKSE:Hard, SkyUI:Soft unsure if hard}
-  ; Valid options for trimWhere are "left", "right", "both"
-  ; Unsure what other applications there are for color formatted text like this
-  if !aString && !textColorHex
-    cErrInvalidArg("cColoredText", "!aString && !textColorHex", "\"\"")
-  else
-    if useSKSE
-      if !ddInstalled ; optional catch for DearDiary which does not play well with colored text
-        String trimmedS = aString
-        String colorOrange = "FFA600"
-        String colorYellow = "ECF01D"
-        String colorRed = "D41717"
-        String colorBlue = "2D4BB5"
-        String colorGray = "A6A6A6"
-        String colorGreen = "52AB1F"
-        ; if only want the hex code back
-        if !aString
-          if textColorHex == "orange"
-            return colorOrange
-          elseif textColorHex == "yellow"
-            return colorYellow
-          elseif textColorHex == "red"
-            return colorRed
-          elseif textColorHex == "blue"
-            return colorBlue
-          elseif textColorHex == "gray"
-            return colorGray
-          elseif textColorHex == "green"
-            return colorGreen
-          endif
-        else
-          ; Trim to get color from contextual command below
-          if StringUtil.SubString(trimmedS, 0, 1) == " "
-            trimmedS = StringUtil.SubString(trimmedS, 1, StringUtil.GetLength(trimmedS) - 1)
-          endif
-          if StringUtil.SubString(trimmedS,StringUtil.GetLength(trimmedS) - 1, 1) == " "
-            trimmedS = StringUtil.SubString(trimmedS, 0, StringUtil.GetLength(trimmedS) - 1)
-          endif
-          
-          ; For reserved words that must have spaces in front or behind to prevent their case from being changed
-          ; Trim whitespace only for response string as directed
-          if (trimWhere == "front" || trimWhere == "left") && StringUtil.SubString(aString, 0, 1) == " "
-            aString = StringUtil.SubString(aString, 1, StringUtil.GetLength(aString) - 1)
-          elseif (trimWhere == "end" || trimWhere == "right") && \
-              StringUtil.SubString(aString,StringUtil.GetLength(aString) - 1, 1) == " "
-            aString = StringUtil.SubString(aString, 0, StringUtil.GetLength(aString) - 1)
-          endif
-
-          ; convert from string color
-          if textColorHex == "orange"
-            textColorHex = colorOrange
-          elseif textColorHex == "yellow"
-            textColorHex = colorYellow
-          elseif textColorHex == "red"
-            textColorHex = colorRed
-          elseif textColorHex == "blue"
-            textColorHex = colorBlue
-          elseif textColorHex == "gray"
-            textColorHex = colorGray
-          elseif textColorHex == "green"
-            textColorHex = colorGreen
-          elseif !textColorHex
-            ; Choose color by text content
-            if trimmedS == "Unassign" || trimmedS == "Restore"
-              textColorHex = colorYellow
-            elseif trimmedS == "Assign" || trimmedS == "Add" || trimmedS == "Save"
-              textColorHex = colorGreen
-            elseif trimmedS == "Unassigned" || trimmedS == "Assigned" || trimmedS == "N/A"
-              textColorHex = colorGray
-            elseif trimmedS == "Reassign"
-              textColorHex = colorOrange
-            elseif trimmedS == "Clear" || trimmedS == "Remove"
-              textColorHex = colorRed
-            endif
-          endif
-          aString = "<font color='#" + textColorHex + "'>" + aString + "</font>"
-        endif
-      endif
-    else
-      cErrReqDisabled("cColoredText")
-    endif
-  endif
-  return aString
-endfunction
-
-Int function cStringCountSubstring(String countThis, String inThis, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  Int returnInt
-  if !countThis || !inThis
-    cErrInvalidArg("cStringCountSubstring", "!countThis || !inThis", "-1")
-    returnInt = -1
-  else
-    if useSKSE
-      Int charIndex = 0
-      Int numOccurences = 0
-      while StringUtil.Find(inThis, countThis, charIndex) > 0
-        charIndex = StringUtil.Find(inThis, countThis, charIndex) + StringUtil.GetLength(countThis)
-        numOccurences += 1
-      endwhile
-      returnInt = numOccurences
-    else
-      cErrReqDisabled("cStringCountSubstring")
-    endif
-  endif
-  return returnInt
-endfunction
-
-Enchantment[]  function cArrayBaseEnchantment(Enchantment[] aArray, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  if !aArray
-    cErrInvalidArg("cArrayBaseEnchantment", "!aArray")
-  else
-    if useSKSE
-      Enchantment aEnchantment
-      Int numEnchantments = aArray.length
-      Int i = 0
-      while i < numEnchantments
-        aEnchantment = aArray[i] as Enchantment
-        if aEnchantment
-          aArray[i] = aEnchantment.GetBaseEnchantment()
-        else
-          aArray[i] = None
-        endif
-      endwhile
-    else
-      cErrReqDisabled("cArrayBaseEnchantment")
-    endif
-  endif
-  return aArray
-endfunction
-
-Bool     function cModPerkPoints(Int number = 1, Bool useSKSE = TRUE) global ; NOT compatible with Vokriinator Black!!
-  {Requirements: SKSE}
-  Bool returnBool
-  if useSKSE
-    Int beforePerkPoints = Game.GetPerkPoints()
-    if number == 0
-      cErrInvalidArg("cModPerkPoints", "number == 0")
-    elseif number < 0 && beforePerkPoints < number
-      cErrInvalidArg("cModPerkPoints", "number < 0 && beforePerkPoints < number")
-    else
-      Game.ModPerkPoints(number)
-      if Game.GetPerkPoints() == beforePerkPoints + number
-        returnBool = TRUE
-      else
-        clibTrace("cModPerkPoints", " Unknown error! Perk point balance unchanged! Returning False", 2)
-      endif
-    endif
-  else
-    cErrReqDisabled("cModPerkPoints")
-  endif
-  return returnBool
-endfunction
-Int      function cTotalPerkPoints(Actor aActor, String singleSkill = "", Bool useSKSE = TRUE, \
-    Bool usePO3 = TRUE) global
-  {Requirements: SKSE}
-  ; This function was found online and adapted. I do not recall where but this is the only solution I've found that
-  ;   is moderately accurate without cataloging each and every perk mod.
-  Int perks = 0
-  if !aActor
-    cErrInvalidArg("cTotalPerkPoints", "!aActor")
-  elseif usePO3
-    perks = PO3_SKSEFunctions.GetPerkCount(aActor.GetActorBase())
-  elseif useSKSE
-    String perkArray
-    Int perkCount
-    Int charIndex
-    ActorValueInfo avi
-    String[] skillList
-    if singleSkill
-      skillList = New String[1]
-      skillList[0] = singleSkill
-    else
-      skillList = cArrayListSkillNames()
-    endif
-    Int i = 0
-    while i < skillList.length
-      avi = ActorValueInfo.GetActorValueInfobyName(skillList[i])
-      perkArray = avi.GetPerks(aActor,false,true)
-      charIndex = 0
-      perkCount = 0
-      while StringUtil.Find(perkArray,"<",charIndex) > 0
-        charIndex = StringUtil.Find(perkArray,"<",charIndex) + 1
-        perkCount += 1
-      endwhile
-      perks += perkCount
-      i += 1
-    endwhile
-    perks += Game.GetPerkPoints()
-  else
-    cErrReqDisabled("cTotalPerkPoints")
-  endif
-  return perks
-endfunction
-Form[]   function cGetAllEquippedForms(Actor aActor, Bool useSKSE = TRUE, Bool usePO3 = TRUE) global
-  {Requirements: SKSE}
-  ; Got this function online somewhere don't recall where. Credit goes to that coder not me!
-  Form[] itemsArray
-  if !aActor
-    cErrInvalidArg("cGetAllEquippedForms", "!aActor")
-  elseif usePO3
-    itemsArray = PO3_SKSEFunctions.AddAllEquippedItemsToArray(aActor)
-  elseif useSKSE
-    Form curForm
-    Int i
-    Int slotschecked
-    slotschecked += 0x00100000
-    slotschecked += 0x00200000 ;ignore reserved slots
-    slotschecked += 0x80000000
-    Int thisSlot = 0x01
-    while thisSlot < 0x80000000
-      ;only check slots we haven't found anything equipped on already
-      if Math.LogicalAnd(slotschecked, thisSlot) != thisSlot
-        curForm = aActor.GetWornForm(thisSlot)
-        if curForm
-          itemsArray = PapyrusUtil.PushForm(itemsArray, curForm)
-        else ;no armor was found on this slot
-          slotschecked += thisSlot
-        endif
-      endif
-      thisSlot *= 2 ;double the number to move on to the next slot
-    endwhile
-  else
-    cErrReqDisabled("cGetAllEquippedForms")
-  endif
-  return itemsArray
-endfunction
-
-String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE) global
-  {Requirements: SKSE}
-  String[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayStringFromKeywords", "!aArray")
-  else
-    if useSKSE
-      newArray = cArrayCreateString(aArray.length)
-      if newArray.length
-        Int i = 0
-        while i < aArray.length
-          newArray[i] = cTernaryString(aArray[i], aArray[i].GetString(), "") ; ..GetString() requires SKSE
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayStringFromKeywords")
-      endif
-    else
-      cErrReqDisabled("cArrayStringFromKeywords")
-    endif
-  endif
-  return newArray
-endfunction
-
-;------------------------------------------------------------------------------
-;---------------------NOTHING AFTER HERE REQUIRES SKSE-------------------------
-;------------------------------------------------------------------------------
 
 ;--------------------------FORMS/OBJECT REFERENCES-----------------------------
 
@@ -683,7 +304,7 @@ String[] function cArrayNameFromForms(Form[] aArray) global
   {Requirements: None}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayNameFromForms", "aArray")
+    cErrInvalidArg("cArrayNameFromForms", "!aArray")
   else
     newArray = cArrayCreateString(aArray.length)
     if newArray.length
@@ -704,7 +325,7 @@ String[] function cArrayNameFromFL(FormList aFormList) global
   {Requirements: None}
   String[] returnArray
   if !aFormList
-    cErrInvalidArg("cArrayNameFromFL", "aFormList")
+    cErrInvalidArg("cArrayNameFromFL", "!aFormList")
   else
     String[] newArray = cArrayCreateString(aFormList.GetSize())
     String curName
@@ -2052,7 +1673,7 @@ Float    function cArrayAverageFloat(Float[] aArray) global
   {Requirements: None}
   Float aFloat
   if !aArray
-    cErrInvalidArg("cArrayAverageFloat", "aArray", "0.0")
+    cErrInvalidArg("cArrayAverageFloat", "!aArray", "0.0")
   else
     Int i = 0
     while i < aArray.length
@@ -2069,7 +1690,7 @@ Int      function cArrayAverageInt(Int[] aArray) global
   ; remainder is dropped!
   Int aInt
   if !aArray
-    cErrInvalidArg("cArrayAverageInt", "aArray", "0")
+    cErrInvalidArg("cArrayAverageInt", "!aArray", "0")
   else
     Int i = 0
     while i < aArray.length
@@ -2249,7 +1870,7 @@ Bool   function cStringIsMiscChar(String aChar) global
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
   Bool returnBool
   if !aChar
-    cErrInvalidArg("cStringIsMiscChar", "!insertThis", "\"\"")
+    cErrInvalidArg("cStringIsMiscChar", "!aChar", "\"\"")
   else
     returnBool = !cStringIsDigit(aChar) && !cStringIsLetter(aChar)
   endif
@@ -2575,11 +2196,11 @@ String   function cStringTrim(String aString, String charToTrim = " ", Bool useS
     lengthToTrim = StringUtil.GetLength(charToTrim)
   endif
   if !aString
-    cErrInvalidArg("cStringTrimRight", "!aString", "\"\"")
+    cErrInvalidArg("cStringTrim", "!aString", "\"\"")
   elseif !charToTrim
-    cErrInvalidArg("cStringTrimRight", "!charToTrim", "\"\"")
+    cErrInvalidArg("cStringTrim", "!charToTrim", "\"\"")
   elseif lengthToTrim > len
-    cErrInvalidArg("cStringTrimRight", "lengthToTrim > len", "\"\"")
+    cErrInvalidArg("cStringTrim", "lengthToTrim > len", "\"\"")
   else
     returnString = cStringTrimRight(cStringTrimLeft(aString, charToTrim), charToTrim)
   endif
@@ -2718,7 +2339,7 @@ String[] function cStringHexToArray(String aString, Bool useSKSE = TRUE) global
   ; Non-SKSE version only has to look through the *16* hex digits as opposed to all 69 ASCII chars
   String[] stringBuild
   if !aString
-    cErrInvalidArg("cStringToArray", "!aString")
+    cErrInvalidArg("cStringHexToArray", "!aString")
   elseif useSKSE
     Int stringLength = StringUtil.GetLength(aString)
     if stringLength == 1
@@ -3114,7 +2735,7 @@ Form[]   function cArrayFromFLForm(FormList aFormList, Bool useSKSE = TRUE) glob
   {Requirements: None, SKSE:Soft}
   Form[] newArray
   if !aFormList
-    cErrInvalidArg("cArrayFromFLForm", "aFormList", "")
+    cErrInvalidArg("cArrayFromFLForm", "!aFormList", "")
   else
     if useSKSE
       return aFormList.ToArray()
@@ -3135,59 +2756,83 @@ Form[]   function cArrayFromFLForm(FormList aFormList, Bool useSKSE = TRUE) glob
 endfunction
 
   ;>>> Conversion
+; 21-11-11 Add argument validation
 Bool[] function cArrayIntToBool(Int[] aArray) global
   {Requirements:None}
-  Bool[] newArray = cArrayCreateBool(aArray.length)
-  if newArray.length
-    Int i = 0
-    while i < aArray.length
-      newArray[i] = aArray[i] as Bool
-      i += 1
-    endwhile
+  Bool[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayIntToBool", "!aArray")
   else
-    cErrArrInitFail("cArrayIntToBool")
+    newArray = cArrayCreateBool(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i] as Bool
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayIntToBool")
+    endif
   endif
   return newArray
 endfunction
+; 21-11-11 Add argument validation 
 Int[] function cArrayBoolToInt(Int[] aArray) global
   {Requirements:None}
-  Int[] newArray = cArrayCreateInt(aArray.length)
-  if newArray.length
-    Int i = 0
-    while i < aArray.length
-      newArray[i] = aArray[i] as Int
-      i += 1
-    endwhile
+  Int[] newArray 
+  if !aArray
+    cErrInvalidArg("cArrayBoolToInt", "!aArray")
   else
-    cErrArrInitFail("cArrayBoolToInt")
+    newArray = cArrayCreateInt(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i] as Int
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayBoolToInt")
+    endif
   endif
   return newArray
 endfunction
+; 21-11-11 Add argument validation 
 ActorBase[] function cArrayActorToActorBase(Actor[] aArray) global
   {Requirements:None}
-  ActorBase[] newArray = cArrayCreateActorBase(aArray.length)
-  if newArray.length
-    Int i = 0
-    while i < aArray.length
-      newArray[i] = aArray[i].GetLeveledActorBase()
-      i += 1
-    endwhile
+  ActorBase[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayActorToActorBase", "!aArray")
   else
-    cErrArrInitFail("cArrayActorToActorBase")
+    newArray = cArrayCreateActorBase(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i].GetLeveledActorBase()
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayActorToActorBase")
+    endif
   endif
   return newArray
 endfunction
+; 21-11-11 Add argument validation 
 Form[] function cArrayObjRefToBaseObject(ObjectReference[] aArray) global
   {Requirements:None}
   Form[] newArray = cArrayCreateForm(aArray.length)
-  if newArray.length
-    Int i = 0
-    while i < aArray.length
-      newArray[i] = aArray[i].GetBaseObject()
-      i += 1
-    endwhile
+  if !aArray
+    cErrInvalidArg("cArrayObjRefToBaseObject", "!aArray")
   else
-    cErrArrInitFail("cArrayObjRefToBaseObject")
+    newArray = cArrayCreateForm(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i].GetBaseObject()
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayObjRefToBaseObject")
+    endif
   endif
   return newArray
 endfunction
@@ -3199,7 +2844,7 @@ Float function cArraySmallestFloat(Float[] aArray) global
   {Requirements: None}
   Float smallestValue = 214748364.0
   if !aArray
-    cErrInvalidArg("cArraySmallestFloat", "aArray", "0.0")
+    cErrInvalidArg("cArraySmallestFloat", "!aArray", "0.0")
   else
     Int i = 0
     while i < aArray.length
@@ -3216,7 +2861,7 @@ Int   function cArraySmallestInt(Int[] aArray) global
   {Requirements: None}
   Int smallestValue = 214748364
   if !aArray
-    cErrInvalidArg("cArraySmallestInt", "aArray", "0")
+    cErrInvalidArg("cArraySmallestInt", "!aArray", "0")
   else
     Int i = 0
     while i < aArray.length
@@ -3233,7 +2878,7 @@ Float function cArrayLargestFloat(Float[] aArray) global
   {Requirements: None}
   Float largestValue = -214748364.0
   if !aArray
-    cErrInvalidArg("cArrayLargestFloat", "aArray", "0.0")
+    cErrInvalidArg("cArrayLargestFloat", "!aArray", "0.0")
   else
     Int i = 0
     while i < aArray.length
@@ -3250,7 +2895,7 @@ Int   function cArrayLargestInt(Int[] aArray) global
   {Requirements: None}
   Int largestValue = -214748364
   if !aArray
-    cErrInvalidArg("cArrayLargestInt", "aArray", "0")
+    cErrInvalidArg("cArrayLargestInt", "!aArray", "0")
   else
     Int i = 0
     while i < aArray.length
@@ -3269,7 +2914,7 @@ Int[] function cArrayGetValueIndicesActor(Actor[] aArray, Actor valueToFind = No
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayGetValueIndicesActor", "aArray")
+    cErrInvalidArg("cArrayGetValueIndicesActor", "!aArray")
   else
     newArray = cArrayCreateInt(cArrayCountValueActor(aArray, valueToFind, invertIt), 0)
     if newArray.length
@@ -3293,7 +2938,7 @@ Int[] function cArrayGetValueIndicesAlias(Alias[] aArray, Alias valueToFind = No
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayGetValueIndicesAlias", "aArray")
+    cErrInvalidArg("cArrayGetValueIndicesAlias", "!aArray")
   else
     newArray = cArrayCreateInt(cArrayCountValueAlias(aArray, valueToFind, invertIt), 0)
     if newArray.length
@@ -3317,7 +2962,7 @@ Int[] function cArrayGetValueIndicesBool(Bool[] aArray, Bool valueToFind = False
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayGetValueIndicesBool", "aArray")
+    cErrInvalidArg("cArrayGetValueIndicesBool", "!aArray")
   else
     newArray = cArrayCreateInt(cArrayCountValueBool(aArray, valueToFind, invertIt), 0)
     if newArray.length
@@ -3341,7 +2986,7 @@ Int[] function cArrayGetValueIndicesFloat(Float[] aArray, Float valueToFind = 0.
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayGetValueIndicesFloat", "aArray")
+    cErrInvalidArg("cArrayGetValueIndicesFloat", "!aArray")
   else
     newArray = cArrayCreateInt(cArrayCountValueFloat(aArray, valueToFind, invertIt), 0)
     if newArray.length
@@ -3365,7 +3010,7 @@ Int[] function cArrayGetValueIndicesForm(Form[] aArray, Form valueToFind = None,
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayGetValueIndicesForm", "aArray")
+    cErrInvalidArg("cArrayGetValueIndicesForm", "!aArray")
   else
     newArray = cArrayCreateInt(cArrayCountValueForm(aArray, valueToFind, invertIt), 0)
     if newArray.length
@@ -3389,7 +3034,7 @@ Int[] function cArrayGetValueIndicesInt(Int[] aArray, Int valueToFind = 0, Bool 
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayGetValueIndicesInt", "aArray")
+    cErrInvalidArg("cArrayGetValueIndicesInt", "!aArray")
   else
     newArray = cArrayCreateInt(cArrayCountValueInt(aArray, valueToFind, invertIt), 0)
     if newArray.length
@@ -3414,7 +3059,7 @@ Int[] function cArrayGetValueIndicesObjRef(ObjectReference[] aArray, ObjectRefer
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayGetValueIndicesObjectReference", "aArray")
+    cErrInvalidArg("cArrayGetValueIndicesObjectReference", "!aArray")
   else
     newArray = cArrayCreateInt(cArrayCountValueObjRef(aArray, valueToFind, invertIt), 0)
     if newArray.length
@@ -3438,7 +3083,7 @@ Int[] function cArrayGetValueIndicesString(String[] aArray, String valueToFind =
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayGetValueIndicesString", "aArray")
+    cErrInvalidArg("cArrayGetValueIndicesString", "!aArray")
   else
     newArray = cArrayCreateInt(cArrayCountValueString(aArray, valueToFind, invertIt))
     if newArray.length
@@ -3463,9 +3108,9 @@ endfunction
 Int function cArrayFindActor(Actor[] aArray, Actor aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayFindActor", "aArray")
+    cErrInvalidArg("cArrayFindActor", "!aArray")
   elseif startAt < 0
-    cErrInvalidArg("cArrayFindActor", "aArray")
+    cErrInvalidArg("cArrayFindActor", "startAt < 0")
   else
     if !invertIt
       return aArray.Find(aValue)
@@ -3484,9 +3129,9 @@ endfunction
 Int function cArrayFindAlias(Alias[] aArray, Alias aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayFindAlias", "aArray")
+    cErrInvalidArg("cArrayFindAlias", "!aArray")
   elseif startAt < 0
-    cErrInvalidArg("cArrayFindAlias", "aArray")
+    cErrInvalidArg("cArrayFindAlias", "startAt < 0")
   else
     if !invertIt
       return aArray.Find(aValue)
@@ -3505,9 +3150,9 @@ endfunction
 Int function cArrayFindBool(Bool[] aArray, Bool aValue = False, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayFindBool", "aArray")
+    cErrInvalidArg("cArrayFindBool", "!aArray")
   elseif startAt < 0
-    cErrInvalidArg("cArrayFindBool", "aArray")
+    cErrInvalidArg("cArrayFindBool", "startAt < 0")
   else
     if !invertIt
       return aArray.Find(aValue)
@@ -3526,9 +3171,9 @@ endfunction
 Int function cArrayFindFloat(Float[] aArray, Float aValue = 0.0, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayFindFloat", "aArray")
+    cErrInvalidArg("cArrayFindFloat", "!aArray")
   elseif startAt < 0
-    cErrInvalidArg("cArrayFindFloat", "aArray")
+    cErrInvalidArg("cArrayFindFloat", "startAt < 0")
   else
     if !invertIt
       return aArray.Find(aValue)
@@ -3547,9 +3192,9 @@ endfunction
 Int function cArrayFindForm(Form[] aArray, Form aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayFindForm", "aArray")
+    cErrInvalidArg("cArrayFindForm", "!aArray")
   elseif startAt < 0
-    cErrInvalidArg("cArrayFindForm", "aArray")
+    cErrInvalidArg("cArrayFindForm", "startAt < 0")
   else
     if !invertIt
       return aArray.Find(aValue)
@@ -3569,9 +3214,9 @@ Int function cArrayFindInt(Int[] aArray, Int aValue = 0, Int startAt = 0, Bool i
   {Requirements: None}
   ; kept for invertIt
   if !aArray
-    cErrInvalidArg("cArrayFindInt", "aArray")
+    cErrInvalidArg("cArrayFindInt", "!aArray")
   elseif startAt < 0
-    cErrInvalidArg("cArrayFindInt", "aArray")
+    cErrInvalidArg("cArrayFindInt", "startAt < 0")
   else
     if !invertIt
       return aArray.Find(aValue)
@@ -3591,9 +3236,9 @@ Int function cArrayFindObjRef(ObjectReference[] aArray, ObjectReference aValue =
   {Requirements: None}
   ; kept for invert
   if !aArray
-    cErrInvalidArg("cArrayFindObjRef", "aArray")
+    cErrInvalidArg("cArrayFindObjRef", "!aArray")
   elseif startAt < 0
-    cErrInvalidArg("cArrayFindObjRef", "aArray")
+    cErrInvalidArg("cArrayFindObjRef", "startAt < 0")
   else
     if !invertIt
       return aArray.Find(aValue)
@@ -3613,9 +3258,9 @@ Int function cArrayFindString(String[] aArray, String aValue = "", Int startAt =
   {Requirements: None}
   ; kept for invert
   if !aArray
-    cErrInvalidArg("cArrayFindString", "aArray")
+    cErrInvalidArg("cArrayFindString", "!aArray")
   elseif startAt < 0
-    cErrInvalidArg("cArrayFindString", "aArray")
+    cErrInvalidArg("cArrayFindString", "startAt < 0")
   else
     if !invertIt
       return aArray.Find(aValue)
@@ -4100,7 +3745,7 @@ Int function cArrayCountValueActor(Actor[] aArray, Actor valueToCount = None, Bo
   {Requirements: None}
   Int returnInt
   if !aArray
-    cErrInvalidArg("cArrayCountValueActor", "aArray", "")
+    cErrInvalidArg("cArrayCountValueActor", "!aArray", "")
   else
     returnInt = 0
     Int i = 0
@@ -4116,7 +3761,7 @@ Int function cArrayCountValueAlias(Alias[] aArray, Alias valueToCount = None, Bo
   {Requirements: None}
   Int returnInt
   if !aArray
-    cErrInvalidArg("cArrayCountValueAlias", "aArray", "")
+    cErrInvalidArg("cArrayCountValueAlias", "!aArray", "")
   else
     returnInt = 0
     Int i = 0
@@ -4132,7 +3777,7 @@ Int function cArrayCountValueBool(Bool[] aArray, Bool valueToCount = TRUE, Bool 
   {Requirements: None}
   Int returnInt = 0
   if !aArray
-    cErrInvalidArg("cArrayCountValueBool", "aArray", "")
+    cErrInvalidArg("cArrayCountValueBool", "!aArray", "")
   else
     Int i = 0
     while i < aArray.length
@@ -4147,7 +3792,7 @@ Int function cArrayCountValueFloat(Float[] aArray, Float valueToCount = 0.0, Boo
   {Requirements: None}
   Int returnInt = 0
   if !aArray
-    cErrInvalidArg("cArrayCountValueFloat", "aArray", "")
+    cErrInvalidArg("cArrayCountValueFloat", "!aArray", "")
   else
     Int i = 0
     while i < aArray.length
@@ -4162,7 +3807,7 @@ Int function cArrayCountValueForm(Form[] aArray, Form valueToCount = None, Bool 
   {Requirements: None}
   Int returnInt
   if !aArray
-    cErrInvalidArg("cArrayCountValueForm", "aArray", "")
+    cErrInvalidArg("cArrayCountValueForm", "!aArray", "")
   else
     returnInt = 0
     Int i = 0
@@ -4178,7 +3823,7 @@ Int function cArrayCountValueInt(Int[] aArray, Int valueToCount = 0, Bool invert
   {Requirements: None}
   Int returnInt
   if !aArray
-    cErrInvalidArg("cArrayCountValueInt", "aArray", "")
+    cErrInvalidArg("cArrayCountValueInt", "!aArray", "")
   else
     returnInt = 0
     Int i = 0
@@ -4194,7 +3839,7 @@ Int function cArrayCountValueObjRef(ObjectReference[] aArray, ObjectReference va
   {Requirements: None}
   Int returnInt
   if !aArray
-    cErrInvalidArg("cArrayCountValueObjRef", "aArray", "")
+    cErrInvalidArg("cArrayCountValueObjRef", "!aArray", "")
   else
     returnInt = 0
     Int i = 0
@@ -4210,7 +3855,7 @@ Int function cArrayCountValueString(String[] aArray, String valueToCount = "", B
   {Requirements: None}
   Int returnInt
   if !aArray
-    cErrInvalidArg("cArrayCountValueString", "aArray", "")
+    cErrInvalidArg("cArrayCountValueString", "!aArray", "")
   else
     returnInt = 0
     Int i = 0
@@ -4231,7 +3876,7 @@ Int function cArrayCountValueFormList(FormList aFormList, Form valueToCount = No
   {Requirements: None}
   Int returnInt
   if !aFormList
-    cErrInvalidArg("cArrayCountValueFormList", "aFormList", "")
+    cErrInvalidArg("cArrayCountValueFormList", "!aFormList", "")
   else
     returnInt = 0
     Int flSize = aFormList.GetSize()
@@ -4250,7 +3895,7 @@ endfunction
 Actor[]  function cArrayTidyActor(Actor[] aArray, Bool clearNone = False, Bool clearDupes = False) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayTidyActor", "aArray", "")
+    cErrInvalidArg("cArrayTidyActor", "!aArray", "")
   elseif !clearNone && !clearDupes
     cErrInvalidArg("cArrayTidyActor", "!clearNone && !clearDupes")
   else
@@ -4266,7 +3911,7 @@ endfunction
 Alias[]  function cArrayTidyAlias(Alias[] aArray, Bool clearNone = False, Bool clearDupes = False) global
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
-    cErrInvalidArg("cArrayTidyAlias", "aArray", "")
+    cErrInvalidArg("cArrayTidyAlias", "!aArray", "")
   elseif !clearNone && !clearDupes
     cErrInvalidArg("cArrayTidyAlias", "!clearNone && !clearDupes")
   else
@@ -4283,7 +3928,7 @@ Float[]  function cArrayTidyFloat(Float[] aArray, Bool clearZero = False, Bool c
     Bool sortIt = False) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayTidyFloat", "aArray", "")
+    cErrInvalidArg("cArrayTidyFloat", "!aArray", "")
   elseif !clearZero && !clearDupes && !sortIt
     cErrInvalidArg("cArrayTidyFloat", "!clearZero && !clearDupes && !sortIt")
   else
@@ -4302,7 +3947,7 @@ endfunction
 Form[]   function cArrayTidyForm(Form[] aArray, Bool clearNone = False, Bool clearDupes = False) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayTidyForm", "aArray", "")
+    cErrInvalidArg("cArrayTidyForm", "!aArray", "")
   elseif !clearNone && !clearDupes
     cErrInvalidArg("cArrayTidyForm", "!clearNone && !clearDupes")
   else
@@ -4319,7 +3964,7 @@ Int[]    function cArrayTidyInt(Int[] aArray, Bool clearZero = False, Bool clear
     Bool sortIt = False) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayTidyInt", "aArray", "")
+    cErrInvalidArg("cArrayTidyInt", "!aArray", "")
   elseif !clearZero && !clearDupes && !sortIt
     cErrInvalidArg("cArrayTidyInt", "!clearZero && !clearDupes && !sortIt")
   else
@@ -4339,7 +3984,7 @@ ObjectReference[] function cArrayTidyObjRef(ObjectReference[] aArray, Bool clear
   Bool clearDupes = False) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayTidyObjRef", "aArray", "")
+    cErrInvalidArg("cArrayTidyObjRef", "!aArray", "")
   elseif !clearNone && !clearDupes
     cErrInvalidArg("cArrayTidyObjRef", "!clearNone && !clearDupes")
   else
@@ -4381,7 +4026,7 @@ Actor[] function cArrayClearNoneActor(Actor[] aArray) global
   {Requirements: None}
   Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArrayClearNoneActor", "aArray")
+    cErrInvalidArg("cArrayClearNoneActor", "!aArray")
   else
     newArray = cArrayRemoveValueActor(aArray, None)
   endif
@@ -4392,7 +4037,7 @@ Alias[] function cArrayClearNoneAlias(Alias[] aArray) global
   {Requirements: None}
   Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArrayClearNoneAlias", "aArray")
+    cErrInvalidArg("cArrayClearNoneAlias", "!aArray")
   else
     newArray = cArrayRemoveValueAlias(aArray, None)
   endif
@@ -4403,7 +4048,7 @@ Float[] function cArrayClearZeroFloat(Float[] aArray) global
   {Requirements: None}
   Float[] newArray
   if !aArray
-    cErrInvalidArg("cArrayClearZeroFloat", "aArray")
+    cErrInvalidArg("cArrayClearZeroFloat", "!aArray")
   else
     newArray = cArrayRemoveValueFloat(aArray, 0.0)
   endif
@@ -4414,7 +4059,7 @@ Form[]  function cArrayClearNoneForm(Form[] aArray) global
   {Requirements: None}
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayClearNoneForm", "aArray")
+    cErrInvalidArg("cArrayClearNoneForm", "!aArray")
   else
     newArray = cArrayRemoveValueForm(aArray, None)
   endif
@@ -4425,7 +4070,7 @@ Int[]   function cArrayClearZeroInt(Int[] aArray) global
   {Requirements: None}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayClearZeroInt", "aArray")
+    cErrInvalidArg("cArrayClearZeroInt", "!aArray")
   else
     newArray = cArrayRemoveValueInt(aArray, 0)
   endif
@@ -4436,7 +4081,7 @@ ObjectReference[] function cArrayClearNoneObjRef(ObjectReference[] aArray) globa
   {Requirements: None}
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayClearNoneObjRef", "aArray")
+    cErrInvalidArg("cArrayClearNoneObjRef", "!aArray")
   else
     newArray = cArrayRemoveValueObjRef(aArray, None)
   endif
@@ -4447,7 +4092,7 @@ String[] function cArrayClearEmptyString(String[] aArray) global
   {Requirements: None}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayClearEmptyString", "aArray")
+    cErrInvalidArg("cArrayClearEmptyString", "!aArray")
   else
     newArray = cArrayRemoveValueString(aArray, "")
   endif
@@ -4467,7 +4112,7 @@ Actor[]  function cArrayRemoveDuplicatesActor(Actor[] aArray, Bool usePapUtil = 
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveDuplicatesActor", "aArray", "")
+    cErrInvalidArg("cArrayRemoveDuplicatesActor", "!aArray", "")
   elseif usePapUtil
     newArray = PapyrusUtil.MergeActorArray(aArray, newArray, TRUE)
   else
@@ -4495,7 +4140,7 @@ Alias[]  function cArrayRemoveDuplicatesAlias(Alias[] aArray, Bool usePapUtil = 
   {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveDuplicatesAlias", "aArray", "")
+    cErrInvalidArg("cArrayRemoveDuplicatesAlias", "!aArray", "")
   elseif usePapUtil
     newArray = PapyrusUtil.MergeAliasArray(aArray, newArray, TRUE)
   else
@@ -4523,7 +4168,7 @@ Float[]  function cArrayRemoveDuplicatesFloat(Float[] aArray, Bool usePapUtil = 
   {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveDuplicatesFloat", "aArray", "")
+    cErrInvalidArg("cArrayRemoveDuplicatesFloat", "!aArray", "")
   elseif usePapUtil
     newArray = PapyrusUtil.MergeFloatArray(aArray, newArray, TRUE)
   else
@@ -4551,7 +4196,7 @@ Form[]   function cArrayRemoveDuplicatesForm(Form[] aArray, Bool usePapUtil = TR
   {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveDuplicatesForm", "aArray", "")
+    cErrInvalidArg("cArrayRemoveDuplicatesForm", "!aArray", "")
   elseif usePapUtil
     newArray = PapyrusUtil.MergeFormArray(aArray, newArray, TRUE)
   else
@@ -4579,7 +4224,7 @@ Int[]    function cArrayRemoveDuplicatesInt(Int[] aArray, Bool usePapUtil = TRUE
   {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveDuplicatesInt", "aArray")
+    cErrInvalidArg("cArrayRemoveDuplicatesInt", "!aArray")
   elseif usePapUtil
     newArray = PapyrusUtil.MergeIntArray(aArray, newArray, TRUE)
   else
@@ -4607,7 +4252,7 @@ ObjectReference[] function cArrayRemoveDuplicatesObjRef(ObjectReference[] aArray
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveDuplicatesObjRef", "aArray", "")
+    cErrInvalidArg("cArrayRemoveDuplicatesObjRef", "!aArray", "")
   elseif usePapUtil
     newArray = PapyrusUtil.MergeObjRefArray(aArray, newArray, TRUE)
   else
@@ -4635,7 +4280,7 @@ String[] function cArrayRemoveDuplicatesString(String[] aArray, Bool usePapUtil 
   {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveDuplicatesString", "aArray", "")
+    cErrInvalidArg("cArrayRemoveDuplicatesString", "!aArray", "")
   elseif usePapUtil
     newArray = PapyrusUtil.MergeStringArray(aArray, newArray, TRUE)
   else
@@ -4850,7 +4495,7 @@ Actor[]   function cArrayRemoveTrailingActor(Actor[] aArray, Actor trailingValue
   ; this assumes that the last indices are not *supposed* to be trailingValue
   Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingActor", "aArray", "")
+    cErrInvalidArg("cArrayRemoveTrailingActor", "!aArray", "")
   else
     Int numToRemove
     Int i = 1
@@ -4872,7 +4517,7 @@ Alias[]  function cArrayRemoveTrailingAlias(Alias[] aArray, Alias trailingValue 
   ; this assumes that the last indices are not *supposed* to be trailingValue
   Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingAlias", "aArray", "")
+    cErrInvalidArg("cArrayRemoveTrailingAlias", "!aArray", "")
   else
     Int numToRemove
     Int i = 1
@@ -4894,7 +4539,7 @@ Bool[]   function cArrayRemoveTrailingBool(Bool[] aArray, Bool trailingValue = F
   ; this assumes that the last indices are not *supposed* to be trailingValue
   Bool[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingBool", "aArray", "")
+    cErrInvalidArg("cArrayRemoveTrailingBool", "!aArray", "")
   else
     Int numToRemove
     Int i = 1
@@ -4916,7 +4561,7 @@ Float[]  function cArrayRemoveTrailingFloat(Float[] aArray, Float trailingValue 
   ; this assumes that the last indices are not *supposed* to be trailingValue
   Float[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingFloat", "aArray", "")
+    cErrInvalidArg("cArrayRemoveTrailingFloat", "!aArray", "")
   else
     Int numToRemove
     Int i = 1
@@ -4938,7 +4583,7 @@ Form[]   function cArrayRemoveTrailingForm(Form[] aArray, Form trailingValue = N
   ; this assumes that the last indices are not *supposed* to be trailingValue
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingForm", "aArray", "")
+    cErrInvalidArg("cArrayRemoveTrailingForm", "!aArray", "")
   else
     Int numToRemove
     Int i = 1
@@ -4960,7 +4605,7 @@ Int[]    function cArrayRemoveTrailingInt(Int[] aArray, Int trailingValue = 0) g
   ; this assumes that the last indices are not *supposed* to be trailingValue
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingInt", "aArray", "")
+    cErrInvalidArg("cArrayRemoveTrailingInt", "!aArray", "")
   else
     Int numToRemove
     Int i = 1
@@ -4982,7 +4627,7 @@ ObjectReference[] function cArrayRemoveTrailingObjRef(ObjectReference[] aArray, 
   ; this assumes that the last indices are not *supposed* to be trailingValue
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingObjectReference", "aArray", "")
+    cErrInvalidArg("cArrayRemoveTrailingObjRef", "!aArray", "")
   else
     Int numToRemove
     Int i = 1
@@ -5004,7 +4649,7 @@ String[] function cArrayRemoveTrailingString(String[] aArray, String trailingVal
   ; this assumes that the last indices are not *supposed* to be trailingValue
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingString", "aArray", "")
+    cErrInvalidArg("cArrayRemoveTrailingString", "!aArray", "")
   else
     Int numToRemove
     Int i = 1
@@ -5026,7 +4671,7 @@ endfunction
 Actor[] function cArrayCompactActor(Actor[] aArray, Actor shiftValue = None) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayCompactActor", "aArray")
+    cErrInvalidArg("cArrayCompactActor", "!aArray")
   else
     Int lFind = aArray.Find(shiftValue)
     Int nFind = cArrayFindActor(aArray, shiftValue, 0, TRUE)
@@ -5044,7 +4689,7 @@ endfunction
 Alias[] function cArrayCompactAlias(Alias[] aArray, Alias shiftValue = None) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayCompactAlias", "aArray")
+    cErrInvalidArg("cArrayCompactAlias", "!aArray")
   else
     Int lFind = aArray.Find(shiftValue)
     Int nFind = cArrayFindAlias(aArray, shiftValue, 0, TRUE)
@@ -5062,7 +4707,7 @@ endfunction
 Float[] function cArrayCompactFloat(Float[] aArray, Float shiftValue = 0.0) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayCompactFloat", "aArray")
+    cErrInvalidArg("cArrayCompactFloat", "!aArray")
   else
     Int lFind = aArray.Find(shiftValue)
     Int nFind = cArrayFindFloat(aArray, shiftValue, 0, TRUE)
@@ -5080,7 +4725,7 @@ endfunction
 Form[] function cArrayCompactForm(Form[] aArray, Form shiftValue = None) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayCompactForm", "aArray")
+    cErrInvalidArg("cArrayCompactForm", "!aArray")
   else
     Int lFind = aArray.Find(shiftValue)
     Int nFind = cArrayFindForm(aArray, shiftValue, 0, TRUE)
@@ -5098,7 +4743,7 @@ endfunction
 Int[] function cArrayCompactInt(Int[] aArray, Int shiftValue = 0) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayCompactInt", "aArray")
+    cErrInvalidArg("cArrayCompactInt", "!aArray")
   else
     Int lFind = aArray.Find(shiftValue)
     Int nFind = cArrayFindInt(aArray, shiftValue, 0, TRUE)
@@ -5116,7 +4761,7 @@ endfunction
 ObjectReference[] function cArrayCompactObjRef(ObjectReference[] aArray, ObjectReference shiftValue = None) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayCompactObjRef", "aArray")
+    cErrInvalidArg("cArrayCompactObjRef", "!aArray")
   else
     Int lFind = aArray.Find(shiftValue)
     Int nFind = cArrayFindObjRef(aArray, shiftValue, 0, TRUE)
@@ -5134,7 +4779,7 @@ endfunction
 String[] function cArrayCompactString(String[] aArray, String shiftValue = "") global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayCompactString", "aArray")
+    cErrInvalidArg("cArrayCompactString", "!aArray")
   else
     Int lFind = aArray.Find(shiftValue)
     Int nFind = cArrayFindString(aArray, shiftValue, 0, TRUE)
@@ -5154,7 +4799,7 @@ endfunction
 ; 21-11-08 - Test Success
 Float[]  function cArrayBubbleSortFloat(Float[] aArray, Bool invertIt = False) global
   if !aArray
-    cErrInvalidArg("cArrayBubbleSortFloat", "aArray")
+    cErrInvalidArg("cArrayBubbleSortFloat", "!aArray")
   else
     Float tempData
     Int j = aArray.length - 1
@@ -5177,7 +4822,7 @@ endfunction
 ; 21-11-08 - Test Success
 Int[]    function cArrayBubbleSortInt(Int[] aArray, Bool invertIt = False) global
   if !aArray
-    cErrInvalidArg("cArrayBubbleSortInt", "aArray")
+    cErrInvalidArg("cArrayBubbleSortInt", "!aArray")
   else
     Int tempData
     Int j = aArray.length - 1
@@ -5201,7 +4846,7 @@ endfunction
 String[] function cArrayBubbleSortString(String[] aArray, Bool invertIt = False, Bool usePapUtil = TRUE) global
   {Requirements: None}
   if !aArray
-    cErrInvalidArg("cArrayBubbleSortString", "aArray")
+    cErrInvalidArg("cArrayBubbleSortString", "!aArray")
   elseif usePapUtil
     PapyrusUtil.SortStringArray(aArray)
   else
@@ -5230,7 +4875,7 @@ Actor[]   function cArrayFillActor(Actor[] aArray, Actor filler, Bool forceAll =
   {Requirements: None}
   ; if forceAll == TRUE sets every index to filler value
   if !aArray
-    cErrInvalidArg("cArrayFillActor", "aArray", "arrayNone")
+    cErrInvalidArg("cArrayFillActor", "!aArray", "arrayNone")
   else
     Int i = 0
     while i < aArray.length
@@ -5245,7 +4890,7 @@ Alias[]  function cArrayFillAlias(Alias[] aArray, Alias filler, Bool forceAll = 
   {Requirements: None}
   ; if forceAll == TRUE sets every index to filler value
   if !aArray
-    cErrInvalidArg("cArrayFillAlias", "aArray", "")
+    cErrInvalidArg("cArrayFillAlias", "!aArray", "")
   else
     Int i = 0
     while i < aArray.length
@@ -5260,7 +4905,7 @@ Bool[]   function cArrayFillBool(Bool[] aArray, Bool filler) global
   {Requirements: None}
   ; This is one of the dumbest functions I've ever seen. No 'forceAll' argument for obvious reasons
   if !aArray
-    cErrInvalidArg("cArrayFillBool", "aArray", "")
+    cErrInvalidArg("cArrayFillBool", "!aArray", "")
   else
     Int i = 0
     while i < aArray.length
@@ -5275,7 +4920,7 @@ Float[]  function cArrayFillFloat(Float[] aArray, Float filler, Bool forceAll = 
   {Requirements: None}
   ; if forceAll == TRUE sets every index to filler value
   if !aArray
-    cErrInvalidArg("cArrayFillFloat", "aArray", "arrayNone")
+    cErrInvalidArg("cArrayFillFloat", "!aArray", "arrayNone")
   else
     Int i = 0
     while i < aArray.length
@@ -5290,7 +4935,7 @@ Form[]   function cArrayFillForm(Form[] aArray, Form filler, Bool forceAll = Fal
   {Requirements: None}
   ; if forceAll == TRUE sets every index to filler value
   if !aArray
-    cErrInvalidArg("cArrayFillForm", "aArray", "arrayNone")
+    cErrInvalidArg("cArrayFillForm", "!aArray", "arrayNone")
   else
     Int i = 0
     while i < aArray.length
@@ -5305,7 +4950,7 @@ Int[]    function cArrayFillInt(Int[] aArray, Int filler, Bool forceAll = False)
   {Requirements: None}
   ; if forceAll == TRUE sets every index to filler value
   if !aArray
-    cErrInvalidArg("cArrayFillInt", "aArray", "arrayNone")
+    cErrInvalidArg("cArrayFillInt", "!aArray", "arrayNone")
   else
     Int i = 0
     while i < aArray.length
@@ -5320,7 +4965,7 @@ ObjectReference[] function cArrayFillObjRef(ObjectReference[] aArray, ObjectRefe
   {Requirements: None}
   ; if forceAll == TRUE sets every index to filler value
   if !aArray
-    cErrInvalidArg("cArrayFillObjRef", "aArray", "arrayNone")
+    cErrInvalidArg("cArrayFillObjRef", "!aArray", "arrayNone")
   else
     Int i = 0
     while i < aArray.length
@@ -5335,7 +4980,7 @@ String[] function cArrayFillString(String[] aArray, String filler, Bool forceAll
   {Requirements: None}
   ; if forceAll == TRUE sets every index to filler value
   if !aArray
-    cErrInvalidArg("cArrayFillString", "aArray", "arrayNone")
+    cErrInvalidArg("cArrayFillString", "!aArray", "arrayNone")
   else
     Int i = 0
     while i < aArray.length
@@ -5392,7 +5037,7 @@ endfunction
 ; 21-11-09 - Test Success, correction
 Float[]  function cArrayClearFloat(Float[] aArray) global
   {Requirements: None}
-  if!aArray
+  if !aArray
     cErrInvalidArg("cArrayClearFloat", "!aArray")
   else
     Int i = 0
@@ -5406,7 +5051,7 @@ endfunction
 ; 21-11-09 - Success-bp, correction
 Form[]   function cArrayClearForm(Form[] aArray) global
   {Requirements: None}
-  if!aArray
+  if !aArray
     cErrInvalidArg("cArrayClearForm", "!aArray")
   else
     Int i = 0
@@ -5793,7 +5438,7 @@ Form[]   function cArrayRemoveValueForm(Form[] aArray, Form toRemove = None, Boo
   {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveValueForm", "aArray", "")
+    cErrInvalidArg("cArrayRemoveValueForm", "!aArray", "")
   else
     if usePapUtil
       return PapyrusUtil.RemoveForm(aArray, toRemove)
@@ -5826,7 +5471,7 @@ Int[]    function cArrayRemoveValueInt(Int[] aArray, Int toRemove = 0, Bool useP
   {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveValueInt", "aArray", "")
+    cErrInvalidArg("cArrayRemoveValueInt", "!aArray", "")
   else
     if usePapUtil
       return PapyrusUtil.RemoveInt(aArray, toRemove)
@@ -5893,7 +5538,7 @@ String[] function cArrayRemoveValueString(String[] aArray, String toRemove = "",
   {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveValueString", "aArray", "")
+    cErrInvalidArg("cArrayRemoveValueString", "!aArray", "")
   else
     if usePapUtil
       return PapyrusUtil.RemoveString(aArray, toRemove)
@@ -5928,9 +5573,9 @@ Actor[]  function cArrayCopyToActor(Actor[] aArray1, Actor[] aArray2, Actor fill
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
   if !aArray1
-    cErrInvalidArg("cArrayCopyToActor", "aArray1")
+    cErrInvalidArg("cArrayCopyToActor", "!aArray1")
   elseif !aArray2
-    cErrInvalidArg("cArrayCopyToActor", "aArray2")
+    cErrInvalidArg("cArrayCopyToActor", "!aArray2")
   else
     Int i = 0
     while i < aArray2.length
@@ -5950,9 +5595,9 @@ Alias[]  function cArrayCopyToAlias(Alias[] aArray1, Alias[] aArray2, Alias fill
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
   if !aArray1
-    cErrInvalidArg("cArrayCopyToAlias", "aArray1")
+    cErrInvalidArg("cArrayCopyToAlias", "!aArray1")
   elseif !aArray2
-    cErrInvalidArg("cArrayCopyToAlias", "aArray2")
+    cErrInvalidArg("cArrayCopyToAlias", "!aArray2")
   else
     Int i = 0
     while i < aArray2.length
@@ -5972,9 +5617,9 @@ Bool[]   function cArrayCopyToBool(Bool[] aArray1, Bool[] aArray2, Bool filler =
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
   if !aArray1
-    cErrInvalidArg("cArrayCopyToBool", "aArray1")
+    cErrInvalidArg("cArrayCopyToBool", "!aArray1")
   elseif !aArray2
-    cErrInvalidArg("cArrayCopyToBool", "aArray2")
+    cErrInvalidArg("cArrayCopyToBool", "!aArray2")
   else
     Int i = 0
     while i < aArray2.length
@@ -5994,9 +5639,9 @@ Float[]  function cArrayCopyToFloat(Float[] aArray1, Float[] aArray2, Float fill
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
   if !aArray1
-    cErrInvalidArg("cArrayCopyToFloat", "aArray1")
+    cErrInvalidArg("cArrayCopyToFloat", "!aArray1")
   elseif !aArray2
-    cErrInvalidArg("cArrayCopyToFloat", "aArray2")
+    cErrInvalidArg("cArrayCopyToFloat", "!aArray2")
   else
     Int i = 0
     while i < aArray2.length
@@ -6016,9 +5661,9 @@ Form[]   function cArrayCopyToForm(Form[] aArray1, Form[] aArray2, Form filler =
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
   if !aArray1
-    cErrInvalidArg("cArrayCopyToForm", "aArray1")
+    cErrInvalidArg("cArrayCopyToForm", "!aArray1")
   elseif !aArray2
-    cErrInvalidArg("cArrayCopyToForm", "aArray2")
+    cErrInvalidArg("cArrayCopyToForm", "!aArray2")
   else
     Int i = 0
     while i < aArray2.length
@@ -6038,9 +5683,9 @@ Int[]    function cArrayCopyToInt(Int[] aArray1, Int[] aArray2, Int filler = 0) 
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
   if !aArray1
-    cErrInvalidArg("cArrayCopyToInt", "aArray1")
+    cErrInvalidArg("cArrayCopyToInt", "!aArray1")
   elseif !aArray2
-    cErrInvalidArg("cArrayCopyToInt", "aArray2")
+    cErrInvalidArg("cArrayCopyToInt", "!aArray2")
   else
     Int i = 0
     while i < aArray2.length
@@ -6060,9 +5705,9 @@ ObjectReference[] function cArrayCopyToObjRef(ObjectReference[] aArray1, ObjectR
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
   if !aArray1
-    cErrInvalidArg("cArrayCopyToObjRef", "aArray1")
+    cErrInvalidArg("cArrayCopyToObjRef", "!aArray1")
   elseif !aArray2
-    cErrInvalidArg("cArrayCopyToObjRef", "aArray2")
+    cErrInvalidArg("cArrayCopyToObjRef", "!aArray2")
   else
     Int i = 0
     while i < aArray2.length
@@ -6082,9 +5727,9 @@ String[] function cArrayCopyToString(String[] aArray1, String[] aArray2, String 
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
   if !aArray1
-    cErrInvalidArg("cArrayCopyToString", "aArray1")
+    cErrInvalidArg("cArrayCopyToString", "!aArray1")
   elseif !aArray2
-    cErrInvalidArg("cArrayCopyToString", "aArray2")
+    cErrInvalidArg("cArrayCopyToString", "!aArray2")
   else
     Int i = 0
     while i < aArray2.length
@@ -6108,12 +5753,12 @@ Actor[]   function cArrayRemoveIndexActor(Actor[] aArray, Int indexToRemove = 0,
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveIndexActor", "aArray", "")
+    cErrInvalidArg("cArrayRemoveIndexActor", "!aArray", "")
   else
     if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
       indexToRemove = aArray.length - 1
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexActor", "indexToRemove")
+      cErrInvalidArg("cArrayRemoveIndexActor", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
       if usePapUtil
         Actor[] head
@@ -6152,12 +5797,12 @@ Alias[]   function cArrayRemoveIndexAlias(Alias[] aArray, Int indexToRemove = 0,
   {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveIndexAlias", "aArray", "")
+    cErrInvalidArg("cArrayRemoveIndexAlias", "!aArray", "")
   else
     if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
       indexToRemove = aArray.length - 1
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexAlias", "indexToRemove")
+      cErrInvalidArg("cArrayRemoveIndexAlias", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
       if usePapUtil
         Alias[] head
@@ -6196,12 +5841,12 @@ Bool[]   function cArrayRemoveIndexBool(Bool[] aArray, Int indexToRemove = 0, Bo
   {Requirements: None, PapyrusUtil:Soft}
   Bool[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveIndexBool", "aArray", "")
+    cErrInvalidArg("cArrayRemoveIndexBool", "!aArray", "")
   else
     if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
       indexToRemove = aArray.length - 1
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexBool", "indexToRemove")
+      cErrInvalidArg("cArrayRemoveIndexBool", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
       if usePapUtil
         Bool[] head
@@ -6240,12 +5885,12 @@ Float[]  function cArrayRemoveIndexFloat(Float[] aArray, Int indexToRemove = 0, 
   {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
   if !aArray
-    cErrInvalidArg("cArrayRemoveIndexFloat", "aArray", "")
+    cErrInvalidArg("cArrayRemoveIndexFloat", "!aArray", "")
   else
     if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
       indexToRemove = aArray.length - 1
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexFloat", "indexToRemove")
+      cErrInvalidArg("cArrayRemoveIndexFloat", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
       if usePapUtil
         Float[] head
@@ -9841,3 +9486,380 @@ SKSE Item Type Names just a reference list
     type == 133 "kColorForm"
     type == 134 "kReverbParam"
 /;
+
+;Functions used to output error messages
+function clibTrace(String functionName, String msg, Int errorLevel, Bool condition = TRUE, \
+    Bool tryConsoleUtil = TRUE) global
+  {Requirements: None, ConsoleUtil:Soft}
+  condition = TRUE ; change this to false to disable all trace messages
+  if condition
+    Debug.Trace(cGetScriptName() + "::" + functionName + "():: " + msg, errorLevel)
+    if tryConsoleUtil && ConsoleUtil.GetVersion()
+      ConsoleUtil.PrintMessage(cTernaryString(errorLevel == 2, "Error! ", \
+        cTernaryString(errorLevel == 1, "Warning: ", \
+          cTernaryString(errorLevel == 0, "Info: ", ""))) + "clib::" + functionName + "() " + msg)
+    endif
+  endif
+endfunction
+function cErrInvalidArg(String functionName, String argName = "", String returnValue = "", \
+    Int errorLevel = 2, Bool condition = TRUE, Bool useSKSE = TRUE, Bool tryConsoleUtil = TRUE) global
+  {Requirements: None, ConsoleUtil:Soft}
+  if useSKSE && StringUtil.Find(functionName, "array") != -1
+    returnValue = "arrayNone"
+  endif
+  clibTrace(functionName, "Argument(s)" + cTernaryString(argName != "", ": " + argName, "") + " invalid!" + \
+    cTernaryString(returnValue != "", " Returning " + returnValue, ""), errorLevel, condition, tryConsoleUtil)
+endfunction
+function cErrArrInitFail(String functionName, String arrayName = "newArray", String returnValue = "ArrayNone", \
+    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
+  {Requirements: None, ConsoleUtil:Soft}
+  clibTrace(functionName, "Variable: " + arrayName + " failed to initialize! Returning " + returnValue, errorLevel, \
+    condition, tryConsoleUtil)
+endfunction
+function cErrReqDisabled(String functionName, String modName = "SKSE", String returnValue = "", \
+    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
+  {Requirements: None, ConsoleUtil:Soft}
+  clibTrace(functionName, modName + " functionality is disabled; This function cannot operate without it!" + \
+    cTernaryString(returnValue == "", " Returning \"\"", ""), errorLevel, condition, tryConsoleUtil)
+endfunction
+
+;--------------------------SKSE:HARD-------------------------------------------
+
+String function cGetModName(String hexForm = "", Int decForm = 0,Form formVar = None, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  String returnString
+  if useSKSE
+    String modIndex
+    if formVar
+      returnString = cGetModNameForm(formVar)
+    else
+      if decForm
+        hexForm = cD2H(decForm)
+      endif
+      if cIsLight(hexForm)
+        modIndex = StringUtil.SubString(hexForm,2,3)
+        returnString = Game.GetLightModName(cH2D(modIndex))
+      else
+        if StringUtil.GetLength(hexForm) == 10
+          modIndex = StringUtil.SubString(hexForm,2,2)
+        elseif StringUtil.GetLength(hexForm) == 8
+          modIndex = StringUtil.SubString(hexForm,0,2)
+        endif
+        returnString = Game.GetModName(cH2D(modIndex))
+      endif
+    endif
+  else
+    cErrReqDisabled("cGetTheModName")
+  endif
+  return returnString
+endFunction
+String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  ; This function came from Mr Octopus!! Thank you!!!
+  if useSKSE
+    Int intFormID = aForm.GetFormID()
+    Int index = Math.RightShift(intFormID, 24)
+    ; Light (Comment out and recompile if using Classic Edition)
+    if index == 254
+        return Game.GetLightModName(Math.RightShift(intFormID, 12) - 0xFE000)
+    endif
+    ; Normal
+    return Game.GetModName(index)
+  else
+    cErrReqDisabled("cGetFormModName")
+    return ""
+  endif
+endfunction
+Bool   function cIsInAnyMenu(Bool useSKSE = TRUE) global ; .IsInMenuMode() returns different sometimes! Use this if incorrect return
+  {Requirements: SKSE}
+  if useSKSE
+    return !UI.IsMenuOpen("Console") && !UI.IsMenuOpen("RaceSex Menu") && \
+        !UI.IsMenuOpen("Sleep/Wait Menu") && !UI.IsMenuOpen("ContainerMenu") && !UI.IsMenuOpen("FavoritesMenu") && \
+          !UI.IsMenuOpen("Crafting Menu") && !UI.IsMenuOpen("MainMenu") && !UI.IsMenuOpen("JournalMenu") && \
+            !UI.IsMenuOpen("InventoryMenu") && !UI.IsMenuOpen("Console Native UI Menu") && \
+              !UI.IsMenuOpen("Dialogue Menu")
+  else
+    cErrReqDisabled("cIsInAnyMenu")
+  endif
+endfunction
+Bool[] function cArePluginsInstalled(String[] listOfPlugins, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  Bool[] newArray
+  if !listOfPlugins
+    cErrInvalidArg("cAreFilesInstalled", "!listOfPlugins")
+  elseif useSKSE
+    newArray = cArrayCreateBool(listOfPlugins.length)
+    if newArray.length
+      Int numPlugins = listOfPlugins.length
+      Int i = 0
+      while i < numPlugins
+        newArray[i] = Game.IsPluginInstalled(listOfPlugins[i])
+        i+= 1
+      endwhile
+    else
+      cErrArrInitFail("cAreFilesInstalled")
+    endif
+  else
+    cErrReqDisabled("cAreFilesInstalled")
+  endif
+  return newArray
+endfunction
+  ;>>> Returns text with MCM menu color formatting
+String function cColoredText(String aString, Bool ddInstalled = False, String textColorHex = "", String trimWhere = "", \
+    Bool useSKSE = TRUE) global
+  {Requirements: SKSE:Hard, SkyUI:Soft unsure if hard}
+  ; Valid options for trimWhere are "left", "right", "both"
+  ; Unsure what other applications there are for color formatted text like this
+  if !aString && !textColorHex
+    cErrInvalidArg("cColoredText", "!aString && !textColorHex", "\"\"")
+  else
+    if useSKSE
+      if !ddInstalled ; optional catch for DearDiary which does not play well with colored text
+        String trimmedS = aString
+        String colorOrange = "FFA600"
+        String colorYellow = "ECF01D"
+        String colorRed = "D41717"
+        String colorBlue = "2D4BB5"
+        String colorGray = "A6A6A6"
+        String colorGreen = "52AB1F"
+        ; if only want the hex code back
+        if !aString
+          if textColorHex == "orange"
+            return colorOrange
+          elseif textColorHex == "yellow"
+            return colorYellow
+          elseif textColorHex == "red"
+            return colorRed
+          elseif textColorHex == "blue"
+            return colorBlue
+          elseif textColorHex == "gray"
+            return colorGray
+          elseif textColorHex == "green"
+            return colorGreen
+          endif
+        else
+          ; Trim to get color from contextual command below
+          if StringUtil.SubString(trimmedS, 0, 1) == " "
+            trimmedS = StringUtil.SubString(trimmedS, 1, StringUtil.GetLength(trimmedS) - 1)
+          endif
+          if StringUtil.SubString(trimmedS,StringUtil.GetLength(trimmedS) - 1, 1) == " "
+            trimmedS = StringUtil.SubString(trimmedS, 0, StringUtil.GetLength(trimmedS) - 1)
+          endif
+          
+          ; For reserved words that must have spaces in front or behind to prevent their case from being changed
+          ; Trim whitespace only for response string as directed
+          if (trimWhere == "front" || trimWhere == "left") && StringUtil.SubString(aString, 0, 1) == " "
+            aString = StringUtil.SubString(aString, 1, StringUtil.GetLength(aString) - 1)
+          elseif (trimWhere == "end" || trimWhere == "right") && \
+              StringUtil.SubString(aString,StringUtil.GetLength(aString) - 1, 1) == " "
+            aString = StringUtil.SubString(aString, 0, StringUtil.GetLength(aString) - 1)
+          endif
+
+          ; convert from string color
+          if textColorHex == "orange"
+            textColorHex = colorOrange
+          elseif textColorHex == "yellow"
+            textColorHex = colorYellow
+          elseif textColorHex == "red"
+            textColorHex = colorRed
+          elseif textColorHex == "blue"
+            textColorHex = colorBlue
+          elseif textColorHex == "gray"
+            textColorHex = colorGray
+          elseif textColorHex == "green"
+            textColorHex = colorGreen
+          elseif !textColorHex
+            ; Choose color by text content
+            if trimmedS == "Unassign" || trimmedS == "Restore"
+              textColorHex = colorYellow
+            elseif trimmedS == "Assign" || trimmedS == "Add" || trimmedS == "Save"
+              textColorHex = colorGreen
+            elseif trimmedS == "Unassigned" || trimmedS == "Assigned" || trimmedS == "N/A"
+              textColorHex = colorGray
+            elseif trimmedS == "Reassign"
+              textColorHex = colorOrange
+            elseif trimmedS == "Clear" || trimmedS == "Remove"
+              textColorHex = colorRed
+            endif
+          endif
+          aString = "<font color='#" + textColorHex + "'>" + aString + "</font>"
+        endif
+      endif
+    else
+      cErrReqDisabled("cColoredText")
+    endif
+  endif
+  return aString
+endfunction
+
+Int function cStringCountSubstring(String countThis, String inThis, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  Int returnInt
+  if !countThis || !inThis
+    cErrInvalidArg("cStringCountSubstring", "!countThis || !inThis", "-1")
+    returnInt = -1
+  else
+    if useSKSE
+      Int charIndex = 0
+      Int numOccurences = 0
+      while StringUtil.Find(inThis, countThis, charIndex) > 0
+        charIndex = StringUtil.Find(inThis, countThis, charIndex) + StringUtil.GetLength(countThis)
+        numOccurences += 1
+      endwhile
+      returnInt = numOccurences
+    else
+      cErrReqDisabled("cStringCountSubstring")
+    endif
+  endif
+  return returnInt
+endfunction
+
+Enchantment[]  function cArrayBaseEnchantment(Enchantment[] aArray, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  if !aArray
+    cErrInvalidArg("cArrayBaseEnchantment", "!aArray")
+  else
+    if useSKSE
+      Enchantment aEnchantment
+      Int numEnchantments = aArray.length
+      Int i = 0
+      while i < numEnchantments
+        aEnchantment = aArray[i] as Enchantment
+        if aEnchantment
+          aArray[i] = aEnchantment.GetBaseEnchantment()
+        else
+          aArray[i] = None
+        endif
+      endwhile
+    else
+      cErrReqDisabled("cArrayBaseEnchantment")
+    endif
+  endif
+  return aArray
+endfunction
+
+Bool     function cModPerkPoints(Int number = 1, Bool useSKSE = TRUE) global ; NOT compatible with Vokriinator Black!!
+  {Requirements: SKSE}
+  Bool returnBool
+  if useSKSE
+    Int beforePerkPoints = Game.GetPerkPoints()
+    if number == 0
+      cErrInvalidArg("cModPerkPoints", "number == 0")
+    elseif number < 0 && beforePerkPoints < number
+      cErrInvalidArg("cModPerkPoints", "number < 0 && beforePerkPoints < number")
+    else
+      Game.ModPerkPoints(number)
+      if Game.GetPerkPoints() == beforePerkPoints + number
+        returnBool = TRUE
+      else
+        clibTrace("cModPerkPoints", " Unknown error! Perk point balance unchanged! Returning False", 2)
+      endif
+    endif
+  else
+    cErrReqDisabled("cModPerkPoints")
+  endif
+  return returnBool
+endfunction
+Int      function cTotalPerkPoints(Actor aActor, String singleSkill = "", Bool useSKSE = TRUE, \
+    Bool usePO3 = TRUE) global
+  {Requirements: SKSE}
+  ; This function was found online and adapted. I do not recall where but this is the only solution I've found that
+  ;   is moderately accurate without cataloging each and every perk mod.
+  Int perks = 0
+  if !aActor
+    cErrInvalidArg("cTotalPerkPoints", "!aActor")
+  elseif usePO3
+    perks = PO3_SKSEFunctions.GetPerkCount(aActor.GetActorBase())
+  elseif useSKSE
+    String perkArray
+    Int perkCount
+    Int charIndex
+    ActorValueInfo avi
+    String[] skillList
+    if singleSkill
+      skillList = New String[1]
+      skillList[0] = singleSkill
+    else
+      skillList = cArrayListSkillNames()
+    endif
+    Int i = 0
+    while i < skillList.length
+      avi = ActorValueInfo.GetActorValueInfobyName(skillList[i])
+      perkArray = avi.GetPerks(aActor,false,true)
+      charIndex = 0
+      perkCount = 0
+      while StringUtil.Find(perkArray,"<",charIndex) > 0
+        charIndex = StringUtil.Find(perkArray,"<",charIndex) + 1
+        perkCount += 1
+      endwhile
+      perks += perkCount
+      i += 1
+    endwhile
+    perks += Game.GetPerkPoints()
+  else
+    cErrReqDisabled("cTotalPerkPoints")
+  endif
+  return perks
+endfunction
+Form[]   function cGetAllEquippedForms(Actor aActor, Bool useSKSE = TRUE, Bool usePO3 = TRUE) global
+  {Requirements: SKSE}
+  ; Got this function online somewhere don't recall where. Credit goes to that coder not me!
+  Form[] itemsArray
+  if !aActor
+    cErrInvalidArg("cGetAllEquippedForms", "!aActor")
+  elseif usePO3
+    itemsArray = PO3_SKSEFunctions.AddAllEquippedItemsToArray(aActor)
+  elseif useSKSE
+    Form curForm
+    Int i
+    Int slotschecked
+    slotschecked += 0x00100000
+    slotschecked += 0x00200000 ;ignore reserved slots
+    slotschecked += 0x80000000
+    Int thisSlot = 0x01
+    while thisSlot < 0x80000000
+      ;only check slots we haven't found anything equipped on already
+      if Math.LogicalAnd(slotschecked, thisSlot) != thisSlot
+        curForm = aActor.GetWornForm(thisSlot)
+        if curForm
+          itemsArray = PapyrusUtil.PushForm(itemsArray, curForm)
+        else ;no armor was found on this slot
+          slotschecked += thisSlot
+        endif
+      endif
+      thisSlot *= 2 ;double the number to move on to the next slot
+    endwhile
+  else
+    cErrReqDisabled("cGetAllEquippedForms")
+  endif
+  return itemsArray
+endfunction
+
+String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE) global
+  {Requirements: SKSE}
+  String[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayStringFromKeywords", "!aArray")
+  else
+    if useSKSE
+      newArray = cArrayCreateString(aArray.length)
+      if newArray.length
+        Int i = 0
+        while i < aArray.length
+          newArray[i] = cTernaryString(aArray[i], aArray[i].GetString(), "") ; ..GetString() requires SKSE
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayStringFromKeywords")
+      endif
+    else
+      cErrReqDisabled("cArrayStringFromKeywords")
+    endif
+  endif
+  return newArray
+endfunction
+
+String function cGetScriptName() global
+  {Requirements: None}
+  return "clib"
+endfunction  
