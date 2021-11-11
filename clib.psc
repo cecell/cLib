@@ -238,7 +238,7 @@ endfunction
 Enchantment[]  function cArrayBaseEnchantment(Enchantment[] aArray, Bool useSKSE = TRUE) global
   {Requirements: SKSE}
   if !aArray
-    cErrInvalidArg("cArrayBaseEnchantment", "aArray")
+    cErrInvalidArg("cArrayBaseEnchantment", "!aArray")
   else
     if useSKSE
       Enchantment aEnchantment
@@ -472,7 +472,7 @@ Form[]   function cArrayIntIDModNamesToForms(Int[] aArray, String[] esXName, Boo
   {Requirements: None, SKSE:Soft}
   Form[] newArray
   if !aArray || !esXName
-    cErrInvalidArg("cArrayIntIDModNamesToForms", "aArray || esXName", "")
+    cErrInvalidArg("cArrayIntIDModNamesToForms", "!aArray || !esXName", "")
   elseif useSKSE && !Game.IsPluginInstalled(esXName)
     cErrInvalidArg("cArrayIntIDModNamesToForms", "useSKSE && !Game.IsPluginInstalled(esXName)")
   else
