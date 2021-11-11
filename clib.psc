@@ -107,7 +107,7 @@ Bool[] function cArePluginsInstalled(String[] listOfPlugins, Bool useSKSE = TRUE
   {Requirements: SKSE}
   Bool[] newArray
   if !listOfPlugins
-    cErrInvalidArg("cAreFilesInstalled", "listOfPlugins")
+    cErrInvalidArg("cAreFilesInstalled", "!listOfPlugins")
   elseif useSKSE
     newArray = cArrayCreateBool(listOfPlugins.length)
     if newArray.length
@@ -360,7 +360,7 @@ String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE
   {Requirements: SKSE}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayStringFromKeywords", "aArray")
+    cErrInvalidArg("cArrayStringFromKeywords", "!aArray")
   else
     if useSKSE
       newArray = cArrayCreateString(aArray.length)
@@ -411,7 +411,7 @@ Form[]   function cArrayHexIDToForms(String[] aArray, String esXName, Bool skipN
   {Requirements: None, SKSE:Soft}
   Form[] newArray
   if !aArray || !esXName
-    cErrInvalidArg("cArrayHexIDToForms", "aArray || esXName", "")
+    cErrInvalidArg("cArrayHexIDToForms", "!aArray || !esXName", "")
   elseif useSKSE && !Game.IsPluginInstalled(esXName)
     cErrInvalidArg("cArrayHexIDToForms", "useSKSE && !Game.IsPluginInstalled(esXName)")
   else
@@ -430,7 +430,7 @@ Form[]   function cArrayIntIDToForms(Int[] aArray, String esXName, Bool skipNone
   {Requirements: None, SKSE:Soft}
   Form[] newArray
   if !aArray || !esXName
-    cErrInvalidArg("cArrayIntIDToForms", "aArray || esXName", "")
+    cErrInvalidArg("cArrayIntIDToForms", "!aArray || !esXName", "")
   elseif useSKSE && !Game.IsPluginInstalled(esXName)
     cErrInvalidArg("cArrayIntIDToForms", "useSKSE && !Game.IsPluginInstalled(esXName)")
   else
