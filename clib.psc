@@ -4,7 +4,12 @@ Int    function cGetVersion() global
   {Requirements: None}
   return 9001
 endfunction
-
+Bool   function cLibESPInstalled() global
+  return (Game.GetFormFromFile(0x00000807, "cLibraries.esp") as GlobalVariable).GetValue() as Bool
+endfunction
+function p(String msg) global
+  ConsoleUtil.PrintMessage(msg)
+endfunction
 ;--------------------------FORMS/OBJECT REFERENCES-----------------------------
 
 ;====== Query/Analysis
@@ -456,7 +461,6 @@ Bool     function cIDInVanillaRange(Int decForm, String hexForm = "", Form aForm
   return returnBool
 endfunction
 
-
 ;====== Mod Functions
 Bool   function cIsLight(String hexForm = "", Int decForm = 0,Form formVar = None, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
@@ -485,8 +489,123 @@ Bool   function cIsLight(String hexForm = "", Int decForm = 0,Form formVar = Non
   endif
 endfunction
 
-;====== Map/Spatial
-  ;>>> Map positions
+;====== Leveled Item Lists
+Int function cArrayAddLVLI(LeveledItem aLeveledList, Form[] aArray, Int level, Int count) global
+  {Requirements: None}
+  ; all items in the form must have the same level and count
+  Int numAdded = 0
+  if !aArray
+    cErrInvalidArg("cArrayAddLVLI", "!aArray")
+  elseif !aLeveledList
+    cErrInvalidArg("cArrayAddLVLI", "!aLeveledList")
+  else
+    Int i = 0
+    while i < aArray.length
+      if aArray[i]
+        aLeveledList.AddForm(aArray[i], level, count)
+        numAdded += 1
+      endif
+      i += 1
+    endwhile
+  endif
+  return numAdded
+endfunction
+Int function cArrayAllAddLVLI(LeveledItem aLeveledList, Form[] aArray, Int[] levels, Int[] counts) global
+  {Requirements: None}
+  ; accepts arrays for all three arguments, forms, levelss, countss
+  ; Note: the levels and counts arrays use the cWrapInt function. This allows the following:
+  ;   A 21 index form array and levels and counts arrays of 7 forms each:
+  ;   Form[0] -> levels[0] -> counts[0]
+  ;   ...
+  ;   Form[6] -> levels[6] -> counts[6]
+  ;   Form[7] -> levels[0] -> counts[0]
+  ;   ...
+  ;   Form[13] -> levels[6] -> counts[6]
+  ;   Form[14] -> levels[0] -> counts[0]
+  ; If all arrays are equal in size it will of course proceed in normal fashion
+  Int numAdded = 0
+  if !aArray
+    cErrInvalidArg("cArrayAllAddLVLI", "!aArray")
+  elseif !aleveledList
+    cErrInvalidArg("cArrayAllAddLVLI", "!aleveledList")
+  elseif !levels
+    cErrInvalidArg("cArrayAllAddLVLI", "!levels")
+  elseif !counts
+    cErrInvalidArg("cArrayAllAddLVLI", "!counts")
+  else
+    Int i = 0
+    Int j = 0
+    Int k = 0
+    while i < aArray.length
+      if aArray[i]
+        aleveledList.AddForm(aArray[i], levels[cWrapInt(j, levels.length, 0)], \
+          counts[cWrapInt(k, counts.length, 0)])
+        numAdded += 1
+      endif
+      j += 1
+      k += 1
+      i += 1
+    endwhile
+  endif
+  return numAdded
+endfunction
+
+; Inventory functions
+Form[] function cGetContainerInventory(ObjectReference aContainer, Bool includeQuestItems = False, \
+  Bool useSKSE = TRUE, Bool usePO3 = TRUE) global
+  {Requirements: None, SKSE:Soft, PO3: Soft}
+  Form[] returnArray
+  if !aContainer
+    cErrInvalidArg("cGetContainerInventory", "!aContainer")
+  elseif usePO3
+    returnArray = PO3_SKSEFunctions.AddAllItemsToArray()
+  elseif useSKSE
+    Int numForms = refSource.GetNumItems()
+    returnArray = cArrayCreateForm(numForms)
+    if returnArray.length
+      Int i = numForms
+      while i
+        i -= 1
+        returnArray[i] = aContainer.GetNthForm(i)
+      endwhile
+    else
+      ;ADDTRACE
+    endif
+  else
+    GlobalVariable isRunning01 = Game.GetFormFromFile(0x0000080C, "cLibraries.esp") as GlobalVariable
+    FormList workingFormList = Game.GetFormFromFile(0x00000D74, "cLibraries.esp") as FormList
+    ObjectReference workingContainer = Game.GetFormFromFile(0x00000804, "cLibraries.esp") as ObjectReference
+
+    aContainer.RemoveAllItems(workingContainer, TRUE, False) ; <-- quest items False
+    if includeQuestItems
+      ObjectReference questContainer = Game.GetFormFromFile(0x00000805, "cLibraries.esp") as ObjectReference
+      aContainer.RemoveAllItems(questContainer, TRUE, TRUE) ; <-- quest items False
+    endif
+    Int i = 0
+    while isRunning01.GetValue() == 1.0 && i < 100 ;<-- catch runaway loop
+      Utility.Wait(0.5)
+      i += 1
+    endwhile
+    if i > 99
+      ;ADDTRACE
+    else
+      
+    endif
+  endif
+  
+  return returnArray
+endfunction
+;PO3_SKSEFunctions.AddAllItemsToArray(ObjectReference akRef, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
+;PO3_SKSEFunctions.AddAllItemsToList(ObjectReference akRef, Formlist akList, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
+;PO3_SKSEFunctions.AddItemsOfTypeToArray(ObjectReference akRef, int aiFormType, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false)
+;PO3_SKSEFunctions.AddItemsOfTypeToList(ObjectReference akRef, Formlist akList, int aiFormType, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
+;========================= Map/Spatial
+; Spatial ref data https://www.creationkit.com/index.php?title=Unit
+;1	   1.428 cm	  0.5625"
+;64:   91.41 cm	  3'
+;128:  1.82m	    6' (1.0 height character)
+;4096: 58.5m	  192' (dimension of a cell)
+  ;>>> Map coordinates
 Int[]   function cGetCellCKCoordsArray(ObjectReference aObjectRef) global
   {Requirements: None}
   ;Grid Map for reference
@@ -517,7 +636,7 @@ String  function cGetCellXYAsString(ObjectReference aObjectRef) global
   endif
   return returnString
 endfunction
-  ;>>> Translation (CK to XY, e.g. CK: 33, 8 == x: 135168, y: 32768)
+  ;>>> Coordinate conversion (CK to XY, e.g. CK: 33, 8 == x: 135168, y: 32768)
 Int[]   function cGetCKCoordsFromXY(Float xVar, Float yVar, ObjectReference aObjectRef = None) global
   {Requirements: None}
   ; If aObjectRef is provided then xVar and yVar are overwritten by its position
@@ -560,7 +679,7 @@ Float[] function cGetCoCXYFromCKCoords(Int ckX, Int ckY, ObjectReference aObject
   endif
   return returnArray
 endfunction
-  ;>>> get the actual Form of the Cell ObjectReference/Actor is currently in (Tamriel only for now)
+  ;>>> Cell object retrieval (Tamriel only for now)
 Cell    function cGetCellFromCoords(Int ckX, Int ckY, Float xVar = 0.0, Float yVar = 0.0) global
   {Requirements: None}
   ;Grid Map for reference
@@ -592,7 +711,6 @@ Int     function cGetCellFormIDFromCoords(Int ckX, Int ckY, Float xVar = 0.0, Fl
   endif
   return returnInt
 endfunction
-
   ;>>> get the distances of array of objects from object aObj
 Float[] function cArrayGetDistancesObjRef(ObjectReference aObj, ObjectReference[] aArray) global
   {Requirements:None}
@@ -615,13 +733,6 @@ Float[] function cArrayGetDistancesObjRef(ObjectReference aObj, ObjectReference[
   endif
   return newArray
 endfunction
-
-; Spatial ref data https://www.creationkit.com/index.php?title=Unit
-;1	   1.428 cm	  0.5625"
-;64:   91.41 cm	  3'
-;128:  1.82m	    6' (1.0 height character)
-;4096: 58.5m	  192' (dimension of a cell)
-
   ;>>> .Get*() as an array && .Set*() accepts array
 Float[] function cArrayGetAngle(ObjectReference aObj) global
   {Requirements: None}
@@ -729,155 +840,14 @@ function cArrayTranslateTo(ObjectReference aObj, Float[] pArray, Float speed = 5
   endif
 endfunction
 
-;-----------------------Math/Logic------------------------------------------000
-;====== Analysis
-; 21-11-09 - Test Success
-Bool function cIsEven(Int aInt) global
-  {Requirements: None}
-  return aInt % 2 == 0
-endfunction
-; 21-11-09 - Test Success
-Bool function cIsOdd(Int aInt) global
-  {Requirements: None}
-  return aInt % 2 != 0
-endfunction
-; 21-11-09 - Test Success
-Bool function cIsFloat(String aString) global ; may not work with very small/large numbers
-  {Requirements: None}
-  return !cIsInt(aString)
-endfunction
-; 21-11-09 - Test Success
-Bool function cIsInt(String aString) global
-  {Requirements: None}
-  return ((aString as Float) as Int) as String == aString
-endfunction
-; 21-11-09 - Test Success
-Bool function cIsBetweenFloat(Float aValue, Float minV, Float maxV) global
-  {Requirements: None}
-  if minV > maxV
-    cErrInvalidArg("cIsBetweenFloat", "minV > maxV", "False")
-  else
-    return minV <= maxV && aValue >= minV && aValue <= maxV
-  endif
-  return False
-endfunction
-; 21-11-09 - Test Success
-Bool function cIsBetweenInt(Int aValue, Int minV, Int maxV) global
-  {Requirements: None}
-  if minV > maxV
-    cErrInvalidArg("cIsBetweenInt", "minV > maxV", "False")
-  else
-    return minV <= maxV && aValue >= minV && aValue <= maxV
-  endif
-  return False
-endfunction
-
-;====== Manipulation
-; 21-11-09 - Test Success
-Float function cClampFloat(Float aValue, Float minV, Float maxV, Bool usePapUtil = TRUE) global
-	{Requirements: None, PapyrusUtil:Soft}
-  Float returnFloat
-  if minV > maxV
-    cErrInvalidArg("cClampFloat", "minV > maxV", "False")
-  elseif usePapUtil
-    returnFloat = PapyrusUtil.ClampFloat(aValue, minV, maxV)
-  else
-    returnFloat = cTernaryFloat(aValue > maxV, maxV, cTernaryFloat(aValue < minV, minV, aValue))
-  endif
-  return returnFloat
-endfunction
-; 21-11-09 - Test Success
-Int   function cClampInt(Int aValue, Int minV, Int maxV, Bool usePapUtil = TRUE) global
-	{Requirements: None, PapyrusUtil:Soft}
-  Int returnInt
-  if minV > maxV
-    cErrInvalidArg("cClampInt", "minV > maxV", "False")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.ClampInt(aValue, minV, maxV)
-  else
-    returnInt = cTernaryInt(aValue > maxV, maxV, cTernaryInt(aValue < minV, minV, aValue))
-  endif
-  return returnInt
-endfunction
-Int   function cWrapInt(Int aValue, Int endIndex, Int startIndex = 0, Bool usePapUtil = TRUE) global
-	{Requirements: None, PapyrusUtil:Soft}
-  ; Adapted from PapyrusUtil function, awesome function!
-  Int returnInt
-  if endIndex < startIndex
-    cErrInvalidArg("cWrapInt", "endIndex < startIndex")
-  elseif endIndex < 0
-    cErrInvalidArg("cWrapInt", "endIndex < 0")
-  elseif startIndex < 0
-    cErrInvalidArg("cWrapInt", "startIndex < 0")
-  elseif endIndex == 0
-    cErrInvalidArg("cWrapInt", "endIndex == 0")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.WrapInt(aValue, endIndex, startIndex)
-  else
-    returnInt = aValue % endIndex
-  endif
-  return returnInt
-endfunction
-
-;====== Rounding
-; 21-11-09 - Test Success
-Float function cRoundFloat(Float aFloat, Int places = 1) global
-  {Requirements: None}
-  Float returnFloat
-  if places < 0
-    cErrInvalidArg("cRoundFloat", "places < 0", "0.0")
-  else
-    places = Math.Pow(10.0, places as Float) as Int
-    Float workingFloat = aFloat * places
-    workingFloat -= (workingFloat as Int) as Float
-    Int workingInt = (aFloat * (places as Float)) as Int
-    if workingFloat >= 0.5
-      workingInt = Math.Ceiling(Math.Abs(aFloat) * (places as Float))
-    else
-      workingInt = Math.Floor(Math.Abs(aFloat) * (places as Float))
-    endif
-    returnFloat = (workingInt as Float) / (places as Float)
-  endif
-  if aFloat < 0
-    returnFloat *= -1
-  endif
-  return returnFloat
-endfunction
-; 21-11-09 - Test Success
-Int   function cRoundInt(Int aInt, Int places = 1) global
-  {Requirements: None}
-  ; places == places to the *left*
-  Int returnInt
-  if places < 0
-    cErrInvalidArg("cRoundInt", "places < 0", "0")
-  elseif aInt < (places as Int)
-    cErrInvalidArg("cRoundInt", "aInt < (places as Int)", "0")
-  elseif aInt == 0
-    returnInt = aInt
-  else
-    places = Math.Pow(10.0, places as Float) as Int
-    Float workingFloat = Math.Abs(aInt as Float) / (places as Float)
-    workingFloat -= (workingFloat as Int) as Float
-    if workingFloat >= 0.5
-      returnInt = Math.Ceiling(Math.Abs(aInt as Float) / (places as Float))
-    else
-      returnInt = Math.Floor(Math.Abs(aInt as Float) / (places as Float))
-    endif
-    returnInt *= places
-    if aInt < 0
-      returnInt *= -1
-    endif
-  endif
-  return returnInt
-endfunction
-
-;====== Compacted if/then 
+;========================= Conditional statements
 ; NOTE: These functions can't short circuit like a traditional ternary. Thus, they're most efficient if only
 ;   one argument is a function. If both are functions they *both* will be run before returning a value;
 ;   Nesting these functions is perfectly fine with numbers or operator calculations but know this: nesting 
 ;   with multiple functions as arguments will results in *allllll* of the function being called. Use of
 ;   traditional if/then is recommended in those cases. Nexting ternary functions *inside* if thens works
 ;   great though (and will still shave lines off)
+  ;>>> Single value returns
 Actor    function cTernaryActor(Bool ifThis, Actor returnThis, Actor elseThis = None) global
   {Requirements: None}
   if ifThis
@@ -927,6 +897,7 @@ String   function cTernaryString(Bool ifThis, String returnThis, String elseThis
   endif
   return elseThis
 endfunction
+  ;>>> Array returns
 Actor[]  function cTernaryArrayActor(Bool ifThis, Actor[] returnThis, Actor[] elseThis) global
   {Requirements: None}
   if ifThis
@@ -984,7 +955,8 @@ String[] function cTernaryArrayString(Bool ifThis, String[] returnThis, String[]
   endif
   return elseThis
 endfunction
-  ;>>> Perfect if the returns themselves ARE the condition
+  ;>>> Simple version when returns ARE the conditions
+  ;>>> Single value returns
 Actor    function cIfActor(Actor this, Actor that) global
   {Requirements: None}
   if this
@@ -1034,6 +1006,7 @@ String   function cIfString(String this, String that) global
   endif
   return that
 endfunction
+  ;>>> Array returns
 Actor[]  function cIfArrayActor(Actor[] this, Actor[] that) global
   {Requirements: None}
   if this
@@ -1090,9 +1063,7 @@ String[] function cIfArrayString(String[] this, String[] that) global
   endif
   return that
 endfunction
-
   ;>>> Longer chains of conditional values
-; 21-11-09 - Visual check
 Actor  function cOrActor(Actor this, Actor that, Actor orThat2 = None, Actor orThat3 = None, Actor orThat4 = None, \
     Actor orThat5 = None, Actor orThat6 = None, Actor orThat7 = None, Actor orThat8 = None, Actor orThat9 = None) global
   {Requirements: None}
@@ -1117,7 +1088,6 @@ Actor  function cOrActor(Actor this, Actor that, Actor orThat2 = None, Actor orT
   endif
   return orThat9
 endfunction
-; 21-11-09 - Visual check
 Alias  function cOrAlias(Alias this, Alias that, Alias orThat2 = None, Alias orThat3 = None, Alias orThat4 = None, \
     Alias orThat5 = None, Alias orThat6 = None, Alias orThat7 = None, Alias orThat8 = None, Alias orThat9 = None) global
   {Requirements: None}
@@ -1142,7 +1112,6 @@ Alias  function cOrAlias(Alias this, Alias that, Alias orThat2 = None, Alias orT
   endif
   return orThat9
 endfunction
-; 21-11-09 - Visual check
 Float  function cOrFloat(Float this, Float that, Float orThat2 = 0.0, Float orThat3 = 0.0, Float orThat4 = 0.0, \
     Float orThat5 = 0.0, Float orThat6 = 0.0, Float orThat7 = 0.0, Float orThat8 = 0.0, Float orThat9 = 0.0) global
   {Requirements: None}
@@ -1167,7 +1136,6 @@ Float  function cOrFloat(Float this, Float that, Float orThat2 = 0.0, Float orTh
   endif
   return orThat9
 endfunction
-; 21-11-09 - Visual check
 Form   function cOrForm(Form this, Form that, Form orThat2 = None, Form orThat3 = None, Form orThat4 = None, \
     Form orThat5 = None) global
   {Requirements: None}
@@ -1185,7 +1153,6 @@ Form   function cOrForm(Form this, Form that, Form orThat2 = None, Form orThat3 
   endif
   return orThat5
 endfunction
-; 21-11-09 - Visual check
 Int    function cOrInt(Int this, Int that, Int orThat2 = 0, Int orThat3 = 0, Int orThat4 = 0, Int orThat5 = 0) global
   {Requirements: None}
   if this
@@ -1201,7 +1168,6 @@ Int    function cOrInt(Int this, Int that, Int orThat2 = 0, Int orThat3 = 0, Int
   endif
   return orThat5
 endfunction
-; 21-11-09 - Visual check
 ObjectReference  function cOrObjRef(ObjectReference this, ObjectReference that, ObjectReference orThat2 = None, \
   ObjectReference orThat3 = None, ObjectReference orThat4 = None, ObjectReference orThat5 = None, \
     ObjectReference orThat6 = None, ObjectReference orThat7 = None, ObjectReference orThat8 = None, \
@@ -1228,7 +1194,6 @@ ObjectReference  function cOrObjRef(ObjectReference this, ObjectReference that, 
   endif
   return orThat9
 endfunction
-; 21-11-09 - Visual check
 String function cOrString(String this, String that, String orThat2 = "", String orThat3 = "", String orThat4 = "", \
     String orThat5 = "") global
   {Requirements: None}
@@ -1444,8 +1409,8 @@ String function cPseudoSwitchString(Int case, String elseDefault, String case0, 
   endif
   return ""
 endfunction
-
-function cActualSwitchTemplate(Int case) ; global ; <- commented out global on purpose message.Show() results
+  ;>>> Actual switch used in message.Show() output
+function cActualSwitchTemplate(Int case) ; message.Show() results
   {Requirements: None}
   if case == 0
     
@@ -1473,22 +1438,247 @@ function cActualSwitchTemplate(Int case) ; global ; <- commented out global on p
   
 endfunction
 
-;======= Random Number Generation for numbers > 100 (no limitation aside from VM capability at this point)
-Float   function cRandomNumberGenFloat(Float this, Float that) global 
+;========================= Math / Logic
+  ;>>> Analysis
+Bool function cIsEven(Int aInt) global
+  {Requirements: None}
+  return aInt % 2 == 0
+endfunction
+Bool function cIsOdd(Int aInt) global
+  {Requirements: None}
+  return aInt % 2 != 0
+endfunction
+Bool function cIsFloat(String aString) global ; may not work with very small/large numbers
+  {Requirements: None}
+  return !cIsInt(aString)
+endfunction
+Bool function cIsInt(String aString) global
+  {Requirements: None}
+  return ((aString as Float) as Int) as String == aString
+endfunction
+Bool function cIsBetweenFloat(Float aValue, Float minV, Float maxV) global
+  {Requirements: None}
+  if minV > maxV
+    cErrInvalidArg("cIsBetweenFloat", "minV > maxV", "False")
+  else
+    return minV <= maxV && aValue >= minV && aValue <= maxV
+  endif
+  return False
+endfunction
+Bool function cIsBetweenInt(Int aValue, Int minV, Int maxV) global
+  {Requirements: None}
+  if minV > maxV
+    cErrInvalidArg("cIsBetweenInt", "minV > maxV", "False")
+  else
+    return minV <= maxV && aValue >= minV && aValue <= maxV
+  endif
+  return False
+endfunction
+  ;>>> Conditional manipulation
+Float function cClampFloat(Float aValue, Float minV, Float maxV, Bool usePapUtil = TRUE) global
+	{Requirements: None, PapyrusUtil:Soft}
+  Float returnFloat
+  if minV > maxV
+    cErrInvalidArg("cClampFloat", "minV > maxV", "False")
+  elseif usePapUtil
+    returnFloat = PapyrusUtil.ClampFloat(aValue, minV, maxV)
+  else
+    returnFloat = cTernaryFloat(aValue > maxV, maxV, cTernaryFloat(aValue < minV, minV, aValue))
+  endif
+  return returnFloat
+endfunction
+Int   function cClampInt(Int aValue, Int minV, Int maxV, Bool usePapUtil = TRUE) global
+	{Requirements: None, PapyrusUtil:Soft}
+  Int returnInt
+  if minV > maxV
+    cErrInvalidArg("cClampInt", "minV > maxV", "False")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.ClampInt(aValue, minV, maxV)
+  else
+    returnInt = cTernaryInt(aValue > maxV, maxV, cTernaryInt(aValue < minV, minV, aValue))
+  endif
+  return returnInt
+endfunction
+Int   function cWrapIndex(Int aValue, Int endIndex, Int startIndex = 0, Bool usePapUtil = False) global
+	{Requirements: None, PapyrusUtil:Soft}
+  ; Adapted from PapyrusUtil function, awesome function!
+  Int returnInt
+  if endIndex < startIndex
+    cErrInvalidArg("cWrapIndex", "endIndex < startIndex")
+  elseif endIndex < 0
+    cErrInvalidArg("cWrapIndex", "endIndex < 0")
+  elseif startIndex < 0
+    cErrInvalidArg("cWrapIndex", "startIndex < 0")
+  elseif endIndex == 0
+    cErrInvalidArg("cWrapIndex", "endIndex == 0")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.WrapInt(aValue, endIndex, startIndex)
+  else
+    returnInt = aValue % endIndex
+  endif
+  return returnInt
+endfunction
+Int   function cWrapInt(Int aValue, Int highVal, Int lowVal = 0, Bool usePapUtil = False) global
+	{Requirements: None, PapyrusUtil:Soft}
+  ; Adapted from PapyrusUtil function, awesome function!
+  Int returnInt
+  if highVal < lowVal
+    cErrInvalidArg("cWrapInt", "highVal < lowVal")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.WrapInt(aValue, highVal, lowVal)
+  else
+    returnInt = aValue % highVal
+  endif
+  return returnInt
+endfunction
+Float function cWrapFloat(Float aValue, Float maxValue, Float minValue = 0.0, Bool usePapUtil = False) global
+	{Requirements: None, PapyrusUtil:Soft}
+  Float returnFloat
+  if maxValue < minValue
+    cErrInvalidArg("cWrapFloat", "endIndex < startIndex")
+  elseif usePapUtil
+    returnFloat = PapyrusUtil.WrapFloat(aValue, maxValue, minValue)
+  else
+    returnFloat = aValue
+    while returnFloat > minValue
+      returnFloat -= minValue
+    endwhile
+  endif
+  return returnFloat
+endfunction
+  ;>>> Rounding
+Float function cRoundFloat(Float aFloat, Int places = 1) global
+  {Requirements: None}
+  Float returnFloat
+  if places < 0
+    cErrInvalidArg("cRoundFloat", "places < 0", "0.0")
+  else
+    places = Math.Pow(10.0, places as Float) as Int
+    Float workingFloat = aFloat * places
+    workingFloat -= (workingFloat as Int) as Float
+    Int workingInt = (aFloat * (places as Float)) as Int
+    if workingFloat >= 0.5
+      workingInt = Math.Ceiling(Math.Abs(aFloat) * (places as Float))
+    else
+      workingInt = Math.Floor(Math.Abs(aFloat) * (places as Float))
+    endif
+    returnFloat = (workingInt as Float) / (places as Float)
+  endif
+  if aFloat < 0
+    returnFloat *= -1
+  endif
+  return returnFloat
+endfunction
+Int   function cRoundInt(Int aInt, Int places = 1) global
+  {Requirements: None}
+  ; places == places to the *left*
+  Int returnInt
+  if places < 0
+    cErrInvalidArg("cRoundInt", "places < 0", "0")
+  elseif aInt < (places as Int)
+    cErrInvalidArg("cRoundInt", "aInt < (places as Int)", "0")
+  elseif aInt == 0
+    returnInt = aInt
+  else
+    places = Math.Pow(10.0, places as Float) as Int
+    Float workingFloat = Math.Abs(aInt as Float) / (places as Float)
+    workingFloat -= (workingFloat as Int) as Float
+    if workingFloat >= 0.5
+      returnInt = Math.Ceiling(Math.Abs(aInt as Float) / (places as Float))
+    else
+      returnInt = Math.Floor(Math.Abs(aInt as Float) / (places as Float))
+    endif
+    returnInt *= places
+    if aInt < 0
+      returnInt *= -1
+    endif
+  endif
+  return returnInt
+endfunction
+  ;>>> Entire array calculations
+Float function cArraySumFloat(Float[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  Float aFloat
+  if !aArray
+    cErrInvalidArg("cArraySumFloat", "!aArray", "0.0")
+  elseif usePapUtil
+    aFloat = PapyrusUtil.AddFloatValues(aArray)
+  else
+    Int i = 0
+    while i < aArray.length
+      aFloat += aArray[i]
+      i += 1
+    endwhile
+  endif
+  return aFloat
+endfunction
+Int   function cArraySumInt(Int[] aArray, Bool usePapUtil = TRUE) global
+  {Requirements: None}
+  Int aInt
+  if !aArray
+    cErrInvalidArg("cArraySumInt", "!aArray", "0")
+  elseif usePapUtil
+    aInt = PapyrusUtil.AddIntValues(aArray)
+  else
+    Int i = 0
+    while i < aArray.length
+      aInt += aArray[i]
+      i += 1
+    endwhile
+  endif
+  return aInt
+endfunction
+Float function cArrayAverageFloat(Float[] aArray) global
+  {Requirements: None}
+  Float aFloat
+  if !aArray
+    cErrInvalidArg("cArrayAverageFloat", "!aArray", "0.0")
+  else
+    Int i = 0
+    while i < aArray.length
+      aFloat += aArray[i]
+      i += 1
+    endwhile
+    aFloat = aFloat / aArray.length
+  endif
+  return aFloat
+endfunction
+Int   function cArrayAverageInt(Int[] aArray) global
+  {Requirements: None}
+  ; remainder is dropped!
+  Int aInt
+  if !aArray
+    cErrInvalidArg("cArrayAverageInt", "!aArray", "0")
+  else
+    Int i = 0
+    while i < aArray.length
+      aInt += aArray[i]
+      i += 1
+    endwhile
+    aInt = aInt / aArray.length
+  endif
+  return aInt
+endfunction
+  ;>>> Random Number Generation (no limitation aside from VM capability at this point)
+Float   function cRandomNumberGenFloat(Float this, Float that, Bool usePO3 = TRUE) global 
   {Requirements: None}
   Float returnFloat
   if this > that
     cErrInvalidArg("cRandomNumberGenFloat", "this > that")
+  elseif usePO3
+    returnFloat = PO3_SKSEFunctions.GenerateRandomFloat(this, that)
   else
     returnFloat = this + (that - this) * Utility.RandomFloat(0.0, 1.0)
   endif
   return returnFloat
 endfunction
-Int     function cRandomNumberGenInt(Int this, Int that) global 
+Int     function cRandomNumberGenInt(Int this, Int that, Bool usePO3 = TRUE) global 
   {Requirements: None}
   Int returnInt
   if this > that
     cErrInvalidArg("cRandomNumberGenInt", "this > that")
+  elseif usePO3
+    returnInt = PO3_SKSEFunctions.GenerateRandomInt(this, that)
   else
     Float difference = (that as Float) - (this as Float)
     difference *= Utility.RandomFloat(0, 1)
@@ -1497,65 +1687,44 @@ Int     function cRandomNumberGenInt(Int this, Int that) global
   return returnInt
 endfunction
   ;>>> Create array of random numbers, capped at 128 indices
-Float[] function cArrayRandomFloats(Int arraySize = 128, Float this = 0.0, Float that = 100.0, \
-  Bool eachDiff = False) global 
+Float[] function cArrayRandomFloats(Int arraySize = 128, Float this = 0.0, Float that = 100.0) global 
   {Requirements: None}
-  ; array limited to 128
-  ; if eachDiff, each random number must be completely new (the smaller the difference between this and that 
-  ;   the longer this process will take!)
+  ; array length capped at 128
   arraySize = cClampInt(arraySize, 0, 128)
   Float[] returnArray = cArrayCreateFloat(arraySize)
   Float curValue
   if this > that
     cErrInvalidArg("cArrayRandomFloats", "this > that")
-  elseif this == that && eachDiff
-    cErrInvalidArg("cArrayRandomFloats", "this == that")
-  elseif (that - this < 1.0) && eachDiff ; need a larger margin to ensure there are enough different values
-    cErrInvalidArg("cArrayRandomFloats", "(that - this < 1.0) && eachDiff")
   else
     Int i = 0
     while i < arraySize
       curValue = cRandomNumberGenFloat(this, that)
-      while returnArray.Find(curValue) != -1 && eachDiff
-        curValue = cRandomNumberGenFloat(this, that)
-      endwhile
       returnArray[i] = curValue
       i += 1
     endwhile
   endif
   return returnArray
 endfunction
-Int[]   function cArrayRandomInts(Int arraySize = 128, Int this = 0, Int that = 100, Bool eachDiff = False) global 
+Int[]   function cArrayRandomInts(Int arraySize = 128, Int this = 0, Int that = 100) global 
   {Requirements: None}
-  ; array limited to 128
-  ; if eachDiff, each random number must be completely new (the smaller the difference between this and that 
-  ;   the longer this process will take!)
-  arraySize = cClampInt(arraySize, 0, 128)
+  ; array length capped at 128
+  arraySize = cClampInt(arraySize, 1, 128)
   Int[] returnArray = cArrayCreateInt(arraySize)
   Int curValue
   if this > that
     cErrInvalidArg("cArrayRandomInts", "this > that")
-  elseif this == that && eachDiff
-    cErrInvalidArg("cArrayRandomInts", "this == that && eachDiff")
-  elseif ((that - this) < arraySize) && eachDiff
-    cErrInvalidArg("cArrayRandomInts", "((that - this) < arraySize) && eachDiff")
   else
     Int i = 0
     while i < arraySize
       curValue = cRandomNumberGenInt(this, that)
-      while returnArray.Find(curValue) != -1 && eachDiff
-        curValue = cRandomNumberGenInt(this, that)
-      endwhile
       returnArray[i] = curValue
       i += 1
     endwhile
   endif
   return returnArray
 endfunction
-
-;====== Hex <-> Decimal conversion
-; 21-11-09 - Test Success
-String function cD2H(Int aInt, Bool useSKSE = TRUE) global ; non-SKSE option built-in thanks dylbill!!
+  ;>>> Hex <-> Decimal conversion
+String function cD2H(Int aInt, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   String returnString
   if useSKSE
@@ -1638,7 +1807,6 @@ String function cD2H(Int aInt, Bool useSKSE = TRUE) global ; non-SKSE option bui
   endif
   return returnString
 endfunction
-; 21-11-09 - Test Success
 Int    function cH2D(String aString) global
   {Requirements: None, SKSE:Soft}
   Int returnInt
@@ -1663,78 +1831,7 @@ Int    function cH2D(String aString) global
   endif
   return returnInt
 endfunction
-
-;====== Math 
-; 21-11-09 - Test Success
-Float function cArraySumFloat(Float[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Float aFloat
-  if !aArray
-    cErrInvalidArg("cArraySumFloat", "!aArray", "0.0")
-  elseif usePapUtil
-    aFloat = PapyrusUtil.AddFloatValues(aArray)
-  else
-    Int i = 0
-    while i < aArray.length
-      aFloat += aArray[i]
-      i += 1
-    endwhile
-  endif
-  return aFloat
-endfunction
-; 21-11-09 - Test Success
-Int   function cArraySumInt(Int[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None}
-  Int aInt
-  if !aArray
-    cErrInvalidArg("cArraySumInt", "!aArray", "0")
-  elseif usePapUtil
-    aInt = PapyrusUtil.AddIntValues(aArray)
-  else
-    Int i = 0
-    while i < aArray.length
-      aInt += aArray[i]
-      i += 1
-    endwhile
-  endif
-  return aInt
-endfunction
-; 21-11-09 - Test Success
-Float function cArrayAverageFloat(Float[] aArray) global
-  {Requirements: None}
-  Float aFloat
-  if !aArray
-    cErrInvalidArg("cArrayAverageFloat", "!aArray", "0.0")
-  else
-    Int i = 0
-    while i < aArray.length
-      aFloat += aArray[i]
-      i += 1
-    endwhile
-    aFloat = aFloat / aArray.length
-  endif
-  return aFloat
-endfunction
-; 21-11-09 - Test Success
-Int   function cArrayAverageInt(Int[] aArray) global
-  {Requirements: None}
-  ; remainder is dropped!
-  Int aInt
-  if !aArray
-    cErrInvalidArg("cArrayAverageInt", "!aArray", "0")
-  else
-    Int i = 0
-    while i < aArray.length
-      aInt += aArray[i]
-      i += 1
-    endwhile
-    aInt = aInt / aArray.length
-  endif
-  return aInt
-endfunction
-
-;====== Bitwise operations (all Non-SKSE)
-; All of the 
+  ;>>> Bitwise operations (all Non-SKSE)
 Int function cBitwiseOp(Int i1, Int i2, Int iBits = 31, Int iOp = 1, Bool bWarn = False) Global ; Needs testing
   {Requirements: None}
   ;31 bitwise operations. Returns a negative number on errors
@@ -1819,7 +1916,7 @@ Int function cBitwiseOp(Int i1, Int i2, Int iBits = 31, Int iOp = 1, Bool bWarn 
   endif
   return iRes
 endfunction
-; The non-SKSE functionality for these uses the function above, otherwise uses regular SKSE
+    ;--> cBitwiseOp provides non-SKSE functionality for these
 Int function cLogicalAND(Int i1, Int i2, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   if useSKSE
@@ -1861,11 +1958,8 @@ Int function cBitShiftR(Int aInt, Int numShifts) global
   return aInt / ((Math.Pow(2.0, numShifts as Float)) as Int)
 endfunction
 
-
-;--------------------------STRINGS---------------------------------------------
-
-;====== Analysis/Query
-;CONFIRMED WORKING 21-11-02
+;========================= STRINGS
+  ;>>> Analysis/Query
 Bool   function cStringIsLetter(String aLetter, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; Like the SKSE version, the non-SKSE version only checks the first char
@@ -1881,7 +1975,6 @@ Bool   function cStringIsLetter(String aLetter, Bool useSKSE = TRUE) global
   endif
   return returnBool
 endfunction
-;CONFIRMED WORKING 21-11-02
 Bool   function cStringIsDigit(String aDigit, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
@@ -1894,7 +1987,6 @@ Bool   function cStringIsDigit(String aDigit, Bool useSKSE = TRUE) global
   endif
   return returnBool
 endfunction
-;CONFIRMED WORKING 21-11-02
 Bool   function cStringIsMiscChar(String aChar) global
   {Requirements: None}
   ; This is !cStringIsDigit(aChar) && !cStringIsLetter(aChar)
@@ -1907,7 +1999,6 @@ Bool   function cStringIsMiscChar(String aChar) global
   endif
   return returnBool
 endfunction
-;CONFIRMED WORKING 21-11-02
 Int    function cStringFind(String inThis, String findThis, Int startIndex = 0, String[] inThisArray = None, \ 
     Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
@@ -1969,7 +2060,6 @@ Int    function cStringFind(String inThis, String findThis, Int startIndex = 0, 
   endif
   return returnInt
 endfunction
-;CONFIRMED WORKING 21-11-02
 Int    function cStringLength(String aString, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; Because the entire string must be parsed to calculate the size it is recommended to combine string handling 
@@ -1988,7 +2078,6 @@ Int    function cStringLength(String aString, Bool useSKSE = TRUE) global
   endif
   return returnInt
 endfunction
-;CONFIRMED WORKING 21-11-02
 String function cStringGetNthChar(String aString, Int n, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
@@ -2011,9 +2100,26 @@ String function cStringGetNthChar(String aString, Int n, Bool useSKSE = TRUE) gl
   endif
   return returnString
 endfunction
-
-;====== Manipulation
-String   function cStringReplace(String aString, String toReplace, String withWhat = "", Bool useSKSE = TRUE) global
+String function cStringSubString(String aString, Int startChar, Int numChars = 0, Bool useSKSE = TRUE) global
+  {Requirements None, SKSE:Soft}
+  String returnString
+  if !aString
+    cErrInvalidArg("cStringSubString", "!aString", "\"\"")
+  elseif numChars < 0
+    cErrInvalidArg("cStringSubString", "numChars < 0", "\"\"")
+  elseif useSKSE
+    if StringUtil.GetLength(aString) > numChars
+      numChars = 0 ; 0 == rest of string
+    endif
+    returnString = StringUtil.SubString(aString, startChar, numChars)
+  else
+    String[] stringBuild = cStringToArray(aString, -1)
+    returnString = cArrayJoinString(stringBuild, "", startChar, startChar + (numChars - 1))
+  endif
+  return returnString
+endfunction
+  ;>>> Manipulation
+String function cStringReplace(String aString, String toReplace, String withWhat = "", Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   String returnString = aString
   if !aString
@@ -2056,9 +2162,29 @@ String   function cStringReplace(String aString, String toReplace, String withWh
   endif
   return returnString
 endfunction
+String function cStringSetNthChar(String aString, Int a1stCharIndex, String withThis1st = "", Int a2ndCharIndex = 0, \
+  String withThis2nd = "*&^", Int a3rdCharIndex = 0, String withThis3rd = "*&^") global 
+  {Requirements: None}
+  ; withThis2nd or 3rd == "*&^" allows mix/match of ""
+  String returnString
+  String[] newArray
+  if !aString && a1stCharIndex != 0
+    cErrInvalidArg("cStringSetNthChar", "!aString && a1stCharIndex != 0")
+  else
+    newArray = cStringToArray(aString, -1)
+    newArray[a1stCharIndex - 1] = withThis1st
+    if a2ndCharIndex != 0 && withThis2nd != "*&^"
+      newArray[a2ndCharIndex - 1] = withThis2nd
+    endif
+    if a3rdCharIndex != 0 && withThis3rd != "*&^"
+      newArray[a3rdCharIndex - 1] = withThis3rd
+    endif
+    returnString = cArrayJoinString(newArray)
+  endif
+  return returnString
+endfunction
   ;>>> String truncation
-;CONFIRMED WORKING
-String   function cStringRemove(String aString, String toRemove) global
+String function cStringRemove(String aString, String toRemove) global
   {Requirements: None}
   ; Convenience version of cStringReplace()
   String returnString
@@ -2071,8 +2197,7 @@ String   function cStringRemove(String aString, String toRemove) global
   endif
   return returnString
 endfunction
-;CONFIRMED WORKING 21-11-02
-String   function cStringLeft(String aString, Int numChars, Bool useSKSE = TRUE) global
+String function cStringLeft(String aString, Int numChars, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
   String returnString
@@ -2097,8 +2222,7 @@ String   function cStringLeft(String aString, Int numChars, Bool useSKSE = TRUE)
   endif
   return returnString
 endfunction
-;CONFIRMED WORKING 21-11-02
-String   function cStringRight(String aString, Int numChars, Bool useSKSE = TRUE) global
+String function cStringRight(String aString, Int numChars, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
   String returnString
@@ -2116,8 +2240,7 @@ String   function cStringRight(String aString, Int numChars, Bool useSKSE = TRUE
   endif
   return returnString
 endfunction
-;CONFIRMED WORKING 21-11-02
-String   function cStringSetLength(String aString, Int stringLength, String filler = " ") global
+String function cStringSetLength(String aString, Int stringLength, String filler = " ") global
   {Requirements: None}
   ; Think of this as a combination of 'ArrayResize' a 'string length clamp' for a string
   ; filler can be any length desired so long as the string doesn't exceed 128 chars!
@@ -2145,8 +2268,7 @@ String   function cStringSetLength(String aString, Int stringLength, String fill
   endif
   return returnString
 endfunction
-;CONFIRMED WORKING 21-11-02 *--* Modified
-String   function cStringTrimLeft(String aString, String charToTrim = " ", Bool useSKSE = TRUE) global
+String function cStringTrimLeft(String aString, String charToTrim = " ", Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; charToTrim cannot be longer than one char (it will trim more than one just the string length can't be > 1)
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
@@ -2180,8 +2302,7 @@ String   function cStringTrimLeft(String aString, String charToTrim = " ", Bool 
   endif
   return returnString
 endfunction
-;CONFIRMED WORKING 21-11-02
-String   function cStringTrimRight(String aString, String charToTrim = " ", Bool useSKSE = TRUE) global
+String function cStringTrimRight(String aString, String charToTrim = " ", Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; rewritten to allow charToTrim to be longer than one char in ***SKSE version only!*** One char only in non-SKSE
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
@@ -2214,8 +2335,7 @@ String   function cStringTrimRight(String aString, String charToTrim = " ", Bool
   endif
   return returnString
 endfunction
-;CONFIRMED WORKING 21-11-02
-String   function cStringTrim(String aString, String charToTrim = " ", Bool useSKSE = TRUE) global ; trim both ends
+String function cStringTrim(String aString, String charToTrim = " ", Bool useSKSE = TRUE) global ; trim both ends
   {Requirements: None, SKSE:Soft}
   ; rewritten to allow charToTrim to be longer than one char in ***SKSE version only!*** One char only in non-SKSE
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
@@ -2234,47 +2354,6 @@ String   function cStringTrim(String aString, String charToTrim = " ", Bool useS
     cErrInvalidArg("cStringTrim", "lengthToTrim > len", "\"\"")
   else
     returnString = cStringTrimRight(cStringTrimLeft(aString, charToTrim), charToTrim)
-  endif
-  return returnString
-endfunction
-;CONFIRMED WORKING 21-11-02
-String   function cStringSubString(String aString, Int startChar, Int numChars = 0, Bool useSKSE = TRUE) global
-  {Requirements None, SKSE:Soft}
-  String returnString
-  if !aString
-    cErrInvalidArg("cStringSubString", "!aString", "\"\"")
-  elseif numChars < 0
-    cErrInvalidArg("cStringSubString", "numChars < 0", "\"\"")
-  elseif useSKSE
-    if StringUtil.GetLength(aString) > numChars
-      numChars = 0 ; 0 == rest of string
-    endif
-    returnString = StringUtil.SubString(aString, startChar, numChars)
-  else
-    String[] stringBuild = cStringToArray(aString, -1)
-    returnString = cArrayJoinString(stringBuild, "", startChar, startChar + (numChars - 1))
-  endif
-  return returnString
-endfunction
-; 21-11-09 - Test Success
-String   function cStringSetNthChar(String aString, Int a1stCharIndex, String withThis1st = "", Int a2ndCharIndex = 0, \
-  String withThis2nd = "*&^", Int a3rdCharIndex = 0, String withThis3rd = "*&^") global 
-  {Requirements: None}
-  ; withThis2nd or 3rd == "*&^" allows mix/match of ""
-  String returnString
-  String[] newArray
-  if !aString && a1stCharIndex != 0
-    cErrInvalidArg("cStringSetNthChar", "!aString && a1stCharIndex != 0")
-  else
-    newArray = cStringToArray(aString, -1)
-    newArray[a1stCharIndex - 1] = withThis1st
-    if a2ndCharIndex != 0 && withThis2nd != "*&^"
-      newArray[a2ndCharIndex - 1] = withThis2nd
-    endif
-    if a3rdCharIndex != 0 && withThis3rd != "*&^"
-      newArray[a3rdCharIndex - 1] = withThis3rd
-    endif
-    returnString = cArrayJoinString(newArray)
   endif
   return returnString
 endfunction
@@ -2297,7 +2376,6 @@ String   function cStringAddCommaList(String aString0, String aString1, String a
             cTernaryString(aString9,", " + aString9, "")
   endif
 endfunction
-; 21-11-09 - Test Success
 String   function cArrayJoinString(String[] aArray, String delimiterString = "", Int startIndex = 0, \
     Int numIndices = -1) global
   {Requirements: None}
@@ -2329,7 +2407,6 @@ endfunction
 String   function cStringJoin(String[] aArray, String delimiterString = "", Bool usePapUtil = TRUE) global
   return cArrayJoinString(aArray, delimiterString)
 endfunction
-;CONFIRMED WORKING 21-11-02
 String[] function cStringToArray(String aString, Int numChars = -1, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; Splits a string into an array of its characters 
@@ -2369,7 +2446,6 @@ String[] function cStringToArray(String aString, Int numChars = -1, Bool useSKSE
   endif
   return stringBuild
 endfunction
-;CONFIRMED WORKING 21-11-02
 String[] function cStringHexToArray(String aString, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   ; Non-SKSE version only has to look through the *16* hex digits as opposed to all 69 ASCII chars
@@ -2403,9 +2479,7 @@ String[] function cStringHexToArray(String aString, Bool useSKSE = TRUE) global
   endif
   return stringBuild
 endfunction
-
-;====== Creation
-;CONFIRMED WORKING 21-11-02
+  ;>>> Generation
 String function cStringRepeat(String repeatThis, Int thisManyTimes) global
   {Requirements: None}
   String returnString
@@ -2422,9 +2496,7 @@ String function cStringRepeat(String repeatThis, Int thisManyTimes) global
   endif
   return returnString
 endfunction
-
-;====== Grammar/Spelling (used for dynamic message generation)
-;CONFIRMED WORKING 21-11-02
+  ;>>> Grammar/Spelling (used for dynamic message generation)
 String function cStringAdd_ed(String aString) global ; list of words to check (expand at your leisure)
   {Requirements: None}
   ; useful for dynamic confirmation, progress, completion, log or error reporting messages. 
@@ -2461,7 +2533,6 @@ String function cStringAdd_ed(String aString) global ; list of words to check (e
   endif
   return returnString
 endfunction
-;CONFIRMED WORKING 21-11-02
 String function cStringAdd_ing(String aString) global ; list of words to check (expand at your leisure)
   {Requirements: None}
   ; useful for dynamic confirmation, progress, completion, log or error reporting messages. 
@@ -2498,9 +2569,7 @@ String function cStringAdd_ing(String aString) global ; list of words to check (
   endif
   return returnString
 endfunction
-
-;====== These functions make string manipulation possible w/o SKSE
-;***CONFIRMED WORKING 21-11-02
+  ;>>> non-SKSE String parsing: Credit to cadpnq
 String   function cStringASCIICheck(String aString, String builtString, String[] asciiChars) global
   {Requirements: None}
   ; Returns next ASCII character in string without SKSE
@@ -2682,7 +2751,6 @@ String   function cStringASCIICheck(String aString, String builtString, String[]
   return returnString
   
 endfunction
-;CONFIRMED WORKING 21-11-09
 String   function cStringHexCheck(String aString, String builtString, String[] hexDigits) global
   {Requirements: None}
   ; Returns next hex digit in string without SKSE
@@ -2731,13 +2799,28 @@ String   function cStringHexCheck(String aString, String builtString, String[] h
   return returnString
 endfunction
 
-
-;--------------------------Array Functions-----------------------------
-;====== Math 
-  ;>>> see ArraySumFloat && ArraySumInt in "Math" section above
-  
-;====== to/from Formlist
-FormList function cFLAddFormsFromArray(Form[] aArray, FormList aFormList, Bool useSKSE = TRUE) global
+;========================= FormList Functions
+Bool function cFLReplaceValue(FormList aFormlist, Form replaceThis, Form withThis, Bool forceAdd = False) global
+  {Requirements: None}
+  ;Bool return is whether or not the replaced value is still there (can only remove ADDED forms)
+  ;forceAdd forces the value to be added even if replaceThis can't be removed
+  ; a return of TRUE == success, False == failed
+  Bool returnBool
+  if !aFormlist
+    cErrInvalidArg("cFLReplaceValue", "!aFormList", "False")
+  elseif withThis == None ; can't add None to a FormList
+    cErrInvalidArg("cFLReplaceValue", "withThis == None", "False")
+  else
+    aFormlist.RemoveAddedForm(replaceThis)
+    returnBool = !aFormlist.HasForm(replaceThis) ; a return of False == failed
+    if returnBool || !forceAdd  ; whether or not withThis is added
+      aFormlist.AddForm(withThis)
+    endif
+  endif
+  return returnBool ; a return of TRUE == success, False == failed
+endfunction
+  ;>>> to/from Array
+FormList function cArrayToFL(Form[] aArray, FormList aFormList, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   if !aArray
     cErrInvalidArg("cFLAddFormsFromArray", "!aArray", "None")
@@ -2767,7 +2850,7 @@ FormList function cFLAddFormsFromArray(Form[] aArray, FormList aFormList, Bool u
   endif
   return aFormList
 endfunction
-Form[]   function cArrayFromFLForm(FormList aFormList, Bool useSKSE = TRUE) global
+Form[]   function cFLToArray(FormList aFormList, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   Form[] newArray
   if !aFormList
@@ -2791,8 +2874,242 @@ Form[]   function cArrayFromFLForm(FormList aFormList, Bool useSKSE = TRUE) glob
   return newArray
 endfunction
 
+;========================= Array Functions
+
+  ;>>> Analysis/Comparison/Query/Tally
+Float function cArraySmallestFloat(Float[] aArray) global
+  {Requirements: None}
+  Float smallestValue = 214748364.0
+  if !aArray
+    cErrInvalidArg("cArraySmallestFloat", "!aArray", "0.0")
+  else
+    Int i = 0
+    while i < aArray.length
+      if aArray[i] < smallestValue
+        smallestValue = aArray[i]
+      endif
+      i += 1
+    endwhile
+  endif
+  return smallestValue
+endfunction
+Int   function cArraySmallestInt(Int[] aArray) global
+  {Requirements: None}
+  Int smallestValue = 214748364
+  if !aArray
+    cErrInvalidArg("cArraySmallestInt", "!aArray", "0")
+  else
+    Int i = 0
+    while i < aArray.length
+      if aArray[i] < smallestValue
+        smallestValue = aArray[i]
+      endif
+      i += 1
+    endwhile
+  endif
+  return smallestValue
+endfunction
+Float function cArrayLargestFloat(Float[] aArray) global
+  {Requirements: None}
+  Float largestValue = -214748364.0
+  if !aArray
+    cErrInvalidArg("cArrayLargestFloat", "!aArray", "0.0")
+  else
+    Int i = 0
+    while i < aArray.length
+      if aArray[i] > largestValue
+        largestValue = aArray[i]
+      endif
+      i += 1
+    endwhile
+  endif
+  return largestValue
+endfunction
+Int   function cArrayLargestInt(Int[] aArray) global
+  {Requirements: None}
+  Int largestValue = -214748364
+  if !aArray
+    cErrInvalidArg("cArrayLargestInt", "!aArray", "0")
+  else
+    Int i = 0
+    while i < aArray.length
+      if aArray[i] > largestValue
+        largestValue = aArray[i]
+      endif
+      i += 1
+    endwhile
+  endif
+  return largestValue
+endfunction
+  ;>>> Tally
+Int function cArrayCountValueActor(Actor[] aArray, Actor valueToCount = None, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  Int returnInt
+  if !aArray
+    cErrInvalidArg("cArrayCountValueActor", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountActor(aArray, valueToCount)
+  else
+    returnInt = 0
+    Int i = 0
+    while i < aArray.length
+      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+Int function cArrayCountValueAlias(Alias[] aArray, Alias valueToCount = None, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  Int returnInt
+  if !aArray
+    cErrInvalidArg("cArrayCountValueAlias", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountAlias(aArray, valueToCount)
+  else
+    returnInt = 0
+    Int i = 0
+    while i < aArray.length
+      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+Int function cArrayCountValueBool(Bool[] aArray, Bool valueToCount = TRUE, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  Int returnInt = 0
+  if !aArray
+    cErrInvalidArg("cArrayCountValueBool", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountBool(aArray, valueToCount)
+  else
+    Int i = 0
+    while i < aArray.length
+      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+Int function cArrayCountValueFloat(Float[] aArray, Float valueToCount = 0.0, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  Int returnInt = 0
+  if !aArray
+    cErrInvalidArg("cArrayCountValueFloat", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountFloat(aArray, valueToCount)
+  else
+    Int i = 0
+    while i < aArray.length
+      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+Int function cArrayCountValueForm(Form[] aArray, Form valueToCount = None, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  Int returnInt
+  if !aArray
+    cErrInvalidArg("cArrayCountValueForm", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountForm(aArray, valueToCount)
+  else
+    returnInt = 0
+    Int i = 0
+    while i < aArray.length
+      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+Int function cArrayCountValueInt(Int[] aArray, Int valueToCount = 0, Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  Int returnInt
+  if !aArray
+    cErrInvalidArg("cArrayCountValueInt", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountInt(aArray, valueToCount)
+  else
+    returnInt = 0
+    Int i = 0
+    while i < aArray.length
+      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+Int function cArrayCountValueObjRef(ObjectReference[] aArray, ObjectReference valueToCount = None, \
+  Bool invertIt = False, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  Int returnInt
+  if !aArray
+    cErrInvalidArg("cArrayCountValueObjRef", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountObjRef(aArray, valueToCount)
+  else
+    returnInt = 0
+    Int i = 0
+    while i < aArray.length
+      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+Int function cArrayCountValueString(String[] aArray, String valueToCount = "", Bool invertIt = False, \
+  Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
+  Int returnInt
+  if !aArray
+    cErrInvalidArg("cArrayCountValueString", "!aArray", "")
+  elseif usePapUtil
+    returnInt = PapyrusUtil.CountString(aArray, valueToCount)
+  else
+    returnInt = 0
+    Int i = 0
+    while i < aArray.length
+      ;if aArray[i] == valueToCount
+      ;  returnInt += (!invertIt) as Int
+      ;else
+      ;  returnInt += (invertIt) as Int
+      ;endif
+      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+Int function cArrayCountValueFormList(FormList aFormList, Form valueToCount = None, Bool invertIt = False) global
+  {Requirements: None}
+  Int returnInt
+  if !aFormList
+    cErrInvalidArg("cArrayCountValueFormList", "!aFormList", "")
+  else
+    returnInt = 0
+    Int flSize = aFormList.GetSize()
+    Int i = 0
+    while i < flSize
+      returnInt += (((!invertIt) && (aFormList.GetAt(i) == valueToCount)) || ((invertIt) && (aFormList.GetAt(i) != valueToCount))) as Int
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+    ;see also: ArraySumFloat()
+    ;          ArraySumInt()
+    ;          ArrayAverageFloat()
+    ;          ArrayAverageInt()
   ;>>> Conversion
-; 21-11-11 Add argument validation
 Bool[] function cArrayIntToBool(Int[] aArray) global
   {Requirements:None}
   Bool[] newArray
@@ -2812,8 +3129,7 @@ Bool[] function cArrayIntToBool(Int[] aArray) global
   endif
   return newArray
 endfunction
-; 21-11-11 Add argument validation 
-Int[] function cArrayBoolToInt(Int[] aArray) global
+Int[]  function cArrayBoolToInt(Int[] aArray) global
   {Requirements:None}
   Int[] newArray 
   if !aArray
@@ -2832,7 +3148,6 @@ Int[] function cArrayBoolToInt(Int[] aArray) global
   endif
   return newArray
 endfunction
-; 21-11-11 Add argument validation 
 ActorBase[] function cArrayActorToActorBase(Actor[] aArray) global
   {Requirements:None}
   ActorBase[] newArray
@@ -2852,7 +3167,6 @@ ActorBase[] function cArrayActorToActorBase(Actor[] aArray) global
   endif
   return newArray
 endfunction
-; 21-11-11 Add argument validation 
 Form[] function cArrayObjRefToBaseObject(ObjectReference[] aArray) global
   {Requirements:None}
   Form[] newArray = cArrayCreateForm(aArray.length)
@@ -2872,80 +3186,7 @@ Form[] function cArrayObjRefToBaseObject(ObjectReference[] aArray) global
   endif
   return newArray
 endfunction
-
-;====== Analysis/Comparison/Query/Tally
-  ;>>> Returns what it says
-; 21-11-08 - Test Success
-Float function cArraySmallestFloat(Float[] aArray) global
-  {Requirements: None}
-  Float smallestValue = 214748364.0
-  if !aArray
-    cErrInvalidArg("cArraySmallestFloat", "!aArray", "0.0")
-  else
-    Int i = 0
-    while i < aArray.length
-      if aArray[i] < smallestValue
-        smallestValue = aArray[i]
-      endif
-      i += 1
-    endwhile
-  endif
-  return smallestValue
-endfunction
-; 21-11-08 - Test Success
-Int   function cArraySmallestInt(Int[] aArray) global
-  {Requirements: None}
-  Int smallestValue = 214748364
-  if !aArray
-    cErrInvalidArg("cArraySmallestInt", "!aArray", "0")
-  else
-    Int i = 0
-    while i < aArray.length
-      if aArray[i] < smallestValue
-        smallestValue = aArray[i]
-      endif
-      i += 1
-    endwhile
-  endif
-  return smallestValue
-endfunction
-; 21-11-08 - Test Success, Corrections
-Float function cArrayLargestFloat(Float[] aArray) global
-  {Requirements: None}
-  Float largestValue = -214748364.0
-  if !aArray
-    cErrInvalidArg("cArrayLargestFloat", "!aArray", "0.0")
-  else
-    Int i = 0
-    while i < aArray.length
-      if aArray[i] > largestValue
-        largestValue = aArray[i]
-      endif
-      i += 1
-    endwhile
-  endif
-  return largestValue
-endfunction
-; 21-11-08 - Test Success, Corrections
-Int   function cArrayLargestInt(Int[] aArray) global
-  {Requirements: None}
-  Int largestValue = -214748364
-  if !aArray
-    cErrInvalidArg("cArrayLargestInt", "!aArray", "0")
-  else
-    Int i = 0
-    while i < aArray.length
-      if aArray[i] > largestValue
-        largestValue = aArray[i]
-      endif
-      i += 1
-    endwhile
-  endif
-  return largestValue
-endfunction
- 
-  ;>>> Returns array of indices == valueToFind, also can provide the inverse
-; 21-11-08 - Success-bp, Manual Review, Optimizations
+   ;>>> Returns array of indices == valueToFind, also can provide the inverse
 Int[] function cArrayGetValueIndicesActor(Actor[] aArray, Actor valueToFind = None, Bool invertIt = False) global
   {Requirements: None}
   Int[] newArray
@@ -2969,7 +3210,6 @@ Int[] function cArrayGetValueIndicesActor(Actor[] aArray, Actor valueToFind = No
   endif
   return newArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int[] function cArrayGetValueIndicesAlias(Alias[] aArray, Alias valueToFind = None, Bool invertIt = False) global
   {Requirements: None}
   Int[] newArray
@@ -2993,7 +3233,6 @@ Int[] function cArrayGetValueIndicesAlias(Alias[] aArray, Alias valueToFind = No
   endif
   return newArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int[] function cArrayGetValueIndicesBool(Bool[] aArray, Bool valueToFind = False, Bool invertIt = False) global
   {Requirements: None}
   Int[] newArray
@@ -3017,7 +3256,6 @@ Int[] function cArrayGetValueIndicesBool(Bool[] aArray, Bool valueToFind = False
   endif
   return newArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int[] function cArrayGetValueIndicesFloat(Float[] aArray, Float valueToFind = 0.0, Bool invertIt = False) global
   {Requirements: None}
   Int[] newArray
@@ -3041,7 +3279,6 @@ Int[] function cArrayGetValueIndicesFloat(Float[] aArray, Float valueToFind = 0.
   endif
   return newArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int[] function cArrayGetValueIndicesForm(Form[] aArray, Form valueToFind = None, Bool invertIt = False) global
   {Requirements: None}
   Int[] newArray
@@ -3065,7 +3302,6 @@ Int[] function cArrayGetValueIndicesForm(Form[] aArray, Form valueToFind = None,
   endif
   return newArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int[] function cArrayGetValueIndicesInt(Int[] aArray, Int valueToFind = 0, Bool invertIt = False) global
   {Requirements: None}
   Int[] newArray
@@ -3089,7 +3325,6 @@ Int[] function cArrayGetValueIndicesInt(Int[] aArray, Int valueToFind = 0, Bool 
   endif
   return newArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int[] function cArrayGetValueIndicesObjRef(ObjectReference[] aArray, ObjectReference valueToFind = None, \
   Bool invertIt = False) global
   {Requirements: None}
@@ -3114,7 +3349,6 @@ Int[] function cArrayGetValueIndicesObjRef(ObjectReference[] aArray, ObjectRefer
   endif
   return newArray
 endfunction
-; 21-11-08 - Test Success, Optimizations
 Int[] function cArrayGetValueIndicesString(String[] aArray, String valueToFind = "", Bool invertIt = False) global
   {Requirements: None}
   Int[] newArray
@@ -3138,9 +3372,7 @@ Int[] function cArrayGetValueIndicesString(String[] aArray, String valueToFind =
   endif
   return newArray
 endfunction
-  
   ;>>> Yes...This is .Find() and rFind() **used for Bool invert** (first value that != aValue)
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayFindActor(Actor[] aArray, Actor aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
@@ -3161,7 +3393,6 @@ Int function cArrayFindActor(Actor[] aArray, Actor aValue = None, Int startAt = 
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayFindAlias(Alias[] aArray, Alias aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
@@ -3182,7 +3413,6 @@ Int function cArrayFindAlias(Alias[] aArray, Alias aValue = None, Int startAt = 
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayFindBool(Bool[] aArray, Bool aValue = False, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
@@ -3203,7 +3433,6 @@ Int function cArrayFindBool(Bool[] aArray, Bool aValue = False, Int startAt = 0,
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayFindFloat(Float[] aArray, Float aValue = 0.0, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
@@ -3224,7 +3453,6 @@ Int function cArrayFindFloat(Float[] aArray, Float aValue = 0.0, Int startAt = 0
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayFindForm(Form[] aArray, Form aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   if !aArray
@@ -3245,7 +3473,6 @@ Int function cArrayFindForm(Form[] aArray, Form aValue = None, Int startAt = 0, 
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayFindInt(Int[] aArray, Int aValue = 0, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   ; kept for invertIt
@@ -3267,7 +3494,6 @@ Int function cArrayFindInt(Int[] aArray, Int aValue = 0, Int startAt = 0, Bool i
   endif
   return -1
 endfunction
-; 21-11-08 - Test Success, Optimizations
 Int function cArrayFindObjRef(ObjectReference[] aArray, ObjectReference aValue = None, Int startAt = 0, \
   Bool invertIt = TRUE) global
   {Requirements: None}
@@ -3290,7 +3516,6 @@ Int function cArrayFindObjRef(ObjectReference[] aArray, ObjectReference aValue =
   endif
   return -1
 endfunction
-; 21-11-08 - Test Success, Optimizations
 Int function cArrayFindString(String[] aArray, String aValue = "", Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   ; kept for invert
@@ -3312,7 +3537,6 @@ Int function cArrayFindString(String[] aArray, String aValue = "", Int startAt =
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayRFindActor(Actor[] aArray, Actor aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   ; use it for invertIt
@@ -3332,7 +3556,6 @@ Int function cArrayRFindActor(Actor[] aArray, Actor aValue = None, Int startAt =
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayRFindAlias(Alias[] aArray, Alias aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   ; use it for invertIt
@@ -3352,7 +3575,6 @@ Int function cArrayRFindAlias(Alias[] aArray, Alias aValue = None, Int startAt =
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp && Manual Review - Improvements made
 Int function cArrayRFindBool(Bool[] aArray, Bool aValue = False, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   ; use it for invertIt
@@ -3372,7 +3594,6 @@ Int function cArrayRFindBool(Bool[] aArray, Bool aValue = False, Int startAt = 0
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayRFindFloat(Float[] aArray, Float aValue = 0.0, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   ; use it for invertIt
@@ -3392,7 +3613,6 @@ Int function cArrayRFindFloat(Float[] aArray, Float aValue = 0.0, Int startAt = 
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayRFindForm(Form[] aArray, Form aValue = None, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   ; use it for invertIt
@@ -3412,7 +3632,6 @@ Int function cArrayRFindForm(Form[] aArray, Form aValue = None, Int startAt = 0,
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayRFindInt(Int[] aArray, Int aValue = 0, Int startAt = 0, Bool invertIt = TRUE) global
   {Requirements: None}
   ; use it for invertIt
@@ -3432,7 +3651,6 @@ Int function cArrayRFindInt(Int[] aArray, Int aValue = 0, Int startAt = 0, Bool 
   endif
   return -1
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
 Int function cArrayRFindObjRef(ObjectReference[] aArray, ObjectReference aValue = None, Int startAt = 0, \
   Bool invertIt = TRUE) global
   {Requirements: None}
@@ -3453,7 +3671,6 @@ Int function cArrayRFindObjRef(ObjectReference[] aArray, ObjectReference aValue 
   endif
   return -1
 endfunction
-; 21-11-08 - Test Success, Optimizations
 Int function cArrayRFindString(String[] aArray, String aValue = "", Int startAt = -1, Bool invertIt = TRUE) global
   {Requirements: None}
   ; used for invertIt ; -1 == last element
@@ -3477,208 +3694,325 @@ Int function cArrayRFindString(String[] aArray, String aValue = "", Int startAt 
   endif
   return -1
 endfunction
-  
-  ;>>> Returns first value that if cast to Bool == TRUE
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-Actor  function cArrayFirstActor(Actor[] aArray, Bool invertIt = False) global
+  ;>>> Replace value
+Actor[]  function cArrayReplaceActor(Actor[] aArray, Actor replaceThis, Actor withThis, Bool forceAll = False) global
   {Requirements: None}
+  ; forceAll == TRUE replaces EVERYTHING with aValue
   if !aArray
-    cErrInvalidArg("cArrayFirstActor", "!aArray", "")
+    cErrInvalidArg("cArrayReplaceActor", "!aArray")
   else
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return aArray[i]
+      if aArray[i] == replaceThis || forceAll == TRUE
+        aArray[i] = withThis
       endif
       i += 1
     endwhile
   endif
-  return None
+  return aArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-Alias  function cArrayFirstAlias(Alias[] aArray, Bool invertIt = False) global
+Alias[]  function cArrayReplaceAlias(Alias[] aArray, Alias replaceThis, Alias withThis, Bool forceAll = False) global
   {Requirements: None}
+  ; forceAll == TRUE replaces EVERYTHING with aValue
   if !aArray
-    cErrInvalidArg("cArrayFirstAlias", "!aArray", "")
+    cErrInvalidArg("cArrayReplaceAlias", "!aArray")
   else
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return aArray[i]
+      if aArray[i] == replaceThis || forceAll == TRUE
+        aArray[i] = withThis
       endif
       i += 1
     endwhile
   endif
-  return None
+  return aArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-Float  function cArrayFirstFloat(Float[] aArray, Bool invertIt = False) global
+Bool[]   function cArrayReplaceBool(Bool[] aArray, Bool replaceThis, Bool withThis, Bool forceAll = False) global
   {Requirements: None}
+  ; forceAll == TRUE replaces EVERYTHING with aValue
   if !aArray
-    cErrInvalidArg("cArrayFirstFloat", "!aArray", "")
+    cErrInvalidArg("cArrayReplaceBool", "!aArray")
   else
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return aArray[i]
+      if aArray[i] == replaceThis || forceAll == TRUE
+        aArray[i] = withThis
       endif
       i += 1
     endwhile
   endif
-  return -1.0
+  return aArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-Form   function cArrayFirstForm(Form[] aArray, Bool invertIt = False) global
+Float[]  function cArrayReplaceFloat(Float[] aArray, Float replaceThis, Float withThis, Bool forceAll = False) global
   {Requirements: None}
+  ; forceAll == TRUE replaces EVERYTHING with aValue
   if !aArray
-    cErrInvalidArg("cArrayFirstForm", "!aArray", "")
+    cErrInvalidArg("cArrayReplaceFloat", "!aArray")
   else
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return aArray[i]
+      if aArray[i] == replaceThis || forceAll == TRUE
+        aArray[i] = withThis
       endif
       i += 1
     endwhile
   endif
-  return None
+  return aArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-Int    function cArrayFirstInt(Int[] aArray, Bool invertIt = False) global
+Form[]   function cArrayReplaceForm(Form[] aArray, Form replaceThis, Form withThis, Bool forceAll = False) global
   {Requirements: None}
+  ; forceAll == TRUE replaces EVERYTHING with aValue
   if !aArray
-    cErrInvalidArg("cArrayFirstInt", "!aArray", "")
+    cErrInvalidArg("cArrayReplaceForm", "!aArray")
   else
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return aArray[i]
+      if aArray[i] == replaceThis || forceAll == TRUE
+        aArray[i] = withThis
       endif
       i += 1
     endwhile
   endif
-  return -1
+  return aArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-ObjectReference function cArrayFirstObjRef(ObjectReference[] aArray, Bool invertIt = False) global
+Int[]    function cArrayReplaceInt(Int[] aArray, Int replaceThis, Int withThis, Bool forceAll = False) global
   {Requirements: None}
+  ; forceAll == TRUE replaces EVERYTHING with aValue
   if !aArray
-    cErrInvalidArg("cArrayFirstObjRef", "!aArray", "")
+    cErrInvalidArg("cArrayReplaceInt", "!aArray")
   else
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return aArray[i]
+      if aArray[i] == replaceThis || forceAll == TRUE
+        aArray[i] = withThis
       endif
       i += 1
     endwhile
   endif
-  return None
+  return aArray
 endfunction
-; 21-11-08 - Test Success, Optimizations
-String function cArrayFirstString(String[] aArray, Bool invertIt = False) global
+ObjectReference[] function cArrayReplaceObjRef(ObjectReference[] aArray, ObjectReference replaceThis, \
+  ObjectReference withThis, Bool forceAll = False) global
   {Requirements: None}
+  ; forceAll == TRUE replaces EVERYTHING with aValue
   if !aArray
-    cErrInvalidArg("cArrayFirstString", "!aArray", "")
+    cErrInvalidArg("cArrayReplaceObjRef", "!aArray")
   else
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return aArray[i]
+      if aArray[i] == replaceThis || forceAll == TRUE
+        aArray[i] = withThis
       endif
       i += 1
     endwhile
   endif
-  return ""
+  return aArray
 endfunction
-  
-  ;>>> Returns index of first value that if cast to Bool == TRUE
-  ;Preferred method: use cArrayFind.*, search for 0/None/"" && invertIt == TRUE
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-Int function cArrayFirstIndexBool(Bool[] aArray, Bool invertIt = False) global
+String[] function cArrayReplaceString(String[] aArray, String replaceThis, String withThis, Bool forceAll = False) global
   {Requirements: None}
+  ; forceAll == TRUE replaces EVERYTHING with aValue
   if !aArray
-    cErrInvalidArg("cArrayFirstIndexBool", "!aArray", "")
+    cErrInvalidArg("cArrayReplaceString", "!aArray")
   else
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return i
+      if aArray[i] == replaceThis || forceAll == TRUE
+        aArray[i] = withThis
       endif
       i += 1
     endwhile
   endif
-  return -1
+  return aArray
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-Int function cArrayFirstIndexFloat(Float[] aArray, Bool invertIt = False) global
+  ;>>> 1) allows return via .Find(), returnIndex == -1 returns 1st value that casts as TRUE
+Actor  function cArrayReturnActor(Actor[] aArray, Int returnIndex = -1) global
   {Requirements: None}
+  Actor returnActor
   if !aArray
-    cErrInvalidArg("cArrayFirstIndexFloat", "!aArray", "")
-  else
+    cErrInvalidArg("cArrayReturnActor", "!aArray")
+  elseif returnIndex != -1 && returnIndex < 0
+    cErrInvalidArg("cArrayReturnActor", "!= -1 && returnIndex < 0")
+  elseif returnIndex > (aArray.length - 1)
+    cErrInvalidArg("cArrayReturnActor", "returnIndex > (aArray.length - 1)")
+  elseif returnIndex != -1 && returnIndex >= 0
+    returnActor = aArray[returnIndex]
+  elseif returnIndex == -1
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return i
+      if aArray[i]
+        returnActor = aArray[i]
+        i = aArray.length
       endif
       i += 1
     endwhile
   endif
-  return -1
+  return returnActor
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-Int function cArrayFirstIndexForm(Form[] aArray, Bool invertIt = False) global
+Alias  function cArrayReturnAlias(Alias[] aArray, Int returnIndex = -1) global
   {Requirements: None}
+  Alias returnAlias
   if !aArray
-    cErrInvalidArg("cArrayFirstIndexForm", "!aArray", "")
-  else
+    cErrInvalidArg("cArrayReturnAlias", "!aArray")
+  elseif returnIndex != -1 && returnIndex < 0
+    cErrInvalidArg("cArrayReturnAlias", "!= -1 && returnIndex < 0")
+  elseif returnIndex > (aArray.length - 1)
+    cErrInvalidArg("cArrayReturnAlias", "returnIndex > (aArray.length - 1)")
+  elseif returnIndex != -1 && returnIndex >= 0
+    returnAlias = aArray[returnIndex]
+  elseif returnIndex == -1
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return i
+      if aArray[i]
+        returnAlias = aArray[i]
+        i = aArray.length
       endif
       i += 1
     endwhile
   endif
-  return -1
+  return returnAlias
 endfunction
-; 21-11-08 - Success-bp, Manual Review, Optimizations
-Int function cArrayFirstIndexInt(Int[] aArray, Bool invertIt = False) global
+Bool   function cArrayReturnBool(Bool[] aArray, Int returnIndex = -1) global
   {Requirements: None}
+  Bool returnBool
   if !aArray
-    cErrInvalidArg("cArrayFirstIndexInt", "!aArray", "")
-  else
+    cErrInvalidArg("cArrayReturnBool", "!aArray")
+  elseif returnIndex != -1 && returnIndex < 0
+    cErrInvalidArg("cArrayReturnBool", "!= -1 && returnIndex < 0")
+  elseif returnIndex > (aArray.length - 1)
+    cErrInvalidArg("cArrayReturnBool", "returnIndex > (aArray.length - 1)")
+  elseif returnIndex != -1 && returnIndex >= 0
+    returnBool = aArray[returnIndex]
+  elseif returnIndex == -1
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return i
+      if aArray[i]
+        returnBool = aArray[i]
+        i = aArray.length
       endif
       i += 1
     endwhile
   endif
-  return -1
+  return returnBool
 endfunction
-; 21-11-08 - Test Success, Optimizations
-Int function cArrayFirstIndexString(String[] aArray, Bool invertIt = False) global ; Why is this here?
+Float  function cArrayReturnFloat(Float[] aArray, Int returnIndex = -1) global
   {Requirements: None}
+  Float returnFloat
   if !aArray
-    cErrInvalidArg("cArrayFirstIndexString", "!aArray", "")
-  else
+    cErrInvalidArg("cArrayReturnFloat", "!aArray")
+  elseif returnIndex != -1 && returnIndex < 0
+    cErrInvalidArg("cArrayReturnFloat", "!= -1 && returnIndex < 0")
+  elseif returnIndex > (aArray.length - 1)
+    cErrInvalidArg("cArrayReturnFloat", "returnIndex > (aArray.length - 1)")
+  elseif returnIndex != -1 && returnIndex >= 0
+    returnFloat = aArray[returnIndex]
+  elseif returnIndex == -1
     Int i = 0
     while i < aArray.length
-      if ((aArray[i] as Bool) && !invertIt) || ((!(aArray[i] as Bool)) && invertIt)
-        return i
+      if aArray[i]
+        returnFloat = aArray[i]
+        i = aArray.length
       endif
       i += 1
     endwhile
   endif
-  return -1
+  return returnFloat
 endfunction
-  
+Form   function cArrayReturnForm(Form[] aArray, Int returnIndex = -1) global
+  {Requirements: None}
+  Form returnForm
+  if !aArray
+    cErrInvalidArg("cArrayReturnForm", "!aArray")
+  elseif returnIndex != -1 && returnIndex < 0
+    cErrInvalidArg("cArrayReturnForm", "!= -1 && returnIndex < 0")
+  elseif returnIndex > (aArray.length - 1)
+    cErrInvalidArg("cArrayReturnForm", "returnIndex > (aArray.length - 1)")
+  elseif returnIndex != -1 && returnIndex >= 0
+    returnForm = aArray[returnIndex]
+  elseif returnIndex == -1
+    Int i = 0
+    while i < aArray.length
+      if aArray[i]
+        returnForm = aArray[i]
+        i = aArray.length
+      endif
+      i += 1
+    endwhile
+  endif
+  return returnForm
+endfunction
+Int    function cArrayReturnInt(Int[] aArray, Int returnIndex = -1) global
+  {Requirements: None}
+  Int returnInt
+  if !aArray
+    cErrInvalidArg("cArrayReturnInt", "!aArray")
+  elseif returnIndex != -1 && returnIndex < 0
+    cErrInvalidArg("cArrayReturnInt", "!= -1 && returnIndex < 0")
+  elseif returnIndex > (aArray.length - 1)
+    cErrInvalidArg("cArrayReturnInt", "returnIndex > (aArray.length - 1)")
+  elseif returnIndex != -1 && returnIndex >= 0
+    returnInt = aArray[returnIndex]
+  elseif returnIndex == -1
+    Int i = 0
+    while i < aArray.length
+      if aArray[i]
+        returnInt = aArray[i]
+        i = aArray.length
+      endif
+      i += 1
+    endwhile
+  endif
+  return returnInt
+endfunction
+ObjectReference  function cArrayReturnObjRef(ObjectReference[] aArray, Int returnIndex = -1) global
+  {Requirements: None}
+  ObjectReference returnObjRef
+  if !aArray
+    cErrInvalidArg("cArrayReturnObjRef", "!aArray")
+  elseif returnIndex != -1 && returnIndex < 0
+    cErrInvalidArg("cArrayReturnObjRef", "!= -1 && returnIndex < 0")
+  elseif returnIndex > (aArray.length - 1)
+    cErrInvalidArg("cArrayReturnObjRef", "returnIndex > (aArray.length - 1)")
+  elseif returnIndex != -1 && returnIndex >= 0
+    returnObjRef = aArray[returnIndex]
+  elseif returnIndex == -1
+    Int i = 0
+    while i < aArray.length
+      if aArray[i]
+        returnObjRef = aArray[i]
+        i = aArray.length
+      endif
+      i += 1
+    endwhile
+  endif
+  return returnObjRef
+endfunction
+String function cArrayReturnString(String[] aArray, Int returnIndex = -1) global
+  {Requirements: None}
+  String returnString
+  if !aArray
+    cErrInvalidArg("cArrayReturnString", "!aArray")
+  elseif returnIndex != -1 && returnIndex < 0
+    cErrInvalidArg("cArrayReturnString", "!= -1 && returnIndex < 0")
+  elseif returnIndex > (aArray.length - 1)
+    cErrInvalidArg("cArrayReturnString", "returnIndex > (aArray.length - 1)")
+  elseif returnIndex != -1 && returnIndex >= 0
+    returnString = aArray[returnIndex]
+  elseif returnIndex == -1
+    Int i = 0
+    while i < aArray.length
+      if aArray[i]
+        returnString = aArray[i]
+        i = aArray.length
+      endif
+      i += 1
+    endwhile
+  endif
+  return returnString
+endfunction
+  ;cArrayFirstIndex.*() == cArrayFind.*(aArray, (None/0/0.0/""), invertIt == TRUE)
   ;>>> Analyze: returns array [0] == smallest value, [1] == its index, [2] == largest value, 
   ;      [3] == its index, [4] == array length, [5] == array sum (!string), [6] == array average (!string), 
   ;      (Int[] only-> [7] == remainder of average)
-; 21-11-08 - Test Success, Improvements
 Float[]  function cArrayAnalyzeFloat(Float[] aArray) global 
   {Requirements: None}
   ; returns array [0] == smallest value, [1] == its index, [2] == largest value, [3] == its index, 
@@ -3712,7 +4046,6 @@ Float[]  function cArrayAnalyzeFloat(Float[] aArray) global
   endif
   return returnArray
 endfunction
-; 21-11-08 - Test Success, Improvements
 Int[]    function cArrayAnalyzeInt(Int[] aArray) global 
   {Requirements: None}
   ; returns array [0] == smallest value, [1] == its index, [2] == largest value, [3] == its index, 
@@ -3748,7 +4081,6 @@ Int[]    function cArrayAnalyzeInt(Int[] aArray) global
   endif
   return returnArray
 endfunction
-; 21-11-08 - Test Success, Improvements
 String[] function cArrayAnalyzeString(String[] aArray) global 
   {Requirements: None}
   ; returns array [0] == smallest value (lex), [1] == its index, [2] == largest value (lex), [3] == its index, 
@@ -3775,180 +4107,6 @@ String[] function cArrayAnalyzeString(String[] aArray) global
     returnArray[4] = aArray.length as String
   endif
   return returnArray
-endfunction
-  
-  ;>>> Tally
-; 21-11-08 - Success-bp
-Int function cArrayCountValueActor(Actor[] aArray, Actor valueToCount = None, Bool invertIt = False, \
-  Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Int returnInt
-  if !aArray
-    cErrInvalidArg("cArrayCountValueActor", "!aArray", "")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.CountActor(aArray, valueToCount)
-  else
-    returnInt = 0
-    Int i = 0
-    while i < aArray.length
-      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
-      i += 1
-    endwhile
-  endif
-  return returnInt
-endfunction
-; 21-11-08 - Success-bp
-Int function cArrayCountValueAlias(Alias[] aArray, Alias valueToCount = None, Bool invertIt = False, \
-  Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Int returnInt
-  if !aArray
-    cErrInvalidArg("cArrayCountValueAlias", "!aArray", "")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.CountAlias(aArray, valueToCount)
-  else
-    returnInt = 0
-    Int i = 0
-    while i < aArray.length
-      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
-      i += 1
-    endwhile
-  endif
-  return returnInt
-endfunction
-; 21-11-08 - Success-bp && Manual Review
-Int function cArrayCountValueBool(Bool[] aArray, Bool valueToCount = TRUE, Bool invertIt = False, \
-  Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Int returnInt = 0
-  if !aArray
-    cErrInvalidArg("cArrayCountValueBool", "!aArray", "")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.CountBool(aArray, valueToCount)
-  else
-    Int i = 0
-    while i < aArray.length
-      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
-      i += 1
-    endwhile
-  endif
-  return returnInt
-endfunction
-; 21-11-08 - Success-bp && Manual Review
-Int function cArrayCountValueFloat(Float[] aArray, Float valueToCount = 0.0, Bool invertIt = False, \
-  Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Int returnInt = 0
-  if !aArray
-    cErrInvalidArg("cArrayCountValueFloat", "!aArray", "")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.CountFloat(aArray, valueToCount)
-  else
-    Int i = 0
-    while i < aArray.length
-      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
-      i += 1
-    endwhile
-  endif
-  return returnInt
-endfunction
-; 21-11-08 - Success-bp && Manual Review
-Int function cArrayCountValueForm(Form[] aArray, Form valueToCount = None, Bool invertIt = False, \
-  Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Int returnInt
-  if !aArray
-    cErrInvalidArg("cArrayCountValueForm", "!aArray", "")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.CountForm(aArray, valueToCount)
-  else
-    returnInt = 0
-    Int i = 0
-    while i < aArray.length
-      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
-      i += 1
-    endwhile
-  endif
-  return returnInt
-endfunction
-; 21-11-08 - Success-bp && Manual Review
-Int function cArrayCountValueInt(Int[] aArray, Int valueToCount = 0, Bool invertIt = False, \
-  Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Int returnInt
-  if !aArray
-    cErrInvalidArg("cArrayCountValueInt", "!aArray", "")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.CountInt(aArray, valueToCount)
-  else
-    returnInt = 0
-    Int i = 0
-    while i < aArray.length
-      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
-      i += 1
-    endwhile
-  endif
-  return returnInt
-endfunction
-; 21-11-08 - Success-bp
-Int function cArrayCountValueObjRef(ObjectReference[] aArray, ObjectReference valueToCount = None, \
-  Bool invertIt = False, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Int returnInt
-  if !aArray
-    cErrInvalidArg("cArrayCountValueObjRef", "!aArray", "")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.CountObjRef(aArray, valueToCount)
-  else
-    returnInt = 0
-    Int i = 0
-    while i < aArray.length
-      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
-      i += 1
-    endwhile
-  endif
-  return returnInt
-endfunction
-; 21-11-08 - Test Success
-Int function cArrayCountValueString(String[] aArray, String valueToCount = "", Bool invertIt = False, \
-  Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Int returnInt
-  if !aArray
-    cErrInvalidArg("cArrayCountValueString", "!aArray", "")
-  elseif usePapUtil
-    returnInt = PapyrusUtil.CountString(aArray, valueToCount)
-  else
-    returnInt = 0
-    Int i = 0
-    while i < aArray.length
-      ;if aArray[i] == valueToCount
-      ;  returnInt += (!invertIt) as Int
-      ;else
-      ;  returnInt += (invertIt) as Int
-      ;endif
-      returnInt += (((!invertIt) && (aArray[i] == valueToCount)) || ((invertIt) && (aArray[i] != valueToCount))) as Int
-      i += 1
-    endwhile
-  endif
-  return returnInt
-endfunction
-; 21-11-08 - Manual Review
-Int function cArrayCountValueFormList(FormList aFormList, Form valueToCount = None, Bool invertIt = False) global
-  {Requirements: None}
-  Int returnInt
-  if !aFormList
-    cErrInvalidArg("cArrayCountValueFormList", "!aFormList", "")
-  else
-    returnInt = 0
-    Int flSize = aFormList.GetSize()
-    Int i = 0
-    while i < flSize
-      returnInt += (((!invertIt) && (aFormList.GetAt(i) == valueToCount)) || ((invertIt) && (aFormList.GetAt(i) != valueToCount))) as Int
-      i += 1
-    endwhile
-  endif
-  return returnInt
 endfunction
 
 ;====== Manipulation
@@ -4068,7 +4226,7 @@ String[] function cArrayTidyString(String[] aArray, Bool clearEmpty = False, Boo
     cErrInvalidArg("cArrayTidyString", "!clearEmpty && !clearDupes && !sortIt")
   else
     if clearEmpty
-      aArray = cArrayClearEmptyString(aArray)
+      aArray = cArrayRemoveValueString(aArray, "")
     endif
     if clearDupes
       aArray = cArrayRemoveDuplicatesString(aArray)
@@ -4080,118 +4238,13 @@ String[] function cArrayTidyString(String[] aArray, Bool clearEmpty = False, Boo
   endif
   return aArray
 endfunction
-  
-  ;>>> Removes the described indices and returns new array
-    ;Single purpose versions of RemoveValue (returns new array)
-; 21-11-08 - Success-bp
-Actor[] function cArrayClearNoneActor(Actor[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Actor[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayClearNoneActor", "!aArray")
-  elseif usePapUtil
-    newArray = PapyrusUtil.RemoveActor(aArray, None)
-  else
-    newArray = cArrayRemoveValueActor(aArray, None)
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp
-Alias[] function cArrayClearNoneAlias(Alias[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Alias[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayClearNoneAlias", "!aArray")
-  elseif usePapUtil
-    newArray = PapyrusUtil.RemoveAlias(aArray, None)
-  else
-    newArray = cArrayRemoveValueAlias(aArray, None)
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Test Success
-Float[] function cArrayClearZeroFloat(Float[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Float[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayClearZeroFloat", "!aArray")
-  elseif usePapUtil
-    newArray = PapyrusUtil.RemoveFloat(aArray, 0.0)
-  else
-    newArray = cArrayRemoveValueFloat(aArray, 0.0)
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp
-Form[]  function cArrayClearNoneForm(Form[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Form[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayClearNoneForm", "!aArray")
-  elseif usePapUtil
-    newArray = PapyrusUtil.RemoveForm(aArray, None)
-  else
-    newArray = cArrayRemoveValueForm(aArray, None)
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Test Success
-Int[]   function cArrayClearZeroInt(Int[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  Int[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayClearZeroInt", "!aArray")
-  elseif usePapUtil
-    newArray = PapyrusUtil.RemoveInt(aArray, 0)
-  else
-    newArray = cArrayRemoveValueInt(aArray, 0)
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp
-ObjectReference[] function cArrayClearNoneObjRef(ObjectReference[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  ObjectReference[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayClearNoneObjRef", "!aArray")
-  elseif usePapUtil
-    newArray = PapyrusUtil.RemoveObjRef(aArray, None)
-  else
-    newArray = cArrayRemoveValueObjRef(aArray, None)
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Test Success
-String[] function cArrayClearEmptyString(String[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  String[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayClearEmptyString", "!aArray")
-  elseif usePapUtil
-    newArray = PapyrusUtil.RemoveString(aArray, "")
-  else
-    newArray = cArrayRemoveValueString(aArray, "")
-  endif
-  return newArray
-endfunction
-  ;--- 'convenience' alternate name for cArrayClearEmptyString
-; 21-11-08 - Test Success
-String[] function cArrayClearBlank(String[] aArray, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  String[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayClearBlank", "!aArray")
-  elseif usePapUtil
-    newArray = PapyrusUtil.RemoveString(aArray, "")
-  else
-    newArray = cArrayRemoveValueString(aArray, "")
-  endif
-  return newArray
-endfunction
-
-  ;>>> Remove duplicate records
-  ; no Bool version, remove duplicates would only return 1-2 index array
-; 21-11-08 - Success-bp && Manual Review
+  ;>>> HowTo: RemoveValue
+    ;cArrayReplace.*(replaceThis = (None,0,0.0,""), withThis = filler)
+    ;cArrayClearNone.*() == cArrayRemoveValue.*(aArray, None)
+    ;cArrayClearZero.*() == cArrayRemoveValue.*(aArray, 0) <- 0.0 (Int/Float)
+    ;cArrayClearBlank() == cArrayRemoveValueString(aArray, "") (String)
+    ;cArrayClearEmpty() == cArrayRemoveValueString(aArray, "") (String)
+  ;>>> Remove duplicate records no Bool version, only returns 1-2 index array
 Actor[]  function cArrayRemoveDuplicatesActor(Actor[] aArray, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
@@ -4219,7 +4272,6 @@ Actor[]  function cArrayRemoveDuplicatesActor(Actor[] aArray, Bool usePapUtil = 
   endif
   return newArray
 endfunction
-; 21-11-08 - Success-bp && Manual Review
 Alias[]  function cArrayRemoveDuplicatesAlias(Alias[] aArray, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
@@ -4247,7 +4299,6 @@ Alias[]  function cArrayRemoveDuplicatesAlias(Alias[] aArray, Bool usePapUtil = 
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 Float[]  function cArrayRemoveDuplicatesFloat(Float[] aArray, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
@@ -4275,7 +4326,6 @@ Float[]  function cArrayRemoveDuplicatesFloat(Float[] aArray, Bool usePapUtil = 
   endif
   return newArray
 endfunction
-; 21-11-08 - Success-bp && Manual Review
 Form[]   function cArrayRemoveDuplicatesForm(Form[] aArray, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
@@ -4303,7 +4353,6 @@ Form[]   function cArrayRemoveDuplicatesForm(Form[] aArray, Bool usePapUtil = TR
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 Int[]    function cArrayRemoveDuplicatesInt(Int[] aArray, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
@@ -4331,7 +4380,6 @@ Int[]    function cArrayRemoveDuplicatesInt(Int[] aArray, Bool usePapUtil = TRUE
   endif
   return newArray
 endfunction
-; 21-11-08 - Success-bp && Manual Review
 ObjectReference[] function cArrayRemoveDuplicatesObjRef(ObjectReference[] aArray, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
@@ -4359,7 +4407,6 @@ ObjectReference[] function cArrayRemoveDuplicatesObjRef(ObjectReference[] aArray
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 String[] function cArrayRemoveDuplicatesString(String[] aArray, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
@@ -4387,9 +4434,7 @@ String[] function cArrayRemoveDuplicatesString(String[] aArray, Bool usePapUtil 
   endif
   return newArray
 endfunction
-
   ;>>> Swap Indices
-; 21-11-08 - Success-bp
 function cArraySwapIndexActor(Actor[] aArray, Int index1, Int index2) global
   {Requirements: None}
   if !aArray
@@ -4408,7 +4453,6 @@ function cArraySwapIndexActor(Actor[] aArray, Int index1, Int index2) global
     aArray[index2] = tempValue
   endif
 endfunction
-; 21-11-08 - Success-bp
 function cArraySwapIndexAlias(Alias[] aArray, Int index1, Int index2) global
   {Requirements: None}
   if !aArray
@@ -4427,7 +4471,6 @@ function cArraySwapIndexAlias(Alias[] aArray, Int index1, Int index2) global
     aArray[index2] = tempValue
   endif
 endfunction
-; 21-11-08 - Success-bp
 function cArraySwapIndexBool(Bool[] aArray, Int index1, Int index2) global
   {Requirements: None}
   if !aArray
@@ -4446,7 +4489,6 @@ function cArraySwapIndexBool(Bool[] aArray, Int index1, Int index2) global
     aArray[index2] = tempValue
   endif
 endfunction
-; 21-11-08 - Success-bp
 function cArraySwapIndexFloat(Float[] aArray, Int index1, Int index2) global
   {Requirements: None}
   if !aArray
@@ -4465,7 +4507,6 @@ function cArraySwapIndexFloat(Float[] aArray, Int index1, Int index2) global
     aArray[index2] = tempValue
   endif
 endfunction
-; 21-11-08 - Success-bp
 function cArraySwapIndexForm(Form[] aArray, Int index1, Int index2) global
   {Requirements: None}
   if !aArray
@@ -4484,7 +4525,6 @@ function cArraySwapIndexForm(Form[] aArray, Int index1, Int index2) global
     aArray[index2] = tempValue
   endif
 endfunction
-; 21-11-08 - Success-bp
 function cArraySwapIndexInt(Int[] aArray, Int index1, Int index2) global
   {Requirements: None}
   if !aArray
@@ -4503,7 +4543,6 @@ function cArraySwapIndexInt(Int[] aArray, Int index1, Int index2) global
     aArray[index2] = tempValue
   endif
 endfunction
-; 21-11-08 - Success-bp
 function cArraySwapIndexObjRef(ObjectReference[] aArray, Int index1, Int index2) global
   {Requirements: None}
   if !aArray
@@ -4522,7 +4561,6 @@ function cArraySwapIndexObjRef(ObjectReference[] aArray, Int index1, Int index2)
     aArray[index2] = tempValue
   endif
 endfunction
-; 21-11-08 - Success-bp
 function cArraySwapIndexString(String[] aArray, Int index1, Int index2) global
   {Requirements: None}
   if !aArray
@@ -4541,9 +4579,298 @@ function cArraySwapIndexString(String[] aArray, Int index1, Int index2) global
     aArray[index2] = tempValue
   endif
 endfunction
-
-  ;>>> Quick sort assets
-; 21-11-08 - Test Success
+  ;>>> Remove all trailing indices == trailingValue
+Actor[]  function cArrayRemoveTrailingActor(Actor[] aArray, Actor trailingValue = None) global
+  {Requirements: None}
+  ; this assumes that the last indices are not *supposed* to be trailingValue
+  Actor[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayRemoveTrailingActor", "!aArray", "")
+  else
+    Int numToRemove
+    Int i = 1
+    while aArray[aArray.length - i] == trailingValue
+      numToRemove += 1
+      i += 1
+    endwhile
+    if numToRemove
+      newArray = cArrayResizeActor(aArray, aArray.length - numToRemove)
+    else
+      clibTrace("cArrayRemoveTrailingActor", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Alias[]  function cArrayRemoveTrailingAlias(Alias[] aArray, Alias trailingValue = None) global
+  {Requirements: None}
+  ; this assumes that the last indices are not *supposed* to be trailingValue
+  Alias[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayRemoveTrailingAlias", "!aArray", "")
+  else
+    Int numToRemove
+    Int i = 1
+    while aArray[aArray.length - i] == trailingValue
+      numToRemove += 1
+      i += 1
+    endwhile
+    if numToRemove
+      newArray = cArrayResizeAlias(aArray, aArray.length - numToRemove)
+    else
+      clibTrace("cArrayRemoveTrailingAlias", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Bool[]   function cArrayRemoveTrailingBool(Bool[] aArray, Bool trailingValue = False) global
+  {Requirements: None}
+  ; this assumes that the last indices are not *supposed* to be trailingValue
+  Bool[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayRemoveTrailingBool", "!aArray", "")
+  else
+    Int numToRemove
+    Int i = 1
+    while aArray[aArray.length - i] == trailingValue
+      numToRemove += 1
+      i += 1
+    endwhile
+    if numToRemove
+      newArray = cArrayResizeBool(aArray, aArray.length - numToRemove)
+    else
+      clibTrace("cArrayRemoveTrailingBool", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Float[]  function cArrayRemoveTrailingFloat(Float[] aArray, Float trailingValue = 0.0) global
+  {Requirements: None}
+  ; this assumes that the last indices are not *supposed* to be trailingValue
+  Float[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayRemoveTrailingFloat", "!aArray", "")
+  else
+    Int numToRemove
+    Int i = 1
+    while aArray[aArray.length - i] == trailingValue
+      numToRemove += 1
+      i += 1
+    endwhile
+    if numToRemove
+      newArray = cArrayResizeFloat(aArray, aArray.length - numToRemove)
+    else
+      clibTrace("cArrayRemoveTrailingFloat", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Form[]   function cArrayRemoveTrailingForm(Form[] aArray, Form trailingValue = None) global
+  {Requirements: None}
+  ; this assumes that the last indices are not *supposed* to be trailingValue
+  Form[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayRemoveTrailingForm", "!aArray", "")
+  else
+    Int numToRemove
+    Int i = 1
+    while aArray[aArray.length - i] == trailingValue
+      numToRemove += 1
+      i += 1
+    endwhile
+    if numToRemove
+      newArray = cArrayResizeForm(aArray, aArray.length - numToRemove)
+    else
+      clibTrace("cArrayRemoveTrailingForm", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Int[]    function cArrayRemoveTrailingInt(Int[] aArray, Int trailingValue = 0) global     
+  {Requirements: None}
+  ; this assumes that the last indices are not *supposed* to be trailingValue
+  Int[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayRemoveTrailingInt", "!aArray", "")
+  else
+    Int numToRemove
+    Int i = 1
+    while aArray[aArray.length - i] == trailingValue
+      numToRemove += 1
+      i += 1
+    endwhile
+    if numToRemove
+      newArray = cArrayResizeInt(aArray, aArray.length - numToRemove)
+    else
+      clibTrace("cArrayRemoveTrailingInt", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+ObjectReference[] function cArrayRemoveTrailingObjRef(ObjectReference[] aArray, \
+  ObjectReference trailingValue = None) global
+  {Requirements: None}
+  ; this assumes that the last indices are not *supposed* to be trailingValue
+  ObjectReference[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayRemoveTrailingObjRef", "!aArray", "")
+  else
+    Int numToRemove
+    Int i = 1
+    while aArray[aArray.length - i] == trailingValue
+      numToRemove += 1
+      i += 1
+    endwhile
+    if numToRemove
+      newArray = cArrayResizeObjRef(aArray, aArray.length - numToRemove)
+    else
+      clibTrace("cArrayRemoveTrailingObjectReference", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+String[] function cArrayRemoveTrailingString(String[] aArray, String trailingValue = "") global
+  {Requirements: None}
+  ; this assumes that the last indices are not *supposed* to be trailingValue
+  String[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayRemoveTrailingString", "!aArray", "")
+  else
+    Int numToRemove
+    Int i = 1
+    while aArray[aArray.length - i] == trailingValue
+      numToRemove += 1
+      i += 1
+    endwhile
+    if numToRemove
+      newArray = cArrayResizeString(aArray, aArray.length - numToRemove)
+    else
+      clibTrace("cArrayRemoveTrailingString", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+  ;>>> Shift all values that cast to Bool as False to the end
+Actor[]  function cArrayCompactActor(Actor[] aArray, Actor shiftValue = None) global
+  {Requirements: None}
+  if !aArray
+    cErrInvalidArg("cArrayCompactActor", "!aArray")
+  else
+    Int lFind = aArray.Find(shiftValue)
+    Int nFind = cArrayFindActor(aArray, shiftValue, 0, TRUE)
+    Int i = 0
+    while lFind < nFind
+      cArraySwapIndexActor(aArray, lFind, nFind)
+      lFind = aArray.Find(shiftValue, lFind)
+      nFind = cArrayFindActor(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
+      i += 1
+    endwhile
+  endif
+  return aArray
+endfunction
+Alias[]  function cArrayCompactAlias(Alias[] aArray, Alias shiftValue = None) global
+  {Requirements: None}
+  if !aArray
+    cErrInvalidArg("cArrayCompactAlias", "!aArray")
+  else
+    Int lFind = aArray.Find(shiftValue)
+    Int nFind = cArrayFindAlias(aArray, shiftValue, 0, TRUE)
+    Int i = 0
+    while lFind < nFind
+      cArraySwapIndexAlias(aArray, lFind, nFind)
+      lFind = aArray.Find(shiftValue, lFind)
+      nFind = cArrayFindAlias(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
+      i += 1
+    endwhile
+  endif
+  return aArray
+endfunction
+Float[]  function cArrayCompactFloat(Float[] aArray, Float shiftValue = 0.0) global
+  {Requirements: None}
+  if !aArray
+    cErrInvalidArg("cArrayCompactFloat", "!aArray")
+  else
+    Int lFind = aArray.Find(shiftValue)
+    Int nFind = cArrayFindFloat(aArray, shiftValue, 0, TRUE)
+    Int i = 0
+    while lFind < nFind
+      cArraySwapIndexFloat(aArray, lFind, nFind)
+      lFind = aArray.Find(shiftValue, lFind)
+      nFind = cArrayFindFloat(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
+      i += 1
+    endwhile
+  endif
+  return aArray
+endfunction
+Form[]   function cArrayCompactForm(Form[] aArray, Form shiftValue = None) global
+  {Requirements: None}
+  if !aArray
+    cErrInvalidArg("cArrayCompactForm", "!aArray")
+  else
+    Int lFind = aArray.Find(shiftValue)
+    Int nFind = cArrayFindForm(aArray, shiftValue, 0, TRUE)
+    Int i = 0
+    while lFind < nFind
+      cArraySwapIndexForm(aArray, lFind, nFind)
+      lFind = aArray.Find(shiftValue, lFind)
+      nFind = cArrayFindForm(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
+      i += 1
+    endwhile
+  endif
+  return aArray
+endfunction
+Int[]    function cArrayCompactInt(Int[] aArray, Int shiftValue = 0) global
+  {Requirements: None}
+  if !aArray
+    cErrInvalidArg("cArrayCompactInt", "!aArray")
+  else
+    Int lFind = aArray.Find(shiftValue)
+    Int nFind = cArrayFindInt(aArray, shiftValue, 0, TRUE)
+    Int i = 0
+    while lFind < nFind
+      cArraySwapIndexInt(aArray, lFind, nFind)
+      lFind = aArray.Find(shiftValue, lFind)
+      nFind = cArrayFindInt(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
+      i += 1
+    endwhile
+  endif
+  return aArray
+endfunction
+ObjectReference[] function cArrayCompactObjRef(ObjectReference[] aArray, ObjectReference shiftValue = None) global
+  {Requirements: None}
+  if !aArray
+    cErrInvalidArg("cArrayCompactObjRef", "!aArray")
+  else
+    Int lFind = aArray.Find(shiftValue)
+    Int nFind = cArrayFindObjRef(aArray, shiftValue, 0, TRUE)
+    Int i = 0
+    while lFind < nFind
+      cArraySwapIndexObjRef(aArray, lFind, nFind)
+      lFind = aArray.Find(shiftValue, lFind)
+      nFind = cArrayFindObjRef(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
+      i += 1
+    endwhile
+  endif
+  return aArray
+endfunction
+String[] function cArrayCompactString(String[] aArray, String shiftValue = "") global
+  {Requirements: None}
+  if !aArray
+    cErrInvalidArg("cArrayCompactString", "!aArray")
+  else
+    Int lFind = aArray.Find(shiftValue)
+    Int nFind = cArrayFindString(aArray, shiftValue, 0, TRUE)
+    Int i = 0
+    while lFind < nFind
+      cArraySwapIndexString(aArray, lFind, nFind)
+      lFind = aArray.Find(shiftValue, lFind)
+      nFind = cArrayFindString(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
+      i += 1
+    endwhile
+  endif
+  return aArray
+endfunction
+;--> ARRAY ORDER
+  ;>>> Sort (doesn't return an array as it sorts actual array)
 Int function cArrayPartitionFloat(Float[] aArray, Int low, Int high) global
   {Requirements: None}
   ; Only for use as part of the cArraySortFloat function
@@ -4565,7 +4892,6 @@ Int function cArrayPartitionFloat(Float[] aArray, Int low, Int high) global
   endif
   return -1
 endfunction
-; 21-11-08 - Test Success
 function cArraySortFloat(Float[] aArray, Int low = -1, Int high = -1, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
@@ -4587,7 +4913,6 @@ function cArraySortFloat(Float[] aArray, Int low = -1, Int high = -1, Bool usePa
     endif
   endif
 endfunction
-; 21-11-08 - Test Success
 Int function cArrayPartitionInt(Int[] aArray, Int low, Int high) global
   {Requirements: None}
     ; Only for use as part of the cArraySortInt function
@@ -4609,7 +4934,6 @@ Int function cArrayPartitionInt(Int[] aArray, Int low, Int high) global
   endif
   return -1
 endfunction
-; 21-11-08 - Test Success
 function cArraySortInt(Int[] aArray, Int low = -1, Int high = -1, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
@@ -4631,7 +4955,7 @@ function cArraySortInt(Int[] aArray, Int low = -1, Int high = -1, Bool usePapUti
     endif
   endif
 endfunction
-; Bugged, will have to sort out
+; String QuickSort Bugged currently. Use cArrayBubbleSortString() for now
 ;/
 Int function cArrayPartitionString(String[] aArray, Int low, Int high) global
   {Requirements: None}
@@ -4673,317 +4997,7 @@ function cArrayQuickSortString(String[] aArray, Int low = -1, Int high = -1) glo
   endif
 endfunction
 /;
-  
-  ;>>> Remove all trailing indices == trailingValue
-; 21-11-09 - Success-bp, manual review
-Actor[]  function cArrayRemoveTrailingActor(Actor[] aArray, Actor trailingValue = None) global
-  {Requirements: None}
-  ; this assumes that the last indices are not *supposed* to be trailingValue
-  Actor[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingActor", "!aArray", "")
-  else
-    Int numToRemove
-    Int i = 1
-    while aArray[aArray.length - i] == trailingValue
-      numToRemove += 1
-      i += 1
-    endwhile
-    if numToRemove
-      newArray = cArrayResizeActor(aArray, aArray.length - numToRemove)
-    else
-      clibTrace("cArrayRemoveTrailingActor", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp, manual review
-Alias[]  function cArrayRemoveTrailingAlias(Alias[] aArray, Alias trailingValue = None) global
-  {Requirements: None}
-  ; this assumes that the last indices are not *supposed* to be trailingValue
-  Alias[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingAlias", "!aArray", "")
-  else
-    Int numToRemove
-    Int i = 1
-    while aArray[aArray.length - i] == trailingValue
-      numToRemove += 1
-      i += 1
-    endwhile
-    if numToRemove
-      newArray = cArrayResizeAlias(aArray, aArray.length - numToRemove)
-    else
-      clibTrace("cArrayRemoveTrailingAlias", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp, manual review
-Bool[]   function cArrayRemoveTrailingBool(Bool[] aArray, Bool trailingValue = False) global
-  {Requirements: None}
-  ; this assumes that the last indices are not *supposed* to be trailingValue
-  Bool[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingBool", "!aArray", "")
-  else
-    Int numToRemove
-    Int i = 1
-    while aArray[aArray.length - i] == trailingValue
-      numToRemove += 1
-      i += 1
-    endwhile
-    if numToRemove
-      newArray = cArrayResizeBool(aArray, aArray.length - numToRemove)
-    else
-      clibTrace("cArrayRemoveTrailingBool", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Float[]  function cArrayRemoveTrailingFloat(Float[] aArray, Float trailingValue = 0.0) global
-  {Requirements: None}
-  ; this assumes that the last indices are not *supposed* to be trailingValue
-  Float[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingFloat", "!aArray", "")
-  else
-    Int numToRemove
-    Int i = 1
-    while aArray[aArray.length - i] == trailingValue
-      numToRemove += 1
-      i += 1
-    endwhile
-    if numToRemove
-      newArray = cArrayResizeFloat(aArray, aArray.length - numToRemove)
-    else
-      clibTrace("cArrayRemoveTrailingFloat", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp, manual review
-Form[]   function cArrayRemoveTrailingForm(Form[] aArray, Form trailingValue = None) global
-  {Requirements: None}
-  ; this assumes that the last indices are not *supposed* to be trailingValue
-  Form[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingForm", "!aArray", "")
-  else
-    Int numToRemove
-    Int i = 1
-    while aArray[aArray.length - i] == trailingValue
-      numToRemove += 1
-      i += 1
-    endwhile
-    if numToRemove
-      newArray = cArrayResizeForm(aArray, aArray.length - numToRemove)
-    else
-      clibTrace("cArrayRemoveTrailingForm", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Int[]    function cArrayRemoveTrailingInt(Int[] aArray, Int trailingValue = 0) global     
-  {Requirements: None}
-  ; this assumes that the last indices are not *supposed* to be trailingValue
-  Int[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingInt", "!aArray", "")
-  else
-    Int numToRemove
-    Int i = 1
-    while aArray[aArray.length - i] == trailingValue
-      numToRemove += 1
-      i += 1
-    endwhile
-    if numToRemove
-      newArray = cArrayResizeInt(aArray, aArray.length - numToRemove)
-    else
-      clibTrace("cArrayRemoveTrailingInt", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp, manual review
-ObjectReference[] function cArrayRemoveTrailingObjRef(ObjectReference[] aArray, \
-  ObjectReference trailingValue = None) global
-  {Requirements: None}
-  ; this assumes that the last indices are not *supposed* to be trailingValue
-  ObjectReference[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingObjRef", "!aArray", "")
-  else
-    Int numToRemove
-    Int i = 1
-    while aArray[aArray.length - i] == trailingValue
-      numToRemove += 1
-      i += 1
-    endwhile
-    if numToRemove
-      newArray = cArrayResizeObjRef(aArray, aArray.length - numToRemove)
-    else
-      clibTrace("cArrayRemoveTrailingObjectReference", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-String[] function cArrayRemoveTrailingString(String[] aArray, String trailingValue = "") global
-  {Requirements: None}
-  ; this assumes that the last indices are not *supposed* to be trailingValue
-  String[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveTrailingString", "!aArray", "")
-  else
-    Int numToRemove
-    Int i = 1
-    while aArray[aArray.length - i] == trailingValue
-      numToRemove += 1
-      i += 1
-    endwhile
-    if numToRemove
-      newArray = cArrayResizeString(aArray, aArray.length - numToRemove)
-    else
-      clibTrace("cArrayRemoveTrailingString", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-
-  ;>>> Shift all !values to the end
-; 21-11-09 - Success-bp
-Actor[]  function cArrayCompactActor(Actor[] aArray, Actor shiftValue = None) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayCompactActor", "!aArray")
-  else
-    Int lFind = aArray.Find(shiftValue)
-    Int nFind = cArrayFindActor(aArray, shiftValue, 0, TRUE)
-    Int i = 0
-    while lFind < nFind
-      cArraySwapIndexActor(aArray, lFind, nFind)
-      lFind = aArray.Find(shiftValue, lFind)
-      nFind = cArrayFindActor(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Success-bp
-Alias[]  function cArrayCompactAlias(Alias[] aArray, Alias shiftValue = None) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayCompactAlias", "!aArray")
-  else
-    Int lFind = aArray.Find(shiftValue)
-    Int nFind = cArrayFindAlias(aArray, shiftValue, 0, TRUE)
-    Int i = 0
-    while lFind < nFind
-      cArraySwapIndexAlias(aArray, lFind, nFind)
-      lFind = aArray.Find(shiftValue, lFind)
-      nFind = cArrayFindAlias(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Success-bp
-Float[]  function cArrayCompactFloat(Float[] aArray, Float shiftValue = 0.0) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayCompactFloat", "!aArray")
-  else
-    Int lFind = aArray.Find(shiftValue)
-    Int nFind = cArrayFindFloat(aArray, shiftValue, 0, TRUE)
-    Int i = 0
-    while lFind < nFind
-      cArraySwapIndexFloat(aArray, lFind, nFind)
-      lFind = aArray.Find(shiftValue, lFind)
-      nFind = cArrayFindFloat(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayCompactForm(Form[] aArray, Form shiftValue = None) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayCompactForm", "!aArray")
-  else
-    Int lFind = aArray.Find(shiftValue)
-    Int nFind = cArrayFindForm(aArray, shiftValue, 0, TRUE)
-    Int i = 0
-    while lFind < nFind
-      cArraySwapIndexForm(aArray, lFind, nFind)
-      lFind = aArray.Find(shiftValue, lFind)
-      nFind = cArrayFindForm(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Success-bp
-Int[]    function cArrayCompactInt(Int[] aArray, Int shiftValue = 0) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayCompactInt", "!aArray")
-  else
-    Int lFind = aArray.Find(shiftValue)
-    Int nFind = cArrayFindInt(aArray, shiftValue, 0, TRUE)
-    Int i = 0
-    while lFind < nFind
-      cArraySwapIndexInt(aArray, lFind, nFind)
-      lFind = aArray.Find(shiftValue, lFind)
-      nFind = cArrayFindInt(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Success-bp
-ObjectReference[] function cArrayCompactObjRef(ObjectReference[] aArray, ObjectReference shiftValue = None) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayCompactObjRef", "!aArray")
-  else
-    Int lFind = aArray.Find(shiftValue)
-    Int nFind = cArrayFindObjRef(aArray, shiftValue, 0, TRUE)
-    Int i = 0
-    while lFind < nFind
-      cArraySwapIndexObjRef(aArray, lFind, nFind)
-      lFind = aArray.Find(shiftValue, lFind)
-      nFind = cArrayFindObjRef(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Test Success, Corrections
-String[] function cArrayCompactString(String[] aArray, String shiftValue = "") global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayCompactString", "!aArray")
-  else
-    Int lFind = aArray.Find(shiftValue)
-    Int nFind = cArrayFindString(aArray, shiftValue, 0, TRUE)
-    Int i = 0
-    while lFind < nFind
-      cArraySwapIndexString(aArray, lFind, nFind)
-      lFind = aArray.Find(shiftValue, lFind)
-      nFind = cArrayFindString(aArray, shiftValue, lFind + 1, TRUE) ; TRUE = Inverse
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-
-  ;>>> Sorts arrays
-; Float and Int are deprecated! Use cArraySortFloat() and cArraySortInt() They're QuickSort now
-; 21-11-08 - Test Success
+  ;>>> Returns new array [cArraySortFloat/Int() faster but no return]
 Float[]  function cArrayBubbleSortFloat(Float[] aArray, Bool invertIt = False, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
@@ -5011,7 +5025,6 @@ Float[]  function cArrayBubbleSortFloat(Float[] aArray, Bool invertIt = False, B
   endif
   return aArray
 endfunction
-; 21-11-08 - Test Success
 Int[]    function cArrayBubbleSortInt(Int[] aArray, Bool invertIt = False, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
@@ -5039,7 +5052,6 @@ Int[]    function cArrayBubbleSortInt(Int[] aArray, Bool invertIt = False, Bool 
   endif
   return aArray
 endfunction
-; 21-11-08 - Test Success
 String[] function cArrayBubbleSortString(String[] aArray, Bool invertIt = False, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
@@ -5067,490 +5079,800 @@ String[] function cArrayBubbleSortString(String[] aArray, Bool invertIt = False,
   endif
   return aArray
 endfunction
-  
-  ;>>> Fill 'empty' values
-; 21-11-09 - Success-bp
-Actor[]  function cArrayFillActor(Actor[] aArray, Actor filler, Bool forceAll = False) global
+  ;>>> Reverse order (returns new array)
+Actor[]  function cArrayReverseActor(Actor[] aArray) global
   {Requirements: None}
-  ; if forceAll == TRUE sets every index to filler value
+  Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArrayFillActor", "!aArray", "arrayNone")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = cTernaryActor(forceAll || !aArray[i], filler, aArray[i])
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayReverseActor", "!aArray", "")
+  else 
+    newArray = cArrayCreateActor(aArray.length)
+    if newArray.length
+      Int numIndices = aArray.length
+      Int i = 0
+      while i < aArray.length
+        numIndices -= 1
+        newArray[i] = aArray[numIndices]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayReverseActor")
+    endif
   endif
-  return aArray
+  return newArray
 endfunction
-; 21-11-09 - Success-bp
-Alias[]  function cArrayFillAlias(Alias[] aArray, Alias filler, Bool forceAll = False) global
+Alias[]  function cArrayReverseAlias(Alias[] aArray) global
   {Requirements: None}
-  ; if forceAll == TRUE sets every index to filler value
+  Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArrayFillAlias", "!aArray", "")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = cTernaryAlias(forceAll || !aArray[i], filler, aArray[i])
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayReverseAlias", "!aArray", "")
+  else 
+    newArray = cArrayCreateAlias(aArray.length)
+    if newArray.length
+      Int numIndices = aArray.length
+      Int i = 0
+      while i < aArray.length
+        numIndices -= 1
+        newArray[i] = aArray[numIndices]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayReverseAlias")
+    endif
   endif
-  return aArray
+  return newArray
 endfunction
-; 21-11-09 - Success-bp
-Bool[]   function cArrayFillBool(Bool[] aArray, Bool filler) global
+Bool[]   function cArrayReverseBool(Bool[] aArray) global
   {Requirements: None}
-  ; This is one of the dumbest functions I've ever seen. No 'forceAll' argument for obvious reasons
+  Bool[] newArray
   if !aArray
-    cErrInvalidArg("cArrayFillBool", "!aArray", "")
+    cErrInvalidArg("cArrayReverseBool", "!aArray", "")
   else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = filler
-      i += 1
-    endwhile
+    newArray = cArrayCreateBool(aArray.length)
+    if newArray.length
+      Int numIndices = aArray.length
+      Int i = 0
+      while i < aArray.length
+        numIndices -= 1
+        newArray[i] = aArray[numIndices]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayReverseBool")
+    endif
   endif
-  return aArray
+  return newArray
 endfunction
-; 21-11-09 - Test Success
-Float[]  function cArrayFillFloat(Float[] aArray, Float filler, Bool forceAll = False) global
+Float[]  function cArrayReverseFloat(Float[] aArray) global
   {Requirements: None}
-  ; if forceAll == TRUE sets every index to filler value
+  Float[] newArray
   if !aArray
-    cErrInvalidArg("cArrayFillFloat", "!aArray", "arrayNone")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = cTernaryFloat(forceAll || !aArray[i], filler, aArray[i])
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayReverseFloat", "!aArray", "")
+  else 
+    newArray = cArrayCreateFloat(aArray.length)
+    if newArray.length
+      Int numIndices = aArray.length
+      Int i = 0
+      while i < aArray.length
+        numIndices -= 1
+        newArray[i] = aArray[numIndices]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayReverseFloat")
+    endif
   endif
-  return aArray
+  return newArray
 endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayFillForm(Form[] aArray, Form filler, Bool forceAll = False) global
+Form[]   function cArrayReverseForm(Form[] aArray) global
   {Requirements: None}
-  ; if forceAll == TRUE sets every index to filler value
+  Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayFillForm", "!aArray", "arrayNone")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = cTernaryForm(forceAll || !aArray[i], filler, aArray[i])
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayReverseForm", "!aArray", "")
+  else 
+    newArray = cArrayCreateForm(aArray.length)
+    if newArray.length
+      Int numIndices = aArray.length
+      Int i = 0
+      while i < aArray.length
+        numIndices -= 1
+        newArray[i] = aArray[numIndices]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayReverseForm")
+    endif
   endif
-  return aArray
+  return newArray
 endfunction
-; 21-11-09 - Test Success
-Int[]    function cArrayFillInt(Int[] aArray, Int filler, Bool forceAll = False) global
+Int[]    function cArrayReverseInt(Int[] aArray) global
   {Requirements: None}
-  ; if forceAll == TRUE sets every index to filler value
+  Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayFillInt", "!aArray", "arrayNone")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = cTernaryInt(forceAll || !aArray[i], filler, aArray[i])
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayReverseInt", "!aArray", "")
+  else 
+    newArray = cArrayCreateInt(aArray.length)
+    if newArray.length
+      Int numIndices = aArray.length
+      Int i = 0
+      while i < aArray.length
+        numIndices -= 1
+        newArray[i] = aArray[numIndices]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayReverseInt")
+    endif
   endif
-  return aArray
+  return newArray
 endfunction
-; 21-11-09 - Success-bp
-ObjectReference[] function cArrayFillObjRef(ObjectReference[] aArray, ObjectReference filler, \
-  Bool forceAll = False) global
+ObjectReference[] function cArrayReverseObjRef(ObjectReference[] aArray) global
   {Requirements: None}
-  ; if forceAll == TRUE sets every index to filler value
+  ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayFillObjRef", "!aArray", "arrayNone")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = cTernaryObjRef(forceAll || !aArray[i], filler, aArray[i])
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayReverseObjectReference", "!aArray", "")
+  else 
+    newArray = cArrayCreateObjRef(aArray.length)
+    if newArray.length
+      Int numIndices = aArray.length
+      Int i = 0
+      while i < aArray.length
+        numIndices -= 1
+        newArray[i] = aArray[numIndices]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayReverseObjectReference")
+    endif
   endif
-  return aArray
+  return newArray
 endfunction
-; 21-11-09 - Test Success
-String[] function cArrayFillString(String[] aArray, String filler, Bool forceAll = False) global
+String[] function cArrayReverseString(String[] aArray) global
   {Requirements: None}
-  ; if forceAll == TRUE sets every index to filler value
+  String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayFillString", "!aArray", "arrayNone")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = cTernaryString(forceAll || !aArray[i], filler, aArray[i])
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayReverseString", "!aArray", "")
+  else 
+    newArray = cArrayCreateString(aArray.length)
+    if newArray.length
+      Int numIndices = aArray.length
+      Int i = 0
+      while i < aArray.length
+        numIndices -= 1
+        newArray[i] = aArray[numIndices]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayReverseString")
+    endif
   endif
-  return aArray
+  return newArray
 endfunction
-
-  ;>>> Sets all indices to None, False, 0.0, 0 or ""
-; 21-11-09 - Success-bp, correction
-Actor[]  function cArrayClearActor(Actor[] aArray) global
-  {Requirements: None}
-  if!aArray
-    cErrInvalidArg("cArrayClearActor", "!aArray")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = None
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Success-bp, correction
-Alias[]  function cArrayClearAlias(Alias[] aArray) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayClearAlias", "!aArray")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = None
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Success-bp, correction
-Bool[]   function cArrayClearBool(Bool[] aArray) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayClearBool", "!aArray")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = False
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Test Success, correction
-Float[]  function cArrayClearFloat(Float[] aArray) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayClearFloat", "!aArray")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = 0.0
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Success-bp, correction
-Form[]   function cArrayClearForm(Form[] aArray) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayClearForm", "!aArray")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = None
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Test Success, correction
-Int[]    function cArrayClearInt(Int[] aArray) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayClearInt", "!aArray")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = 0
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Success-bp, correction
-ObjectReference[] function cArrayClearObjRef(ObjectReference[] aArray) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayClearObjRef", "!aArray")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = None
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-; 21-11-09 - Test Success, correction
-String[] function cArrayClearString(String[] aArray) global
-  {Requirements: None}
-  if !aArray
-    cErrInvalidArg("cArrayClearString", "!aArray")
-  else
-    Int i = 0
-    while i < aArray.length
-      aArray[i] = ""
-      i += 1
-    endwhile
-  endif
-  return aArray
-endfunction
-
-  ;>>> Appends values to end
-; 21-11-09 - Success-bp
-Actor[]  function cArrayPushActor(Actor[] aArray, Actor aActor = None, Int numTimes = 1, Bool usePapUtil = TRUE) global
+  ;>>> 'fill' empty values
+;--> cArrayReplace.*(replaceThis = (None,0,0.0,""), withThis = filler)
+  ;>>> Clear all values
+;--> 'clear' == cArrayReplace.*(replaceThis = (irrelevant), withThis = (None,0,0.0,""), forceAll = TRUE)
+; OR
+;--> 'clear' == cArrayCreate.*()
+  ;>>> Add new value to end
+;--> 'push' == cArrayResize.*(newSize = aArray.length + 1, filler = new value)
+  ;>>> Remove Index [allows Pop & Shift behavior] (returns new array)
+;--> 'shift' mimic cArrayRemoveIndex.*(indexToRemove == 0)
+;--> 'pop'   mimic cArrayRemoveIndex.*(indexToRemove == aArray.length)
+  ;>>> Add new index 'unshift'
+;--> use cArrayMerge.*
+Actor[]  function cArrayRemoveIndexActor(Actor[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+  ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
   if !aArray
-    cErrInvalidArg("cArrayPushActor", "!aArray")
-  elseif numTimes < 1
-    cErrInvalidArg("cArrayPushActor", "numTimes < 1")
-  elseif usePapUtil
-    Int i = 0
-    while i < numTimes
-      newArray = PapyrusUtil.PushActor(aArray, aActor)
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayRemoveIndexActor", "!aArray", "")
   else
-    newArray = cArrayResizeActor(aArray, aArray.length + numtimes, aActor)
-    if newArray.length
-      Int newLength = newArray.length
-      newArray[newLength - 1] = aActor
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
+    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
+      indexToRemove = aArray.length - 1
+    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
+      cErrInvalidArg("cArrayRemoveIndexActor", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      cErrArrInitFail("cArrayPushActor")
+      if usePapUtil
+        Actor[] head
+        Actor[] tail
+        if indexToRemove
+          head = PapyrusUtil.SliceActorArray(aArray, 0, indexToRemove)
+        endif
+        if indexToRemove < aArray.length - 1
+          tail = PapyrusUtil.SliceActorArray(aArray, indexToRemove + 1)
+        endif
+        newArray = PapyrusUtil.MergeActorArray(head, tail)
+      else
+        Int newSize = aArray.length - 1
+        newArray = cArrayCreateActor(newSize)
+        if newArray.length
+          Int i = 0
+          Int j = 0
+          while i < aArray.length
+            if i != indexToRemove
+              newArray[j] = aArray[i]
+              j += 1
+            endif
+            i += 1
+          endwhile
+        else
+          cErrArrInitFail("cArrayRemoveIndexActor")
+        endif
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
-Alias[]  function cArrayPushAlias(Alias[] aArray, Alias aAlias = None, Int numTimes = 1, Bool usePapUtil = TRUE) global
+Alias[]  function cArrayRemoveIndexAlias(Alias[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+  ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
   if !aArray
-    cErrInvalidArg("cArrayPushAlias", "!aArray")
-  elseif numTimes < 1
-    cErrInvalidArg("cArrayPushAlias", "numTimes < 1")
-  elseif usePapUtil
-    Int i = 0
-    while i < numTimes
-      newArray = PapyrusUtil.PushAlias(aArray, aAlias)
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayRemoveIndexAlias", "!aArray", "")
   else
-    newArray = cArrayResizeAlias(aArray, aArray.length + numtimes, aAlias)
-    if newArray.length
-      Int newLength = newArray.length
-      newArray[newLength - 1] = aAlias
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
+    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
+      indexToRemove = aArray.length - 1
+    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
+      cErrInvalidArg("cArrayRemoveIndexAlias", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      cErrArrInitFail("cArrayPushAlias")
+      if usePapUtil
+        Alias[] head
+        Alias[] tail
+        if indexToRemove
+          head = PapyrusUtil.SliceAliasArray(aArray, 0, indexToRemove)
+        endif
+        if indexToRemove < aArray.length - 1
+          tail = PapyrusUtil.SliceAliasArray(aArray, indexToRemove + 1)
+        endif
+        newArray = PapyrusUtil.MergeAliasArray(head, tail)
+      else
+        Int newSize = aArray.length - 1
+        newArray = cArrayCreateAlias(newSize)
+        if newArray.length
+          Int i = 0
+          Int j = 0
+          while i < aArray.length
+            if i != indexToRemove
+              newArray[j] = aArray[i]
+              j += 1
+            endif
+            i += 1
+          endwhile
+        else
+          cErrArrInitFail("cArrayRemoveIndexAlias")
+        endif
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
-Bool[]   function cArrayPushBool(Bool[] aArray, Bool aBool = False, Int numTimes = 1, Bool usePapUtil = TRUE) global
+Bool[]   function cArrayRemoveIndexBool(Bool[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+  ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   Bool[] newArray
   if !aArray
-    cErrInvalidArg("cArrayPushBool", "!aArray")
-  elseif numTimes < 1
-    cErrInvalidArg("cArrayPushBool", "numTimes < 1")
-  elseif usePapUtil
-    Int i = 0
-    while i < numTimes
-      newArray = PapyrusUtil.PushBool(aArray, aBool)
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayRemoveIndexBool", "!aArray", "")
   else
-    newArray = cArrayResizeBool(aArray, aArray.length + numtimes, aBool)
-    if newArray.length
-      Int newLength = newArray.length
-      newArray[newLength - 1] = aBool
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
+    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
+      indexToRemove = aArray.length - 1
+    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
+      cErrInvalidArg("cArrayRemoveIndexBool", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      cErrArrInitFail("cArrayPushBool")
+      if usePapUtil
+        Bool[] head
+        Bool[] tail
+        if indexToRemove
+          head = PapyrusUtil.SliceBoolArray(aArray, 0, indexToRemove)
+        endif
+        if indexToRemove < aArray.length - 1
+          tail = PapyrusUtil.SliceBoolArray(aArray, indexToRemove + 1)
+        endif
+        newArray = PapyrusUtil.MergeBoolArray(head, tail)
+      else
+        Int newSize = aArray.length - 1
+        newArray = cArrayCreateBool(newSize)
+        if newArray.length
+          Int i = 0
+          Int j = 0
+          while i < aArray.length
+            if i != indexToRemove
+              newArray[j] = aArray[i]
+              j += 1
+            endif
+            i += 1
+          endwhile
+        else
+          cErrArrInitFail("cArrayRemoveIndexBool")
+        endif
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
-Float[]  function cArrayPushFloat(Float[] aArray, Float aFloat = 0.0, Int numTimes = 1, Bool usePapUtil = TRUE) global
+Float[]  function cArrayRemoveIndexFloat(Float[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+  ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
   if !aArray
-    cErrInvalidArg("cArrayPushFloat", "!aArray")
-  elseif numTimes < 1
-    cErrInvalidArg("cArrayPushFloat", "numTimes < 1")
-  elseif usePapUtil
-    Int i = 0
-    while i < numTimes
-      newArray = PapyrusUtil.PushFloat(aArray, aFloat)
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayRemoveIndexFloat", "!aArray", "")
   else
-    newArray = cArrayResizeFloat(aArray, aArray.length + numtimes, aFloat)
-    if newArray.length
-      Int newLength = newArray.length
-      newArray[newLength - 1] = aFloat
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
+    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
+      indexToRemove = aArray.length - 1
+    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
+      cErrInvalidArg("cArrayRemoveIndexFloat", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      cErrArrInitFail("cArrayPushFloat")
+      if usePapUtil
+        Float[] head
+        Float[] tail
+        if indexToRemove
+          head = PapyrusUtil.SliceFloatArray(aArray, 0, indexToRemove)
+        endif
+        if indexToRemove < aArray.length - 1
+          tail = PapyrusUtil.SliceFloatArray(aArray, indexToRemove + 1)
+        endif
+        newArray = PapyrusUtil.MergeFloatArray(head, tail)
+      else
+        Int newSize = aArray.length - 1
+        newArray = cArrayCreateFloat(newSize)
+        if newArray.length
+          Int i = 0
+          Int j = 0
+          while i < aArray.length
+            if i != indexToRemove
+              newArray[j] = aArray[i]
+              j += 1
+            endif
+            i += 1
+          endwhile
+        else
+          cErrArrInitFail("cArrayRemoveIndexFloat")
+        endif
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayPushForm(Form[] aArray, Form aForm = None, Int numTimes = 1, Bool usePapUtil = TRUE) global
+Form[]   function cArrayRemoveIndexForm(Form[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+  ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
   if !aArray
-    cErrInvalidArg("cArrayPushForm", "!aArray")
-  elseif numTimes < 1
-    cErrInvalidArg("cArrayPushForm", "numTimes < 1")
-  elseif usePapUtil
-    Int i = 0
-    while i < numTimes
-      newArray = PapyrusUtil.PushForm(aArray, aForm)
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayRemoveIndexForm", "!aArray", "")
   else
-    newArray = cArrayResizeForm(aArray, aArray.length + numtimes, aForm)
-    if newArray.length
-      Int newLength = newArray.length
-      newArray[newLength - 1] = aForm
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
+    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
+      indexToRemove = aArray.length - 1
+    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
+      cErrInvalidArg("cArrayRemoveIndexForm", "indexToRemove")
     else
-      cErrArrInitFail("cArrayPushForm")
+      if usePapUtil
+        Form[] head
+        Form[] tail
+        if indexToRemove
+          head = PapyrusUtil.SliceFormArray(aArray, 0, indexToRemove)
+        endif
+        if indexToRemove < aArray.length - 1
+          tail = PapyrusUtil.SliceFormArray(aArray, indexToRemove + 1)
+        endif
+        newArray = PapyrusUtil.MergeFormArray(head, tail)
+      else
+        Int newSize = aArray.length - 1
+        newArray = cArrayCreateForm(newSize)
+        if newArray.length
+          Int i = 0
+          Int j = 0
+          while i < aArray.length
+            if i != indexToRemove
+              newArray[j] = aArray[i]
+              j += 1
+            endif
+            i += 1
+          endwhile
+        else
+          cErrArrInitFail("cArrayRemoveIndexForm")
+        endif
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
-Int[]    function cArrayPushInt(Int[] aArray, Int aInt = 0, Int numTimes = 1, Bool usePapUtil = TRUE) global
+Int[]    function cArrayRemoveIndexInt(Int[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+  ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
   if !aArray
-    cErrInvalidArg("cArrayPushInt", "!aArray")
-  elseif numTimes < 1
-    cErrInvalidArg("cArrayPushInt", "numTimes < 1")
-  elseif usePapUtil
-    Int i = 0
-    while i < numTimes
-      newArray = PapyrusUtil.PushInt(aArray, aInt)
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayRemoveIndexInt", "!aArray")
   else
-    newArray = cArrayResizeInt(aArray, aArray.length + numtimes, aInt)
-    if newArray.length
-      Int newLength = newArray.length
-      newArray[newLength - 1] = aInt
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
+    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
+      indexToRemove = aArray.length - 1
+    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
+      cErrInvalidArg("cArrayRemoveIndexInt", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      cErrArrInitFail("cArrayPushInt")
+      if usePapUtil
+        Int[] head
+        Int[] tail
+        if indexToRemove
+          head = PapyrusUtil.SliceIntArray(aArray, 0, indexToRemove)
+        endif
+        if indexToRemove < aArray.length - 1
+          tail = PapyrusUtil.SliceIntArray(aArray, indexToRemove + 1)
+        endif
+        newArray = PapyrusUtil.MergeIntArray(head, tail)
+      else
+        Int newSize = aArray.length - 1
+        newArray = cArrayCreateInt(newSize)
+        if newArray.length
+          Int i = 0
+          Int j = 0
+          while i < aArray.length
+            if i != indexToRemove
+              newArray[j] = aArray[i]
+              j += 1
+            endif
+            i += 1
+          endwhile
+        else
+          cErrArrInitFail("cArrayRemoveIndexInt")
+        endif
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
-ObjectReference[] function cArrayPushObjRef(ObjectReference[] aArray, ObjectReference aObjRef = None, \
-    Int numTimes = 1, Bool usePapUtil = TRUE) global
+ObjectReference[] function cArrayRemoveIndexObjRef(ObjectReference[] aArray, Int indexToRemove = 0, \
+  Bool usePapUtil = TRUE) global 
+  ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayPushObjRef", "!aArray")
-  elseif numTimes < 1
-    cErrInvalidArg("cArrayPushObjRef", "numTimes < 1")
-  elseif usePapUtil
-    Int i = 0
-    while i < numTimes
-      newArray = PapyrusUtil.PushObjRef(aArray, aObjRef)
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayRemoveIndexObjRef", "!aArray", "")
   else
-    newArray = cArrayResizeObjRef(aArray, aArray.length + numtimes, aObjRef)
-    if newArray.length
-      Int newLength = newArray.length
-      newArray[newLength - 1] = aObjRef
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
+    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
+      indexToRemove = aArray.length - 1
+    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
+      cErrInvalidArg("cArrayRemoveIndexObjRef", "indexToRemove")
     else
-      cErrArrInitFail("cArrayPushObjRef")
+      if usePapUtil
+        ObjectReference[] head
+        ObjectReference[] tail
+        if indexToRemove
+          head = PapyrusUtil.SliceObjRefArray(aArray, 0, indexToRemove)
+        endif
+        if indexToRemove < aArray.length - 1
+          tail = PapyrusUtil.SliceObjRefArray(aArray, indexToRemove + 1)
+        endif
+        newArray = PapyrusUtil.MergeObjRefArray(head, tail)
+      else
+        Int newSize = aArray.length - 1
+        newArray = cArrayCreateObjRef(newSize)
+        if newArray.length
+          Int i = 0
+          Int j = 0
+          while i < aArray.length
+            if i != indexToRemove
+              newArray[j] = aArray[i]
+              j += 1
+            endif
+            i += 1
+          endwhile
+        else
+          cErrArrInitFail("cArrayRemoveIndexObjRef")
+        endif
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
-String[] function cArrayPushString(String[] aArray, String aString = "", Int numTimes = 1, \
-  Bool usePapUtil = TRUE) global
+String[] function cArrayRemoveIndexString(String[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
+  ; indexToRemove == -1 means the last index
   {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
   if !aArray
-    cErrInvalidArg("cArrayPushString", "!aArray")
-  elseif numTimes < 1
-    cErrInvalidArg("cArrayPushString", "numTimes < 1")
-  elseif usePapUtil
-    Int i = 0
-    while i < numTimes
-      newArray = PapyrusUtil.PushString(aArray, aString)
-      i += 1
-    endwhile
+    cErrInvalidArg("cArrayRemoveIndexString", "!aArray")
   else
-    newArray = cArrayResizeString(aArray, aArray.length + numtimes, aString)
-    if newArray.length
-      Int newLength = newArray.length
-      newArray[newLength - 1] = aString
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
+    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
+      indexToRemove = aArray.length - 1
+    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
+      cErrInvalidArg("cArrayRemoveIndexString", "indexToRemove")
     else
-      cErrArrInitFail("cArrayPushString")
+      if usePapUtil
+        String[] head
+        String[] tail
+        if indexToRemove
+          head = PapyrusUtil.SliceStringArray(aArray, 0, indexToRemove)
+        endif
+        if indexToRemove < aArray.length - 1
+          tail = PapyrusUtil.SliceStringArray(aArray, indexToRemove + 1)
+        endif
+        newArray = PapyrusUtil.MergeStringArray(head, tail)
+      else
+        Int newSize = aArray.length - 1
+        newArray = cArrayCreateString(newSize)
+        if newArray.length
+          Int i = 0
+          Int j = 0
+          while i < aArray.length
+            if i != indexToRemove
+              newArray[j] = aArray[i]
+              j += 1
+            endif
+            i += 1
+          endwhile
+        else
+          cErrArrInitFail("cArrayRemoveIndexString")
+        endif
+      endif
     endif
   endif
   return newArray
 endfunction
-  
+  ;>>> Supply with array of ints and this removes those IndICES then returns new array
+Actor[]  function cArrayRemoveIndicesActor(Actor[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
+  {Requirements: None}
+  Actor[] newArray
+  if !indicesToRemove
+    cErrInvalidArg("cArrayRemoveIndicesActor", "!indicesToRemove", "")
+  elseif !aArray
+    cErrInvalidArg("cArrayRemoveIndicesActor", "!aArray", "")
+  else
+    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
+    if newLength
+      newArray = cArrayCreateActor(newLength)
+      if newArray.length
+        Int k = 0
+        Int j = 0
+        Int i = 0
+        while i < aArray.length
+          if i != indicesToRemove[k]
+            newArray[j] = aArray[i]
+            j += 1
+          else
+            k += 1
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayRemoveIndicesActor")
+      endif
+    else
+      clibTrace("cArrayRemoveIndicesActor", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Alias[]  function cArrayRemoveIndicesAlias(Alias[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
+  {Requirements: None}
+  Alias[] newArray
+  if !indicesToRemove
+    cErrInvalidArg("cArrayRemoveIndicesAlias", "!indicesToRemove", "")
+  elseif !aArray
+    cErrInvalidArg("cArrayRemoveIndicesAlias", "!aArray", "")
+  else
+    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
+    if newLength
+      newArray = cArrayCreateAlias(newLength)
+      if newArray.length
+        Int k = 0
+        Int j = 0
+        Int i = 0
+        while i < aArray.length
+          if i != indicesToRemove[k]
+            newArray[j] = aArray[i]
+            j += 1
+          else
+            k += 1
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayRemoveIndicesAlias")
+      endif
+    else
+      clibTrace("cArrayRemoveIndicesAlias", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Bool[]   function cArrayRemoveIndicesBool(Bool[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
+  {Requirements: None}
+  Bool[] newArray
+  if !indicesToRemove
+    cErrInvalidArg("cArrayRemoveIndicesBool", "!indicesToRemove", "")
+  elseif !aArray
+    cErrInvalidArg("cArrayRemoveIndicesBool", "!aArray", "")
+  else
+    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
+    if newLength
+      newArray = cArrayCreateBool(newLength)
+      if newArray.length
+        Int k = 0
+        Int j = 0
+        Int i = 0
+        while i < aArray.length
+          if i != indicesToRemove[k]
+            newArray[j] = aArray[i]
+            j += 1
+          else
+            k += 1
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayRemoveIndicesBool")
+      endif
+    else
+      clibTrace("cArrayRemoveIndicesBool", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Float[]  function cArrayRemoveIndicesFloat(Float[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
+  {Requirements: None}
+  Float[] newArray
+  if !indicesToRemove
+    cErrInvalidArg("cArrayRemoveIndicesFloat", "!indicesToRemove", "")
+  elseif !aArray
+    cErrInvalidArg("cArrayRemoveIndicesFloat", "!aArray", "")
+  else
+    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
+    if newLength
+      newArray = cArrayCreateFloat(newLength)
+      if newArray.length
+        Int k = 0
+        Int j = 0
+        Int i = 0
+        while i < aArray.length
+          if i != indicesToRemove[k]
+            newArray[j] = aArray[i]
+            j += 1
+          else
+            k += 1
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayRemoveIndicesFloat")
+      endif
+    else
+      clibTrace("cArrayRemoveIndicesFloat", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Form[]   function cArrayRemoveIndicesForm(Form[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
+  {Requirements: None}
+  Form[] newArray
+  if !indicesToRemove
+    cErrInvalidArg("cArrayRemoveIndicesForm", "!indicesToRemove", "")
+  elseif !aArray
+    cErrInvalidArg("cArrayRemoveIndicesForm", "!aArray", "")
+  else
+    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
+    if newLength
+      newArray = cArrayCreateForm(newLength)
+      if newArray.length
+        Int k = 0
+        Int j = 0
+        Int i = 0
+        while i < aArray.length
+          if i != indicesToRemove[k]
+            newArray[j] = aArray[i]
+            j += 1
+          else
+            k += 1
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayRemoveIndicesForm")
+      endif
+    else
+      clibTrace("cArrayRemoveIndicesForm", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+Int[]    function cArrayRemoveIndicesInt(Int[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
+  {Requirements: None}
+  Int[] newArray
+  if !indicesToRemove
+    cErrInvalidArg("cArrayRemoveIndicesInt", "!indicesToRemove", "")
+  elseif !aArray
+    cErrInvalidArg("cArrayRemoveIndicesInt", "!aArray", "")
+  else
+    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
+    if newLength
+      newArray = cArrayCreateInt(newLength)
+      if newArray.length
+        Int k = 0
+        Int j = 0
+        Int i = 0
+        while i < aArray.length
+          if i != indicesToRemove[k]
+            newArray[j] = aArray[i]
+            j += 1
+          else
+            k += 1
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayRemoveIndicesInt")
+      endif
+    else
+      clibTrace("cArrayRemoveIndicesInt", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+ObjectReference[] function cArrayRemoveIndicesObjRef(ObjectReference[] aArray, Int[] indicesToRemove, \
+  Int stopLength = 0) global
+  {Requirements: None}
+  ObjectReference[] newArray
+  if !indicesToRemove
+    cErrInvalidArg("cArrayRemoveIndicesObjRef", "!indicesToRemove", "")
+  elseif !aArray
+    cErrInvalidArg("cArrayRemoveIndicesObjRef", "!aArray", "")
+  else
+    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
+    if newLength
+      newArray = cArrayCreateObjRef(newLength)
+      if newArray.length
+        Int k = 0
+        Int j = 0
+        Int i = 0
+        while i < aArray.length
+          if i != indicesToRemove[k]
+            newArray[j] = aArray[i]
+            j += 1
+          else
+            k += 1
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayRemoveIndicesObjRef")
+      endif
+    else
+      clibTrace("cArrayRemoveIndicesObjRef", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
+String[] function cArrayRemoveIndicesString(String[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
+  {Requirements: None}
+  String[] newArray
+  if !indicesToRemove
+    cErrInvalidArg("cArrayRemoveIndicesString", "!indicesToRemove", "")
+  elseif !aArray
+    cErrInvalidArg("cArrayRemoveIndicesString", "!aArray", "")
+  else
+    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
+    if newLength
+      newArray = cArrayCreateString(newLength)
+      if newArray.length
+        Int k = 0
+        Int j = 0
+        Int i = 0
+        while i < aArray.length
+          if i != indicesToRemove[k]
+            newArray[j] = aArray[i]
+            j += 1
+          else
+            k += 1
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayRemoveIndicesString")
+      endif
+    else
+      clibTrace("cArrayRemoveIndicesString", "After processing no indices remain! Returning ArrayNone", 0)
+    endif
+  endif
+  return newArray
+endfunction
   ;>>> *Removes* all indices of said value (returns new array)
-; 21-11-09 - Success-bp
 Actor[]  function cArrayRemoveValueActor(Actor[] aArray, Actor toRemove = None, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
@@ -5583,7 +5905,6 @@ Actor[]  function cArrayRemoveValueActor(Actor[] aArray, Actor toRemove = None, 
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Alias[]  function cArrayRemoveValueAlias(Alias[] aArray, Alias toRemove = None, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
@@ -5616,7 +5937,6 @@ Alias[]  function cArrayRemoveValueAlias(Alias[] aArray, Alias toRemove = None, 
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Bool[]   function cArrayRemoveValueBool(Bool[] aArray, Bool toRemove = False, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Bool[] newArray
@@ -5649,7 +5969,6 @@ Bool[]   function cArrayRemoveValueBool(Bool[] aArray, Bool toRemove = False, Bo
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 Float[]  function cArrayRemoveValueFloat(Float[] aArray, Float toRemove = 0.0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
@@ -5682,7 +6001,6 @@ Float[]  function cArrayRemoveValueFloat(Float[] aArray, Float toRemove = 0.0, B
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Form[]   function cArrayRemoveValueForm(Form[] aArray, Form toRemove = None, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
@@ -5715,7 +6033,6 @@ Form[]   function cArrayRemoveValueForm(Form[] aArray, Form toRemove = None, Boo
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 Int[]    function cArrayRemoveValueInt(Int[] aArray, Int toRemove = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
@@ -5748,7 +6065,6 @@ Int[]    function cArrayRemoveValueInt(Int[] aArray, Int toRemove = 0, Bool useP
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 ObjectReference[] function cArrayRemoveValueObjRef(ObjectReference[] aArray, ObjectReference toRemove = None, \
   Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
@@ -5782,7 +6098,6 @@ ObjectReference[] function cArrayRemoveValueObjRef(ObjectReference[] aArray, Obj
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 String[] function cArrayRemoveValueString(String[] aArray, String toRemove = "", Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
@@ -5815,9 +6130,161 @@ String[] function cArrayRemoveValueString(String[] aArray, String toRemove = "",
   endif
   return newArray
 endfunction
-  
-  ;>>> Copies from supplied aArray1 to supplied aArray2 then returns aArray2
-  ;      See also cArrayCopy.* which creates a new array
+  ;>>> Array copying
+    ;--> Returns new array copy
+Actor[]  function cArrayCopyActor(Actor[] aArray) global
+  {Requirements: None}
+  Actor[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayCopyActor", "!aArray", "")
+  else
+    newArray = cArrayCreateActor(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayCopyActor")
+    endif
+  endif
+  return newArray
+endfunction
+Alias[]  function cArrayCopyAlias(Alias[] aArray) global
+  {Requirements: None}
+  Alias[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayCopyAlias", "!aArray", "")
+  else
+    newArray = cArrayCreateAlias(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayCopyAlias")
+    endif
+  endif
+  return newArray
+endfunction
+Bool[]   function cArrayCopyBool(Bool[] aArray) global
+  {Requirements: None}
+  Bool[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayCopyBool", "!aArray", "")
+  else
+    newArray = cArrayCreateBool(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayCopyBool")
+    endif
+  endif
+  return newArray
+endfunction
+Float[]  function cArrayCopyFloat(Float[] aArray) global
+  {Requirements: None}
+  Float[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayCopyFloat", "!aArray", "")
+  else
+    newArray = cArrayCreateFloat(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayCopyFloat")
+    endif
+  endif
+  return newArray
+endfunction
+Form[]   function cArrayCopyForm(Form[] aArray) global
+  {Requirements: None}
+  Form[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayCopyForm", "!aArray", "")
+  else
+    newArray = cArrayCreateForm(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayCopyForm")
+    endif
+  endif
+  return newArray
+endfunction
+Int[]    function cArrayCopyInt(Int[] aArray) global
+  {Requirements: None}
+  Int[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayCopyInt", "!aArray", "")
+  else
+    newArray = cArrayCreateInt(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayCopyInt")
+    endif
+  endif
+  return newArray
+endfunction
+ObjectReference[] function cArrayCopyObjRef(ObjectReference[] aArray) global
+  {Requirements: None}
+  ObjectReference[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayCopyObjRef", "!aArray", "")
+  else
+    newArray = cArrayCreateObjectReference(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayCopyObjRef")
+    endif
+  endif
+  return newArray
+endfunction
+String[] function cArrayCopyString(String[] aArray) global
+  {Requirements: None}
+  String[] newArray
+  if !aArray
+    cErrInvalidArg("cArrayCopyString", "!aArray", "")
+  else
+    newArray = cArrayCreateString(aArray.length)
+    if newArray.length
+      Int i = 0
+      while i < aArray.length
+        newArray[i] = aArray[i]
+        i += 1
+      endwhile
+    else
+      cErrArrInitFail("cArrayCopyString")
+    endif
+  endif
+  return newArray
+endfunction
+  ;--> Copies aArray1 to aArray2 then returns aArray2
 Actor[]  function cArrayCopyToActor(Actor[] aArray1, Actor[] aArray2, Actor filler = None) global
   {Requirements: None}
   ; just copies one array to another, can be used for arrays of any size whether SKSE is installed or not
@@ -5995,909 +6462,313 @@ String[] function cArrayCopyToString(String[] aArray1, String[] aArray2, String 
   endif
   return aArray2
 endfunction
-  
-  ;>>> Remove Index [way to do Pop & Shift also] (returns new array)
-; 21-11-09 - Success-bp
-Actor[]  function cArrayRemoveIndexActor(Actor[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
-  ; indexToRemove == -1 means the last index
-  {Requirements: None, PapyrusUtil:Soft}
-  Actor[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveIndexActor", "!aArray", "")
-  else
-    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
-      indexToRemove = aArray.length - 1
-    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexActor", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
-    else
-      if usePapUtil
-        Actor[] head
-        Actor[] tail
-        if indexToRemove
-          head = PapyrusUtil.SliceActorArray(aArray, 0, indexToRemove)
-        endif
-        if indexToRemove < aArray.length - 1
-          tail = PapyrusUtil.SliceActorArray(aArray, indexToRemove + 1)
-        endif
-        newArray = PapyrusUtil.MergeActorArray(head, tail)
-      else
-        Int newSize = aArray.length - 1
-        newArray = cArrayCreateActor(newSize)
-        if newArray.length
-          Int i = 0
-          Int j = 0
-          while i < aArray.length
-            if i != indexToRemove
-              newArray[j] = aArray[i]
-              j += 1
-            endif
-            i += 1
-          endwhile
-        else
-          cErrArrInitFail("cArrayRemoveIndexActor")
-        endif
-      endif
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Alias[]  function cArrayRemoveIndexAlias(Alias[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
-  ; indexToRemove == -1 means the last index
-  {Requirements: None, PapyrusUtil:Soft}
-  Alias[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveIndexAlias", "!aArray", "")
-  else
-    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
-      indexToRemove = aArray.length - 1
-    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexAlias", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
-    else
-      if usePapUtil
-        Alias[] head
-        Alias[] tail
-        if indexToRemove
-          head = PapyrusUtil.SliceAliasArray(aArray, 0, indexToRemove)
-        endif
-        if indexToRemove < aArray.length - 1
-          tail = PapyrusUtil.SliceAliasArray(aArray, indexToRemove + 1)
-        endif
-        newArray = PapyrusUtil.MergeAliasArray(head, tail)
-      else
-        Int newSize = aArray.length - 1
-        newArray = cArrayCreateAlias(newSize)
-        if newArray.length
-          Int i = 0
-          Int j = 0
-          while i < aArray.length
-            if i != indexToRemove
-              newArray[j] = aArray[i]
-              j += 1
-            endif
-            i += 1
-          endwhile
-        else
-          cErrArrInitFail("cArrayRemoveIndexAlias")
-        endif
-      endif
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Bool[]   function cArrayRemoveIndexBool(Bool[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
-  ; indexToRemove == -1 means the last index
-  {Requirements: None, PapyrusUtil:Soft}
-  Bool[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveIndexBool", "!aArray", "")
-  else
-    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
-      indexToRemove = aArray.length - 1
-    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexBool", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
-    else
-      if usePapUtil
-        Bool[] head
-        Bool[] tail
-        if indexToRemove
-          head = PapyrusUtil.SliceBoolArray(aArray, 0, indexToRemove)
-        endif
-        if indexToRemove < aArray.length - 1
-          tail = PapyrusUtil.SliceBoolArray(aArray, indexToRemove + 1)
-        endif
-        newArray = PapyrusUtil.MergeBoolArray(head, tail)
-      else
-        Int newSize = aArray.length - 1
-        newArray = cArrayCreateBool(newSize)
-        if newArray.length
-          Int i = 0
-          Int j = 0
-          while i < aArray.length
-            if i != indexToRemove
-              newArray[j] = aArray[i]
-              j += 1
-            endif
-            i += 1
-          endwhile
-        else
-          cErrArrInitFail("cArrayRemoveIndexBool")
-        endif
-      endif
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Float[]  function cArrayRemoveIndexFloat(Float[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
-  ; indexToRemove == -1 means the last index
-  {Requirements: None, PapyrusUtil:Soft}
-  Float[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveIndexFloat", "!aArray", "")
-  else
-    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
-      indexToRemove = aArray.length - 1
-    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexFloat", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
-    else
-      if usePapUtil
-        Float[] head
-        Float[] tail
-        if indexToRemove
-          head = PapyrusUtil.SliceFloatArray(aArray, 0, indexToRemove)
-        endif
-        if indexToRemove < aArray.length - 1
-          tail = PapyrusUtil.SliceFloatArray(aArray, indexToRemove + 1)
-        endif
-        newArray = PapyrusUtil.MergeFloatArray(head, tail)
-      else
-        Int newSize = aArray.length - 1
-        newArray = cArrayCreateFloat(newSize)
-        if newArray.length
-          Int i = 0
-          Int j = 0
-          while i < aArray.length
-            if i != indexToRemove
-              newArray[j] = aArray[i]
-              j += 1
-            endif
-            i += 1
-          endwhile
-        else
-          cErrArrInitFail("cArrayRemoveIndexFloat")
-        endif
-      endif
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayRemoveIndexForm(Form[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
-  ; indexToRemove == -1 means the last index
-  {Requirements: None, PapyrusUtil:Soft}
-  Form[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveIndexForm", "!aArray", "")
-  else
-    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
-      indexToRemove = aArray.length - 1
-    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexForm", "indexToRemove")
-    else
-      if usePapUtil
-        Form[] head
-        Form[] tail
-        if indexToRemove
-          head = PapyrusUtil.SliceFormArray(aArray, 0, indexToRemove)
-        endif
-        if indexToRemove < aArray.length - 1
-          tail = PapyrusUtil.SliceFormArray(aArray, indexToRemove + 1)
-        endif
-        newArray = PapyrusUtil.MergeFormArray(head, tail)
-      else
-        Int newSize = aArray.length - 1
-        newArray = cArrayCreateForm(newSize)
-        if newArray.length
-          Int i = 0
-          Int j = 0
-          while i < aArray.length
-            if i != indexToRemove
-              newArray[j] = aArray[i]
-              j += 1
-            endif
-            i += 1
-          endwhile
-        else
-          cErrArrInitFail("cArrayRemoveIndexForm")
-        endif
-      endif
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Int[]    function cArrayRemoveIndexInt(Int[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
-  ; indexToRemove == -1 means the last index
-  {Requirements: None, PapyrusUtil:Soft}
-  Int[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveIndexInt", "!aArray")
-  else
-    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
-      indexToRemove = aArray.length - 1
-    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexInt", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
-    else
-      if usePapUtil
-        Int[] head
-        Int[] tail
-        if indexToRemove
-          head = PapyrusUtil.SliceIntArray(aArray, 0, indexToRemove)
-        endif
-        if indexToRemove < aArray.length - 1
-          tail = PapyrusUtil.SliceIntArray(aArray, indexToRemove + 1)
-        endif
-        newArray = PapyrusUtil.MergeIntArray(head, tail)
-      else
-        Int newSize = aArray.length - 1
-        newArray = cArrayCreateInt(newSize)
-        if newArray.length
-          Int i = 0
-          Int j = 0
-          while i < aArray.length
-            if i != indexToRemove
-              newArray[j] = aArray[i]
-              j += 1
-            endif
-            i += 1
-          endwhile
-        else
-          cErrArrInitFail("cArrayRemoveIndexInt")
-        endif
-      endif
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-ObjectReference[] function cArrayRemoveIndexObjRef(ObjectReference[] aArray, Int indexToRemove = 0, \
-  Bool usePapUtil = TRUE) global 
-  ; indexToRemove == -1 means the last index
-  {Requirements: None, PapyrusUtil:Soft}
-  ObjectReference[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveIndexObjRef", "!aArray", "")
-  else
-    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
-      indexToRemove = aArray.length - 1
-    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexObjRef", "indexToRemove")
-    else
-      if usePapUtil
-        ObjectReference[] head
-        ObjectReference[] tail
-        if indexToRemove
-          head = PapyrusUtil.SliceObjRefArray(aArray, 0, indexToRemove)
-        endif
-        if indexToRemove < aArray.length - 1
-          tail = PapyrusUtil.SliceObjRefArray(aArray, indexToRemove + 1)
-        endif
-        newArray = PapyrusUtil.MergeObjRefArray(head, tail)
-      else
-        Int newSize = aArray.length - 1
-        newArray = cArrayCreateObjRef(newSize)
-        if newArray.length
-          Int i = 0
-          Int j = 0
-          while i < aArray.length
-            if i != indexToRemove
-              newArray[j] = aArray[i]
-              j += 1
-            endif
-            i += 1
-          endwhile
-        else
-          cErrArrInitFail("cArrayRemoveIndexObjRef")
-        endif
-      endif
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-String[] function cArrayRemoveIndexString(String[] aArray, Int indexToRemove = 0, Bool usePapUtil = TRUE) global 
-  ; indexToRemove == -1 means the last index
-  {Requirements: None, PapyrusUtil:Soft}
-  String[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayRemoveIndexString", "!aArray")
-  else
-    if indexToRemove == -1 ; indexToRemove == -1 means remove the last index
-      indexToRemove = aArray.length - 1
-    elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
-      cErrInvalidArg("cArrayRemoveIndexString", "indexToRemove")
-    else
-      if usePapUtil
-        String[] head
-        String[] tail
-        if indexToRemove
-          head = PapyrusUtil.SliceStringArray(aArray, 0, indexToRemove)
-        endif
-        if indexToRemove < aArray.length - 1
-          tail = PapyrusUtil.SliceStringArray(aArray, indexToRemove + 1)
-        endif
-        newArray = PapyrusUtil.MergeStringArray(head, tail)
-      else
-        Int newSize = aArray.length - 1
-        newArray = cArrayCreateString(newSize)
-        if newArray.length
-          Int i = 0
-          Int j = 0
-          while i < aArray.length
-            if i != indexToRemove
-              newArray[j] = aArray[i]
-              j += 1
-            endif
-            i += 1
-          endwhile
-        else
-          cErrArrInitFail("cArrayRemoveIndexString")
-        endif
-      endif
-    endif
-  endif
-  return newArray
-endfunction
-    
-  ;>>> Single purpose convenience functions (in normal context shift removes and then returns the first index, 
-      ;  this simply removes it then returns a new array)
-; 21-11-09 - Success-bp
-Actor[]  function cArrayShiftActor(Actor[] aArray) global
-  {Requirements: None}
-  Actor[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayShiftActor", "!aArray")
-  else
-    newArray = cArrayRemoveIndexActor(aArray, 0)
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Alias[]  function cArrayShiftAlias(Alias[] aArray) global
-  {Requirements: None}
-  Alias[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayShiftAlias", "!aArray")
-  else
-    newArray = cArrayRemoveIndexAlias(aArray, 0)
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Bool[]   function cArrayShiftBool(Bool[] aArray) global
-  {Requirements: None}
-  Bool[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayShiftBool", "!aArray")
-  else
-    newArray = cArrayRemoveIndexBool(aArray, 0)
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Float[]  function cArrayShiftFloat(Float[] aArray) global
-  {Requirements: None}
-  Float[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayShiftFloat", "!aArray")
-  else
-    newArray = cArrayRemoveIndexFloat(aArray, 0)
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayShiftForm(Form[] aArray) global
-  {Requirements: None}
-  Form[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayShiftForm", "!aArray")
-  else
-    newArray = cArrayRemoveIndexForm(aArray, 0)
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Int[]    function cArrayShiftInt(Int[] aArray) global
-  {Requirements: None}
-  Int[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayShiftInt", "!aArray")
-  else
-    newArray = cArrayRemoveIndexInt(aArray, 0)
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-ObjectReference[] function cArrayShiftObjRef(ObjectReference[] aArray) global
-  {Requirements: None}
-  ObjectReference[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayShiftObjRef", "!aArray")
-  else
-    newArray = cArrayRemoveIndexObjRef(aArray, 0)
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-String[] function cArrayShiftString(String[] aArray) global
-  {Requirements: None}
-  String[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayShiftString", "!aArray")
-  else
-    newArray = cArrayRemoveIndexString(aArray, 0)
-  endif
-  return newArray
-endfunction
-  
-  ;>>> Supply with array of ints and this removes those IndICES then returns new array
-; 21-11-08 - Success-bp, correction
-Actor[]  function cArrayRemoveIndicesActor(Actor[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
-  {Requirements: None}
-  Actor[] newArray
-  if !indicesToRemove
-    cErrInvalidArg("cArrayRemoveIndicesActor", "!indicesToRemove", "")
-  elseif !aArray
-    cErrInvalidArg("cArrayRemoveIndicesActor", "!aArray", "")
-  else
-    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
-    if newLength
-      newArray = cArrayCreateActor(newLength)
-      if newArray.length
-        Int k = 0
-        Int j = 0
-        Int i = 0
-        while i < aArray.length
-          if i != indicesToRemove[k]
-            newArray[j] = aArray[i]
-            j += 1
-          else
-            k += 1
-          endif
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayRemoveIndicesActor")
-      endif
-    else
-      clibTrace("cArrayRemoveIndicesActor", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp, correction
-Alias[]  function cArrayRemoveIndicesAlias(Alias[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
-  {Requirements: None}
-  Alias[] newArray
-  if !indicesToRemove
-    cErrInvalidArg("cArrayRemoveIndicesAlias", "!indicesToRemove", "")
-  elseif !aArray
-    cErrInvalidArg("cArrayRemoveIndicesAlias", "!aArray", "")
-  else
-    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
-    if newLength
-      newArray = cArrayCreateAlias(newLength)
-      if newArray.length
-        Int k = 0
-        Int j = 0
-        Int i = 0
-        while i < aArray.length
-          if i != indicesToRemove[k]
-            newArray[j] = aArray[i]
-            j += 1
-          else
-            k += 1
-          endif
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayRemoveIndicesAlias")
-      endif
-    else
-      clibTrace("cArrayRemoveIndicesAlias", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp, correction
-Bool[]   function cArrayRemoveIndicesBool(Bool[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
-  {Requirements: None}
-  Bool[] newArray
-  if !indicesToRemove
-    cErrInvalidArg("cArrayRemoveIndicesBool", "!indicesToRemove", "")
-  elseif !aArray
-    cErrInvalidArg("cArrayRemoveIndicesBool", "!aArray", "")
-  else
-    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
-    if newLength
-      newArray = cArrayCreateBool(newLength)
-      if newArray.length
-        Int k = 0
-        Int j = 0
-        Int i = 0
-        while i < aArray.length
-          if i != indicesToRemove[k]
-            newArray[j] = aArray[i]
-            j += 1
-          else
-            k += 1
-          endif
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayRemoveIndicesBool")
-      endif
-    else
-      clibTrace("cArrayRemoveIndicesBool", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp, correction
-Float[]  function cArrayRemoveIndicesFloat(Float[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
-  {Requirements: None}
-  Float[] newArray
-  if !indicesToRemove
-    cErrInvalidArg("cArrayRemoveIndicesFloat", "!indicesToRemove", "")
-  elseif !aArray
-    cErrInvalidArg("cArrayRemoveIndicesFloat", "!aArray", "")
-  else
-    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
-    if newLength
-      newArray = cArrayCreateFloat(newLength)
-      if newArray.length
-        Int k = 0
-        Int j = 0
-        Int i = 0
-        while i < aArray.length
-          if i != indicesToRemove[k]
-            newArray[j] = aArray[i]
-            j += 1
-          else
-            k += 1
-          endif
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayRemoveIndicesFloat")
-      endif
-    else
-      clibTrace("cArrayRemoveIndicesFloat", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp, correction
-Form[]   function cArrayRemoveIndicesForm(Form[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
-  {Requirements: None}
-  Form[] newArray
-  if !indicesToRemove
-    cErrInvalidArg("cArrayRemoveIndicesForm", "!indicesToRemove", "")
-  elseif !aArray
-    cErrInvalidArg("cArrayRemoveIndicesForm", "!aArray", "")
-  else
-    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
-    if newLength
-      newArray = cArrayCreateForm(newLength)
-      if newArray.length
-        Int k = 0
-        Int j = 0
-        Int i = 0
-        while i < aArray.length
-          if i != indicesToRemove[k]
-            newArray[j] = aArray[i]
-            j += 1
-          else
-            k += 1
-          endif
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayRemoveIndicesForm")
-      endif
-    else
-      clibTrace("cArrayRemoveIndicesForm", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp, correction
-Int[]    function cArrayRemoveIndicesInt(Int[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
-  {Requirements: None}
-  Int[] newArray
-  if !indicesToRemove
-    cErrInvalidArg("cArrayRemoveIndicesInt", "!indicesToRemove", "")
-  elseif !aArray
-    cErrInvalidArg("cArrayRemoveIndicesInt", "!aArray", "")
-  else
-    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
-    if newLength
-      newArray = cArrayCreateInt(newLength)
-      if newArray.length
-        Int k = 0
-        Int j = 0
-        Int i = 0
-        while i < aArray.length
-          if i != indicesToRemove[k]
-            newArray[j] = aArray[i]
-            j += 1
-          else
-            k += 1
-          endif
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayRemoveIndicesInt")
-      endif
-    else
-      clibTrace("cArrayRemoveIndicesInt", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp, correction
-ObjectReference[] function cArrayRemoveIndicesObjRef(ObjectReference[] aArray, Int[] indicesToRemove, \
-  Int stopLength = 0) global
-  {Requirements: None}
-  ObjectReference[] newArray
-  if !indicesToRemove
-    cErrInvalidArg("cArrayRemoveIndicesObjRef", "!indicesToRemove", "")
-  elseif !aArray
-    cErrInvalidArg("cArrayRemoveIndicesObjRef", "!aArray", "")
-  else
-    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
-    if newLength
-      newArray = cArrayCreateObjRef(newLength)
-      if newArray.length
-        Int k = 0
-        Int j = 0
-        Int i = 0
-        while i < aArray.length
-          if i != indicesToRemove[k]
-            newArray[j] = aArray[i]
-            j += 1
-          else
-            k += 1
-          endif
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayRemoveIndicesObjRef")
-      endif
-    else
-      clibTrace("cArrayRemoveIndicesObjRef", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-08 - Success-bp, correction
-String[] function cArrayRemoveIndicesString(String[] aArray, Int[] indicesToRemove, Int stopLength = 0) global
-  {Requirements: None}
-  String[] newArray
-  if !indicesToRemove
-    cErrInvalidArg("cArrayRemoveIndicesString", "!indicesToRemove", "")
-  elseif !aArray
-    cErrInvalidArg("cArrayRemoveIndicesString", "!aArray", "")
-  else
-    Int newLength = cTernaryInt(stopLength, aArray.length - stopLength, aArray.length - indicesToRemove.length)
-    if newLength
-      newArray = cArrayCreateString(newLength)
-      if newArray.length
-        Int k = 0
-        Int j = 0
-        Int i = 0
-        while i < aArray.length
-          if i != indicesToRemove[k]
-            newArray[j] = aArray[i]
-            j += 1
-          else
-            k += 1
-          endif
-          i += 1
-        endwhile
-      else
-        cErrArrInitFail("cArrayRemoveIndicesString")
-      endif
-    else
-      clibTrace("cArrayRemoveIndicesString", "After processing no indices remain! Returning ArrayNone", 0)
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-  
-  ;>>> Resizing (mix return, SKSE = resize original, vanilla = new copy)
-Actor[]  function cArrayResizeActor(Actor[] aArray, Int newSize, Actor filler = None, Bool usePapUtil = TRUE) global
+  ;>>> Resizing (mixed return, SKSE = resize original, vanilla = new copy)
+    ; clampMinLength, clampMaxLength allows 'automated' conditional length
+Actor[]  function cArrayResizeActor(Actor[] aArray, Int newSize, Actor filler = None, Int clampMinLength = -1, \
+  Int clampMaxLength = -1, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
   if !aArray
     cErrInvalidArg("cArrayResizeActor", "!aArray", "")
   elseif newSize < 1
     cErrInvalidArg("cArrayResizeActor", "newSize < 1", "")
-  elseif usePapUtil
-    newArray = PapyrusUtil.ResizeActorArray(aArray, newSize, filler)
+  elseif clampMinLength != -1 && clampMinLength < 0
+    cErrInvalidArg("cArrayResizeActor", "newSize < 1", "")
   else
-    newArray = cArrayCreateActor(newSize, filler)
-    if newArray.length
-      Int i = 0
-      while i < newArray.length
-        if i < aArray.length
-          newArray[i] = aArray[i]
-        else
-          newArray[i] = filler
-        endif
-        i += 1
-      endwhile
+    if (clampMinLength != -1) && (newSize < clampMinLength)
+      newSize = clampMinLength
+    endif
+    if (clampMaxLength != -1) && (newSize > clampMaxLength)
+      newSize = clampMaxLength
+    endif
+    if usePapUtil
+      newArray = PapyrusUtil.ResizeActorArray(aArray, newSize, filler)
     else
-      cErrArrInitFail("cArrayResizeActor")
+      newArray = cArrayCreateActor(newSize, filler)
+      if newArray.length
+        Int i = 0
+        while i < newArray.length
+          if i < aArray.length
+            newArray[i] = aArray[i]
+          else
+            newArray[i] = filler
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayResizeActor")
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
-Alias[]  function cArrayResizeAlias(Alias[] aArray, Int newSize, Alias filler = None, Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Alias[]  function cArrayResizeAlias(Alias[] aArray, Int newSize, Alias filler = None, Int clampMinLength = -1, \
+  Int clampMaxLength = -1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
-  if !aArray || newSize < 1
-    cErrInvalidArg("cArrayResizeAlias", "!aArray")
-  elseif newsize < 1
-    cErrInvalidArg("cArrayResizeAlias", "newSize < 1")
-  elseif useSKSE
-    return Utility.ResizeAliasArray(aArray, newSize, filler)
+  if !aArray
+    cErrInvalidArg("cArrayResizeAlias", "!aArray", "")
+  elseif newSize < 1
+    cErrInvalidArg("cArrayResizeAlias", "newSize < 1", "")
+  elseif clampMinLength != -1 && clampMinLength < 0
+    cErrInvalidArg("cArrayResizeAlias", "newSize < 1", "")
   else
-    newArray = cArrayCreateAlias(newSize, filler)
-    if newArray.length
-      newArray = cArrayCopyToAlias(aArray, newArray, filler)
+    if (clampMinLength != -1) && (newSize < clampMinLength)
+      newSize = clampMinLength
+    endif
+    if (clampMaxLength != -1) && (newSize > clampMaxLength)
+      newSize = clampMaxLength
+    endif
+    if usePapUtil
+      newArray = PapyrusUtil.ResizeAliasArray(aArray, newSize, filler)
     else
-      cErrArrInitFail("cArrayResizeAlias")
+      newArray = cArrayCreateAlias(newSize, filler)
+      if newArray.length
+        Int i = 0
+        while i < newArray.length
+          if i < aArray.length
+            newArray[i] = aArray[i]
+          else
+            newArray[i] = filler
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayResizeAlias")
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
-Bool[]   function cArrayResizeBool(Bool[] aArray, Int newSize, Bool filler = False, Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Bool[]   function cArrayResizeBool(Bool[] aArray, Int newSize, Bool filler = False, Int clampMinLength = -1, \
+  Int clampMaxLength = -1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Bool[] newArray
-  if !aArray || newSize < 1
-    cErrInvalidArg("cArrayResizeBool", "!aArray")
-  elseif newsize < 1
-    cErrInvalidArg("cArrayResizeBool", "newSize < 1")
-  elseif useSKSE
-    return Utility.ResizeBoolArray(aArray, newSize, filler)
+  if !aArray
+    cErrInvalidArg("cArrayResizeBool", "!aArray", "")
+  elseif newSize < 1
+    cErrInvalidArg("cArrayResizeBool", "newSize < 1", "")
+  elseif clampMinLength != -1 && clampMinLength < 0
+    cErrInvalidArg("cArrayResizeBool", "newSize < 1", "")
   else
-    newArray = cArrayCreateBool(newSize, filler)
-    if newArray.length
-      newArray = cArrayCopyToBool(aArray, newArray, filler)
+    if (clampMinLength != -1) && (newSize < clampMinLength)
+      newSize = clampMinLength
+    endif
+    if (clampMaxLength != -1) && (newSize > clampMaxLength)
+      newSize = clampMaxLength
+    endif
+    if usePapUtil
+      newArray = PapyrusUtil.ResizeBoolArray(aArray, newSize, filler)
     else
-      cErrArrInitFail("cArrayResizeBool")
+      newArray = cArrayCreateBool(newSize, filler)
+      if newArray.length
+        Int i = 0
+        while i < newArray.length
+          if i < aArray.length
+            newArray[i] = aArray[i]
+          else
+            newArray[i] = filler
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayResizeBool")
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
-Float[]  function cArrayResizeFloat(Float[] aArray, Int newSize, Float filler = 0.0, Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Float[]  function cArrayResizeFloat(Float[] aArray, Int newSize, Float filler = 0.0, Int clampMinLength = -1, \
+  Int clampMaxLength = -1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
-  if !aArray || newSize < 1
-    cErrInvalidArg("cArrayResizeFloat", "!aArray")
-  elseif newsize < 1
-    cErrInvalidArg("cArrayResizeFloat", "newSize < 1")
-  elseif useSKSE
-    return Utility.ResizeFloatArray(aArray, newSize, filler)
+  if !aArray
+    cErrInvalidArg("cArrayResizeFloat", "!aArray", "")
+  elseif newSize < 1
+    cErrInvalidArg("cArrayResizeFloat", "newSize < 1", "")
+  elseif clampMinLength != -1 && clampMinLength < 0
+    cErrInvalidArg("cArrayResizeFloat", "newSize < 1", "")
   else
-    newArray = cArrayCreateFloat(newSize, filler)
-    if newArray.length
-      newArray = cArrayCopyToFloat(aArray, newArray, filler)
+    if (clampMinLength != -1) && (newSize < clampMinLength)
+      newSize = clampMinLength
+    endif
+    if (clampMaxLength != -1) && (newSize > clampMaxLength)
+      newSize = clampMaxLength
+    endif
+    if usePapUtil
+      newArray = PapyrusUtil.ResizeFloatArray(aArray, newSize, filler)
     else
-      cErrArrInitFail("cArrayResizeFloat")
+      newArray = cArrayCreateFloat(newSize, filler)
+      if newArray.length
+        Int i = 0
+        while i < newArray.length
+          if i < aArray.length
+            newArray[i] = aArray[i]
+          else
+            newArray[i] = filler
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayResizeFloat")
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayResizeForm(Form[] aArray, Int newSize, Form filler = None, Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Form[]   function cArrayResizeForm(Form[] aArray, Int newSize, Form filler = None, Int clampMinLength = -1, \
+  Int clampMaxLength = -1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
-  if !aArray || newSize < 1
-    cErrInvalidArg("cArrayResizeForm", "!aArray")
-  elseif newsize < 1
-    cErrInvalidArg("cArrayResizeForm", "newSize < 1")
-  elseif useSKSE
-    return Utility.ResizeFormArray(aArray, newSize, filler)
+  if !aArray
+    cErrInvalidArg("cArrayResizeForm", "!aArray", "")
+  elseif newSize < 1
+    cErrInvalidArg("cArrayResizeForm", "newSize < 1", "")
+  elseif clampMinLength != -1 && clampMinLength < 0
+    cErrInvalidArg("cArrayResizeForm", "newSize < 1", "")
   else
-    newArray = cArrayCreateForm(newSize, filler)
-    if newArray.length
-      newArray = cArrayCopyToForm(aArray, newArray, filler)
+    if (clampMinLength != -1) && (newSize < clampMinLength)
+      newSize = clampMinLength
+    endif
+    if (clampMaxLength != -1) && (newSize > clampMaxLength)
+      newSize = clampMaxLength
+    endif
+    if usePapUtil
+      newArray = PapyrusUtil.ResizeFormArray(aArray, newSize, filler)
     else
-      cErrArrInitFail("cArrayResizeForm")
+      newArray = cArrayCreateForm(newSize, filler)
+      if newArray.length
+        Int i = 0
+        while i < newArray.length
+          if i < aArray.length
+            newArray[i] = aArray[i]
+          else
+            newArray[i] = filler
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayResizeForm")
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
-Int[]    function cArrayResizeInt(Int[] aArray, Int newSize, Int filler = 0, Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Int[]    function cArrayResizeInt(Int[] aArray, Int newSize, Int filler = 0, Int clampMinLength = -1, \
+  Int clampMaxLength = -1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
-  if !aArray || newSize < 1
-    cErrInvalidArg("cArrayResizeInt", "!aArray")
-  elseif newsize < 1
-    cErrInvalidArg("cArrayResizeInt", "newSize < 1")
-  elseif useSKSE
-    return Utility.ResizeIntArray(aArray, newSize, filler)
+  if !aArray
+    cErrInvalidArg("cArrayResizeInt", "!aArray", "")
+  elseif newSize < 1
+    cErrInvalidArg("cArrayResizeInt", "newSize < 1", "")
+  elseif clampMinLength != -1 && clampMinLength < 0
+    cErrInvalidArg("cArrayResizeInt", "newSize < 1", "")
   else
-    newArray = cArrayCreateInt(newSize, filler)
-    if newArray.length
-      newArray = cArrayCopyToInt(aArray, newArray, filler)
+    if (clampMinLength != -1) && (newSize < clampMinLength)
+      newSize = clampMinLength
+    endif
+    if (clampMaxLength != -1) && (newSize > clampMaxLength)
+      newSize = clampMaxLength
+    endif
+    if usePapUtil
+      newArray = PapyrusUtil.ResizeIntArray(aArray, newSize, filler)
     else
-      cErrArrInitFail("cArrayResizeInt")
+      newArray = cArrayCreateInt(newSize, filler)
+      if newArray.length
+        Int i = 0
+        while i < newArray.length
+          if i < aArray.length
+            newArray[i] = aArray[i]
+          else
+            newArray[i] = filler
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayResizeInt")
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
-ObjectReference[] function cArrayResizeObjRef(ObjectReference[] aArray, Int newSize, \
-    ObjectReference filler = None, Bool useSKSE = TRUE, Bool usePapUtil = TRUE) global
+ObjectReference[] function cArrayResizeObjRef(ObjectReference[] aArray, Int newSize, ObjectReference filler = None, \
+  Int clampMinLength = -1, Int clampMaxLength = -1, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] newArray
   if !aArray
-    cErrInvalidArg("cArrayResizeObjectReference", "!aArray", "")
+    cErrInvalidArg("cArrayResizeObjRef", "!aArray", "")
   elseif newSize < 1
-    cErrInvalidArg("cArrayResizeObjectReference", "newSize < 1", "")
-  elseif usePapUtil
-    newArray = PapyrusUtil.ResizeObjRefArray(aArray, newSize, filler)
+    cErrInvalidArg("cArrayResizeObjRef", "newSize < 1", "")
+  elseif clampMinLength != -1 && clampMinLength < 0
+    cErrInvalidArg("cArrayResizeObjRef", "newSize < 1", "")
   else
-    newArray = cArrayCreateObjRef(newSize, filler)
-    if newArray.length
-      Int i = 0
-      while i < newArray.length
-        if i < aArray.length
-          newArray[i] = aArray[i]
-        else
-          newArray[i] = filler
-        endif
-        i += 1
-      endwhile
+    if (clampMinLength != -1) && (newSize < clampMinLength)
+      newSize = clampMinLength
+    endif
+    if (clampMaxLength != -1) && (newSize > clampMaxLength)
+      newSize = clampMaxLength
+    endif
+    if usePapUtil
+      newArray = PapyrusUtil.ResizeObjRefArray(aArray, newSize, filler)
     else
-      cErrArrInitFail("cArrayResizeObjectReference")
+      newArray = cArrayCreateObjRef(newSize, filler)
+      if newArray.length
+        Int i = 0
+        while i < newArray.length
+          if i < aArray.length
+            newArray[i] = aArray[i]
+          else
+            newArray[i] = filler
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayResizeObjRef")
+      endif
     endif
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
-String[] function cArrayResizeString(String[] aArray, Int newSize, String filler = "", Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
+String[] function cArrayResizeString(String[] aArray, Int newSize, String filler = "", Int clampMinLength = -1, \
+  Int clampMaxLength = -1, Bool usePapUtil = TRUE) global
+  {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
-  if !aArray || newSize < 1
-    cErrInvalidArg("cArrayResizeString", "!aArray")
-  elseif newsize < 1
-    cErrInvalidArg("cArrayResizeString", "newSize < 1")
-  elseif useSKSE
-    return Utility.ResizeStringArray(aArray, newSize, filler)
+  if !aArray
+    cErrInvalidArg("cArrayResizeString", "!aArray", "")
+  elseif newSize < 1
+    cErrInvalidArg("cArrayResizeString", "newSize < 1", "")
+  elseif clampMinLength != -1 && clampMinLength < 0
+    cErrInvalidArg("cArrayResizeString", "newSize < 1", "")
   else
-    newArray = cArrayCreateString(newSize, filler)
-    if newArray.length
-      newArray = cArrayCopyToString(aArray, newArray, filler)
+    if (clampMinLength != -1) && (newSize < clampMinLength)
+      newSize = clampMinLength
+    endif
+    if (clampMaxLength != -1) && (newSize > clampMaxLength)
+      newSize = clampMaxLength
+    endif
+    if usePapUtil
+      newArray = PapyrusUtil.ResizeStringArray(aArray, newSize, filler)
     else
-      cErrArrInitFail("cArrayResizeString")
+      newArray = cArrayCreateString(newSize, filler)
+      if newArray.length
+        Int i = 0
+        while i < newArray.length
+          if i < aArray.length
+            newArray[i] = aArray[i]
+          else
+            newArray[i] = filler
+          endif
+          i += 1
+        endwhile
+      else
+        cErrArrInitFail("cArrayResizeString")
+      endif
     endif
   endif
   return newArray
 endfunction
-  
   ;>>> Slice copies a portion of aArray to new array and returns it
-; 21-11-09 - Success-bp
 Actor[]  function cArraySliceActor(Actor[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] newArray
@@ -6934,7 +6805,6 @@ Actor[]  function cArraySliceActor(Actor[] aArray, Int fromIndex, Int toIndex = 
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Alias[]  function cArraySliceAlias(Alias[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Alias[] newArray
@@ -6971,7 +6841,6 @@ Alias[]  function cArraySliceAlias(Alias[] aArray, Int fromIndex, Int toIndex = 
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Bool[]   function cArraySliceBool(Bool[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Bool[] newArray
@@ -7008,7 +6877,6 @@ Bool[]   function cArraySliceBool(Bool[] aArray, Int fromIndex, Int toIndex = 0,
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 Float[]  function cArraySliceFloat(Float[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Float[] newArray
@@ -7045,7 +6913,6 @@ Float[]  function cArraySliceFloat(Float[] aArray, Int fromIndex, Int toIndex = 
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Form[]   function cArraySliceForm(Form[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Form[] newArray
@@ -7082,7 +6949,6 @@ Form[]   function cArraySliceForm(Form[] aArray, Int fromIndex, Int toIndex = 0,
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 Int[]    function cArraySliceInt(Int[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Int[] newArray
@@ -7119,7 +6985,6 @@ Int[]    function cArraySliceInt(Int[] aArray, Int fromIndex, Int toIndex = 0, B
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 ObjectReference[] function cArraySliceObjRef(ObjectReference[] aArray, Int fromIndex, Int toIndex = 0, \
   Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
@@ -7157,7 +7022,6 @@ ObjectReference[] function cArraySliceObjRef(ObjectReference[] aArray, Int fromI
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 String[] function cArraySliceString(String[] aArray, Int fromIndex, Int toIndex = 0, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   String[] newArray
@@ -7194,9 +7058,7 @@ String[] function cArraySliceString(String[] aArray, Int fromIndex, Int toIndex 
   endif
   return newArray
 endfunction
-  
   ;>>> Inserts an array into another (returns new array)
-; 21-11-09 - Success-bp
 Actor[]  function cArraySpliceActor(Actor[] aArray, Actor[] toInsert, Int insertAtIndex = 0) global
   {Requirements: None}
   Actor[] newArray
@@ -7236,7 +7098,6 @@ Actor[]  function cArraySpliceActor(Actor[] aArray, Actor[] toInsert, Int insert
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Alias[]  function cArraySpliceAlias(Alias[] aArray, Alias[] toInsert, Int insertAtIndex = 0) global
   {Requirements: None}
   Alias[] newArray
@@ -7276,7 +7137,6 @@ Alias[]  function cArraySpliceAlias(Alias[] aArray, Alias[] toInsert, Int insert
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Bool[]   function cArraySpliceBool(Bool[] aArray, Bool[] toInsert, Int insertAtIndex = 0) global
   {Requirements: None}
   Bool[] newArray
@@ -7316,7 +7176,6 @@ Bool[]   function cArraySpliceBool(Bool[] aArray, Bool[] toInsert, Int insertAtI
   endif
   return newArray
 endfunction
-; 21-11-09 - Test Success
 Float[]  function cArraySpliceFloat(Float[] aArray, Float[] toInsert, Int insertAtIndex = 0) global
   {Requirements: None}
   Float[] newArray
@@ -7356,7 +7215,6 @@ Float[]  function cArraySpliceFloat(Float[] aArray, Float[] toInsert, Int insert
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Form[]   function cArraySpliceForm(Form[] aArray, Form[] toInsert, Int insertAtIndex = 0) global
   {Requirements: None}
   Form[] newArray
@@ -7396,7 +7254,6 @@ Form[]   function cArraySpliceForm(Form[] aArray, Form[] toInsert, Int insertAtI
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 Int[]    function cArraySpliceInt(Int[] aArray, Int[] toInsert, Int insertAtIndex = 0) global
   {Requirements: None}
   Int[] newArray
@@ -7436,7 +7293,6 @@ Int[]    function cArraySpliceInt(Int[] aArray, Int[] toInsert, Int insertAtInde
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 ObjectReference[] function cArraySpliceObjRef(ObjectReference[] aArray, ObjectReference[] toInsert, \
   Int insertAtIndex = 0) global
   {Requirements: None}
@@ -7477,7 +7333,6 @@ ObjectReference[] function cArraySpliceObjRef(ObjectReference[] aArray, ObjectRe
   endif
   return newArray
 endfunction
-; 21-11-09 - Success-bp
 String[] function cArraySpliceString(String[] aArray, String[] toInsert, Int insertAtIndex = 0) global
   {Requirements: None}
   String[] newArray
@@ -7517,930 +7372,6 @@ String[] function cArraySpliceString(String[] aArray, String[] toInsert, Int ins
   endif
   return newArray
 endfunction
-  
-  ;>>> Reverse order (returns new array)
-; 21-11-09 - Success-bp
-Actor[]  function cArrayReverseActor(Actor[] aArray) global
-  {Requirements: None}
-  Actor[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayReverseActor", "!aArray", "")
-  else 
-    newArray = cArrayCreateActor(aArray.length)
-    if newArray.length
-      Int numIndices = aArray.length
-      Int i = 0
-      while i < aArray.length
-        numIndices -= 1
-        newArray[i] = aArray[numIndices]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayReverseActor")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Alias[]  function cArrayReverseAlias(Alias[] aArray) global
-  {Requirements: None}
-  Alias[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayReverseAlias", "!aArray", "")
-  else 
-    newArray = cArrayCreateAlias(aArray.length)
-    if newArray.length
-      Int numIndices = aArray.length
-      Int i = 0
-      while i < aArray.length
-        numIndices -= 1
-        newArray[i] = aArray[numIndices]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayReverseAlias")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Bool[]   function cArrayReverseBool(Bool[] aArray) global
-  {Requirements: None}
-  Bool[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayReverseBool", "!aArray", "")
-  else
-    newArray = cArrayCreateBool(aArray.length)
-    if newArray.length
-      Int numIndices = aArray.length
-      Int i = 0
-      while i < aArray.length
-        numIndices -= 1
-        newArray[i] = aArray[numIndices]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayReverseBool")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Float[]  function cArrayReverseFloat(Float[] aArray) global
-  {Requirements: None}
-  Float[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayReverseFloat", "!aArray", "")
-  else 
-    newArray = cArrayCreateFloat(aArray.length)
-    if newArray.length
-      Int numIndices = aArray.length
-      Int i = 0
-      while i < aArray.length
-        numIndices -= 1
-        newArray[i] = aArray[numIndices]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayReverseFloat")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayReverseForm(Form[] aArray) global
-  {Requirements: None}
-  Form[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayReverseForm", "!aArray", "")
-  else 
-    newArray = cArrayCreateForm(aArray.length)
-    if newArray.length
-      Int numIndices = aArray.length
-      Int i = 0
-      while i < aArray.length
-        numIndices -= 1
-        newArray[i] = aArray[numIndices]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayReverseForm")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Int[]    function cArrayReverseInt(Int[] aArray) global
-  {Requirements: None}
-  Int[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayReverseInt", "!aArray", "")
-  else 
-    newArray = cArrayCreateInt(aArray.length)
-    if newArray.length
-      Int numIndices = aArray.length
-      Int i = 0
-      while i < aArray.length
-        numIndices -= 1
-        newArray[i] = aArray[numIndices]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayReverseInt")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-ObjectReference[] function cArrayReverseObjRef(ObjectReference[] aArray) global
-  {Requirements: None}
-  ObjectReference[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayReverseObjectReference", "!aArray", "")
-  else 
-    newArray = cArrayCreateObjRef(aArray.length)
-    if newArray.length
-      Int numIndices = aArray.length
-      Int i = 0
-      while i < aArray.length
-        numIndices -= 1
-        newArray[i] = aArray[numIndices]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayReverseObjectReference")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-String[] function cArrayReverseString(String[] aArray) global
-  {Requirements: None}
-  String[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayReverseString", "!aArray", "")
-  else 
-    newArray = cArrayCreateString(aArray.length)
-    if newArray.length
-      Int numIndices = aArray.length
-      Int i = 0
-      while i < aArray.length
-        numIndices -= 1
-        newArray[i] = aArray[numIndices]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayReverseString")
-    endif
-  endif
-  return newArray
-endfunction
-
-;====== CREATION
-  ;>>> See cStringToArray() in "String" section above
-  ;>>> Array from separated values (10 each)
-; 21-11-09 - Success bp
-Actor[]  function cArrayFromActors(Actor aActor0, Actor aActor1 = None, Actor aActor2 = None, \
-    Actor aActor3 = None, Actor aActor4 = None, Actor aActor5 = None, Actor aActor6 = None, Actor aActor7 = None, \
-      Actor aActor8 = None, Actor aActor9 = None, Bool skipTrailingNone = TRUE) global
-  {Requirements: None}
-  Int arrayLength
-  if skipTrailingNone
-    if aActor0 != None
-      arrayLength = 1
-    endif
-    if aActor1 != None
-      arrayLength = 2
-    endif
-    if aActor2 != None
-      arrayLength = 3
-    endif
-    if aActor3 != None
-      arrayLength = 4
-    endif
-    if aActor4 != None
-      arrayLength = 5
-    endif
-    if aActor5 != None
-      arrayLength = 6
-    endif
-    if aActor6 != None
-      arrayLength = 7
-    endif
-    if aActor7 != None
-      arrayLength = 8
-    endif
-    if aActor8 != None
-      arrayLength = 9
-    endif
-    if aActor9 != None
-      arrayLength = 10
-    endif
-  endif
-  Actor[] newArray = cArrayCreateActor(arrayLength)
-  if newArray.length
-    Int i = 0
-    if i < arrayLength
-      newArray[i] = aActor0
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aActor1
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aActor2
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aActor3
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aActor4
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aActor5
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aActor6
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aActor7
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aActor8
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aActor9
-    endif
-  else
-    cErrArrInitFail("cArrayFromActors")
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success bp
-Alias[]  function cArrayFromAliases(Alias aAlias0, Alias aAlias1 = None, Alias aAlias2 = None, \
-    Alias aAlias3 = None, Alias aAlias4 = None, Alias aAlias5 = None, Alias aAlias6 = None, Alias aAlias7 = None, \
-      Alias aAlias8 = None, Alias aAlias9 = None, Bool skipTrailingNone = TRUE) global
-  {Requirements: None}
-  Int arrayLength
-  if skipTrailingNone
-    if aAlias0 != None
-      arrayLength = 1
-    endif
-    if aAlias1 != None
-      arrayLength = 2
-    endif
-    if aAlias2 != None
-      arrayLength = 3
-    endif
-    if aAlias3 != None
-      arrayLength = 4
-    endif
-    if aAlias4 != None
-      arrayLength = 5
-    endif
-    if aAlias5 != None
-      arrayLength = 6
-    endif
-    if aAlias6 != None
-      arrayLength = 7
-    endif
-    if aAlias7 != None
-      arrayLength = 8
-    endif
-    if aAlias8 != None
-      arrayLength = 9
-    endif
-    if aAlias9 != None
-      arrayLength = 10
-    endif
-  endif
-  Alias[] newArray = cArrayCreateAlias(arrayLength)
-  if newArray.length
-    Int i = 0
-    if i < arrayLength
-      newArray[i] = aAlias0
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aAlias1
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aAlias2
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aAlias3
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aAlias4
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aAlias5
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aAlias6
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aAlias7
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aAlias8
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aAlias9
-    endif
-  else
-    cErrArrInitFail("cArrayFromAliass")
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Float[]  function cArrayFromFloats(Float aFloat0, Float aFloat1 = 0.0, Float aFloat2 = 0.0, \
-    Float aFloat3 = 0.0, Float aFloat4 = 0.0, Float aFloat5 = 0.0, Float aFloat6 = 0.0, Float aFloat7 = 0.0, \
-      Float aFloat8 = 0.0, Float aFloat9 = 0.0, Bool skipTrailingZero = TRUE) global
-  {Requirements: None}
-  Int arrayLength
-  if skipTrailingZero
-    if aFloat0 != 0.0
-      arrayLength = 1
-    endif
-    if aFloat1 != 0.0
-      arrayLength = 2
-    endif
-    if aFloat2 != 0.0
-      arrayLength = 3
-    endif
-    if aFloat3 != 0.0
-      arrayLength = 4
-    endif
-    if aFloat4 != 0.0
-      arrayLength = 5
-    endif
-    if aFloat5 != 0.0
-      arrayLength = 6
-    endif
-    if aFloat6 != 0.0
-      arrayLength = 7
-    endif
-    if aFloat7 != 0.0
-      arrayLength = 8
-    endif
-    if aFloat8 != 0.0
-      arrayLength = 9
-    endif
-    if aFloat9 != 0.0
-      arrayLength = 10
-    endif
-  endif
-  Float[] newArray = cArrayCreateFloat(arrayLength)
-  if newArray.length
-    Int i = 0
-    if i < arrayLength
-      newArray[i] = aFloat0
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aFloat1
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aFloat2
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aFloat3
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aFloat4
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aFloat5
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aFloat6
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aFloat7
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aFloat8
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aFloat9
-    endif
-  else
-    cErrArrInitFail("cArrayFromFloats")
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayFromForms(Form aForm0, Form aForm1 = None, Form aForm2 = None, Form aForm3 = None, \
-    Form aForm4 = None, Form aForm5 = None, Form aForm6 = None, Form aForm7 = None, Form aForm8 = None, \
-      Form aForm9 = None, Bool skipTrailingNone = TRUE) global
-  {Requirements: None}
-  Int arrayLength
-  if skipTrailingNone
-    if aForm0 != None
-      arrayLength = 1
-    endif
-    if aForm1 != None
-      arrayLength = 2
-    endif
-    if aForm2 != None
-      arrayLength = 3
-    endif
-    if aForm3 != None
-      arrayLength = 4
-    endif
-    if aForm4 != None
-      arrayLength = 5
-    endif
-    if aForm5 != None
-      arrayLength = 6
-    endif
-    if aForm6 != None
-      arrayLength = 7
-    endif
-    if aForm7 != None
-      arrayLength = 8
-    endif
-    if aForm8 != None
-      arrayLength = 9
-    endif
-    if aForm9 != None
-      arrayLength = 10
-    endif
-  endif
-  Form[] newArray = cArrayCreateForm(arrayLength)
-  if newArray.length
-    Int i = 0
-    if i < arrayLength
-      newArray[i] = aForm0
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aForm1
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aForm2
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aForm3
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aForm4
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aForm5
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aForm6
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aForm7
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aForm8
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aForm9
-    endif
-  else
-    cErrArrInitFail("cArrayFromForms")
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Int[]    function cArrayFromInts(Int aInt0, Int aInt1 = 0, Int aInt2 = 0, \
-    Int aInt3 = 0, Int aInt4 = 0, Int aInt5 = 0, Int aInt6 = 0, Int aInt7 = 0, \
-      Int aInt8 = 0, Int aInt9 = 0, Bool skipTrailingZero = TRUE) global
-  {Requirements: None}
-  Int arrayLength
-  Int i
-  if skipTrailingZero
-    if aInt0 != 0
-      arrayLength = 1
-    endif
-    if aInt1 != 0
-      arrayLength = 2
-    endif
-    if aInt2 != 0
-      arrayLength = 3
-    endif
-    if aInt3 != 0
-      arrayLength = 4
-    endif
-    if aInt4 != 0
-      arrayLength = 5
-    endif
-    if aInt5 != 0
-      arrayLength = 6
-    endif
-    if aInt6 != 0
-      arrayLength = 7
-    endif
-    if aInt7 != 0
-      arrayLength = 8
-    endif
-    if aInt8 != 0
-      arrayLength = 9
-    endif
-    if aInt9 != 0
-      arrayLength = 10
-    endif
-  endif
-  Int[] newArray = cArrayCreateInt(arrayLength)
-  if newArray.length
-    i = 0
-    if i < arrayLength
-      newArray[i] = aInt0
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aInt1
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aInt2
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aInt3
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aInt4
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aInt5
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aInt6
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aInt7
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aInt8
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aInt9
-    endif
-  else
-    cErrArrInitFail("cArrayFromInts")
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success bp
-ObjectReference[]  function cArrayFromObjRefs(ObjectReference aObjRef0, ObjectReference aObjRef1 = None, \
-   ObjectReference aObjRef2 = None, ObjectReference aObjRef3 = None, ObjectReference aObjRef4 = None, \
-    ObjectReference aObjRef5 = None, ObjectReference aObjRef6 = None, ObjectReference aObjRef7 = None, \
-      ObjectReference aObjRef8 = None, ObjectReference aObjRef9 = None, Bool skipTrailingNone = TRUE) global
-  {Requirements: None}
-  Int arrayLength
-  if skipTrailingNone
-    if aObjRef0 != None
-      arrayLength = 1
-    endif
-    if aObjRef1 != None
-      arrayLength = 2
-    endif
-    if aObjRef2 != None
-      arrayLength = 3
-    endif
-    if aObjRef3 != None
-      arrayLength = 4
-    endif
-    if aObjRef4 != None
-      arrayLength = 5
-    endif
-    if aObjRef5 != None
-      arrayLength = 6
-    endif
-    if aObjRef6 != None
-      arrayLength = 7
-    endif
-    if aObjRef7 != None
-      arrayLength = 8
-    endif
-    if aObjRef8 != None
-      arrayLength = 9
-    endif
-    if aObjRef9 != None
-      arrayLength = 10
-    endif
-  endif
-  ObjectReference[] newArray = cArrayCreateObjRef(arrayLength)
-  if newArray.length
-    Int i = 0
-    if i < arrayLength
-      newArray[i] = aObjRef0
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aObjRef1
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aObjRef2
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aObjRef3
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aObjRef4
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aObjRef5
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aObjRef6
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aObjRef7
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aObjRef8
-      i += 1
-    endif
-    if i < arrayLength
-      newArray[i] = aObjRef9
-    endif
-  else
-    cErrArrInitFail("cArrayFromObjRefs")
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-String[] function cArrayFromStrings(String aString0, String aString1 = "", String aString2 = "", \
-    String aString3 = "", String aString4 = "", String aString5 = "", String aString6 = "", String aString7 = "", \
-      String aString8 = "", String aString9 = "", Bool skipTrailingEmpty = TRUE) global
-  {Requirements: None}
-  Int newLength
-  if skipTrailingEmpty
-    newLength = cTernaryInt(aString0 != "", 1, newLength)
-    newLength = cTernaryInt(aString1 != "", 2, newLength)
-    newLength = cTernaryInt(aString2 != "", 3, newLength)
-    newLength = cTernaryInt(aString3 != "", 4, newLength)
-    newLength = cTernaryInt(aString4 != "", 5, newLength)
-    newLength = cTernaryInt(aString5 != "", 6, newLength)
-    newLength = cTernaryInt(aString6 != "", 7, newLength)
-    newLength = cTernaryInt(aString7 != "", 8, newLength)
-    newLength = cTernaryInt(aString8 != "", 9, newLength)
-    newLength = cTernaryInt(aString9 != "", 10, newLength)
-  elseif !newLength && !skipTrailingEmpty
-    newLength = 10
-  endif
-  String[] newArray = cArrayCreateString(newLength)
-  if newArray.length
-    Int i = 0
-    if i < newLength
-      newArray[i] = aString0
-      i += 1
-    endif
-    if i < newLength
-      newArray[i] = aString1
-      i += 1
-    endif
-    if i < newLength
-      newArray[i] = aString2
-      i += 1
-    endif
-    if i < newLength
-      newArray[i] = aString3
-      i += 1
-    endif
-    if i < newLength
-      newArray[i] = aString4
-      i += 1
-    endif
-    if i < newLength
-      newArray[i] = aString5
-      i += 1
-    endif
-    if i < newLength
-      newArray[i] = aString6
-      i += 1
-    endif
-    if i < newLength
-      newArray[i] = aString7
-      i += 1
-    endif
-    if i < newLength
-      newArray[i] = aString8
-      i += 1
-    endif
-    if i < newLength
-      newArray[i] = aString9
-    endif
-  else
-    cErrArrInitFail("cArrayFromStrings")
-  endif
-  return newArray
-endfunction
-  
-  ;>>> Copying to newly created array which is then returned
-; 21-11-09 - Success-bp
-Actor[]  function cArrayCopyActor(Actor[] aArray) global
-  {Requirements: None}
-  Actor[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayCopyActor", "!aArray", "")
-  else
-    newArray = cArrayCreateActor(aArray.length)
-    if newArray.length
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayCopyActor")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Alias[]  function cArrayCopyAlias(Alias[] aArray) global
-  {Requirements: None}
-  Alias[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayCopyAlias", "!aArray", "")
-  else
-    newArray = cArrayCreateAlias(aArray.length)
-    if newArray.length
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayCopyAlias")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Bool[]   function cArrayCopyBool(Bool[] aArray) global
-  {Requirements: None}
-  Bool[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayCopyBool", "!aArray", "")
-  else
-    newArray = cArrayCreateBool(aArray.length)
-    if newArray.length
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayCopyBool")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Float[]  function cArrayCopyFloat(Float[] aArray) global
-  {Requirements: None}
-  Float[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayCopyFloat", "!aArray", "")
-  else
-    newArray = cArrayCreateFloat(aArray.length)
-    if newArray.length
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayCopyFloat")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-Form[]   function cArrayCopyForm(Form[] aArray) global
-  {Requirements: None}
-  Form[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayCopyForm", "!aArray", "")
-  else
-    newArray = cArrayCreateForm(aArray.length)
-    if newArray.length
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayCopyForm")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-Int[]    function cArrayCopyInt(Int[] aArray) global
-  {Requirements: None}
-  Int[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayCopyInt", "!aArray", "")
-  else
-    newArray = cArrayCreateInt(aArray.length)
-    if newArray.length
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayCopyInt")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Success-bp
-ObjectReference[] function cArrayCopyObjRef(ObjectReference[] aArray) global
-  {Requirements: None}
-  ObjectReference[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayCopyObjRef", "!aArray", "")
-  else
-    newArray = cArrayCreateObjectReference(aArray.length)
-    if newArray.length
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayCopyObjRef")
-    endif
-  endif
-  return newArray
-endfunction
-; 21-11-09 - Test Success
-String[] function cArrayCopyString(String[] aArray) global
-  {Requirements: None}
-  String[] newArray
-  if !aArray
-    cErrInvalidArg("cArrayCopyString", "!aArray", "")
-  else
-    newArray = cArrayCreateString(aArray.length)
-    if newArray.length
-      Int i = 0
-      while i < aArray.length
-        newArray[i] = aArray[i]
-        i += 1
-      endwhile
-    else
-      cErrArrInitFail("cArrayCopyString")
-    endif
-  endif
-  return newArray
-endfunction
-  
   ;>>> Merging (returns new array)
 Actor[]  function cArrayMergeActor(Actor[] aArray1, Actor[] aArray2, Bool useSKSE = TRUE, Bool usePapUtil = TRUE) global
   {Requirements: None, SKSE:Soft, PapyrusUtil:Soft}
@@ -8683,8 +7614,583 @@ String[] function cArrayMergeString(String[] aArray1, String[] aArray2, Bool use
   ;endif
   return newArray
 endfunction
-  
-  ;>>> Specific data types (4 capitalized letters == xEdit abbreviations)
+
+;====== CREATION
+  ;>>> See cStringToArray() in "String" section above
+  ;>>> Array from separated values (10 each)
+Actor[]  function cArrayFromActors(Actor aActor0, Actor aActor1 = None, Actor aActor2 = None, \
+    Actor aActor3 = None, Actor aActor4 = None, Actor aActor5 = None, Actor aActor6 = None, Actor aActor7 = None, \
+      Actor aActor8 = None, Actor aActor9 = None, Bool skipTrailingNone = TRUE) global
+  {Requirements: None}
+  Int arrayLength
+  if skipTrailingNone
+    if aActor0 != None
+      arrayLength = 1
+    endif
+    if aActor1 != None
+      arrayLength = 2
+    endif
+    if aActor2 != None
+      arrayLength = 3
+    endif
+    if aActor3 != None
+      arrayLength = 4
+    endif
+    if aActor4 != None
+      arrayLength = 5
+    endif
+    if aActor5 != None
+      arrayLength = 6
+    endif
+    if aActor6 != None
+      arrayLength = 7
+    endif
+    if aActor7 != None
+      arrayLength = 8
+    endif
+    if aActor8 != None
+      arrayLength = 9
+    endif
+    if aActor9 != None
+      arrayLength = 10
+    endif
+  endif
+  Actor[] newArray = cArrayCreateActor(arrayLength)
+  if newArray.length
+    Int i = 0
+    if i < arrayLength
+      newArray[i] = aActor0
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor1
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor2
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor3
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor4
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor5
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor6
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor7
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor8
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aActor9
+    endif
+  else
+    cErrArrInitFail("cArrayFromActors")
+  endif
+  return newArray
+endfunction
+Alias[]  function cArrayFromAliases(Alias aAlias0, Alias aAlias1 = None, Alias aAlias2 = None, \
+    Alias aAlias3 = None, Alias aAlias4 = None, Alias aAlias5 = None, Alias aAlias6 = None, Alias aAlias7 = None, \
+      Alias aAlias8 = None, Alias aAlias9 = None, Bool skipTrailingNone = TRUE) global
+  {Requirements: None}
+  Int arrayLength
+  if skipTrailingNone
+    if aAlias0 != None
+      arrayLength = 1
+    endif
+    if aAlias1 != None
+      arrayLength = 2
+    endif
+    if aAlias2 != None
+      arrayLength = 3
+    endif
+    if aAlias3 != None
+      arrayLength = 4
+    endif
+    if aAlias4 != None
+      arrayLength = 5
+    endif
+    if aAlias5 != None
+      arrayLength = 6
+    endif
+    if aAlias6 != None
+      arrayLength = 7
+    endif
+    if aAlias7 != None
+      arrayLength = 8
+    endif
+    if aAlias8 != None
+      arrayLength = 9
+    endif
+    if aAlias9 != None
+      arrayLength = 10
+    endif
+  endif
+  Alias[] newArray = cArrayCreateAlias(arrayLength)
+  if newArray.length
+    Int i = 0
+    if i < arrayLength
+      newArray[i] = aAlias0
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias1
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias2
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias3
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias4
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias5
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias6
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias7
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias8
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aAlias9
+    endif
+  else
+    cErrArrInitFail("cArrayFromAliass")
+  endif
+  return newArray
+endfunction
+Float[]  function cArrayFromFloats(Float aFloat0, Float aFloat1 = 0.0, Float aFloat2 = 0.0, \
+    Float aFloat3 = 0.0, Float aFloat4 = 0.0, Float aFloat5 = 0.0, Float aFloat6 = 0.0, Float aFloat7 = 0.0, \
+      Float aFloat8 = 0.0, Float aFloat9 = 0.0, Bool skipTrailingZero = TRUE) global
+  {Requirements: None}
+  Int arrayLength
+  if skipTrailingZero
+    if aFloat0 != 0.0
+      arrayLength = 1
+    endif
+    if aFloat1 != 0.0
+      arrayLength = 2
+    endif
+    if aFloat2 != 0.0
+      arrayLength = 3
+    endif
+    if aFloat3 != 0.0
+      arrayLength = 4
+    endif
+    if aFloat4 != 0.0
+      arrayLength = 5
+    endif
+    if aFloat5 != 0.0
+      arrayLength = 6
+    endif
+    if aFloat6 != 0.0
+      arrayLength = 7
+    endif
+    if aFloat7 != 0.0
+      arrayLength = 8
+    endif
+    if aFloat8 != 0.0
+      arrayLength = 9
+    endif
+    if aFloat9 != 0.0
+      arrayLength = 10
+    endif
+  endif
+  Float[] newArray = cArrayCreateFloat(arrayLength)
+  if newArray.length
+    Int i = 0
+    if i < arrayLength
+      newArray[i] = aFloat0
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aFloat1
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aFloat2
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aFloat3
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aFloat4
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aFloat5
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aFloat6
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aFloat7
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aFloat8
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aFloat9
+    endif
+  else
+    cErrArrInitFail("cArrayFromFloats")
+  endif
+  return newArray
+endfunction
+Form[]   function cArrayFromForms(Form aForm0, Form aForm1 = None, Form aForm2 = None, Form aForm3 = None, \
+    Form aForm4 = None, Form aForm5 = None, Form aForm6 = None, Form aForm7 = None, Form aForm8 = None, \
+      Form aForm9 = None, Bool skipTrailingNone = TRUE) global
+  {Requirements: None}
+  Int arrayLength
+  if skipTrailingNone
+    if aForm0 != None
+      arrayLength = 1
+    endif
+    if aForm1 != None
+      arrayLength = 2
+    endif
+    if aForm2 != None
+      arrayLength = 3
+    endif
+    if aForm3 != None
+      arrayLength = 4
+    endif
+    if aForm4 != None
+      arrayLength = 5
+    endif
+    if aForm5 != None
+      arrayLength = 6
+    endif
+    if aForm6 != None
+      arrayLength = 7
+    endif
+    if aForm7 != None
+      arrayLength = 8
+    endif
+    if aForm8 != None
+      arrayLength = 9
+    endif
+    if aForm9 != None
+      arrayLength = 10
+    endif
+  endif
+  Form[] newArray = cArrayCreateForm(arrayLength)
+  if newArray.length
+    Int i = 0
+    if i < arrayLength
+      newArray[i] = aForm0
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm1
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm2
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm3
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm4
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm5
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm6
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm7
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm8
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aForm9
+    endif
+  else
+    cErrArrInitFail("cArrayFromForms")
+  endif
+  return newArray
+endfunction
+Int[]    function cArrayFromInts(Int aInt0, Int aInt1 = 0, Int aInt2 = 0, \
+    Int aInt3 = 0, Int aInt4 = 0, Int aInt5 = 0, Int aInt6 = 0, Int aInt7 = 0, \
+      Int aInt8 = 0, Int aInt9 = 0, Bool skipTrailingZero = TRUE) global
+  {Requirements: None}
+  Int arrayLength
+  Int i
+  if skipTrailingZero
+    if aInt0 != 0
+      arrayLength = 1
+    endif
+    if aInt1 != 0
+      arrayLength = 2
+    endif
+    if aInt2 != 0
+      arrayLength = 3
+    endif
+    if aInt3 != 0
+      arrayLength = 4
+    endif
+    if aInt4 != 0
+      arrayLength = 5
+    endif
+    if aInt5 != 0
+      arrayLength = 6
+    endif
+    if aInt6 != 0
+      arrayLength = 7
+    endif
+    if aInt7 != 0
+      arrayLength = 8
+    endif
+    if aInt8 != 0
+      arrayLength = 9
+    endif
+    if aInt9 != 0
+      arrayLength = 10
+    endif
+  endif
+  Int[] newArray = cArrayCreateInt(arrayLength)
+  if newArray.length
+    i = 0
+    if i < arrayLength
+      newArray[i] = aInt0
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aInt1
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aInt2
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aInt3
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aInt4
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aInt5
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aInt6
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aInt7
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aInt8
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aInt9
+    endif
+  else
+    cErrArrInitFail("cArrayFromInts")
+  endif
+  return newArray
+endfunction
+ObjectReference[]  function cArrayFromObjRefs(ObjectReference aObjRef0, ObjectReference aObjRef1 = None, \
+   ObjectReference aObjRef2 = None, ObjectReference aObjRef3 = None, ObjectReference aObjRef4 = None, \
+    ObjectReference aObjRef5 = None, ObjectReference aObjRef6 = None, ObjectReference aObjRef7 = None, \
+      ObjectReference aObjRef8 = None, ObjectReference aObjRef9 = None, Bool skipTrailingNone = TRUE) global
+  {Requirements: None}
+  Int arrayLength
+  if skipTrailingNone
+    if aObjRef0 != None
+      arrayLength = 1
+    endif
+    if aObjRef1 != None
+      arrayLength = 2
+    endif
+    if aObjRef2 != None
+      arrayLength = 3
+    endif
+    if aObjRef3 != None
+      arrayLength = 4
+    endif
+    if aObjRef4 != None
+      arrayLength = 5
+    endif
+    if aObjRef5 != None
+      arrayLength = 6
+    endif
+    if aObjRef6 != None
+      arrayLength = 7
+    endif
+    if aObjRef7 != None
+      arrayLength = 8
+    endif
+    if aObjRef8 != None
+      arrayLength = 9
+    endif
+    if aObjRef9 != None
+      arrayLength = 10
+    endif
+  endif
+  ObjectReference[] newArray = cArrayCreateObjRef(arrayLength)
+  if newArray.length
+    Int i = 0
+    if i < arrayLength
+      newArray[i] = aObjRef0
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aObjRef1
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aObjRef2
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aObjRef3
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aObjRef4
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aObjRef5
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aObjRef6
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aObjRef7
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aObjRef8
+      i += 1
+    endif
+    if i < arrayLength
+      newArray[i] = aObjRef9
+    endif
+  else
+    cErrArrInitFail("cArrayFromObjRefs")
+  endif
+  return newArray
+endfunction
+String[] function cArrayFromStrings(String aString0, String aString1 = "", String aString2 = "", \
+    String aString3 = "", String aString4 = "", String aString5 = "", String aString6 = "", String aString7 = "", \
+      String aString8 = "", String aString9 = "", Bool skipTrailingEmpty = TRUE) global
+  {Requirements: None}
+  Int newLength
+  if skipTrailingEmpty
+    newLength = cTernaryInt(aString0 != "", 1, newLength)
+    newLength = cTernaryInt(aString1 != "", 2, newLength)
+    newLength = cTernaryInt(aString2 != "", 3, newLength)
+    newLength = cTernaryInt(aString3 != "", 4, newLength)
+    newLength = cTernaryInt(aString4 != "", 5, newLength)
+    newLength = cTernaryInt(aString5 != "", 6, newLength)
+    newLength = cTernaryInt(aString6 != "", 7, newLength)
+    newLength = cTernaryInt(aString7 != "", 8, newLength)
+    newLength = cTernaryInt(aString8 != "", 9, newLength)
+    newLength = cTernaryInt(aString9 != "", 10, newLength)
+  elseif !newLength && !skipTrailingEmpty
+    newLength = 10
+  endif
+  String[] newArray = cArrayCreateString(newLength)
+  if newArray.length
+    Int i = 0
+    if i < newLength
+      newArray[i] = aString0
+      i += 1
+    endif
+    if i < newLength
+      newArray[i] = aString1
+      i += 1
+    endif
+    if i < newLength
+      newArray[i] = aString2
+      i += 1
+    endif
+    if i < newLength
+      newArray[i] = aString3
+      i += 1
+    endif
+    if i < newLength
+      newArray[i] = aString4
+      i += 1
+    endif
+    if i < newLength
+      newArray[i] = aString5
+      i += 1
+    endif
+    if i < newLength
+      newArray[i] = aString6
+      i += 1
+    endif
+    if i < newLength
+      newArray[i] = aString7
+      i += 1
+    endif
+    if i < newLength
+      newArray[i] = aString8
+      i += 1
+    endif
+    if i < newLength
+      newArray[i] = aString9
+    endif
+  else
+    cErrArrInitFail("cArrayFromStrings")
+  endif
+  return newArray
+endfunction
+   ;>>> CREATION: Specific data types (4 capitalized letters == xEdit abbreviations)
 Actor[]       function cArrayCreateACHR(Int indices, Actor filler = None, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   if usePapUtil
@@ -10288,12 +9794,12 @@ SKSE Item Type Names just a reference list
 
 ;Functions used to output error messages
 function clibTrace(String functionName, String msg, Int errorLevel, Bool condition = TRUE, \
-    Bool tryConsoleUtil = TRUE) global
+    Bool useConsoleUtil = TRUE) global
   {Requirements: None, ConsoleUtil:Soft}
   condition = TRUE ; change this to false to disable all trace messages
   if condition
     Debug.Trace(cGetScriptName() + "::" + functionName + "():: " + msg, errorLevel)
-    if tryConsoleUtil && ConsoleUtil.GetVersion()
+    if useConsoleUtil && ConsoleUtil.GetVersion()
       ConsoleUtil.PrintMessage(cTernaryString(errorLevel == 2, "Error! ", \
         cTernaryString(errorLevel == 1, "Warning: ", \
           cTernaryString(errorLevel == 0, "Info: ", ""))) + "clib::" + functionName + "() " + msg)
@@ -10301,25 +9807,25 @@ function clibTrace(String functionName, String msg, Int errorLevel, Bool conditi
   endif
 endfunction
 function cErrInvalidArg(String functionName, String argName = "", String returnValue = "", \
-    Int errorLevel = 2, Bool condition = TRUE, Bool useSKSE = TRUE, Bool tryConsoleUtil = TRUE) global
+    Int errorLevel = 2, Bool condition = TRUE, Bool useSKSE = TRUE, Bool useConsoleUtil = TRUE) global
   {Requirements: None, ConsoleUtil:Soft}
   if useSKSE && StringUtil.Find(functionName, "array") != -1
     returnValue = "arrayNone"
   endif
   clibTrace(functionName, "Argument(s)" + cTernaryString(argName != "", ": " + argName, "") + " invalid!" + \
-    cTernaryString(returnValue != "", " Returning " + returnValue, ""), errorLevel, condition, tryConsoleUtil)
+    cTernaryString(returnValue != "", " Returning " + returnValue, ""), errorLevel, condition, useConsoleUtil)
 endfunction
 function cErrArrInitFail(String functionName, String arrayName = "newArray", String returnValue = "ArrayNone", \
-    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
+    Int errorLevel = 2, Bool condition = TRUE, Bool useConsoleUtil = TRUE) global
   {Requirements: None, ConsoleUtil:Soft}
   clibTrace(functionName, "Variable: " + arrayName + " failed to initialize! Returning " + returnValue, errorLevel, \
-    condition, tryConsoleUtil)
+    condition, useConsoleUtil)
 endfunction
 function cErrReqDisabled(String functionName, String modName = "SKSE", String returnValue = "", \
-    Int errorLevel = 2, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
+    Int errorLevel = 2, Bool condition = TRUE, Bool useConsoleUtil = TRUE) global
   {Requirements: None, ConsoleUtil:Soft}
   clibTrace(functionName, modName + " functionality is disabled; This function cannot operate without it!" + \
-    cTernaryString(returnValue == "", " Returning \"\"", ""), errorLevel, condition, tryConsoleUtil)
+    cTernaryString(returnValue == "", " Returning \"\"", ""), errorLevel, condition, useConsoleUtil)
 endfunction
 
 ;--------------------------SKSE:HARD-------------------------------------------
@@ -10656,6 +10162,31 @@ String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE
     endif
   endif
   return newArray
+endfunction
+
+Bool function cSKSE(Bool useSKSE = TRUE, Bool forceCheck = False) global
+  if forceCheck
+    return (SKSE.GetVersion() as Bool)
+  endif
+  return useSKSE
+endfunction
+Bool function cPapUtil(Bool usePapUtil = TRUE, Bool forceCheck = False) global
+  if forceCheck
+    return (PapyrusUtil.GetVersion() as Bool)
+  endif
+  return usePapUtil
+endfunction
+Bool function cPO3(Bool usePO3 = TRUE, Bool forceCheck = False) global
+  if forceCheck
+    return (PO3_SKSEFunctions.GetPapyrusExtenderVersion() as Bool)
+  endif
+  return usePO3
+endfunction
+Bool function cConsoleUtil(Bool useConsoleUtil = TRUE, Bool forceCheck = False) global
+  if forceCheck
+    return (ConsoleUtil.GetVersion() as Bool)
+  endif
+  return useConsoleUtil
 endfunction
 
 String function cGetScriptName() global
