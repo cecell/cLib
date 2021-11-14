@@ -558,7 +558,7 @@ Form[] function cGetContainerInventory(ObjectReference aContainer, Bool includeQ
   if !aContainer
     cErrInvalidArg("cGetContainerInventory", "!aContainer")
   elseif usePO3
-    returnArray = PO3_SKSEFunctions.AddAllItemsToArray()
+    returnArray = PO3_SKSEFunctions.AddAllItemsToArray(aContainer, TRUE, TRUE, includeQuestItems)
   elseif useSKSE
     Int numForms = refSource.GetNumItems()
     returnArray = cArrayCreateForm(numForms)
@@ -569,14 +569,18 @@ Form[] function cGetContainerInventory(ObjectReference aContainer, Bool includeQ
         returnArray[i] = aContainer.GetNthForm(i)
       endwhile
     else
-      ;ADDTRACE
+      cErrArrInitFail("cGetContainerInventory")
     endif
   else
     GlobalVariable isRunning01 = Game.GetFormFromFile(0x0000080C, "cLibraries.esp") as GlobalVariable
-    FormList workingFormList = Game.GetFormFromFile(0x00000D74, "cLibraries.esp") as FormList
-    ObjectReference workingContainer = Game.GetFormFromFile(0x00000804, "cLibraries.esp") as ObjectReference
-
-    aContainer.RemoveAllItems(workingContainer, TRUE, False) ; <-- quest items False
+    ObjectReference cLib_REFR_WorkingChest01 = Game.GetFormFromFile(0x00000805, "cLibraries.esp") as ObjectReference
+    FormList cLib_FLST_Working01 = Game.GetFormFromFile(0x00000D74, "cLibraries.esp") as FormList
+    ObjectReference cLib_REFR_WorkingChest02 = Game.GetFormFromFile(0x00000804, "cLibraries.esp") as ObjectReference
+    FormList cLib_FLST_Working02 = Game.GetFormFromFile(0x00000D75, "cLibraries.esp") as FormList
+    
+    aContainer.RemoveAllItems(cLib_REFR_WorkingChest01, TRUE, False) ; <-- quest items False
+    aContainer.RemoveAllItems(cLib_REFR_WorkingChest02, TRUE, TRUE)  ; <-- quest items TRUE
+    
     if includeQuestItems
       ObjectReference questContainer = Game.GetFormFromFile(0x00000805, "cLibraries.esp") as ObjectReference
       aContainer.RemoveAllItems(questContainer, TRUE, TRUE) ; <-- quest items False
@@ -595,6 +599,24 @@ Form[] function cGetContainerInventory(ObjectReference aContainer, Bool includeQ
   
   return returnArray
 endfunction
+Form[] function cGetEquippedItems(Actor aActor) global
+  GetEquippedArmorInSlot(Int aiSlot)
+  int Property kSlotMask30 = 0x00000001 AutoReadOnly ; HEAD       YES (Dwarven Helmet && 42)
+  int Property kSlotMask31 = 0x00000002 AutoReadOnly ; Hair       YES (Iron Helmet && 42)
+  int Property kSlotMask32 = 0x00000004 AutoReadOnly ; BODY       YES (Iron Armor ONLY)
+  int Property kSlotMask33 = 0x00000008 AutoReadOnly ; Hands      YES (Iron Gauntlets ONLY)
+  int Property kSlotMask34 = 0x00000010 AutoReadOnly ; Forearms   YES (Tumblerbane Gloves DB)
+  int Property kSlotMask35 = 0x00000020 AutoReadOnly ; Amulet     YES
+  int Property kSlotMask36 = 0x00000040 AutoReadOnly ; Ring       YES (Ring gold)
+  int Property kSlotMask37 = 0x00000080 AutoReadOnly ; Feet       YES (Iron Boots)
+  int Property kSlotMask38 = 0x00000100 AutoReadOnly ; Calves     
+  int Property kSlotMask39 = 0x00000200 AutoReadOnly ; SHIELD     YES (Iron shield)
+  int Property kSlotMask40 = 0x00000400 AutoReadOnly ; TAIL       
+  int Property kSlotMask41 = 0x00000800 AutoReadOnly ; LongHair
+  int Property kSlotMask42 = 0x00001000 AutoReadOnly ; Circlet    YES (Iron Helmet && 31)
+  int Property kSlotMask43 = 0x00002000 AutoReadOnly ; Ears       
+endfunction
+
 ;PO3_SKSEFunctions.AddAllItemsToArray(ObjectReference akRef, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
 ;PO3_SKSEFunctions.AddAllItemsToList(ObjectReference akRef, Formlist akList, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
 ;PO3_SKSEFunctions.AddItemsOfTypeToArray(ObjectReference akRef, int aiFormType, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false)
