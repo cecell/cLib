@@ -1,83 +1,33 @@
-Scriptname Utility Hidden
+Scriptname cLibInventory extends ObjectReference
 
-; Converts a float game time (in terms of game days passed) to a string detailing the date
-; and time it represents in "MM/DD/YYYY HH:MM" format. A 24-hour clock is used, and the function
-; is latent (due to issues in the current architecture with returning strings from code)
-string Function GameTimeToString(float afGameTime) native global
+FormList Property cLib_FLST_Working01 auto
+FormList Property cLib_FLST_Working02 auto
 
-; Obtains the current game time in terms of game days passed (same as the global variable)
-float Function GetCurrentGameTime() native global
+GlobalVariable Property cLib_GLOB_isRunningContainer auto
 
-; Obtains the number of seconds since the application started (the same timer that WaitMenuMode uses)
-; Does not take into account menu-mode, or VM frozen time
-; Most useful for determining how long something took to run
-float Function GetCurrentRealTime() native global
+Actor Property playerAct auto
+ObjectReference Property playerRef auto
 
-; Returns whether the game is currently in menu mode or not
-bool Function IsInMenuMode() native global
+ObjectReference Property cLib_REFR_WorkingChest01 auto
+ObjectReference Property cLib_REFR_WorkingChest02 auto
+ObjectReference Property cLib_REFR_WorkingChest03 auto
 
-; Generates a random integer between aiMin and aiMax (inclusive)
-int Function RandomInt(int aiMin = 0, int aiMax = 100) native global
+Int[]  Property qtyWorkingChest01 auto
+Int[]  Property qtyWorkingChest02 auto
+Int[]  Property qtyWorkingChest03 auto
+Form[] Property formsWorkingChest01 auto
+Form[] Property formsWorkingChest02 auto
+Form[] Property formsWorkingChest03 auto
 
-; Generates a random floating point number between afMin and afMax (inclusive)
-float Function RandomFloat(float afMin = 0.0, float afMax = 1.0) native global
+event OnItemAdded(Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akSourceContainer)
 
-; Set the given INI by type
-function SetINIFloat(string ini, float value) native global
-function SetINIInt(string ini, int value) native global
-function SetINIBool(string ini, bool value) native global 
-function SetINIString(string ini, string value) native global
+  cLib_FLST_Working01.AddForm(akBaseItem)
+  RegisterForSingleUpdate(0.2)
 
-; Waits for the specified amount of time (latent). Timer will not run during menu mode
-Function Wait(float afSeconds) native global
+endevent
 
-; Waits for the specified amount of game time (latent)
-Function WaitGameTime(float afHours) native global
+event OnUpdate()
 
-; Waits for the specified amount of time (latent) - Timer WILL run during menu mode
-Function WaitMenuMode(float afSeconds) native global
+  
 
-; Frame rate capture functions only available in beta version
-
-; Gets you a string describing the frame rate for a certain number of frames
-; (String will be no longer than 1K characters long, separated by commas)
-string Function CaptureFrameRate(int numFrames) native global
-
-; Starts or ends a frame rate capture -- then you can get the min or max since 
-; frame capture started at any time
-Function StartFrameRateCapture() native global
-Function EndFrameRateCapture() native global
-float Function GetAverageFrameRate() native global
-float Function GetMinFrameRate() native global
-float Function GetMaxFrameRate() native global
-
-; Memory tracking functions - only available if memory tracking is turned on
-int Function GetCurrentMemory() native global ; Must be called first, it sets up the memory stats used by the other functions
-int Function GetBudgetCount() native global
-int Function GetCurrentBudget(int aiBudgetNumber) native global
-bool Function OverBudget(int aiBudgetNumber) native global
-string Function GetBudgetName(int aiBudgetNumber) native global
-
-; SKSE 64 additions built 2020-07-29 17:24:48.495000 UTC
-
-float Function GetINIFloat(string ini) global native
-int Function GetINIInt(string ini) global native
-bool Function GetINIBool(string ini) global native
-string Function GetINIString(string ini) global native
-
-
-; Size is treated as unsigned, negative numbers will result 
-; extremely large positive numbers, USE WITH CARE
-float[] Function CreateFloatArray(int size, float fill = 0.0) global native
-int[] Function CreateIntArray(int size, int fill = 0) global native
-bool[] Function CreateBoolArray(int size, bool fill = false) global native
-string[] Function CreateStringArray(int size, string fill = "") global native
-Form[] Function CreateFormArray(int size, Form fill = None) global native
-Alias[] Function CreateAliasArray(int size, Alias fill = None) global native
-
-float[] Function ResizeFloatArray(float[] source, int size, float fill = 0.0) global native
-int[] Function ResizeIntArray(int[] source, int size, int fill = 0) global native
-bool[] Function ResizeBoolArray(bool[] source, int size, bool fill = false) global native
-string[] Function ResizeStringArray(string[] source, int size, string fill = "") global native
-Form[] Function ResizeFormArray(Form[] source, int size, Form fill = None) global native
-Alias[] Function ResizeAliasArray(Alias[] source, int size, Alias fill = None) global native
+endevent
