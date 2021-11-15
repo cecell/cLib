@@ -6,6 +6,10 @@ Int    function cGetVersion() global
   {Requirements: None}
   return 9024
 endfunction
+
+function p(String msg) global
+  ConsoleUtil.PrintMessage(msg)
+endfunction
 ;--------------------------FORMS/OBJECT REFERENCES-----------------------------
 
 ;====== Query/Analysis
@@ -544,6 +548,103 @@ Int function cArrayAllAddLVLI(LeveledItem aLeveledList, Form[] aArray, Int[] lev
     endwhile
   endif
   return numAdded
+endfunction
+
+; Inventory functions
+Form[] function cGetContainerInventory(ObjectReference aContainer, Bool includeQuestItems = False, \
+  Bool useSKSE = False, Bool usePO3 = False) global
+  {Requirements: None, SKSE:Soft, PO3: Soft}
+  Form[] returnArray
+  if !aContainer
+    cErrInvalidArg("cGetContainerInventory", "!aContainer")
+  elseif usePO3
+    returnArray = PO3_SKSEFunctions.AddAllItemsToArray(aContainer, TRUE, TRUE, includeQuestItems)
+  elseif useSKSE
+    Int numForms = aContainer.GetNumItems()
+    returnArray = cArrayCreateForm(numForms)
+    if returnArray.length
+      Int i = numForms
+      while i
+        i -= 1
+        returnArray[i] = aContainer.GetNthForm(i)
+      endwhile
+    else
+      cErrArrInitFail("cGetContainerInventory")
+    endif
+  else
+    GlobalVariable isRunning01 = Game.GetFormFromFile(0x0000080C, "cLibraries.esp") as GlobalVariable
+    ObjectReference cLib_REFR_WorkingChest01 = Game.GetFormFromFile(0x00000805, "cLibraries.esp") as ObjectReference
+    FormList cLib_FLST_Working01 = Game.GetFormFromFile(0x00000D74, "cLibraries.esp") as FormList
+    ObjectReference cLib_REFR_WorkingChest02 = Game.GetFormFromFile(0x00000804, "cLibraries.esp") as ObjectReference
+    FormList cLib_FLST_Working02 = Game.GetFormFromFile(0x00000D75, "cLibraries.esp") as FormList
+    
+    aContainer.RemoveAllItems(cLib_REFR_WorkingChest01, TRUE, False) ; <-- quest items False
+    aContainer.RemoveAllItems(cLib_REFR_WorkingChest02, TRUE, TRUE)  ; <-- quest items TRUE
+    
+    if includeQuestItems
+      ObjectReference questContainer = Game.GetFormFromFile(0x00000805, "cLibraries.esp") as ObjectReference
+      aContainer.RemoveAllItems(questContainer, TRUE, TRUE) ; <-- quest items False
+    endif
+    Int i = 0
+    while isRunning01.GetValue() == 1.0 && i < 100 ;<-- catch runaway loop
+      Utility.Wait(0.5)
+      i += 1
+    endwhile
+    if i > 99
+      ;ADDTRACE
+    else
+      
+    endif
+  endif
+  
+  return returnArray
+endfunction
+Form[] function cGetEquippedItems(Actor aActor, Int slot = -1) global
+  
+  Int[] slots
+  Int numAdded = 0
+  Form[] newArray
+  Form[] workingArray
+  Form curForm
+  if slot == -1
+    newArray = New Form[17]
+    slots = New Int[17]
+    slots[0] = 30  ; Head
+    slots[1] = 31  ; Hair
+    slots[2] = 32  ; Body
+    slots[3] = 33  ; Hands
+    slots[4] = 34  ; Forearms
+    slots[5] = 35  ; Amulet
+    slots[6] = 36  ; Ring
+    slots[7] = 37  ; Feet
+    slots[8] = 38  ; Calves
+    slots[9] = 39  ; Shield
+    slots[10] = 40 ; Tail
+    slots[11] = 41 ; LongHair
+    slots[12] = 42 ; Circlet
+    slots[13] = 43 ; Earrings
+    slots[14] = 47 ; Backpack (Campfire)
+    slots[15] = 51 ; Left Hand Rings Modified by Homercide
+    slots[16] = 55 ; Earrings Left (Pierced Ears by Mossa)
+  else
+    slots = New Int[1]
+    slots[0] = slot
+    newArray = New Form[1]
+  endif
+  Int i = 0
+  while i < slots.length
+    curForm = aActor.GetEquippedArmorInSlot(slots[i]) ; Function is SSE ONLY
+    if newArray.Find(curForm) == -1
+      newArray[i] = curForm
+      numAdded += 1
+    endif
+    i += 1
+  endwhile
+  if numAdded != slots.length
+    newArray = cArrayRemoveValueForm(newArray, None)
+  endif
+  return newArray
+  
 endfunction
 
 ;PO3_SKSEFunctions.AddAllItemsToArray(ObjectReference akRef, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
@@ -1950,12 +2051,8 @@ Bool   function cStringIsMiscChar(String aChar) global
   endif
   return returnBool
 endfunction
-Int    function cStringFind(String inThis, String findThis, Int startIndex = 0, String[] inThisArray = None, \ 
-    Bool useSKSE = TRUE) global
+Int    function cStringFind(String inThis, String findThis, Int startIndex = 0, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
-   ; argument inThisArray is only for NON-SKSE version. If an array is not provided Papyrus will output an error 
-   ;   to the log! cArrayNoneString() works just fine. This argument is only here to speed up the process if 
-   ;   calling function already has the array to provide.
   Int returnInt = -1
   if !inThis
     cErrInvalidArg("cStringFind", "!inThis", "\"\"") ; log message reporting invalid argument
@@ -1964,52 +2061,32 @@ Int    function cStringFind(String inThis, String findThis, Int startIndex = 0, 
   elseif useSKSE && clibUse.cUseSKSE() ; is SKSE available?
     returnInt = StringUtil.Find(inThis, findThis, startIndex) ; with SKSE single command
   else
-    String[] findThisArray = cStringToArray(findThis, -1)  ; split the string to find to an array
-    if !inThisArray
-      inThisArray = cStringToArray(inThis, -1) ; split the main string to an array
-    endif
-    String workingString = ""                                     ; this is the string used to build the comparison
-    Int firstIndex = 0            ; used to start the search
-    Int nextIndex = 0           ; next step in the search
-    Int charsInARow = 0           ; how many letters in a row have we found that match?
-    Int lastPossible = inThisArray.length - findThisArray.length  ; number to control runaway loop
-                  ;clibTrace("cStringFind", "000 inThis: " + inThis + ", findThis: " + findThis, 0)
-    while firstIndex != -1 && firstIndex < lastPossible
-      charsInARow = 0       ; reset for new attempt
-      workingString = ""      ; reset for new attempt
-      returnInt = -1        ; reset for new attempt
-      firstIndex = inThisArray.Find(findThisArray[charsInARow], nextIndex)
-      ; find first occurrence of first letter OR first occurrence of first letter *after* last second index
-      if firstIndex != -1  ; did it find anything? (firstIndex == -1 breaks the outer loop)
-        charsInARow += 1 ; found one character 'in a row'
-        workingString += inThisArray[firstIndex] ; building a string with the letters found for final comparison
-        nextIndex = inThisArray.Find(findThisArray[charsInARow], firstIndex + 1) ; find first occurrence of next letter 
-        if nextIndex != -1 ; did it find anything? (firstIndex == -1 breaks the outer loop)
-          if nextIndex == (firstIndex + 1) ; is the second index the 'next' index?
-            workingString += inThisArray[nextIndex] ; keep building
-            charsInARow += 1 ; that's one more character 'in a row'
-            while inThisArray[firstIndex + charsInARow] == findThisArray[charsInARow] && charsInARow < findThisArray.length
-              ; now take off, two characters in row move faster to see if the rest matches and break if not
-              if inThisArray[firstIndex + charsInARow] == findThisArray[charsInARow] 
-                ; does the next letter in the string match the next letter in the findThis array?
-                workingString += inThisArray[firstIndex + charsInARow] ; if so...keep building
-                if workingString == findThis ; does the built string match what we're looking for?
-                  charsInARow = findThisArray.length ; if so, then break inner loop, we're done!!
-                  returnInt = firstIndex ; set the return to the value of 'firstIndex' since that's the first letter
-                  firstIndex = -1 ; break the outer loop since we're done
-                endif
-              endif
-              charsInARow += 1
-            endwhile
+    String[] findThisArray = cStringToArray(findThis, -1) ; split the string to find to an array
+    String[] inThisArray = cStringToArray(inThis, -1)     ; split the main string to an array
+    if findThisArray.length && inThisArray.length
+      String workingString                                ; this is the string used to build the comparison
+      Int firstIndex = 0            ; Position of first found in series (to be returned)
+      Int curIndex = startIndex - 1
+      Int findThisIndex = 0
+      while firstIndex != -1 && findThisIndex < findThisArray.length
+        findThisIndex = 0
+        curIndex = inThisArray.Find(findThisArray[findThisIndex], curIndex + 1)
+        firstIndex = curIndex
+        workingString = ""
+        while curIndex != -1 && findThisArray[findThisIndex] == inThisArray[curIndex]
+          workingString += inThisArray[curIndex]
+          if workingString == findThis
+            return firstIndex
           endif
-        else
-          firstIndex = -1 ; stop everything, the next letter isn't found anywhere so it's a bust
-          returnInt = -1  ; make sure we're returning -1 which means not found
-        endif
-      endif
-    endwhile
+          curIndex += 1
+          findThisIndex += 1
+        endwhile
+      endwhile
+    else
+      cErrArrInitFail("cStringFind")
+    endif
   endif
-  return returnInt
+  return -1
 endfunction
 Int    function cStringLength(String aString, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
@@ -2101,7 +2178,7 @@ String function cStringReplace(String aString, String toReplace, String withWhat
       toReplaceLength = cStringLength(toReplace)
       while startIndex != -1 && maxIterations >= 0
         stringBuild = cStringToArray(returnString, -1) ; <- returnString was set to aString already
-        startIndex = cStringFind(returnString, toReplace, 0, stringBuild) ;<- already have array so pass it
+        startIndex = cStringFind(returnString, toReplace) ;<- already have array so pass it
         if startIndex != -1 ; it was found
           head = cArrayJoinString(stringBuild, "", 0, startIndex)
           tail = cArrayJoinString(stringBuild, "", startIndex + toReplaceLength)
@@ -9866,6 +9943,115 @@ Bool[] function cArePluginsInstalled(String[] listOfPlugins, Bool useSKSE = TRUE
   endif
   return newArray
 endfunction
+
+
+;========================= Array/FL Functions
+
+; Query
+Int    function cFLFindByName(FormList aFormList, String aName, Bool bySubStr = TRUE) global
+  {Requirements: None}
+  ; bySubStr == False means exact match
+  if !aFormList
+    cErrInvalidArg("cFLSearchByName", "!aFormList", "")
+  elseif !aName
+    cErrInvalidArg("cFLSearchByName", "!aName", "")
+  else
+    String[] dudArray
+    String curName
+    Int numIndices = aFormList.GetSize()
+    Int i = 0
+    while i < numIndices
+      curName = aFormList.GetAt(i).GetName()
+      if (!bySubStr && curName == aName) || (bySubStr && cStringFind(curName, aName) != -1)
+        return i
+      endif
+      i += 1
+    endwhile
+  endif
+  return -1
+endfunction
+
+Int    function cArrayFindByNameAlias(Alias[] aArray, String aName, Bool bySubStr = TRUE) global
+  {Requirements: None}
+  ; bySubStr == False means exact match
+  if !aArray
+    cErrInvalidArg("cArrayFindByNameAlias", "!aArray", "")
+  elseif !aName
+    cErrInvalidArg("cArrayFindByNameAlias", "!aName", "")
+  else
+    String curName
+    Int i = 0
+    while i < aArray.length
+      curName = aArray[i].GetName()
+      if (!bySubStr && curName == aName) || (bySubStr && cStringFind(curName, aName) != -1)
+        return i
+      endif
+      i += 1
+    endwhile
+  endif
+  return -1
+endfunction
+Int    function cArrayFindByNameActor(Actor[] aArray, String aName, Bool bySubStr = TRUE) global
+  {Requirements: None}
+  ; bySubStr == False means exact match
+  if !aArray
+    cErrInvalidArg("cArrayFindByNameActor", "!aArray", "")
+  elseif !aName
+    cErrInvalidArg("cArrayFindByNameActor", "!aName", "")
+  else
+    String curName
+    Int i = 0
+    while i < aArray.length
+      curName = aArray[i].GetActorBase().GetName()
+      if (!bySubStr && curName == aName) || (bySubStr && cStringFind(curName, aName) != -1)
+        return i
+      endif
+      i += 1
+    endwhile
+  endif
+  return -1
+endfunction
+Int    function cArrayFindByNameForm(Form[] aArray, String aName, Bool bySubStr = TRUE) global
+  {Requirements: None}
+  ; bySubStr == False means exact match
+  if !aArray
+    cErrInvalidArg("cArrayFindByNameForm", "!aArray", "")
+  elseif !aName
+    cErrInvalidArg("cArrayFindByNameForm", "!aName", "")
+  else
+    String curName
+    Int i = 0
+    while i < aArray.length
+      curName = aArray[i].GetName()
+      if (!bySubStr && curName == aName) || (bySubStr && cStringFind(curName, aName) != -1)
+        return i
+      endif
+      i += 1
+    endwhile
+  endif
+  return -1
+endfunction
+Int    function cArrayFindByNameObjRef(ObjectReference[] aArray, String aName, Bool bySubStr = TRUE) global
+  {Requirements: None}
+  ; bySubStr == False means exact match
+  if !aArray
+    cErrInvalidArg("cArrayFindByNameObjRef", "!aArray", "")
+  elseif !aName
+    cErrInvalidArg("cArrayFindByNameObjRef", "!aName", "")
+  else
+    String curName
+    Int i = 0
+    while i < aArray.length
+      curName = aArray[i].GetBaseObject().GetName()
+      if (!bySubStr && curName == aName) || (bySubStr && cStringFind(curName, aName) != -1)
+        return i
+      endif
+      i += 1
+    endwhile
+  endif
+  return -1
+endfunction
+
   ;>>> Returns text with MCM menu color formatting
 String function cColoredText(String aString, Bool ddInstalled = False, String textColorHex = "", String trimWhere = "", \
     Bool useSKSE = TRUE) global
@@ -10121,7 +10307,7 @@ String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE
   return newArray
 endfunction
 
-String function cGetScriptName() global
+String   function cGetScriptName() global
   {Requirements: None}
   return "clib"
 endfunction  
