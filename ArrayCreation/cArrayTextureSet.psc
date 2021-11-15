@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   TextureSet[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace TextureSets
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateTextureSet()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayTextureSet::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

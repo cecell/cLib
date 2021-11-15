@@ -5,18 +5,18 @@ Int function cGetVersion() global
 endfunction
 
 Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE = TRUE, Bool outputTrace = TRUE, \
-    Bool tryConsoleUtil = TRUE) global
+    Bool useConsoleUtil = TRUE) global
   {Requirements: None, SKSE:Soft}
   Bool[] aArray
   if useSKSE && indices > 0
     aArray = Utility.CreateBoolArray(indices, filler)
   elseif indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateBool()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayBool::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

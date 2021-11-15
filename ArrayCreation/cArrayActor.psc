@@ -5,18 +5,18 @@ Int function cGetVersion() global
 endfunction
 
 Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePapUtil = TRUE, \
-  Bool outputTrace = TRUE, Bool tryConsoleUtil = TRUE) global
+  Bool outputTrace = TRUE, Bool useConsoleUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   Actor[] aArray
-  if usePapUtil && indices > 0
+  if usePapUtil && clibUse.cUsePapUtil() && indices > 0
     aArray = PapyrusUtil.ActorArray(indices, filler)
   elseif indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateActor()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayActor::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

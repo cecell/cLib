@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   Perk[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Perks
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreatePerk()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayPerk::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

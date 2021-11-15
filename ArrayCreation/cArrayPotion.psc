@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 Potion[] function cArrayCreatePotion(Int indices, Potion filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   Potion[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Potions
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreatePotion()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayPotion::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   Race[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Races
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateRace()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayRace::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

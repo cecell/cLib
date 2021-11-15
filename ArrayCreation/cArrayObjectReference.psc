@@ -9,18 +9,18 @@ ObjectReference[] function cArrayCreateObjRef(Int indices, ObjectReference fille
 endfunction
 
 ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectReference filler = None, Bool usePapUtil = TRUE, \
-  Bool outputTrace = TRUE, Bool tryConsoleUtil = TRUE) global
+  Bool outputTrace = TRUE, Bool useConsoleUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
   ObjectReference[] aArray
-  if usePapUtil && indices > 0
+  if usePapUtil && clibUse.cUsePapUtil() && indices > 0
     aArray = PapyrusUtil.ObjRefArray(indices, filler)
   elseif indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateObjRef()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayObjectReference::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

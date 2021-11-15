@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   Quest[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Quests
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateQuest()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayQuest::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

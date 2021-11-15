@@ -1,14 +1,10 @@
 ScriptName clib Hidden
 
+import clibUse
+
 Int    function cGetVersion() global
   {Requirements: None}
-  return 9001
-endfunction
-Bool   function cLibESPInstalled() global
-  return (Game.GetFormFromFile(0x00000807, "cLibraries.esp") as GlobalVariable).GetValue() as Bool
-endfunction
-function p(String msg) global
-  ConsoleUtil.PrintMessage(msg)
+  return 9024
 endfunction
 ;--------------------------FORMS/OBJECT REFERENCES-----------------------------
 
@@ -38,8 +34,8 @@ Form[]   function cArrayHexIDToForms(String[] aArray, String esXName, Bool skipN
   Form[] newArray
   if !aArray || !esXName
     cErrInvalidArg("cArrayHexIDToForms", "!aArray || !esXName", "")
-  elseif useSKSE && !Game.IsPluginInstalled(esXName)
-    cErrInvalidArg("cArrayHexIDToForms", "useSKSE && !Game.IsPluginInstalled(esXName)")
+  elseif useSKSE && clibUse.cUseSKSE() && !Game.IsPluginInstalled(esXName)
+    cErrInvalidArg("cArrayHexIDToForms", "useSKSE && clibUse.cUseSKSE() && !Game.IsPluginInstalled(esXName)")
   else
     Int[] newArray2 = cArrayCreateInt(aArray.length)
     if newArray2.length
@@ -57,8 +53,8 @@ Form[]   function cArrayIntIDToForms(Int[] aArray, String esXName, Bool skipNone
   Form[] newArray
   if !aArray || !esXName
     cErrInvalidArg("cArrayIntIDToForms", "!aArray || !esXName", "")
-  elseif useSKSE && !Game.IsPluginInstalled(esXName)
-    cErrInvalidArg("cArrayIntIDToForms", "useSKSE && !Game.IsPluginInstalled(esXName)")
+  elseif useSKSE && clibUse.cUseSKSE() && !Game.IsPluginInstalled(esXName)
+    cErrInvalidArg("cArrayIntIDToForms", "useSKSE && clibUse.cUseSKSE() && !Game.IsPluginInstalled(esXName)")
   else
     Form curForm
     newArray = cArrayCreateForm(aArray.length, None)
@@ -99,8 +95,8 @@ Form[]   function cArrayIntIDModNamesToForms(Int[] aArray, String[] esXName, Boo
   Form[] newArray
   if !aArray || !esXName
     cErrInvalidArg("cArrayIntIDModNamesToForms", "!aArray || !esXName", "")
-  elseif useSKSE && !Game.IsPluginInstalled(esXName)
-    cErrInvalidArg("cArrayIntIDModNamesToForms", "useSKSE && !Game.IsPluginInstalled(esXName)")
+  elseif useSKSE && clibUse.cUseSKSE() && !Game.IsPluginInstalled(esXName)
+    cErrInvalidArg("cArrayIntIDModNamesToForms", "useSKSE && clibUse.cUseSKSE() && !Game.IsPluginInstalled(esXName)")
   else
     Int invalidForms
     Form curForm
@@ -146,8 +142,8 @@ Form[]   function cArrayHexIDModNamesToForms(String[] aArray, String[] esXNames,
     if newArray.length
       Int i = 0
       while i < aArray.length && i < esXNames.length
-        if useSKSE && !Game.IsPluginInstalled(esXNames[i])
-          clibTrace("cArrayHexIDModNamesToForms", " EXCEPTION: Argument esXName (" + esXNames[i] + ") is not installed!", 2)
+        if useSKSE && clibUse.cUseSKSE() && !Game.IsPluginInstalled(esXNames[i])
+          cErrInvalidArg("cArrayHexIDModNamesToForms", "useSKSE && clibUse.cUseSKSE() && !Game.IsPluginInstalled(" + esXNames[i] + ")")
         else
           newArray[i] = cGetForm(0, aArray[i])
           if !newArray[i]
@@ -173,7 +169,7 @@ Int     function cGetSKSEType(Form aForm, Bool useSKSE = TRUE) global
   ;   more obscure items could be missed but it covers quite a lot tbh (10,664 references)
   if !aForm
     cErrInvalidArg("cGetSKSEType", "!aForm")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     return aForm.GetType()
   else
     Int[] typeInts = New Int[23]
@@ -273,7 +269,7 @@ Bool     function cIsContainer(ObjectReference aObjectRef, Bool useSKSE = TRUE) 
   if !aObjectRef
     cErrInvalidArg("cIsContainer", "!aObjectRef", "False")
   else
-    if useSKSE
+    if useSKSE && clibUse.cUseSKSE()
       returnBool = aObjectRef.GetType() == 28
     else    
       returnBool = aObjectRef && (aObjectRef.GetBaseObject() as container)
@@ -466,7 +462,7 @@ Bool   function cIsLight(String hexForm = "", Int decForm = 0,Form formVar = Non
   {Requirements: None, SKSE:Soft}
   if !hexForm && !decForm && !formVar
     cErrInvalidArg("cIsLight", "!hexForm && !decForm && !formVar")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     if hexForm
       return cStringLeft(hexForm, 2) == "FE"
     elseif formVar
@@ -548,73 +544,6 @@ Int function cArrayAllAddLVLI(LeveledItem aLeveledList, Form[] aArray, Int[] lev
     endwhile
   endif
   return numAdded
-endfunction
-
-; Inventory functions
-Form[] function cGetContainerInventory(ObjectReference aContainer, Bool includeQuestItems = False, \
-  Bool useSKSE = TRUE, Bool usePO3 = TRUE) global
-  {Requirements: None, SKSE:Soft, PO3: Soft}
-  Form[] returnArray
-  if !aContainer
-    cErrInvalidArg("cGetContainerInventory", "!aContainer")
-  elseif usePO3
-    returnArray = PO3_SKSEFunctions.AddAllItemsToArray(aContainer, TRUE, TRUE, includeQuestItems)
-  elseif useSKSE
-    Int numForms = refSource.GetNumItems()
-    returnArray = cArrayCreateForm(numForms)
-    if returnArray.length
-      Int i = numForms
-      while i
-        i -= 1
-        returnArray[i] = aContainer.GetNthForm(i)
-      endwhile
-    else
-      cErrArrInitFail("cGetContainerInventory")
-    endif
-  else
-    GlobalVariable isRunning01 = Game.GetFormFromFile(0x0000080C, "cLibraries.esp") as GlobalVariable
-    ObjectReference cLib_REFR_WorkingChest01 = Game.GetFormFromFile(0x00000805, "cLibraries.esp") as ObjectReference
-    FormList cLib_FLST_Working01 = Game.GetFormFromFile(0x00000D74, "cLibraries.esp") as FormList
-    ObjectReference cLib_REFR_WorkingChest02 = Game.GetFormFromFile(0x00000804, "cLibraries.esp") as ObjectReference
-    FormList cLib_FLST_Working02 = Game.GetFormFromFile(0x00000D75, "cLibraries.esp") as FormList
-    
-    aContainer.RemoveAllItems(cLib_REFR_WorkingChest01, TRUE, False) ; <-- quest items False
-    aContainer.RemoveAllItems(cLib_REFR_WorkingChest02, TRUE, TRUE)  ; <-- quest items TRUE
-    
-    if includeQuestItems
-      ObjectReference questContainer = Game.GetFormFromFile(0x00000805, "cLibraries.esp") as ObjectReference
-      aContainer.RemoveAllItems(questContainer, TRUE, TRUE) ; <-- quest items False
-    endif
-    Int i = 0
-    while isRunning01.GetValue() == 1.0 && i < 100 ;<-- catch runaway loop
-      Utility.Wait(0.5)
-      i += 1
-    endwhile
-    if i > 99
-      ;ADDTRACE
-    else
-      
-    endif
-  endif
-  
-  return returnArray
-endfunction
-Form[] function cGetEquippedItems(Actor aActor) global
-  GetEquippedArmorInSlot(Int aiSlot)
-  int Property kSlotMask30 = 0x00000001 AutoReadOnly ; HEAD       YES (Dwarven Helmet && 42)
-  int Property kSlotMask31 = 0x00000002 AutoReadOnly ; Hair       YES (Iron Helmet && 42)
-  int Property kSlotMask32 = 0x00000004 AutoReadOnly ; BODY       YES (Iron Armor ONLY)
-  int Property kSlotMask33 = 0x00000008 AutoReadOnly ; Hands      YES (Iron Gauntlets ONLY)
-  int Property kSlotMask34 = 0x00000010 AutoReadOnly ; Forearms   YES (Tumblerbane Gloves DB)
-  int Property kSlotMask35 = 0x00000020 AutoReadOnly ; Amulet     YES
-  int Property kSlotMask36 = 0x00000040 AutoReadOnly ; Ring       YES (Ring gold)
-  int Property kSlotMask37 = 0x00000080 AutoReadOnly ; Feet       YES (Iron Boots)
-  int Property kSlotMask38 = 0x00000100 AutoReadOnly ; Calves     
-  int Property kSlotMask39 = 0x00000200 AutoReadOnly ; SHIELD     YES (Iron shield)
-  int Property kSlotMask40 = 0x00000400 AutoReadOnly ; TAIL       
-  int Property kSlotMask41 = 0x00000800 AutoReadOnly ; LongHair
-  int Property kSlotMask42 = 0x00001000 AutoReadOnly ; Circlet    YES (Iron Helmet && 31)
-  int Property kSlotMask43 = 0x00002000 AutoReadOnly ; Ears       
 endfunction
 
 ;PO3_SKSEFunctions.AddAllItemsToArray(ObjectReference akRef, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
@@ -1502,7 +1431,7 @@ Float function cClampFloat(Float aValue, Float minV, Float maxV, Bool usePapUtil
   Float returnFloat
   if minV > maxV
     cErrInvalidArg("cClampFloat", "minV > maxV", "False")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnFloat = PapyrusUtil.ClampFloat(aValue, minV, maxV)
   else
     returnFloat = cTernaryFloat(aValue > maxV, maxV, cTernaryFloat(aValue < minV, minV, aValue))
@@ -1514,14 +1443,14 @@ Int   function cClampInt(Int aValue, Int minV, Int maxV, Bool usePapUtil = TRUE)
   Int returnInt
   if minV > maxV
     cErrInvalidArg("cClampInt", "minV > maxV", "False")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.ClampInt(aValue, minV, maxV)
   else
     returnInt = cTernaryInt(aValue > maxV, maxV, cTernaryInt(aValue < minV, minV, aValue))
   endif
   return returnInt
 endfunction
-Int   function cWrapIndex(Int aValue, Int endIndex, Int startIndex = 0, Bool usePapUtil = False) global
+Int   function cWrapIndex(Int aValue, Int endIndex, Int startIndex = 0, Bool usePapUtil = TRUE) global
 	{Requirements: None, PapyrusUtil:Soft}
   ; Adapted from PapyrusUtil function, awesome function!
   Int returnInt
@@ -1533,32 +1462,32 @@ Int   function cWrapIndex(Int aValue, Int endIndex, Int startIndex = 0, Bool use
     cErrInvalidArg("cWrapIndex", "startIndex < 0")
   elseif endIndex == 0
     cErrInvalidArg("cWrapIndex", "endIndex == 0")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.WrapInt(aValue, endIndex, startIndex)
   else
     returnInt = aValue % endIndex
   endif
   return returnInt
 endfunction
-Int   function cWrapInt(Int aValue, Int highVal, Int lowVal = 0, Bool usePapUtil = False) global
+Int   function cWrapInt(Int aValue, Int highVal, Int lowVal = 0, Bool usePapUtil = TRUE) global
 	{Requirements: None, PapyrusUtil:Soft}
   ; Adapted from PapyrusUtil function, awesome function!
   Int returnInt
   if highVal < lowVal
     cErrInvalidArg("cWrapInt", "highVal < lowVal")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.WrapInt(aValue, highVal, lowVal)
   else
     returnInt = aValue % highVal
   endif
   return returnInt
 endfunction
-Float function cWrapFloat(Float aValue, Float maxValue, Float minValue = 0.0, Bool usePapUtil = False) global
+Float function cWrapFloat(Float aValue, Float maxValue, Float minValue = 0.0, Bool usePapUtil = TRUE) global
 	{Requirements: None, PapyrusUtil:Soft}
   Float returnFloat
   if maxValue < minValue
     cErrInvalidArg("cWrapFloat", "endIndex < startIndex")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnFloat = PapyrusUtil.WrapFloat(aValue, maxValue, minValue)
   else
     returnFloat = aValue
@@ -1623,7 +1552,7 @@ Float function cArraySumFloat(Float[] aArray, Bool usePapUtil = TRUE) global
   Float aFloat
   if !aArray
     cErrInvalidArg("cArraySumFloat", "!aArray", "0.0")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     aFloat = PapyrusUtil.AddFloatValues(aArray)
   else
     Int i = 0
@@ -1639,7 +1568,7 @@ Int   function cArraySumInt(Int[] aArray, Bool usePapUtil = TRUE) global
   Int aInt
   if !aArray
     cErrInvalidArg("cArraySumInt", "!aArray", "0")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     aInt = PapyrusUtil.AddIntValues(aArray)
   else
     Int i = 0
@@ -1687,7 +1616,7 @@ Float   function cRandomNumberGenFloat(Float this, Float that, Bool usePO3 = TRU
   Float returnFloat
   if this > that
     cErrInvalidArg("cRandomNumberGenFloat", "this > that")
-  elseif usePO3
+  elseif usePO3 && clibUse.cUsePO3()
     returnFloat = PO3_SKSEFunctions.GenerateRandomFloat(this, that)
   else
     returnFloat = this + (that - this) * Utility.RandomFloat(0.0, 1.0)
@@ -1699,7 +1628,7 @@ Int     function cRandomNumberGenInt(Int this, Int that, Bool usePO3 = TRUE) glo
   Int returnInt
   if this > that
     cErrInvalidArg("cRandomNumberGenInt", "this > that")
-  elseif usePO3
+  elseif usePO3 && clibUse.cUsePO3()
     returnInt = PO3_SKSEFunctions.GenerateRandomInt(this, that)
   else
     Float difference = (that as Float) - (this as Float)
@@ -1749,7 +1678,7 @@ endfunction
 String function cD2H(Int aInt, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
   String returnString
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     String digits = "0123456789ABCDEF"
     Int shifted = 0
     while shifted < 32
@@ -1941,7 +1870,7 @@ endfunction
     ;--> cBitwiseOp provides non-SKSE functionality for these
 Int function cLogicalAND(Int i1, Int i2, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     return Math.LogicalAND(i1, i2)
   else
     return cBitwiseOp(i1, i2, 31, 1)
@@ -1949,7 +1878,7 @@ Int function cLogicalAND(Int i1, Int i2, Bool useSKSE = TRUE) global
 endfunction
 Int function cLogicalNOT(Int i1, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     return Math.LogicalNOT(i1)
   else
     return cBitwiseOp(i1, 0, 31, 0)
@@ -1957,7 +1886,7 @@ Int function cLogicalNOT(Int i1, Bool useSKSE = TRUE) global
 endfunction
 Int function cLogicalOR(Int i1, Int i2, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     return Math.LogicalOR(i1, i2)
   else
     return cBitwiseOp(i1, i2, 31, 2)
@@ -1965,7 +1894,7 @@ Int function cLogicalOR(Int i1, Int i2, Bool useSKSE = TRUE) global
 endfunction
 Int function cLogicalXOR(Int i1, Int i2, Bool useSKSE = TRUE) global
   {Requirements: None, SKSE:Soft}
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     return Math.LogicalXOR(i1, i2)
   else
     return cBitwiseOp(i1, i2, 31, 3)
@@ -1989,7 +1918,7 @@ Bool   function cStringIsLetter(String aLetter, Bool useSKSE = TRUE) global
   Bool returnBool
   if !aLetter
     cErrInvalidArg("cStringIsLetter", "!aLetter")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     returnBool = StringUtil.IsLetter(aLetter)
   else
     String aString = cStringASCIICheck(aLetter, "", cArrayASCIIChars())
@@ -2002,7 +1931,7 @@ Bool   function cStringIsDigit(String aDigit, Bool useSKSE = TRUE) global
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
   Bool returnBool
   ; removed all argument checks, should check anything
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     returnBool = StringUtil.IsDigit(aDigit)
   else
     returnBool = aDigit > "//" && aDigit < ":"
@@ -2032,7 +1961,7 @@ Int    function cStringFind(String inThis, String findThis, Int startIndex = 0, 
     cErrInvalidArg("cStringFind", "!inThis", "\"\"") ; log message reporting invalid argument
   elseif !findThis
     cErrInvalidArg("cStringFind", "!findThis", "\"\"")  ; log message reporting invalid argument
-  elseif useSKSE ; is SKSE available?
+  elseif useSKSE && clibUse.cUseSKSE() ; is SKSE available?
     returnInt = StringUtil.Find(inThis, findThis, startIndex) ; with SKSE single command
   else
     String[] findThisArray = cStringToArray(findThis, -1)  ; split the string to find to an array
@@ -2088,7 +2017,7 @@ Int    function cStringLength(String aString, Bool useSKSE = TRUE) global
   ;   functions if possible. Non-SKSE max length 128
   ; thank you cadpnq for the suggestion that made the non-SKSE version possible!
   Int returnInt = 0
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     returnInt = StringUtil.GetLength(aString)
   else
     String[] asciiChars = cArrayASCIIChars()
@@ -2108,7 +2037,7 @@ String function cStringGetNthChar(String aString, Int n, Bool useSKSE = TRUE) gl
     cErrInvalidArg("cStringGetNthChar", "!aString")
   elseif n < 0
     cErrInvalidArg("cStringGetNthChar", "n < 0")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     returnString = StringUtil.GetNthChar(aString, n)
   else
     String[] asciiChars = cArrayASCIIChars()
@@ -2129,7 +2058,7 @@ String function cStringSubString(String aString, Int startChar, Int numChars = 0
     cErrInvalidArg("cStringSubString", "!aString", "\"\"")
   elseif numChars < 0
     cErrInvalidArg("cStringSubString", "numChars < 0", "\"\"")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     if StringUtil.GetLength(aString) > numChars
       numChars = 0 ; 0 == rest of string
     endif
@@ -2156,7 +2085,7 @@ String function cStringReplace(String aString, String toReplace, String withWhat
     Int startIndex
     String head
     String tail
-    if useSKSE
+    if useSKSE && clibUse.cUseSKSE()
       toReplaceLength = StringUtil.GetLength(toReplace)
       while startIndex != -1 && maxIterations >= 0
         startIndex = StringUtil.Find(returnString, toReplace)
@@ -2229,7 +2158,7 @@ String function cStringLeft(String aString, Int numChars, Bool useSKSE = TRUE) g
     cErrInvalidArg("cStringLeft", "!numChars", "\"\"")
   elseif numChars < 0
     cErrInvalidArg("cStringLeft", "numChars < 0", "\"\"")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     if StringUtil.GetLength(aString) <= numChars
       numChars = 0 ; 0 == rest of string
     endif
@@ -2252,7 +2181,7 @@ String function cStringRight(String aString, Int numChars, Bool useSKSE = TRUE) 
     cErrInvalidArg("cStringRight", "!aString", "\"\"")
   elseif numChars == 0
     cErrInvalidArg("cStringRight", "numChars == 0", "\"\"")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     Int stringLength = StringUtil.GetLength(aString)
     returnString = cTernaryString(stringLength < numChars, aString, StringUtil.SubString(aString, \
       stringLength - numChars, 0))
@@ -2305,7 +2234,7 @@ String function cStringTrimLeft(String aString, String charToTrim = " ", Bool us
     Int lengthToTrim = cStringLength(charToTrim)
     if lengthToTrim > len
       cErrInvalidArg("cStringTrimLeft", "lengthToTrim > len", "aString")
-    elseif useSKSE
+    elseif useSKSE && clibUse.cUseSKSE()
       while StringUtil.Substring(returnString, 0, 1) == charToTrim && len > lengthToTrim
         returnString = StringUtil.Substring(aString, 1, 0)
         len -= 1
@@ -2335,7 +2264,7 @@ String function cStringTrimRight(String aString, String charToTrim = " ", Bool u
     cErrInvalidArg("cStringTrimRight", "!charToTrim", "\"\"")
   else
     returnString = aString
-    if useSKSE
+    if useSKSE && clibUse.cUseSKSE()
       Int len = StringUtil.GetLength(aString)
       Int lengthToTrim = StringUtil.GetLength(charToTrim)
       if lengthToTrim > 1
@@ -2364,7 +2293,7 @@ String function cStringTrim(String aString, String charToTrim = " ", Bool useSKS
   String returnString
   Int len = 0
   Int lengthToTrim = 0
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     len = StringUtil.GetLength(aString)
     lengthToTrim = StringUtil.GetLength(charToTrim)
   endif
@@ -2435,7 +2364,7 @@ String[] function cStringToArray(String aString, Int numChars = -1, Bool useSKSE
   String[] stringBuild
   if !aString
     cErrInvalidArg("cStringToArray", "!aString")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     Int stringLength = StringUtil.GetLength(aString)
     if stringLength == 1 || numChars == 1
       stringBuild = New String[1] ; returns single index array containing aString
@@ -2474,7 +2403,7 @@ String[] function cStringHexToArray(String aString, Bool useSKSE = TRUE) global
   String[] stringBuild
   if !aString
     cErrInvalidArg("cStringHexToArray", "!aString")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     Int stringLength = StringUtil.GetLength(aString)
     if stringLength == 1
       stringBuild = New String[1] ; returns single index array containing aString
@@ -2592,7 +2521,7 @@ String function cStringAdd_ing(String aString) global ; list of words to check (
   return returnString
 endfunction
   ;>>> non-SKSE String parsing: Credit to cadpnq
-String   function cStringASCIICheck(String aString, String builtString, String[] asciiChars) global
+String function cStringASCIICheck(String aString, String builtString, String[] asciiChars) global
   {Requirements: None}
   ; Returns next ASCII character in string without SKSE
   String returnString
@@ -2773,7 +2702,7 @@ String   function cStringASCIICheck(String aString, String builtString, String[]
   return returnString
   
 endfunction
-String   function cStringHexCheck(String aString, String builtString, String[] hexDigits) global
+String function cStringHexCheck(String aString, String builtString, String[] hexDigits) global
   {Requirements: None}
   ; Returns next hex digit in string without SKSE
   String returnString
@@ -2822,7 +2751,7 @@ String   function cStringHexCheck(String aString, String builtString, String[] h
 endfunction
 
 ;========================= FormList Functions
-Bool function cFLReplaceValue(FormList aFormlist, Form replaceThis, Form withThis, Bool forceAdd = False) global
+Bool     function cFLReplaceValue(FormList aFormlist, Form replaceThis, Form withThis, Bool forceAdd = False) global
   {Requirements: None}
   ;Bool return is whether or not the replaced value is still there (can only remove ADDED forms)
   ;forceAdd forces the value to be added even if replaceThis can't be removed
@@ -2849,7 +2778,7 @@ FormList function cArrayToFL(Form[] aArray, FormList aFormList, Bool useSKSE = T
   elseif !aFormlist
     cErrInvalidArg("cFLAddFormsFromArray", "!aFormList", "None")
   else
-    if useSKSE
+    if useSKSE && clibUse.cUseSKSE()
       aFormList.AddForms(aArray)
     else
       Int invalidForms = 0
@@ -2878,7 +2807,7 @@ Form[]   function cFLToArray(FormList aFormList, Bool useSKSE = TRUE) global
   if !aFormList
     cErrInvalidArg("cArrayFromFLForm", "!aFormList", "")
   else
-    if useSKSE
+    if useSKSE && clibUse.cUseSKSE()
       return aFormList.ToArray()
     endif
     Int flSize = aFormList.GetSize()
@@ -2970,7 +2899,7 @@ Int function cArrayCountValueActor(Actor[] aArray, Actor valueToCount = None, Bo
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueActor", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.CountActor(aArray, valueToCount)
   else
     returnInt = 0
@@ -2988,7 +2917,7 @@ Int function cArrayCountValueAlias(Alias[] aArray, Alias valueToCount = None, Bo
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueAlias", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.CountAlias(aArray, valueToCount)
   else
     returnInt = 0
@@ -3006,7 +2935,7 @@ Int function cArrayCountValueBool(Bool[] aArray, Bool valueToCount = TRUE, Bool 
   Int returnInt = 0
   if !aArray
     cErrInvalidArg("cArrayCountValueBool", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.CountBool(aArray, valueToCount)
   else
     Int i = 0
@@ -3023,7 +2952,7 @@ Int function cArrayCountValueFloat(Float[] aArray, Float valueToCount = 0.0, Boo
   Int returnInt = 0
   if !aArray
     cErrInvalidArg("cArrayCountValueFloat", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.CountFloat(aArray, valueToCount)
   else
     Int i = 0
@@ -3040,7 +2969,7 @@ Int function cArrayCountValueForm(Form[] aArray, Form valueToCount = None, Bool 
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueForm", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.CountForm(aArray, valueToCount)
   else
     returnInt = 0
@@ -3058,7 +2987,7 @@ Int function cArrayCountValueInt(Int[] aArray, Int valueToCount = 0, Bool invert
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueInt", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.CountInt(aArray, valueToCount)
   else
     returnInt = 0
@@ -3076,7 +3005,7 @@ Int function cArrayCountValueObjRef(ObjectReference[] aArray, ObjectReference va
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueObjRef", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.CountObjRef(aArray, valueToCount)
   else
     returnInt = 0
@@ -3094,7 +3023,7 @@ Int function cArrayCountValueString(String[] aArray, String valueToCount = "", B
   Int returnInt
   if !aArray
     cErrInvalidArg("cArrayCountValueString", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     returnInt = PapyrusUtil.CountString(aArray, valueToCount)
   else
     returnInt = 0
@@ -4272,7 +4201,7 @@ Actor[]  function cArrayRemoveDuplicatesActor(Actor[] aArray, Bool usePapUtil = 
   Actor[] newArray
   if !aArray
     cErrInvalidArg("cArrayRemoveDuplicatesActor", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.MergeActorArray(aArray, newArray, TRUE)
   else
     Int[] indicesToRemove = cArrayCreateInt(aArray.length)
@@ -4299,7 +4228,7 @@ Alias[]  function cArrayRemoveDuplicatesAlias(Alias[] aArray, Bool usePapUtil = 
   Alias[] newArray
   if !aArray
     cErrInvalidArg("cArrayRemoveDuplicatesAlias", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.MergeAliasArray(aArray, newArray, TRUE)
   else
     Int[] indicesToRemove = cArrayCreateInt(aArray.length)
@@ -4326,7 +4255,7 @@ Float[]  function cArrayRemoveDuplicatesFloat(Float[] aArray, Bool usePapUtil = 
   Float[] newArray
   if !aArray
     cErrInvalidArg("cArrayRemoveDuplicatesFloat", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.MergeFloatArray(aArray, newArray, TRUE)
   else
     Int[]   indicesToRemove = cArrayCreateInt(aArray.length)
@@ -4353,7 +4282,7 @@ Form[]   function cArrayRemoveDuplicatesForm(Form[] aArray, Bool usePapUtil = TR
   Form[] newArray
   if !aArray
     cErrInvalidArg("cArrayRemoveDuplicatesForm", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.MergeFormArray(aArray, newArray, TRUE)
   else
     Int[] indicesToRemove = cArrayCreateInt(aArray.length)
@@ -4380,7 +4309,7 @@ Int[]    function cArrayRemoveDuplicatesInt(Int[] aArray, Bool usePapUtil = TRUE
   Int[] newArray
   if !aArray
     cErrInvalidArg("cArrayRemoveDuplicatesInt", "!aArray")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.MergeIntArray(aArray, newArray, TRUE)
   else
     Int[] indicesToRemove = cArrayCreateInt(aArray.length)
@@ -4407,7 +4336,7 @@ ObjectReference[] function cArrayRemoveDuplicatesObjRef(ObjectReference[] aArray
   ObjectReference[] newArray
   if !aArray
     cErrInvalidArg("cArrayRemoveDuplicatesObjRef", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.MergeObjRefArray(aArray, newArray, TRUE)
   else
     Int[] indicesToRemove = cArrayCreateInt(aArray.length)
@@ -4434,7 +4363,7 @@ String[] function cArrayRemoveDuplicatesString(String[] aArray, Bool usePapUtil 
   String[] newArray
   if !aArray
     cErrInvalidArg("cArrayRemoveDuplicatesString", "!aArray", "")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.MergeStringArray(aArray, newArray, TRUE)
   else
     Int[] indicesToRemove = cArrayCreateInt(aArray.length)
@@ -4918,7 +4847,7 @@ function cArraySortFloat(Float[] aArray, Int low = -1, Int high = -1, Bool usePa
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArraySortFloat", "!aArray")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     PapyrusUtil.SortFloatArray(aArray)
   else
     if high == -1
@@ -4960,7 +4889,7 @@ function cArraySortInt(Int[] aArray, Int low = -1, Int high = -1, Bool usePapUti
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArraySortInt", "!aArray")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     PapyrusUtil.SortIntArray(aArray)
   else
     if high == -1
@@ -5024,10 +4953,12 @@ Float[]  function cArrayBubbleSortFloat(Float[] aArray, Bool invertIt = False, B
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArrayBubbleSortFloat", "!aArray")
-  elseif usePapUtil && invertIt
-    PapyrusUtil.SortFloatArray(aArray, TRUE)
-  elseif usePapUtil
-    PapyrusUtil.SortFloatArray(aArray)
+  elseif usePapUtil && clibUse.cUsePapUtil() 
+    if invertIt
+      PapyrusUtil.SortFloatArray(aArray, TRUE)
+    else
+      PapyrusUtil.SortFloatArray(aArray)
+    endif
   else
     Float tempData
     Int j = aArray.length - 1
@@ -5051,10 +4982,12 @@ Int[]    function cArrayBubbleSortInt(Int[] aArray, Bool invertIt = False, Bool 
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArrayBubbleSortInt", "!aArray")
-  elseif usePapUtil && invertIt
-    PapyrusUtil.SortIntArray(aArray, TRUE)
-  elseif usePapUtil
-    PapyrusUtil.SortIntArray(aArray)
+  elseif usePapUtil && clibUse.cUsePapUtil() && invertIt
+    if invertIt
+      PapyrusUtil.SortIntArray(aArray, TRUE)
+    else
+      PapyrusUtil.SortIntArray(aArray)
+    endif
   else
     Int tempData
     Int j = aArray.length - 1
@@ -5078,10 +5011,12 @@ String[] function cArrayBubbleSortString(String[] aArray, Bool invertIt = False,
   {Requirements: None, PapyrusUtil:Soft}
   if !aArray
     cErrInvalidArg("cArrayBubbleSortString", "!aArray")
-  elseif usePapUtil && invertIt
-    PapyrusUtil.SortStringArray(aArray, TRUE)
-  elseif usePapUtil
-    PapyrusUtil.SortStringArray(aArray)
+  elseif usePapUtil && clibUse.cUsePapUtil()
+    if invertIt
+      PapyrusUtil.SortStringArray(aArray, TRUE)
+    else
+      PapyrusUtil.SortStringArray(aArray)
+    endif
   else
     String tempData
     Int j = aArray.length - 1
@@ -5295,7 +5230,7 @@ Actor[]  function cArrayRemoveIndexActor(Actor[] aArray, Int indexToRemove = 0, 
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
       cErrInvalidArg("cArrayRemoveIndexActor", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      if usePapUtil
+      if usePapUtil && clibUse.cUsePapUtil()
         Actor[] head
         Actor[] tail
         if indexToRemove
@@ -5338,7 +5273,7 @@ Alias[]  function cArrayRemoveIndexAlias(Alias[] aArray, Int indexToRemove = 0, 
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
       cErrInvalidArg("cArrayRemoveIndexAlias", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      if usePapUtil
+      if usePapUtil && clibUse.cUsePapUtil()
         Alias[] head
         Alias[] tail
         if indexToRemove
@@ -5381,7 +5316,7 @@ Bool[]   function cArrayRemoveIndexBool(Bool[] aArray, Int indexToRemove = 0, Bo
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
       cErrInvalidArg("cArrayRemoveIndexBool", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      if usePapUtil
+      if usePapUtil && clibUse.cUsePapUtil()
         Bool[] head
         Bool[] tail
         if indexToRemove
@@ -5424,7 +5359,7 @@ Float[]  function cArrayRemoveIndexFloat(Float[] aArray, Int indexToRemove = 0, 
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
       cErrInvalidArg("cArrayRemoveIndexFloat", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      if usePapUtil
+      if usePapUtil && clibUse.cUsePapUtil()
         Float[] head
         Float[] tail
         if indexToRemove
@@ -5467,7 +5402,7 @@ Form[]   function cArrayRemoveIndexForm(Form[] aArray, Int indexToRemove = 0, Bo
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
       cErrInvalidArg("cArrayRemoveIndexForm", "indexToRemove")
     else
-      if usePapUtil
+      if usePapUtil && clibUse.cUsePapUtil()
         Form[] head
         Form[] tail
         if indexToRemove
@@ -5510,7 +5445,7 @@ Int[]    function cArrayRemoveIndexInt(Int[] aArray, Int indexToRemove = 0, Bool
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
       cErrInvalidArg("cArrayRemoveIndexInt", "!cIsBetweenInt(indexToRemove, 0, aArray.length - 1)")
     else
-      if usePapUtil
+      if usePapUtil && clibUse.cUsePapUtil()
         Int[] head
         Int[] tail
         if indexToRemove
@@ -5554,7 +5489,7 @@ ObjectReference[] function cArrayRemoveIndexObjRef(ObjectReference[] aArray, Int
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
       cErrInvalidArg("cArrayRemoveIndexObjRef", "indexToRemove")
     else
-      if usePapUtil
+      if usePapUtil && clibUse.cUsePapUtil()
         ObjectReference[] head
         ObjectReference[] tail
         if indexToRemove
@@ -5597,7 +5532,7 @@ String[] function cArrayRemoveIndexString(String[] aArray, Int indexToRemove = 0
     elseif !cIsBetweenInt(indexToRemove, 0, aArray.length - 1)
       cErrInvalidArg("cArrayRemoveIndexString", "indexToRemove")
     else
-      if usePapUtil
+      if usePapUtil && clibUse.cUsePapUtil()
         String[] head
         String[] tail
         if indexToRemove
@@ -5901,7 +5836,7 @@ Actor[]  function cArrayRemoveValueActor(Actor[] aArray, Actor toRemove = None, 
   if !aArray
     cErrInvalidArg("cArrayRemoveValueActor", "!aArray")
   else
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.RemoveActor(aArray, toRemove)
     endif
     Int numToRemove = cArrayCountValueActor(aArray, toRemove)
@@ -5933,7 +5868,7 @@ Alias[]  function cArrayRemoveValueAlias(Alias[] aArray, Alias toRemove = None, 
   if !aArray
     cErrInvalidArg("cArrayRemoveValueAlias", "!aArray")
   else
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.RemoveAlias(aArray, toRemove)
     endif
     Int numToRemove = cArrayCountValueAlias(aArray, toRemove)
@@ -5965,7 +5900,7 @@ Bool[]   function cArrayRemoveValueBool(Bool[] aArray, Bool toRemove = False, Bo
   if !aArray
     cErrInvalidArg("cArrayRemoveValueBool", "!aArray")
   else
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.RemoveBool(aArray, toRemove)
     endif
     Int numToRemove = cArrayCountValueBool(aArray, toRemove)
@@ -5997,7 +5932,7 @@ Float[]  function cArrayRemoveValueFloat(Float[] aArray, Float toRemove = 0.0, B
   if !aArray
     cErrInvalidArg("cArrayRemoveValueFloat", "!aArray")
   else
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.RemoveFloat(aArray, toRemove)
     endif
     Int numToRemove = cArrayCountValueFloat(aArray, toRemove)
@@ -6029,7 +5964,7 @@ Form[]   function cArrayRemoveValueForm(Form[] aArray, Form toRemove = None, Boo
   if !aArray
     cErrInvalidArg("cArrayRemoveValueForm", "!aArray", "")
   else
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.RemoveForm(aArray, toRemove)
     endif
     Int numToRemove = cArrayCountValueForm(aArray, toRemove)
@@ -6061,7 +5996,7 @@ Int[]    function cArrayRemoveValueInt(Int[] aArray, Int toRemove = 0, Bool useP
   if !aArray
     cErrInvalidArg("cArrayRemoveValueInt", "!aArray", "")
   else
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.RemoveInt(aArray, toRemove)
     endif
     Int numToRemove = cArrayCountValueInt(aArray, toRemove)
@@ -6094,7 +6029,7 @@ ObjectReference[] function cArrayRemoveValueObjRef(ObjectReference[] aArray, Obj
   if !aArray
     cErrInvalidArg("cArrayRemoveValueObjRef", "!aArray")
   else
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.RemoveObjRef(aArray, toRemove)
     endif
     Int numToRemove = cArrayCountValueObjRef(aArray, toRemove)
@@ -6126,7 +6061,7 @@ String[] function cArrayRemoveValueString(String[] aArray, String toRemove = "",
   if !aArray
     cErrInvalidArg("cArrayRemoveValueString", "!aArray", "")
   else
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.RemoveString(aArray, toRemove)
     endif
     Int numToRemove = cArrayCountValueString(aArray, toRemove)
@@ -6503,7 +6438,7 @@ Actor[]  function cArrayResizeActor(Actor[] aArray, Int newSize, Actor filler = 
     if (clampMaxLength != -1) && (newSize > clampMaxLength)
       newSize = clampMaxLength
     endif
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       newArray = PapyrusUtil.ResizeActorArray(aArray, newSize, filler)
     else
       newArray = cArrayCreateActor(newSize, filler)
@@ -6541,7 +6476,7 @@ Alias[]  function cArrayResizeAlias(Alias[] aArray, Int newSize, Alias filler = 
     if (clampMaxLength != -1) && (newSize > clampMaxLength)
       newSize = clampMaxLength
     endif
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       newArray = PapyrusUtil.ResizeAliasArray(aArray, newSize, filler)
     else
       newArray = cArrayCreateAlias(newSize, filler)
@@ -6579,7 +6514,7 @@ Bool[]   function cArrayResizeBool(Bool[] aArray, Int newSize, Bool filler = Fal
     if (clampMaxLength != -1) && (newSize > clampMaxLength)
       newSize = clampMaxLength
     endif
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       newArray = PapyrusUtil.ResizeBoolArray(aArray, newSize, filler)
     else
       newArray = cArrayCreateBool(newSize, filler)
@@ -6617,7 +6552,7 @@ Float[]  function cArrayResizeFloat(Float[] aArray, Int newSize, Float filler = 
     if (clampMaxLength != -1) && (newSize > clampMaxLength)
       newSize = clampMaxLength
     endif
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       newArray = PapyrusUtil.ResizeFloatArray(aArray, newSize, filler)
     else
       newArray = cArrayCreateFloat(newSize, filler)
@@ -6655,7 +6590,7 @@ Form[]   function cArrayResizeForm(Form[] aArray, Int newSize, Form filler = Non
     if (clampMaxLength != -1) && (newSize > clampMaxLength)
       newSize = clampMaxLength
     endif
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       newArray = PapyrusUtil.ResizeFormArray(aArray, newSize, filler)
     else
       newArray = cArrayCreateForm(newSize, filler)
@@ -6693,7 +6628,7 @@ Int[]    function cArrayResizeInt(Int[] aArray, Int newSize, Int filler = 0, Int
     if (clampMaxLength != -1) && (newSize > clampMaxLength)
       newSize = clampMaxLength
     endif
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       newArray = PapyrusUtil.ResizeIntArray(aArray, newSize, filler)
     else
       newArray = cArrayCreateInt(newSize, filler)
@@ -6731,7 +6666,7 @@ ObjectReference[] function cArrayResizeObjRef(ObjectReference[] aArray, Int newS
     if (clampMaxLength != -1) && (newSize > clampMaxLength)
       newSize = clampMaxLength
     endif
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       newArray = PapyrusUtil.ResizeObjRefArray(aArray, newSize, filler)
     else
       newArray = cArrayCreateObjRef(newSize, filler)
@@ -6769,7 +6704,7 @@ String[] function cArrayResizeString(String[] aArray, Int newSize, String filler
     if (clampMaxLength != -1) && (newSize > clampMaxLength)
       newSize = clampMaxLength
     endif
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       newArray = PapyrusUtil.ResizeStringArray(aArray, newSize, filler)
     else
       newArray = cArrayCreateString(newSize, filler)
@@ -6804,7 +6739,7 @@ Actor[]  function cArraySliceActor(Actor[] aArray, Int fromIndex, Int toIndex = 
     cErrInvalidArg("cArraySliceActor", "!cIsBetweenInt(fromIndex, 1, aArray.length - 1)")
   elseif !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)
     cErrInvalidArg("cArraySliceActor", "!orNumIndices && !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.SliceActorArray(aArray, fromIndex, toIndex)
   else
     Int newLength = toIndex - fromIndex + 1
@@ -6840,7 +6775,7 @@ Alias[]  function cArraySliceAlias(Alias[] aArray, Int fromIndex, Int toIndex = 
     cErrInvalidArg("cArraySliceAlias", "!cIsBetweenInt(fromIndex, 1, aArray.length - 1)")
   elseif !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)
     cErrInvalidArg("cArraySliceAlias", "!orNumIndices && !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.SliceAliasArray(aArray, fromIndex, toIndex)
   else
     Int newLength = toIndex - fromIndex + 1
@@ -6876,7 +6811,7 @@ Bool[]   function cArraySliceBool(Bool[] aArray, Int fromIndex, Int toIndex = 0,
     cErrInvalidArg("cArraySliceBool", "!cIsBetweenInt(fromIndex, 1, aArray.length - 1)")
   elseif !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)
     cErrInvalidArg("cArraySliceBool", "!orNumIndices && !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.SliceBoolArray(aArray, fromIndex, toIndex)
   else
     Int newLength = toIndex - fromIndex + 1
@@ -6912,7 +6847,7 @@ Float[]  function cArraySliceFloat(Float[] aArray, Int fromIndex, Int toIndex = 
     cErrInvalidArg("cArraySliceFloat", "!cIsBetweenInt(fromIndex, 1, aArray.length - 1)")
   elseif !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)
     cErrInvalidArg("cArraySliceFloat", "!orNumIndices && !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.SliceFloatArray(aArray, fromIndex, toIndex)
   else
     Int newLength = toIndex - fromIndex + 1
@@ -6948,7 +6883,7 @@ Form[]   function cArraySliceForm(Form[] aArray, Int fromIndex, Int toIndex = 0,
     cErrInvalidArg("cArraySliceForm", "!cIsBetweenInt(fromIndex, 1, aArray.length - 1)")
   elseif !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)
     cErrInvalidArg("cArraySliceForm", "!orNumIndices && !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.SliceFormArray(aArray, fromIndex, toIndex)
   else
     Int newLength = toIndex - fromIndex + 1
@@ -6984,7 +6919,7 @@ Int[]    function cArraySliceInt(Int[] aArray, Int fromIndex, Int toIndex = 0, B
     cErrInvalidArg("cArraySliceInt", "!cIsBetweenInt(fromIndex, 1, aArray.length - 1)")
   elseif !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)
     cErrInvalidArg("cArraySliceInt", "!orNumIndices && !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.SliceIntArray(aArray, fromIndex, toIndex)
   else
     Int newLength = toIndex - fromIndex + 1
@@ -7021,7 +6956,7 @@ ObjectReference[] function cArraySliceObjRef(ObjectReference[] aArray, Int fromI
     cErrInvalidArg("cArraySliceObjectReference", "!cIsBetweenInt(fromIndex, 1, aArray.length - 1)")
   elseif !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)
     cErrInvalidArg("cArraySliceObjectReference", "!orNumIndices && !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.SliceObjRefArray(aArray, fromIndex, toIndex)
   else
     Int newLength = toIndex - fromIndex + 1
@@ -7057,7 +6992,7 @@ String[] function cArraySliceString(String[] aArray, Int fromIndex, Int toIndex 
     cErrInvalidArg("cArraySliceString", "!cIsBetweenInt(fromIndex, 1, aArray.length - 1)")
   elseif !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)
     cErrInvalidArg("cArraySliceString", "!orNumIndices && !cIsBetweenInt(toIndex, fromIndex, aArray.length - 1)")
-  elseif usePapUtil
+  elseif usePapUtil && clibUse.cUsePapUtil()
     newArray = PapyrusUtil.SliceStringArray(aArray, fromIndex, toIndex)
   else
     Int newLength = toIndex - fromIndex + 1
@@ -7402,7 +7337,7 @@ Actor[]  function cArrayMergeActor(Actor[] aArray1, Actor[] aArray2, Bool useSKS
   ;  cErrInvalidArg("cArrayMergeActor", "aArray1 && aArray2", "")
   ;else
   ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.MergeActorArray(aArray1, aArray2)
     endif
     Int newSize = aArray1.length + aArray2.length
@@ -7432,7 +7367,7 @@ Alias[]  function cArrayMergeAlias(Alias[] aArray1, Alias[] aArray2, Bool useSKS
   ;  cErrInvalidArg("cArrayMergeAlias", "aArray1 && aArray2", "")
   ;else
   ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.MergeAliasArray(aArray1, aArray2)
     endif
     Int newSize = aArray1.length + aArray2.length
@@ -7462,7 +7397,7 @@ Bool[]   function cArrayMergeBool(Bool[] aArray1, Bool[] aArray2, Bool useSKSE =
   ;  cErrInvalidArg("cArrayMergeBool", "aArray1 && aArray2", "")
   ;else
   ; NO ARGUMENT CHECK FOR MERGE, COULD BE INTENTIONAL
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.MergeBoolArray(aArray1, aArray2)
     endif
     newArray = cArrayCreateBool(aArray1.length + aArray2.length)
@@ -7491,7 +7426,7 @@ Float[]  function cArrayMergeFloat(Float[] aArray1, Float[] aArray2, Bool useSKS
   ;  cErrInvalidArg("cArrayMergeFloat", "aArray1 && aArray2", "")
   ;else
   ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.MergeFloatArray(aArray1, aArray2)
     endif
     Int newSize = aArray1.length + aArray2.length
@@ -7521,7 +7456,7 @@ Form[]   function cArrayMergeForm(Form[] aArray1, Form[] aArray2, Bool useSKSE =
   ;  cErrInvalidArg("cArrayMergeForm", "aArray1 && aArray2", "")
   ;else
   ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.MergeFormArray(aArray1, aArray2)
     endif
     Int newSize = aArray1.length + aArray2.length
@@ -7551,7 +7486,7 @@ Int[]    function cArrayMergeInt(Int[] aArray1, Int[] aArray2, Bool useSKSE = TR
   ;  cErrInvalidArg("cArrayMergeInt", "aArray1 && aArray2", "")
   ;else
   ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.MergeIntArray(aArray1, aArray2)
     endif
     Int newSize = aArray1.length + aArray2.length
@@ -7582,7 +7517,7 @@ ObjectReference[] function cArrayMergeObjRef(ObjectReference[] aArray1, ObjectRe
   ;  cErrInvalidArg("cArrayMergeObjRef", "aArray1 && aArray2", "")
   ;else
   ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.MergeObjRefArray(aArray1, aArray2)
     endif
     Int newSize = aArray1.length + aArray2.length
@@ -7613,7 +7548,7 @@ String[] function cArrayMergeString(String[] aArray1, String[] aArray2, Bool use
   ;  cErrInvalidArg("cArrayMergeString", "aArray1 && aArray2", "")
   ;else
   ; NO ARGUMENT CHECK FOR MERGE COULD BE INTENTIONAL
-    if usePapUtil
+    if usePapUtil && clibUse.cUsePapUtil()
       return PapyrusUtil.MergeStringArray(aArray1, aArray2)
     endif
     Int newSize = aArray1.length + aArray2.length
@@ -8215,14 +8150,14 @@ endfunction
    ;>>> CREATION: Specific data types (4 capitalized letters == xEdit abbreviations)
 Actor[]       function cArrayCreateACHR(Int indices, Actor filler = None, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil
+  if usePapUtil && clibUse.cUsePapUtil()
     return PapyrusUtil.ActorArray(indices, filler)
   endif
   return cArrayActor.cArrayCreateActor(indices, filler)
 endfunction
 Actor[]       function cArrayCreateActor(Int indices, Actor filler = None, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil
+  if usePapUtil && clibUse.cUsePapUtil()
     return PapyrusUtil.ActorArray(indices, filler)
   endif
   return cArrayActor.cArrayCreateActor(indices, filler)
@@ -8393,7 +8328,7 @@ MiscObject[]   function cArrayCreateMiscObject(Int indices, MiscObject filler = 
 endfunction
 ObjectReference[] function cArrayCreateREFR(Int indices, ObjectReference filler = None, Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil
+  if usePapUtil && clibUse.cUsePapUtil()
     return PapyrusUtil.ObjRefArray(indices, filler)
   endif
   return cArrayObjectReference.cArrayCreateObjectReference(indices, filler)
@@ -8401,7 +8336,7 @@ endfunction
 ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectReference filler = None, \
     Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil
+  if usePapUtil && clibUse.cUsePapUtil()
     return PapyrusUtil.ObjRefArray(indices, filler)
   endif
   return cArrayObjectReference.cArrayCreateObjectReference(indices, filler)
@@ -8409,7 +8344,7 @@ endfunction
 ObjectReference[] function cArrayCreateObjRef(Int indices, ObjectReference filler = None, \
     Bool usePapUtil = TRUE) global
   {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil
+  if usePapUtil && clibUse.cUsePapUtil()
     return PapyrusUtil.ObjRefArray(indices, filler)
   endif
   return cArrayObjectReference.cArrayCreateObjectReference(indices, filler)
@@ -9061,8 +8996,8 @@ String[] function cMapCreate(String keyName, String aValue = "", Int numKeyPairs
     cErrInvalidArg("cMapCreate", "numKeyPairs < 1")
   elseif !keyName
     cErrInvalidArg("cMapCreate", "!keyName")
-  elseif numKeyPairs > 64 && !useSKSE
-    cErrInvalidArg("cMapCreate", "numKeyPairs > 64 && !useSKSE")
+  elseif numKeyPairs > 64 && (!useSKSE || !clibUse.cUseSKSE())
+    cErrInvalidArg("cMapCreate", "numKeyPairs > 64 && (!useSKSE || !clibUse.cUseSKSE())")
   else
     aMap = cArrayCreateString(numKeyPairs * 2)
     aMap[0] = keyName
@@ -9821,7 +9756,7 @@ function clibTrace(String functionName, String msg, Int errorLevel, Bool conditi
   condition = TRUE ; change this to false to disable all trace messages
   if condition
     Debug.Trace(cGetScriptName() + "::" + functionName + "():: " + msg, errorLevel)
-    if useConsoleUtil && ConsoleUtil.GetVersion()
+    if useConsoleUtil && clibUse.cUseConsoleUtil() && ConsoleUtil.GetVersion()
       ConsoleUtil.PrintMessage(cTernaryString(errorLevel == 2, "Error! ", \
         cTernaryString(errorLevel == 1, "Warning: ", \
           cTernaryString(errorLevel == 0, "Info: ", ""))) + "clib::" + functionName + "() " + msg)
@@ -9831,7 +9766,7 @@ endfunction
 function cErrInvalidArg(String functionName, String argName = "", String returnValue = "", \
     Int errorLevel = 2, Bool condition = TRUE, Bool useSKSE = TRUE, Bool useConsoleUtil = TRUE) global
   {Requirements: None, ConsoleUtil:Soft}
-  if useSKSE && StringUtil.Find(functionName, "array") != -1
+  if useSKSE && clibUse.cUseSKSE() && StringUtil.Find(functionName, "array") != -1
     returnValue = "arrayNone"
   endif
   clibTrace(functionName, "Argument(s)" + cTernaryString(argName != "", ": " + argName, "") + " invalid!" + \
@@ -9855,7 +9790,7 @@ endfunction
 String function cGetModName(String hexForm = "", Int decForm = 0,Form formVar = None, Bool useSKSE = TRUE) global
   {Requirements: SKSE}
   String returnString
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     String modIndex
     if formVar
       returnString = cGetModNameForm(formVar)
@@ -9883,7 +9818,7 @@ endfunction
 String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
   {Requirements: SKSE}
   ; This function came from Mr Octopus!! Thank you!!!
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     Int intFormID = aForm.GetFormID()
     Int index = Math.RightShift(intFormID, 24)
     ; Light (Comment out and recompile if using Classic Edition)
@@ -9899,7 +9834,7 @@ String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
 endfunction
 Bool   function cIsInAnyMenu(Bool useSKSE = TRUE) global ; In my experience more accurate thatn .IsInMenuMode()
   {Requirements: SKSE}
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     return !UI.IsMenuOpen("Console") && !UI.IsMenuOpen("RaceSex Menu") && \
         !UI.IsMenuOpen("Sleep/Wait Menu") && !UI.IsMenuOpen("ContainerMenu") && !UI.IsMenuOpen("FavoritesMenu") && \
           !UI.IsMenuOpen("Crafting Menu") && !UI.IsMenuOpen("MainMenu") && !UI.IsMenuOpen("JournalMenu") && \
@@ -9914,7 +9849,7 @@ Bool[] function cArePluginsInstalled(String[] listOfPlugins, Bool useSKSE = TRUE
   Bool[] newArray
   if !listOfPlugins
     cErrInvalidArg("cAreFilesInstalled", "!listOfPlugins")
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     newArray = cArrayCreateBool(listOfPlugins.length)
     if newArray.length
       Int numPlugins = listOfPlugins.length
@@ -9940,7 +9875,7 @@ String function cColoredText(String aString, Bool ddInstalled = False, String te
   if !aString && !textColorHex
     cErrInvalidArg("cColoredText", "!aString && !textColorHex", "\"\"")
   else
-    if useSKSE
+    if useSKSE && clibUse.cUseSKSE()
       if !ddInstalled ; optional catch for DearDiary which does not play well with colored text
         String trimmedS = aString
         String colorOrange = "FFA600"
@@ -10019,14 +9954,14 @@ String function cColoredText(String aString, Bool ddInstalled = False, String te
   return aString
 endfunction
 
-Int function cStringCountSubstring(String countThis, String inThis, Bool useSKSE = TRUE) global
+Int    function cStringCountSubstring(String countThis, String inThis, Bool useSKSE = TRUE) global
   {Requirements: SKSE}
   Int returnInt
   if !countThis || !inThis
     cErrInvalidArg("cStringCountSubstring", "!countThis || !inThis", "-1")
     returnInt = -1
   else
-    if useSKSE
+    if useSKSE && clibUse.cUseSKSE()
       Int charIndex = 0
       Int numOccurences = 0
       while StringUtil.Find(inThis, countThis, charIndex) > 0
@@ -10046,7 +9981,7 @@ Enchantment[]  function cArrayBaseEnchantment(Enchantment[] aArray, Bool useSKSE
   if !aArray
     cErrInvalidArg("cArrayBaseEnchantment", "!aArray")
   else
-    if useSKSE
+    if useSKSE && clibUse.cUseSKSE()
       Enchantment aEnchantment
       Int numEnchantments = aArray.length
       Int i = 0
@@ -10068,7 +10003,7 @@ endfunction
 Bool     function cModPerkPoints(Int number = 1, Bool useSKSE = TRUE) global ; NOT compatible with Vokriinator Black!!
   {Requirements: SKSE}
   Bool returnBool
-  if useSKSE
+  if useSKSE && clibUse.cUseSKSE()
     Int beforePerkPoints = Game.GetPerkPoints()
     if number == 0
       cErrInvalidArg("cModPerkPoints", "number == 0")
@@ -10095,9 +10030,9 @@ Int      function cTotalPerkPoints(Actor aActor, String singleSkill = "", Bool u
   Int perks = 0
   if !aActor
     cErrInvalidArg("cTotalPerkPoints", "!aActor")
-  elseif usePO3
+  elseif usePO3 && clibUse.cUsePO3()
     perks = PO3_SKSEFunctions.GetPerkCount(aActor.GetActorBase())
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     String perkArray
     Int perkCount
     Int charIndex
@@ -10134,9 +10069,9 @@ Form[]   function cGetAllEquippedForms(Actor aActor, Bool useSKSE = TRUE, Bool u
   Form[] itemsArray
   if !aActor
     cErrInvalidArg("cGetAllEquippedForms", "!aActor")
-  elseif usePO3
+  elseif usePO3 && clibUse.cUsePO3()
     itemsArray = PO3_SKSEFunctions.AddAllEquippedItemsToArray(aActor)
-  elseif useSKSE
+  elseif useSKSE && clibUse.cUseSKSE()
     Form curForm
     Int i
     Int slotschecked
@@ -10168,7 +10103,7 @@ String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE
   if !aArray
     cErrInvalidArg("cArrayStringFromKeywords", "!aArray")
   else
-    if useSKSE
+    if useSKSE && clibUse.cUseSKSE()
       newArray = cArrayCreateString(aArray.length)
       if newArray.length
         Int i = 0
@@ -10184,31 +10119,6 @@ String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE
     endif
   endif
   return newArray
-endfunction
-
-Bool function cSKSE(Bool useSKSE = TRUE, Bool forceCheck = False) global
-  if forceCheck
-    return (SKSE.GetVersion() as Bool)
-  endif
-  return useSKSE
-endfunction
-Bool function cPapUtil(Bool usePapUtil = TRUE, Bool forceCheck = False) global
-  if forceCheck
-    return (PapyrusUtil.GetVersion() as Bool)
-  endif
-  return usePapUtil
-endfunction
-Bool function cPO3(Bool usePO3 = TRUE, Bool forceCheck = False) global
-  if forceCheck
-    return (PO3_SKSEFunctions.GetPapyrusExtenderVersion() as Bool)
-  endif
-  return usePO3
-endfunction
-Bool function cConsoleUtil(Bool useConsoleUtil = TRUE, Bool forceCheck = False) global
-  if forceCheck
-    return (ConsoleUtil.GetVersion() as Bool)
-  endif
-  return useConsoleUtil
 endfunction
 
 String function cGetScriptName() global

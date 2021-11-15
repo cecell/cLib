@@ -5,18 +5,18 @@ Int function cGetVersion() global
 endfunction
 
 Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE = TRUE, Bool outputTrace = TRUE, \
-    Bool tryConsoleUtil = TRUE) global
+    Bool useConsoleUtil = TRUE) global
   {Requirements: None, SKSE:Soft}
   Form[] aArray
   if useSKSE && indices > 0
     aArray = Utility.CreateFormArray(indices, filler)
   elseif indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateForm()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayForm::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif
