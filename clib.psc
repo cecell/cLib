@@ -550,7 +550,8 @@ Int function cArrayAllAddLVLI(LeveledItem aLeveledList, Form[] aArray, Int[] lev
   return numAdded
 endfunction
 
-; Inventory functions
+; Inventory functions 
+;/   COMING SOON
 Form[] function cGetContainerInventory(ObjectReference aContainer, Bool includeQuestItems = False, \
   Bool useSKSE = False, Bool usePO3 = False) global
   {Requirements: None, SKSE:Soft, PO3: Soft}
@@ -599,8 +600,13 @@ Form[] function cGetContainerInventory(ObjectReference aContainer, Bool includeQ
   
   return returnArray
 endfunction
-Form[] function cGetEquippedItems(Actor aActor, Int slot = -1) global
-  
+;PO3_SKSEFunctions.AddAllItemsToArray(ObjectReference akRef, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
+;PO3_SKSEFunctions.AddAllItemsToList(ObjectReference akRef, Formlist akList, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
+;PO3_SKSEFunctions.AddItemsOfTypeToArray(ObjectReference akRef, int aiFormType, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false)
+;PO3_SKSEFunctions.AddItemsOfTypeToList(ObjectReference akRef, Formlist akList, int aiFormType, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
+/;
+Form[] function cGetAllEquippedForms(Actor aActor, Int slot = -1) global
+  {Requirement: None}
   Int[] slots
   Int numAdded = 0
   Form[] newArray
@@ -647,10 +653,7 @@ Form[] function cGetEquippedItems(Actor aActor, Int slot = -1) global
   
 endfunction
 
-;PO3_SKSEFunctions.AddAllItemsToArray(ObjectReference akRef, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
-;PO3_SKSEFunctions.AddAllItemsToList(ObjectReference akRef, Formlist akList, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
-;PO3_SKSEFunctions.AddItemsOfTypeToArray(ObjectReference akRef, int aiFormType, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false)
-;PO3_SKSEFunctions.AddItemsOfTypeToList(ObjectReference akRef, Formlist akList, int aiFormType, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
+
 ;========================= Map/Spatial
 ; Spatial ref data https://www.creationkit.com/index.php?title=Unit
 ;1	   1.428 cm	  0.5625"
@@ -9949,7 +9952,7 @@ endfunction
 
 ; Query
 Int    function cFLFindByName(FormList aFormList, String aName, Bool bySubStr = TRUE) global
-  {Requirements: None}
+  {Requirements: SKSE}
   ; bySubStr == False means exact match
   if !aFormList
     cErrInvalidArg("cFLSearchByName", "!aFormList", "")
@@ -9972,7 +9975,7 @@ Int    function cFLFindByName(FormList aFormList, String aName, Bool bySubStr = 
 endfunction
 
 Int    function cArrayFindByNameAlias(Alias[] aArray, String aName, Bool bySubStr = TRUE) global
-  {Requirements: None}
+  {Requirements: SKSE}
   ; bySubStr == False means exact match
   if !aArray
     cErrInvalidArg("cArrayFindByNameAlias", "!aArray", "")
@@ -9992,7 +9995,7 @@ Int    function cArrayFindByNameAlias(Alias[] aArray, String aName, Bool bySubSt
   return -1
 endfunction
 Int    function cArrayFindByNameActor(Actor[] aArray, String aName, Bool bySubStr = TRUE) global
-  {Requirements: None}
+  {Requirements: SKSE}
   ; bySubStr == False means exact match
   if !aArray
     cErrInvalidArg("cArrayFindByNameActor", "!aArray", "")
@@ -10012,7 +10015,7 @@ Int    function cArrayFindByNameActor(Actor[] aArray, String aName, Bool bySubSt
   return -1
 endfunction
 Int    function cArrayFindByNameForm(Form[] aArray, String aName, Bool bySubStr = TRUE) global
-  {Requirements: None}
+  {Requirements: SKSE}
   ; bySubStr == False means exact match
   if !aArray
     cErrInvalidArg("cArrayFindByNameForm", "!aArray", "")
@@ -10032,7 +10035,7 @@ Int    function cArrayFindByNameForm(Form[] aArray, String aName, Bool bySubStr 
   return -1
 endfunction
 Int    function cArrayFindByNameObjRef(ObjectReference[] aArray, String aName, Bool bySubStr = TRUE) global
-  {Requirements: None}
+  {Requirements: SKSE}
   ; bySubStr == False means exact match
   if !aArray
     cErrInvalidArg("cArrayFindByNameObjRef", "!aArray", "")
@@ -10248,39 +10251,6 @@ Int      function cTotalPerkPoints(Actor aActor, String singleSkill = "", Bool u
     cErrReqDisabled("cTotalPerkPoints")
   endif
   return perks
-endfunction
-Form[]   function cGetAllEquippedForms(Actor aActor, Bool useSKSE = TRUE, Bool usePO3 = TRUE) global
-  {Requirements: SKSE}
-  ; Got this function online somewhere don't recall where. Credit goes to that coder not me!
-  Form[] itemsArray
-  if !aActor
-    cErrInvalidArg("cGetAllEquippedForms", "!aActor")
-  elseif usePO3 && clibUse.cUsePO3()
-    itemsArray = PO3_SKSEFunctions.AddAllEquippedItemsToArray(aActor)
-  elseif useSKSE && clibUse.cUseSKSE()
-    Form curForm
-    Int i
-    Int slotschecked
-    slotschecked += 0x00100000
-    slotschecked += 0x00200000 ;ignore reserved slots
-    slotschecked += 0x80000000
-    Int thisSlot = 0x01
-    while thisSlot < 0x80000000
-      ;only check slots we haven't found anything equipped on already
-      if Math.LogicalAnd(slotschecked, thisSlot) != thisSlot
-        curForm = aActor.GetWornForm(thisSlot)
-        if curForm
-          itemsArray = PapyrusUtil.PushForm(itemsArray, curForm)
-        else ;no armor was found on this slot
-          slotschecked += thisSlot
-        endif
-      endif
-      thisSlot *= 2 ;double the number to move on to the next slot
-    endwhile
-  else
-    cErrReqDisabled("cGetAllEquippedForms")
-  endif
-  return itemsArray
 endfunction
 
 String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE) global
