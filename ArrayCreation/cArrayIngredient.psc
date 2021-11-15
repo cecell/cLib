@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   Ingredient[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateIngredient()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayIngredient::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

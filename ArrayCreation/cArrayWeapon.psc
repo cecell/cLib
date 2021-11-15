@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   Weapon[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Weapons
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateWeapon()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayWeapon::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

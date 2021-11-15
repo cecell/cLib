@@ -3,13 +3,11 @@ ScriptName cGetCell Hidden
 String function cGetScriptName() global
   return "cGetCell"
 endfunction
-Int    function cGetVersion() global
-  return 9001
-endfunction
-function clibTrace(String msg, Int errorLevel, Bool condition = TRUE, Bool tryConsoleUtil = TRUE) global
+
+function clibTrace(String msg, Int errorLevel, Bool condition = TRUE, Bool useConsoleUtil = TRUE) global
   if condition
     Debug.Trace(msg, errorLevel)
-    if tryConsoleUtil && ConsoleUtil.GetVersion()
+    if useConsoleUtil && ConsoleUtil.GetVersion()
       if errorLevel == 2
         msg = "Error! " + msg
       elseif errorLevel == 1

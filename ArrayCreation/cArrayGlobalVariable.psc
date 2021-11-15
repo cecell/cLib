@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 GlobalVariable[] function cArrayCreateGlobalVariable(Int indices, GlobalVariable filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   GlobalVariable[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateGlobalVariable()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayGlobalVariable::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

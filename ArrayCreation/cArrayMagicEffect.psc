@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   MagicEffect[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateMagicEffect()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayMagicEffect::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

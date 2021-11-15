@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   Package[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Packages
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreatePackage()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayPackage::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif

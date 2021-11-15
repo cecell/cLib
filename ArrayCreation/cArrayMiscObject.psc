@@ -5,16 +5,16 @@ Int function cGetVersion() global
 endfunction
 
 MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = None, Bool outputTrace = TRUE, \
-  Bool tryConsoleUtil = TRUE) global
+  Bool useConsoleUtil = TRUE) global
   {Requirements: None}
   MiscObject[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace MiscObjects
-    ; tryConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
+    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateMiscObject()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayMiscObject::" + msg + " Returning ArrayNone", 2)
-      if tryConsoleUtil
+      if useConsoleUtil && clibUse.cUseConsoleUtil()
         ConsoleUtil.PrintMessage(msg)
       endif
     endif
