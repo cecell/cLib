@@ -1,22 +1,14 @@
 Scriptname cArrayPerk Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Perk[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Perks
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreatePerk()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayPerk::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTra
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreatePerk001()
+                return cArrayCreatePerk001()
               elseif indices < 3
-                aArray = cArrayCreatePerk002()
+                return cArrayCreatePerk002()
               elseif indices < 4
-                aArray = cArrayCreatePerk003()
+                return cArrayCreatePerk003()
               else
-                aArray = cArrayCreatePerk004()
+                return cArrayCreatePerk004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreatePerk005()
+                return cArrayCreatePerk005()
               elseif indices < 7
-                aArray = cArrayCreatePerk006()
+                return cArrayCreatePerk006()
               elseif indices < 8
-                aArray = cArrayCreatePerk007()
+                return cArrayCreatePerk007()
               else
-                aArray = cArrayCreatePerk008()
+                return cArrayCreatePerk008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreatePerk009()
+                return cArrayCreatePerk009()
               elseif indices < 11
-                aArray = cArrayCreatePerk010()
+                return cArrayCreatePerk010()
               elseif indices < 12
-                aArray = cArrayCreatePerk011()
+                return cArrayCreatePerk011()
               else
-                aArray = cArrayCreatePerk012()
+                return cArrayCreatePerk012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreatePerk013()
+                return cArrayCreatePerk013()
               elseif indices < 15
-                aArray = cArrayCreatePerk014()
+                return cArrayCreatePerk014()
               elseif indices < 16
-                aArray = cArrayCreatePerk015()
+                return cArrayCreatePerk015()
               else
-                aArray = cArrayCreatePerk016()
+                return cArrayCreatePerk016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTra
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreatePerk017()
+                return cArrayCreatePerk017()
               elseif indices < 19
-                aArray = cArrayCreatePerk018()
+                return cArrayCreatePerk018()
               elseif indices < 20
-                aArray = cArrayCreatePerk019()
+                return cArrayCreatePerk019()
               else
-                aArray = cArrayCreatePerk020()
+                return cArrayCreatePerk020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreatePerk021()
+                return cArrayCreatePerk021()
               elseif indices < 23
-                aArray = cArrayCreatePerk022()
+                return cArrayCreatePerk022()
               elseif indices < 24
-                aArray = cArrayCreatePerk023()
+                return cArrayCreatePerk023()
               else
-                aArray = cArrayCreatePerk024()
+                return cArrayCreatePerk024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreatePerk025()
+                return cArrayCreatePerk025()
               elseif indices < 27
-                aArray = cArrayCreatePerk026()
+                return cArrayCreatePerk026()
               elseif indices < 28
-                aArray = cArrayCreatePerk027()
+                return cArrayCreatePerk027()
               else
-                aArray = cArrayCreatePerk028()
+                return cArrayCreatePerk028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreatePerk029()
+                return cArrayCreatePerk029()
               elseif indices < 31
-                aArray = cArrayCreatePerk030()
+                return cArrayCreatePerk030()
               elseif indices < 32
-                aArray = cArrayCreatePerk031()
+                return cArrayCreatePerk031()
               else
-                aArray = cArrayCreatePerk032()
+                return cArrayCreatePerk032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTra
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreatePerk033()
+                return cArrayCreatePerk033()
               elseif indices < 35
-                aArray = cArrayCreatePerk034()
+                return cArrayCreatePerk034()
               elseif indices < 36
-                aArray = cArrayCreatePerk035()
+                return cArrayCreatePerk035()
               else
-                aArray = cArrayCreatePerk036()
+                return cArrayCreatePerk036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreatePerk037()
+                return cArrayCreatePerk037()
               elseif indices < 39
-                aArray = cArrayCreatePerk038()
+                return cArrayCreatePerk038()
               elseif indices < 40
-                aArray = cArrayCreatePerk039()
+                return cArrayCreatePerk039()
               else
-                aArray = cArrayCreatePerk040()
+                return cArrayCreatePerk040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreatePerk041()
+                return cArrayCreatePerk041()
               elseif indices < 43
-                aArray = cArrayCreatePerk042()
+                return cArrayCreatePerk042()
               elseif indices < 44
-                aArray = cArrayCreatePerk043()
+                return cArrayCreatePerk043()
               else
-                aArray = cArrayCreatePerk044()
+                return cArrayCreatePerk044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreatePerk045()
+                return cArrayCreatePerk045()
               elseif indices < 47
-                aArray = cArrayCreatePerk046()
+                return cArrayCreatePerk046()
               elseif indices < 48
-                aArray = cArrayCreatePerk047()
+                return cArrayCreatePerk047()
               else
-                aArray = cArrayCreatePerk048()
+                return cArrayCreatePerk048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTra
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreatePerk049()
+                return cArrayCreatePerk049()
               elseif indices < 51
-                aArray = cArrayCreatePerk050()
+                return cArrayCreatePerk050()
               elseif indices < 52
-                aArray = cArrayCreatePerk051()
+                return cArrayCreatePerk051()
               else
-                aArray = cArrayCreatePerk052()
+                return cArrayCreatePerk052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreatePerk053()
+                return cArrayCreatePerk053()
               elseif indices < 55
-                aArray = cArrayCreatePerk054()
+                return cArrayCreatePerk054()
               elseif indices < 56
-                aArray = cArrayCreatePerk055()
+                return cArrayCreatePerk055()
               else
-                aArray = cArrayCreatePerk056()
+                return cArrayCreatePerk056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreatePerk057()
+                return cArrayCreatePerk057()
               elseif indices < 59
-                aArray = cArrayCreatePerk058()
+                return cArrayCreatePerk058()
               elseif indices < 60
-                aArray = cArrayCreatePerk059()
+                return cArrayCreatePerk059()
               else
-                aArray = cArrayCreatePerk060()
+                return cArrayCreatePerk060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreatePerk061()
+                return cArrayCreatePerk061()
               elseif indices < 63
-                aArray = cArrayCreatePerk062()
+                return cArrayCreatePerk062()
               elseif indices < 64
-                aArray = cArrayCreatePerk063()
+                return cArrayCreatePerk063()
               else
-                aArray = cArrayCreatePerk064()
+                return cArrayCreatePerk064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTra
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreatePerk065()
+                return cArrayCreatePerk065()
               elseif indices < 67
-                aArray = cArrayCreatePerk066()
+                return cArrayCreatePerk066()
               elseif indices < 68
-                aArray = cArrayCreatePerk067()
+                return cArrayCreatePerk067()
               else
-                aArray = cArrayCreatePerk068()
+                return cArrayCreatePerk068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreatePerk069()
+                return cArrayCreatePerk069()
               elseif indices < 71
-                aArray = cArrayCreatePerk070()
+                return cArrayCreatePerk070()
               elseif indices < 72
-                aArray = cArrayCreatePerk071()
+                return cArrayCreatePerk071()
               else
-                aArray = cArrayCreatePerk072()
+                return cArrayCreatePerk072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreatePerk073()
+                return cArrayCreatePerk073()
               elseif indices < 75
-                aArray = cArrayCreatePerk074()
+                return cArrayCreatePerk074()
               elseif indices < 76
-                aArray = cArrayCreatePerk075()
+                return cArrayCreatePerk075()
               else
-                aArray = cArrayCreatePerk076()
+                return cArrayCreatePerk076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreatePerk077()
+                return cArrayCreatePerk077()
               elseif indices < 79
-                aArray = cArrayCreatePerk078()
+                return cArrayCreatePerk078()
               elseif indices < 80
-                aArray = cArrayCreatePerk079()
+                return cArrayCreatePerk079()
               else
-                aArray = cArrayCreatePerk080()
+                return cArrayCreatePerk080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTra
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreatePerk081()
+                return cArrayCreatePerk081()
               elseif indices < 83
-                aArray = cArrayCreatePerk082()
+                return cArrayCreatePerk082()
               elseif indices < 84
-                aArray = cArrayCreatePerk083()
+                return cArrayCreatePerk083()
               else
-                aArray = cArrayCreatePerk084()
+                return cArrayCreatePerk084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreatePerk085()
+                return cArrayCreatePerk085()
               elseif indices < 87
-                aArray = cArrayCreatePerk086()
+                return cArrayCreatePerk086()
               elseif indices < 88
-                aArray = cArrayCreatePerk087()
+                return cArrayCreatePerk087()
               else
-                aArray = cArrayCreatePerk088()
+                return cArrayCreatePerk088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreatePerk089()
+                return cArrayCreatePerk089()
               elseif indices < 91
-                aArray = cArrayCreatePerk090()
+                return cArrayCreatePerk090()
               elseif indices < 92
-                aArray = cArrayCreatePerk091()
+                return cArrayCreatePerk091()
               else
-                aArray = cArrayCreatePerk092()
+                return cArrayCreatePerk092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreatePerk093()
+                return cArrayCreatePerk093()
               elseif indices < 95
-                aArray = cArrayCreatePerk094()
+                return cArrayCreatePerk094()
               elseif indices < 96
-                aArray = cArrayCreatePerk095()
+                return cArrayCreatePerk095()
               else
-                aArray = cArrayCreatePerk096()
+                return cArrayCreatePerk096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTra
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreatePerk097()
+                return cArrayCreatePerk097()
               elseif indices < 99
-                aArray = cArrayCreatePerk098()
+                return cArrayCreatePerk098()
               elseif indices < 100
-                aArray = cArrayCreatePerk099()
+                return cArrayCreatePerk099()
               else
-                aArray = cArrayCreatePerk100()
+                return cArrayCreatePerk100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreatePerk101()
+                return cArrayCreatePerk101()
               elseif indices < 103
-                aArray = cArrayCreatePerk102()
+                return cArrayCreatePerk102()
               elseif indices < 104
-                aArray = cArrayCreatePerk103()
+                return cArrayCreatePerk103()
               else
-                aArray = cArrayCreatePerk104()
+                return cArrayCreatePerk104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreatePerk105()
+                return cArrayCreatePerk105()
               elseif indices < 107
-                aArray = cArrayCreatePerk106()
+                return cArrayCreatePerk106()
               elseif indices < 108
-                aArray = cArrayCreatePerk107()
+                return cArrayCreatePerk107()
               else
-                aArray = cArrayCreatePerk108()
+                return cArrayCreatePerk108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreatePerk109()
+                return cArrayCreatePerk109()
               elseif indices < 111
-                aArray = cArrayCreatePerk110()
+                return cArrayCreatePerk110()
               elseif indices < 112
-                aArray = cArrayCreatePerk111()
+                return cArrayCreatePerk111()
               else
-                aArray = cArrayCreatePerk112()
+                return cArrayCreatePerk112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Perk[] function cArrayCreatePerk(Int indices, Perk filler = None, Bool outputTra
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreatePerk113()
+                return cArrayCreatePerk113()
               elseif indices < 115
-                aArray = cArrayCreatePerk114()
+                return cArrayCreatePerk114()
               elseif indices < 116
-                aArray = cArrayCreatePerk115()
+                return cArrayCreatePerk115()
               else
-                aArray = cArrayCreatePerk116()
+                return cArrayCreatePerk116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreatePerk117()
+                return cArrayCreatePerk117()
               elseif indices < 119
-                aArray = cArrayCreatePerk118()
+                return cArrayCreatePerk118()
               elseif indices < 120
-                aArray = cArrayCreatePerk119()
+                return cArrayCreatePerk119()
               else
-                aArray = cArrayCreatePerk120()
+                return cArrayCreatePerk120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreatePerk121()
+                return cArrayCreatePerk121()
               elseif indices < 123
-                aArray = cArrayCreatePerk122()
+                return cArrayCreatePerk122()
               elseif indices < 124
-                aArray = cArrayCreatePerk123()
+                return cArrayCreatePerk123()
               else
-                aArray = cArrayCreatePerk124()
+                return cArrayCreatePerk124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreatePerk125()
+                return cArrayCreatePerk125()
               elseif indices < 127
-                aArray = cArrayCreatePerk126()
+                return cArrayCreatePerk126()
               elseif indices < 128
-                aArray = cArrayCreatePerk127()
+                return cArrayCreatePerk127()
               else
-                aArray = cArrayCreatePerk128()
+                return cArrayCreatePerk128()
               endif
             endif
           endif

@@ -1,6 +1,6 @@
 ScriptName clib Hidden
 
-import clibUse
+import cArrayCreateBase
 
 Int    function cGetVersion() global
   {Requirements: None}
@@ -550,61 +550,7 @@ Int function cArrayAllAddLVLI(LeveledItem aLeveledList, Form[] aArray, Int[] lev
   return numAdded
 endfunction
 
-; Inventory functions 
-;/   COMING SOON
-Form[] function cGetContainerInventory(ObjectReference aContainer, Bool includeQuestItems = False, \
-  Bool useSKSE = False, Bool usePO3 = False) global
-  {Requirements: None, SKSE:Soft, PO3: Soft}
-  Form[] returnArray
-  if !aContainer
-    cErrInvalidArg("cGetContainerInventory", "!aContainer")
-  elseif usePO3
-    returnArray = PO3_SKSEFunctions.AddAllItemsToArray(aContainer, TRUE, TRUE, includeQuestItems)
-  elseif useSKSE
-    Int numForms = aContainer.GetNumItems()
-    returnArray = cArrayCreateForm(numForms)
-    if returnArray.length
-      Int i = numForms
-      while i
-        i -= 1
-        returnArray[i] = aContainer.GetNthForm(i)
-      endwhile
-    else
-      cErrArrInitFail("cGetContainerInventory")
-    endif
-  else
-    GlobalVariable isRunning01 = Game.GetFormFromFile(0x0000080C, "cLibraries.esp") as GlobalVariable
-    ObjectReference cLib_REFR_WorkingChest01 = Game.GetFormFromFile(0x00000805, "cLibraries.esp") as ObjectReference
-    FormList cLib_FLST_Working01 = Game.GetFormFromFile(0x00000D74, "cLibraries.esp") as FormList
-    ObjectReference cLib_REFR_WorkingChest02 = Game.GetFormFromFile(0x00000804, "cLibraries.esp") as ObjectReference
-    FormList cLib_FLST_Working02 = Game.GetFormFromFile(0x00000D75, "cLibraries.esp") as FormList
-    
-    aContainer.RemoveAllItems(cLib_REFR_WorkingChest01, TRUE, False) ; <-- quest items False
-    aContainer.RemoveAllItems(cLib_REFR_WorkingChest02, TRUE, TRUE)  ; <-- quest items TRUE
-    
-    if includeQuestItems
-      ObjectReference questContainer = Game.GetFormFromFile(0x00000805, "cLibraries.esp") as ObjectReference
-      aContainer.RemoveAllItems(questContainer, TRUE, TRUE) ; <-- quest items False
-    endif
-    Int i = 0
-    while isRunning01.GetValue() == 1.0 && i < 100 ;<-- catch runaway loop
-      Utility.Wait(0.5)
-      i += 1
-    endwhile
-    if i > 99
-      ;ADDTRACE
-    else
-      
-    endif
-  endif
-  
-  return returnArray
-endfunction
-;PO3_SKSEFunctions.AddAllItemsToArray(ObjectReference akRef, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
-;PO3_SKSEFunctions.AddAllItemsToList(ObjectReference akRef, Formlist akList, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
-;PO3_SKSEFunctions.AddItemsOfTypeToArray(ObjectReference akRef, int aiFormType, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false)
-;PO3_SKSEFunctions.AddItemsOfTypeToList(ObjectReference akRef, Formlist akList, int aiFormType, bool abNoEquipped = true, bool abNoFavorited = false, bool abNoQuestItem = false) global native
-/;
+  ;>>> Inventory functions
 Form[] function cGetAllEquippedForms(Actor aActor, Int slot = -1) global
   {Requirement: None}
   Int[] slots
@@ -3179,13 +3125,13 @@ Int[]  function cArrayBoolToInt(Int[] aArray) global
   endif
   return newArray
 endfunction
-ActorBase[] function cArrayActorToActorBase(Actor[] aArray) global
+Form[] function cArrayActorToActorBase(Actor[] aArray) global
   {Requirements:None}
-  ActorBase[] newArray
+  Form[] newArray
   if !aArray
     cErrInvalidArg("cArrayActorToActorBase", "!aArray")
   else
-    newArray = cArrayCreateActorBase(aArray.length)
+    newArray = cArrayCreateForm(aArray.length)
     if newArray.length
       Int i = 0
       while i < aArray.length
@@ -8227,344 +8173,6 @@ String[] function cArrayFromStrings(String aString0, String aString1 = "", Strin
   endif
   return newArray
 endfunction
-   ;>>> CREATION: Specific data types (4 capitalized letters == xEdit abbreviations)
-Actor[]       function cArrayCreateACHR(Int indices, Actor filler = None, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil && clibUse.cUsePapUtil()
-    return PapyrusUtil.ActorArray(indices, filler)
-  endif
-  return cArrayActor.cArrayCreateActor(indices, filler)
-endfunction
-Actor[]       function cArrayCreateActor(Int indices, Actor filler = None, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil && clibUse.cUsePapUtil()
-    return PapyrusUtil.ActorArray(indices, filler)
-  endif
-  return cArrayActor.cArrayCreateActor(indices, filler)
-endfunction
-ActorBase[]   function cArrayCreateNPC_(Int indices, ActorBase filler = None) global
-  {Requirements: None}
-  return cArrayActorBase.cArrayCreateActorBase(indices, filler)
-endfunction
-ActorBase[]   function cArrayCreateActorBase(Int indices, ActorBase filler = None) global
-  {Requirements: None}
-  return cArrayActorBase.cArrayCreateActorBase(indices, filler)
-endfunction
-Alias[]       function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
-  return cArrayAlias.cArrayCreateAlias(indices, filler, useSKSE)
-endfunction
-Armor[]       function cArrayCreateARMO(Int indices, Armor filler = None) global
-  {Requirements: None}
-  return cArrayArmor.cArrayCreateArmor(indices, filler)
-endfunction
-Armor[]       function cArrayCreateArmor(Int indices, Armor filler = None) global
-  {Requirements: None}
-  return cArrayArmor.cArrayCreateArmor(indices, filler)
-endfunction
-Book[]        function cArrayCreateBOOK(Int indices, Book filler = None) global
-  {Requirements: None}
-  return cArrayBook.cArrayCreateBook(indices, filler)
-endfunction
-Bool[]        function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
-  return cArrayBool.cArrayCreateBool(indices, filler, useSKSE)
-endfunction
-Cell[]        function cArrayCreateCELL(Int indices, Cell filler = None) global
-  {Requirements: None}
-  return cArrayCell.cArrayCreateCell(indices, filler)
-endfunction
-ConstructibleObject[] function cArrayCreateCOBJ(Int indices, ConstructibleObject filler = None) global
-  {Requirements: None}
-  return cArrayConstructibleObject.cArrayCreateConstructibleObject(indices, filler)
-endfunction
-ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, ConstructibleObject filler = None) global
-  {Requirements: None}
-  return cArrayConstructibleObject.cArrayCreateConstructibleObject(indices, filler)
-endfunction
-Container[]   function cArrayCreateCONT(Int indices, Container filler = None) global
-  {Requirements: None}
-  return cArrayContainer.cArrayCreateContainer(indices, filler)
-endfunction
-Enchantment[] function cArrayCreateENCH(Int indices, Enchantment filler = None) global
-  {Requirements: None}
-  return cArrayEnchantment.cArrayCreateEnchantment(indices, filler)
-endfunction
-Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler = None) global
-  {Requirements: None}
-  return cArrayEnchantment.cArrayCreateEnchantment(indices, filler)
-endfunction
-Faction[]   function cArrayCreateFACT(Int indices, Faction filler = None) global
-  {Requirements: None}
-  return cArrayFaction.cArrayCreateFaction(indices, filler)
-endfunction
-Faction[]   function cArrayCreateFaction(Int indices, Faction filler = None) global
-  {Requirements: None}
-  return cArrayFaction.cArrayCreateFaction(indices, filler)
-endfunction
-Float[]     function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
-  return cArrayFloat.cArrayCreateFloat(indices, filler, useSKSE)
-endfunction
-Flora[]     function cArrayCreateFLOR(Int indices, Flora filler = None) global
-  {Requirements: None}
-  return cArrayFlora.cArrayCreateFlora(indices, filler)
-endfunction
-Flora[]     function cArrayCreateFlora(Int indices, Flora filler = None) global
-  {Requirements: None}
-  return cArrayFlora.cArrayCreateFlora(indices, filler)
-endfunction
-Form[]      function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE = TRUE) global
-  {Requirements: None}
-  return cArrayForm.cArrayCreateForm(indices, filler, useSKSE)
-endfunction
-Formlist[]  function cArrayCreateFLST(Int indices, Formlist filler = None) global
-  {Requirements: None}
-  return cArrayFormlist.cArrayCreateFormlist(indices, filler)
-endfunction
-Formlist[]  function cArrayCreateFormList(Int indices, Formlist filler = None) global
-  {Requirements: None}
-  return cArrayFormList.cArrayCreateFormList(indices, filler)
-endfunction
-GlobalVariable[] function cArrayCreateGLOB(Int indices, GlobalVariable filler = None) global
-  {Requirements: None}
-  return cArrayGlobalVariable.cArrayCreateGlobalVariable(indices, filler)
-endfunction
-GlobalVariable[] function cArrayCreateGlobalVariable(Int indices, GlobalVariable filler = None) global
-  {Requirements: None}
-  return cArrayGlobalVariable.cArrayCreateGlobalVariable(indices, filler)
-endfunction
-Ingredient[]     function cArrayCreateINGR(Int indices, Ingredient filler = None) global
-  {Requirements: None}
-  return cArrayIngredient.cArrayCreateIngredient(indices, filler)
-endfunction
-Ingredient[]     function cArrayCreateIngredient(Int indices, Ingredient filler = None) global
-  {Requirements: None}
-  return cArrayIngredient.cArrayCreateIngredient(indices, filler)
-endfunction
-Int[]     function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
-  return cArrayInt.cArrayCreateInt(indices, filler, useSKSE)
-endfunction
-Keyword[] function cArrayCreateKYWD(Int indices, KeyWord filler = None) global
-  {Requirements: None}
-  return cArrayKeyWord.cArrayCreateKeyWord(indices, filler)
-endfunction
-KeyWord[] function cArrayCreateKeyword(Int indices, KeyWord filler = None) global
-  {Requirements: None}
-  return cArrayKeyWord.cArrayCreateKeyWord(indices, filler)
-endfunction
-LeveledActor[] function cArrayCreateLVLN(Int indices, LeveledActor filler = None) global
-  {Requirements: None}
-  return cArrayLeveledActor.cArrayCreateLeveledActor(indices, filler)
-endfunction
-LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor filler = None) global
-  {Requirements: None}
-  return cArrayLeveledActor.cArrayCreateLeveledActor(indices, filler)
-endfunction
-LeveledItem[]  function cArrayCreateLVLI(Int indices, LeveledItem filler = None) global
-  {Requirements: None}
-  return cArrayLeveledItem.cArrayCreateLeveledItem(indices, filler)
-endfunction
-LeveledItem[]  function cArrayCreateLeveledItem(Int indices, LeveledItem filler = None) global
-  {Requirements: None}
-  return cArrayLeveledItem.cArrayCreateLeveledItem(indices, filler)
-endfunction
-LeveledSpell[] function cArrayCreateLVSP(Int indices, LeveledSpell filler = None) global
-  {Requirements: None}
-  return cArrayLeveledSpell.cArrayCreateLeveledSpell(indices, filler)
-endfunction
-LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell filler = None) global
-  {Requirements: None}
-  return cArrayLeveledSpell.cArrayCreateLeveledSpell(indices, filler)
-endfunction
-Location[]     function cArrayCreateLCTN(Int indices, Location filler = None) global
-  {Requirements: None}
-  return cArrayLocation.cArrayCreateLocation(indices, filler)
-endfunction
-MagicEffect[]  function cArrayCreateMagicEffect(Int indices, MagicEffect filler = None) global
-  {Requirements: None}
-  return cArrayMagicEffect.cArrayCreateMagicEffect(indices, filler)
-endfunction
-MagicEffect[]  function cArrayCreateMGEF(Int indices, MagicEffect filler = None) global
-  {Requirements: None}
-  return cArrayMagicEffect.cArrayCreateMagicEffect(indices, filler)
-endfunction
-Message[]      function cArrayCreateMESG(Int indices, Message filler = None) global
-  {Requirements: None}
-  return cArrayMessage.cArrayCreateMessage(indices, filler)
-endfunction
-Message[]      function cArrayCreateMessage(Int indices, Message filler = None) global
-  {Requirements: None}
-  return cArrayMessage.cArrayCreateMessage(indices, filler)
-endfunction
-MiscObject[]   function cArrayCreateMISC(Int indices, MiscObject filler = None) global
-  {Requirements: None}
-  return cArrayMiscObject.cArrayCreateMiscObject(indices, filler)
-endfunction
-MiscObject[]   function cArrayCreateMiscObject(Int indices, MiscObject filler = None) global
-  {Requirements: None}
-  return cArrayMiscObject.cArrayCreateMiscObject(indices, filler)
-endfunction
-ObjectReference[] function cArrayCreateREFR(Int indices, ObjectReference filler = None, Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil && clibUse.cUsePapUtil()
-    return PapyrusUtil.ObjRefArray(indices, filler)
-  endif
-  return cArrayObjectReference.cArrayCreateObjectReference(indices, filler)
-endfunction
-ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectReference filler = None, \
-    Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil && clibUse.cUsePapUtil()
-    return PapyrusUtil.ObjRefArray(indices, filler)
-  endif
-  return cArrayObjectReference.cArrayCreateObjectReference(indices, filler)
-endfunction
-ObjectReference[] function cArrayCreateObjRef(Int indices, ObjectReference filler = None, \
-    Bool usePapUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
-  if usePapUtil && clibUse.cUsePapUtil()
-    return PapyrusUtil.ObjRefArray(indices, filler)
-  endif
-  return cArrayObjectReference.cArrayCreateObjectReference(indices, filler)
-endfunction
-Outfit[]  function cArrayCreateOTFT(Int indices, Outfit filler = None) global
-  {Requirements: None}
-  return cArrayOutfit.cArrayCreateOutfit(indices, filler)
-endfunction
-Outfit[]  function cArrayCreateOutfit(Int indices, Outfit filler = None) global
-  {Requirements: None}
-  return cArrayOutfit.cArrayCreateOutfit(indices, filler)
-endfunction
-Package[] function cArrayCreatePACK(Int indices, Package filler = None) global
-  {Requirements: None}
-  return cArrayPackage.cArrayCreatePackage(indices, filler)
-endfunction
-Package[] function cArrayCreatePackage(Int indices, Package filler = None) global
-  {Requirements: None}
-  return cArrayPackage.cArrayCreatePackage(indices, filler)
-endfunction
-Perk[]    function cArrayCreatePERK(Int indices, Perk filler = None) global
-  {Requirements: None}
-  return cArrayPerk.cArrayCreatePerk(indices, filler)
-endfunction
-Potion[]  function cArrayCreateALCH(Int indices, Potion filler = None) global
-  {Requirements: None}
-  return cArrayPotion.cArrayCreatePotion(indices, filler)
-endfunction
-Potion[]  function cArrayCreatePotion(Int indices, Potion filler = None) global
-  {Requirements: None}
-  return cArrayPotion.cArrayCreatePotion(indices, filler)
-endfunction
-Quest[]   function cArrayCreateQUST(Int indices, Quest filler = None) global
-  {Requirements: None}
-  return cArrayQuest.cArrayCreateQuest(indices, filler)
-endfunction
-Quest[]   function cArrayCreateQuest(Int indices, Quest filler = None) global
-  {Requirements: None}
-  return cArrayQuest.cArrayCreateQuest(indices, filler)
-endfunction
-Race[]    function cArrayCreateRACE(Int indices, Race filler = None) global
-  {Requirements: None}
-  return cArrayRace.cArrayCreateRace(indices, filler)
-endfunction
-ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias filler = None) global
-  {Requirements: None}
-  return cArrayReferenceAlias.cArrayCreateReferenceAlias(indices, filler)
-endfunction
-ReferenceAlias[] function cArrayCreateRefAlias(Int indices, ReferenceAlias filler = None) global
-  {Requirements: None}
-  return cArrayReferenceAlias.cArrayCreateReferenceAlias(indices, filler)
-endfunction
-Scroll[]  function cArrayCreateSCRL(Int indices, Scroll filler = None) global
-  {Requirements: None}
-  return cArrayScroll.cArrayCreateScroll(indices, filler)
-endfunction
-Scroll[]  function cArrayCreateScroll(Int indices, Scroll filler = None) global
-  {Requirements: None}
-  return cArrayScroll.cArrayCreateScroll(indices, filler)
-endfunction
-Shout[]   function cArrayCreateSHOU(Int indices, Shout filler = None) global
-  {Requirements: None}
-  return cArrayShout.cArrayCreateShout(indices, filler)
-endfunction
-Shout[]   function cArrayCreateShout(Int indices, Shout filler = None) global
-  {Requirements: None}
-  return cArrayShout.cArrayCreateShout(indices, filler)
-endfunction
-SoulGem[] function cArrayCreateSLGM(Int indices, SoulGem filler = None) global
-  {Requirements: None}
-  return cArraySoulGem.cArrayCreateSoulGem(indices, filler)
-endfunction
-SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None) global
-  {Requirements: None}
-  return cArraySoulGem.cArrayCreateSoulGem(indices, filler)
-endfunction
-Spell[]   function cArrayCreateSPEL(Int indices, Spell filler = None) global
-  {Requirements: None}
-  return cArraySpell.cArrayCreateSpell(indices, filler)
-endfunction
-Spell[]   function cArrayCreateSpell(Int indices, Spell filler = None) global
-  {Requirements: None}
-  return cArraySpell.cArrayCreateSpell(indices, filler)
-endfunction
-Static[]  function cArrayCreateSTAT(Int indices, Static filler = None) global
-  {Requirements: None}
-  return cArrayStatic.cArrayCreateStatic(indices, filler)
-endfunction
-String[]  function cArrayCreateString(Int indices, String filler = "", Bool useSKSE = TRUE) global
-  {Requirements: None, SKSE:Soft}
-  return cArrayString.cArrayCreateString(indices, filler, useSKSE)
-endfunction
-TextureSet[]  function cArrayCreateTXST(Int indices, TextureSet filler = None) global
-  {Requirements: None}
-  return cArrayTextureSet.cArrayCreateTextureSet(indices, filler)
-endfunction
-TextureSet[]  function cArrayCreateTextureSet(Int indices, TextureSet filler = None) global
-  {Requirements: None}
-  return cArrayTextureSet.cArrayCreateTextureSet(indices, filler)
-endfunction
-Topic[]       function cArrayCreateDIAL(Int indices, Topic filler = None) global
-  {Requirements: None}
-  return cArrayTopic.cArrayCreateTopic(indices, filler)
-endfunction
-Topic[]       function cArrayCreateTopic(Int indices, Topic filler = None) global
-  {Requirements: None}
-  return cArrayTopic.cArrayCreateTopic(indices, filler)
-endfunction
-TopicInfo[]   function cArrayCreateDLBR(Int indices, TopicInfo filler = None) global
-  {Requirements: None}
-  return cArrayTopicInfo.cArrayCreateTopicInfo(indices, filler)
-endfunction
-TopicInfo[]   function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None) global
-  {Requirements: None}
-  return cArrayTopicInfo.cArrayCreateTopicInfo(indices, filler)
-endfunction
-Weapon[]      function cArrayCreateWEAP(Int indices, Weapon filler = None) global
-  {Requirements: None}
-  return cArrayWeapon.cArrayCreateWeapon(indices, filler)
-endfunction
-Weapon[]      function cArrayCreateWeapon(Int indices, Weapon filler = None) global
-  {Requirements: None}
-  return cArrayWeapon.cArrayCreateWeapon(indices, filler)
-endfunction
-Weather[]     function cArrayCreateWTHR(Int indices, Weather filler = None) global
-  {Requirements: None}
-  return cArrayWeather.cArrayCreateWeather(indices, filler)
-endfunction
-Weather[]     function cArrayCreateWeather(Int indices, Weather filler = None) global
-  {Requirements: None}
-  return cArrayWeather.cArrayCreateWeather(indices, filler)
-endfunction
-WordOfPower[] function cArrayCreateWOOP(Int indices, WordOfPower filler = None) global
-  {Requirements: None}
-  return cArrayWordOfPower.cArrayCreateWordOfPower(indices, filler)
-endfunction
-WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler = None) global
-  {Requirements: None}
-  return cArrayWordOfPower.cArrayCreateWordOfPower(indices, filler)
-endfunction
   ;>>> None arrays (great for papyrus array spam handling, also 'resets' an array variable)
 Actor[]       function cArrayNoneActor() global
   {Requirements: None}
@@ -8591,11 +8199,6 @@ Form[]        function cArrayNoneForm() global
   Form[] arr
   return arr
 endfunction
-FormList[]    function cArrayNoneFormList() global
-  {Requirements: None}
-  FormList[] arr
-  return arr
-endfunction
 Int[]         function cArrayNoneInt() global
   {Requirements: None}
   Int[] arr
@@ -8609,11 +8212,6 @@ endfunction
 ObjectReference[] function cArrayNoneObjRef() global
   {Requirements: None}
   ObjectReference[] arr
-  return arr
-endfunction
-ReferenceAlias[]  function cArrayNoneReferenceAlias() global
-  {Requirements: None}
-  ReferenceAlias[] arr
   return arr
 endfunction
 String[]      function cArrayNoneString() global
@@ -9867,10 +9465,10 @@ endfunction
 
 ;--------------------------SKSE:HARD-------------------------------------------
 
-String function cGetModName(String hexForm = "", Int decForm = 0,Form formVar = None, Bool useSKSE = TRUE) global
+String function cGetModName(String hexForm = "", Int decForm = 0,Form formVar = None) global
   {Requirements: SKSE}
   String returnString
-  if useSKSE && clibUse.cUseSKSE()
+  if clibUse.cUseSKSE()
     String modIndex
     if formVar
       returnString = cGetModNameForm(formVar)
@@ -9895,10 +9493,10 @@ String function cGetModName(String hexForm = "", Int decForm = 0,Form formVar = 
   endif
   return returnString
 endfunction
-String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
+String function cGetModNameForm(Form aForm) global
   {Requirements: SKSE}
   ; This function came from Mr Octopus!! Thank you!!!
-  if useSKSE && clibUse.cUseSKSE()
+  if clibUse.cUseSKSE()
     Int intFormID = aForm.GetFormID()
     Int index = Math.RightShift(intFormID, 24)
     ; Light (Comment out and recompile if using Classic Edition)
@@ -9912,9 +9510,9 @@ String function cGetModNameForm(Form aForm, Bool useSKSE = TRUE) global
     return ""
   endif
 endfunction
-Bool   function cIsInAnyMenu(Bool useSKSE = TRUE) global ; In my experience more accurate thatn .IsInMenuMode()
+Bool   function cIsInAnyMenu() global ; In my experience more accurate thatn .IsInMenuMode()
   {Requirements: SKSE}
-  if useSKSE && clibUse.cUseSKSE()
+  if clibUse.cUseSKSE()
     return !UI.IsMenuOpen("Console") && !UI.IsMenuOpen("RaceSex Menu") && \
         !UI.IsMenuOpen("Sleep/Wait Menu") && !UI.IsMenuOpen("ContainerMenu") && !UI.IsMenuOpen("FavoritesMenu") && \
           !UI.IsMenuOpen("Crafting Menu") && !UI.IsMenuOpen("MainMenu") && !UI.IsMenuOpen("JournalMenu") && \
@@ -9924,12 +9522,12 @@ Bool   function cIsInAnyMenu(Bool useSKSE = TRUE) global ; In my experience more
     cErrReqDisabled("cIsInAnyMenu")
   endif
 endfunction
-Bool[] function cArePluginsInstalled(String[] listOfPlugins, Bool useSKSE = TRUE) global
+Bool[] function cArePluginsInstalled(String[] listOfPlugins) global
   {Requirements: SKSE}
   Bool[] newArray
   if !listOfPlugins
     cErrInvalidArg("cAreFilesInstalled", "!listOfPlugins")
-  elseif useSKSE && clibUse.cUseSKSE()
+  elseif clibUse.cUseSKSE()
     newArray = cArrayCreateBool(listOfPlugins.length)
     if newArray.length
       Int numPlugins = listOfPlugins.length
@@ -9955,10 +9553,10 @@ Int    function cFLFindByName(FormList aFormList, String aName, Bool bySubStr = 
   {Requirements: SKSE}
   ; bySubStr == False means exact match
   if !aFormList
-    cErrInvalidArg("cFLSearchByName", "!aFormList", "")
+    cErrInvalidArg("cFLFindByName", "!aFormList", "")
   elseif !aName
-    cErrInvalidArg("cFLSearchByName", "!aName", "")
-  else
+    cErrInvalidArg("cFLFindByName", "!aName", "")
+  elseif clibUse.cUseSKSE()
     String[] dudArray
     String curName
     Int numIndices = aFormList.GetSize()
@@ -9970,6 +9568,8 @@ Int    function cFLFindByName(FormList aFormList, String aName, Bool bySubStr = 
       endif
       i += 1
     endwhile
+  else
+    cErrReqDisabled("cFLFindByName")
   endif
   return -1
 endfunction
@@ -9981,7 +9581,7 @@ Int    function cArrayFindByNameAlias(Alias[] aArray, String aName, Bool bySubSt
     cErrInvalidArg("cArrayFindByNameAlias", "!aArray", "")
   elseif !aName
     cErrInvalidArg("cArrayFindByNameAlias", "!aName", "")
-  else
+  elseif clibUse.cUseSKSE()
     String curName
     Int i = 0
     while i < aArray.length
@@ -9991,6 +9591,8 @@ Int    function cArrayFindByNameAlias(Alias[] aArray, String aName, Bool bySubSt
       endif
       i += 1
     endwhile
+  else
+    cErrReqDisabled("cArrayFindByNameAlias")
   endif
   return -1
 endfunction
@@ -10001,7 +9603,7 @@ Int    function cArrayFindByNameActor(Actor[] aArray, String aName, Bool bySubSt
     cErrInvalidArg("cArrayFindByNameActor", "!aArray", "")
   elseif !aName
     cErrInvalidArg("cArrayFindByNameActor", "!aName", "")
-  else
+  elseif clibUse.cUseSKSE()
     String curName
     Int i = 0
     while i < aArray.length
@@ -10011,6 +9613,8 @@ Int    function cArrayFindByNameActor(Actor[] aArray, String aName, Bool bySubSt
       endif
       i += 1
     endwhile
+  else
+    cErrReqDisabled("cArrayFindByNameActor")
   endif
   return -1
 endfunction
@@ -10021,7 +9625,7 @@ Int    function cArrayFindByNameForm(Form[] aArray, String aName, Bool bySubStr 
     cErrInvalidArg("cArrayFindByNameForm", "!aArray", "")
   elseif !aName
     cErrInvalidArg("cArrayFindByNameForm", "!aName", "")
-  else
+  elseif clibUse.cUseSKSE()
     String curName
     Int i = 0
     while i < aArray.length
@@ -10031,6 +9635,8 @@ Int    function cArrayFindByNameForm(Form[] aArray, String aName, Bool bySubStr 
       endif
       i += 1
     endwhile
+  else
+    cErrReqDisabled("cArrayFindByNameForm")
   endif
   return -1
 endfunction
@@ -10041,7 +9647,7 @@ Int    function cArrayFindByNameObjRef(ObjectReference[] aArray, String aName, B
     cErrInvalidArg("cArrayFindByNameObjRef", "!aArray", "")
   elseif !aName
     cErrInvalidArg("cArrayFindByNameObjRef", "!aName", "")
-  else
+  elseif clibUse.cUseSKSE()
     String curName
     Int i = 0
     while i < aArray.length
@@ -10051,20 +9657,22 @@ Int    function cArrayFindByNameObjRef(ObjectReference[] aArray, String aName, B
       endif
       i += 1
     endwhile
+  else
+    cErrReqDisabled("cArrayFindByNameObjRef")
   endif
   return -1
 endfunction
 
   ;>>> Returns text with MCM menu color formatting
-String function cColoredText(String aString, Bool ddInstalled = False, String textColorHex = "", String trimWhere = "", \
-    Bool useSKSE = TRUE) global
+String function cColoredText(String aString, Bool ddInstalled = False, String textColorHex = "", \
+    String trimWhere = "") global
   {Requirements: SKSE:Hard, SkyUI:Soft unsure if hard}
   ; Valid options for trimWhere are "left", "right", "both"
   ; Unsure what other applications there are for color formatted text like this
   if !aString && !textColorHex
     cErrInvalidArg("cColoredText", "!aString && !textColorHex", "\"\"")
   else
-    if useSKSE && clibUse.cUseSKSE()
+    if clibUse.cUseSKSE()
       if !ddInstalled ; optional catch for DearDiary which does not play well with colored text
         String trimmedS = aString
         String colorOrange = "FFA600"
@@ -10143,14 +9751,14 @@ String function cColoredText(String aString, Bool ddInstalled = False, String te
   return aString
 endfunction
 
-Int    function cStringCountSubstring(String countThis, String inThis, Bool useSKSE = TRUE) global
+Int    function cStringCountSubstring(String countThis, String inThis) global
   {Requirements: SKSE}
   Int returnInt
   if !countThis || !inThis
     cErrInvalidArg("cStringCountSubstring", "!countThis || !inThis", "-1")
     returnInt = -1
   else
-    if useSKSE && clibUse.cUseSKSE()
+    if clibUse.cUseSKSE()
       Int charIndex = 0
       Int numOccurences = 0
       while StringUtil.Find(inThis, countThis, charIndex) > 0
@@ -10165,12 +9773,12 @@ Int    function cStringCountSubstring(String countThis, String inThis, Bool useS
   return returnInt
 endfunction
 
-Enchantment[]  function cArrayBaseEnchantment(Enchantment[] aArray, Bool useSKSE = TRUE) global
+Enchantment[]  function cArrayBaseEnchantment(Enchantment[] aArray) global
   {Requirements: SKSE}
   if !aArray
     cErrInvalidArg("cArrayBaseEnchantment", "!aArray")
   else
-    if useSKSE && clibUse.cUseSKSE()
+    if clibUse.cUseSKSE()
       Enchantment aEnchantment
       Int numEnchantments = aArray.length
       Int i = 0
@@ -10189,10 +9797,10 @@ Enchantment[]  function cArrayBaseEnchantment(Enchantment[] aArray, Bool useSKSE
   return aArray
 endfunction
 
-Bool     function cModPerkPoints(Int number = 1, Bool useSKSE = TRUE) global ; NOT compatible with Vokriinator Black!!
+Bool     function cModPerkPoints(Int number = 1) global ; NOT compatible with Vokriinator Black!!
   {Requirements: SKSE}
   Bool returnBool
-  if useSKSE && clibUse.cUseSKSE()
+  if clibUse.cUseSKSE()
     Int beforePerkPoints = Game.GetPerkPoints()
     if number == 0
       cErrInvalidArg("cModPerkPoints", "number == 0")
@@ -10211,17 +9819,16 @@ Bool     function cModPerkPoints(Int number = 1, Bool useSKSE = TRUE) global ; N
   endif
   return returnBool
 endfunction
-Int      function cTotalPerkPoints(Actor aActor, String singleSkill = "", Bool useSKSE = TRUE, \
-    Bool usePO3 = TRUE) global
+Int      function cTotalPerkPoints(Actor aActor, String singleSkill = "") global
   {Requirements: SKSE}
   ; This function was found online and adapted. I do not recall where but this is the only solution I've found that
   ;   is moderately accurate without cataloging each and every perk mod.
   Int perks = 0
   if !aActor
     cErrInvalidArg("cTotalPerkPoints", "!aActor")
-  elseif usePO3 && clibUse.cUsePO3()
+  elseif clibUse.cUsePO3()
     perks = PO3_SKSEFunctions.GetPerkCount(aActor.GetActorBase())
-  elseif useSKSE && clibUse.cUseSKSE()
+  elseif clibUse.cUseSKSE()
     String perkArray
     Int perkCount
     Int charIndex
@@ -10253,13 +9860,13 @@ Int      function cTotalPerkPoints(Actor aActor, String singleSkill = "", Bool u
   return perks
 endfunction
 
-String[] function cArrayStringFromKeywords(Keyword[] aArray, Bool useSKSE = TRUE) global
+String[] function cArrayStringFromKeywords(Keyword[] aArray) global
   {Requirements: SKSE}
   String[] newArray
   if !aArray
     cErrInvalidArg("cArrayStringFromKeywords", "!aArray")
   else
-    if useSKSE && clibUse.cUseSKSE()
+    if clibUse.cUseSKSE()
       newArray = cArrayCreateString(aArray.length)
       if newArray.length
         Int i = 0

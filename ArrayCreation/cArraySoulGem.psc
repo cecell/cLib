@@ -1,22 +1,14 @@
 Scriptname cArraySoulGem Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   SoulGem[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace SoulGems
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateSoulGem()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArraySoulGem::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool 
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateSoulGem001()
+                return cArrayCreateSoulGem001()
               elseif indices < 3
-                aArray = cArrayCreateSoulGem002()
+                return cArrayCreateSoulGem002()
               elseif indices < 4
-                aArray = cArrayCreateSoulGem003()
+                return cArrayCreateSoulGem003()
               else
-                aArray = cArrayCreateSoulGem004()
+                return cArrayCreateSoulGem004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateSoulGem005()
+                return cArrayCreateSoulGem005()
               elseif indices < 7
-                aArray = cArrayCreateSoulGem006()
+                return cArrayCreateSoulGem006()
               elseif indices < 8
-                aArray = cArrayCreateSoulGem007()
+                return cArrayCreateSoulGem007()
               else
-                aArray = cArrayCreateSoulGem008()
+                return cArrayCreateSoulGem008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateSoulGem009()
+                return cArrayCreateSoulGem009()
               elseif indices < 11
-                aArray = cArrayCreateSoulGem010()
+                return cArrayCreateSoulGem010()
               elseif indices < 12
-                aArray = cArrayCreateSoulGem011()
+                return cArrayCreateSoulGem011()
               else
-                aArray = cArrayCreateSoulGem012()
+                return cArrayCreateSoulGem012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateSoulGem013()
+                return cArrayCreateSoulGem013()
               elseif indices < 15
-                aArray = cArrayCreateSoulGem014()
+                return cArrayCreateSoulGem014()
               elseif indices < 16
-                aArray = cArrayCreateSoulGem015()
+                return cArrayCreateSoulGem015()
               else
-                aArray = cArrayCreateSoulGem016()
+                return cArrayCreateSoulGem016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool 
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateSoulGem017()
+                return cArrayCreateSoulGem017()
               elseif indices < 19
-                aArray = cArrayCreateSoulGem018()
+                return cArrayCreateSoulGem018()
               elseif indices < 20
-                aArray = cArrayCreateSoulGem019()
+                return cArrayCreateSoulGem019()
               else
-                aArray = cArrayCreateSoulGem020()
+                return cArrayCreateSoulGem020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateSoulGem021()
+                return cArrayCreateSoulGem021()
               elseif indices < 23
-                aArray = cArrayCreateSoulGem022()
+                return cArrayCreateSoulGem022()
               elseif indices < 24
-                aArray = cArrayCreateSoulGem023()
+                return cArrayCreateSoulGem023()
               else
-                aArray = cArrayCreateSoulGem024()
+                return cArrayCreateSoulGem024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateSoulGem025()
+                return cArrayCreateSoulGem025()
               elseif indices < 27
-                aArray = cArrayCreateSoulGem026()
+                return cArrayCreateSoulGem026()
               elseif indices < 28
-                aArray = cArrayCreateSoulGem027()
+                return cArrayCreateSoulGem027()
               else
-                aArray = cArrayCreateSoulGem028()
+                return cArrayCreateSoulGem028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateSoulGem029()
+                return cArrayCreateSoulGem029()
               elseif indices < 31
-                aArray = cArrayCreateSoulGem030()
+                return cArrayCreateSoulGem030()
               elseif indices < 32
-                aArray = cArrayCreateSoulGem031()
+                return cArrayCreateSoulGem031()
               else
-                aArray = cArrayCreateSoulGem032()
+                return cArrayCreateSoulGem032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool 
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateSoulGem033()
+                return cArrayCreateSoulGem033()
               elseif indices < 35
-                aArray = cArrayCreateSoulGem034()
+                return cArrayCreateSoulGem034()
               elseif indices < 36
-                aArray = cArrayCreateSoulGem035()
+                return cArrayCreateSoulGem035()
               else
-                aArray = cArrayCreateSoulGem036()
+                return cArrayCreateSoulGem036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateSoulGem037()
+                return cArrayCreateSoulGem037()
               elseif indices < 39
-                aArray = cArrayCreateSoulGem038()
+                return cArrayCreateSoulGem038()
               elseif indices < 40
-                aArray = cArrayCreateSoulGem039()
+                return cArrayCreateSoulGem039()
               else
-                aArray = cArrayCreateSoulGem040()
+                return cArrayCreateSoulGem040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateSoulGem041()
+                return cArrayCreateSoulGem041()
               elseif indices < 43
-                aArray = cArrayCreateSoulGem042()
+                return cArrayCreateSoulGem042()
               elseif indices < 44
-                aArray = cArrayCreateSoulGem043()
+                return cArrayCreateSoulGem043()
               else
-                aArray = cArrayCreateSoulGem044()
+                return cArrayCreateSoulGem044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateSoulGem045()
+                return cArrayCreateSoulGem045()
               elseif indices < 47
-                aArray = cArrayCreateSoulGem046()
+                return cArrayCreateSoulGem046()
               elseif indices < 48
-                aArray = cArrayCreateSoulGem047()
+                return cArrayCreateSoulGem047()
               else
-                aArray = cArrayCreateSoulGem048()
+                return cArrayCreateSoulGem048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool 
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateSoulGem049()
+                return cArrayCreateSoulGem049()
               elseif indices < 51
-                aArray = cArrayCreateSoulGem050()
+                return cArrayCreateSoulGem050()
               elseif indices < 52
-                aArray = cArrayCreateSoulGem051()
+                return cArrayCreateSoulGem051()
               else
-                aArray = cArrayCreateSoulGem052()
+                return cArrayCreateSoulGem052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateSoulGem053()
+                return cArrayCreateSoulGem053()
               elseif indices < 55
-                aArray = cArrayCreateSoulGem054()
+                return cArrayCreateSoulGem054()
               elseif indices < 56
-                aArray = cArrayCreateSoulGem055()
+                return cArrayCreateSoulGem055()
               else
-                aArray = cArrayCreateSoulGem056()
+                return cArrayCreateSoulGem056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateSoulGem057()
+                return cArrayCreateSoulGem057()
               elseif indices < 59
-                aArray = cArrayCreateSoulGem058()
+                return cArrayCreateSoulGem058()
               elseif indices < 60
-                aArray = cArrayCreateSoulGem059()
+                return cArrayCreateSoulGem059()
               else
-                aArray = cArrayCreateSoulGem060()
+                return cArrayCreateSoulGem060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateSoulGem061()
+                return cArrayCreateSoulGem061()
               elseif indices < 63
-                aArray = cArrayCreateSoulGem062()
+                return cArrayCreateSoulGem062()
               elseif indices < 64
-                aArray = cArrayCreateSoulGem063()
+                return cArrayCreateSoulGem063()
               else
-                aArray = cArrayCreateSoulGem064()
+                return cArrayCreateSoulGem064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool 
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateSoulGem065()
+                return cArrayCreateSoulGem065()
               elseif indices < 67
-                aArray = cArrayCreateSoulGem066()
+                return cArrayCreateSoulGem066()
               elseif indices < 68
-                aArray = cArrayCreateSoulGem067()
+                return cArrayCreateSoulGem067()
               else
-                aArray = cArrayCreateSoulGem068()
+                return cArrayCreateSoulGem068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateSoulGem069()
+                return cArrayCreateSoulGem069()
               elseif indices < 71
-                aArray = cArrayCreateSoulGem070()
+                return cArrayCreateSoulGem070()
               elseif indices < 72
-                aArray = cArrayCreateSoulGem071()
+                return cArrayCreateSoulGem071()
               else
-                aArray = cArrayCreateSoulGem072()
+                return cArrayCreateSoulGem072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateSoulGem073()
+                return cArrayCreateSoulGem073()
               elseif indices < 75
-                aArray = cArrayCreateSoulGem074()
+                return cArrayCreateSoulGem074()
               elseif indices < 76
-                aArray = cArrayCreateSoulGem075()
+                return cArrayCreateSoulGem075()
               else
-                aArray = cArrayCreateSoulGem076()
+                return cArrayCreateSoulGem076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateSoulGem077()
+                return cArrayCreateSoulGem077()
               elseif indices < 79
-                aArray = cArrayCreateSoulGem078()
+                return cArrayCreateSoulGem078()
               elseif indices < 80
-                aArray = cArrayCreateSoulGem079()
+                return cArrayCreateSoulGem079()
               else
-                aArray = cArrayCreateSoulGem080()
+                return cArrayCreateSoulGem080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool 
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateSoulGem081()
+                return cArrayCreateSoulGem081()
               elseif indices < 83
-                aArray = cArrayCreateSoulGem082()
+                return cArrayCreateSoulGem082()
               elseif indices < 84
-                aArray = cArrayCreateSoulGem083()
+                return cArrayCreateSoulGem083()
               else
-                aArray = cArrayCreateSoulGem084()
+                return cArrayCreateSoulGem084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateSoulGem085()
+                return cArrayCreateSoulGem085()
               elseif indices < 87
-                aArray = cArrayCreateSoulGem086()
+                return cArrayCreateSoulGem086()
               elseif indices < 88
-                aArray = cArrayCreateSoulGem087()
+                return cArrayCreateSoulGem087()
               else
-                aArray = cArrayCreateSoulGem088()
+                return cArrayCreateSoulGem088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateSoulGem089()
+                return cArrayCreateSoulGem089()
               elseif indices < 91
-                aArray = cArrayCreateSoulGem090()
+                return cArrayCreateSoulGem090()
               elseif indices < 92
-                aArray = cArrayCreateSoulGem091()
+                return cArrayCreateSoulGem091()
               else
-                aArray = cArrayCreateSoulGem092()
+                return cArrayCreateSoulGem092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateSoulGem093()
+                return cArrayCreateSoulGem093()
               elseif indices < 95
-                aArray = cArrayCreateSoulGem094()
+                return cArrayCreateSoulGem094()
               elseif indices < 96
-                aArray = cArrayCreateSoulGem095()
+                return cArrayCreateSoulGem095()
               else
-                aArray = cArrayCreateSoulGem096()
+                return cArrayCreateSoulGem096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool 
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateSoulGem097()
+                return cArrayCreateSoulGem097()
               elseif indices < 99
-                aArray = cArrayCreateSoulGem098()
+                return cArrayCreateSoulGem098()
               elseif indices < 100
-                aArray = cArrayCreateSoulGem099()
+                return cArrayCreateSoulGem099()
               else
-                aArray = cArrayCreateSoulGem100()
+                return cArrayCreateSoulGem100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateSoulGem101()
+                return cArrayCreateSoulGem101()
               elseif indices < 103
-                aArray = cArrayCreateSoulGem102()
+                return cArrayCreateSoulGem102()
               elseif indices < 104
-                aArray = cArrayCreateSoulGem103()
+                return cArrayCreateSoulGem103()
               else
-                aArray = cArrayCreateSoulGem104()
+                return cArrayCreateSoulGem104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateSoulGem105()
+                return cArrayCreateSoulGem105()
               elseif indices < 107
-                aArray = cArrayCreateSoulGem106()
+                return cArrayCreateSoulGem106()
               elseif indices < 108
-                aArray = cArrayCreateSoulGem107()
+                return cArrayCreateSoulGem107()
               else
-                aArray = cArrayCreateSoulGem108()
+                return cArrayCreateSoulGem108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateSoulGem109()
+                return cArrayCreateSoulGem109()
               elseif indices < 111
-                aArray = cArrayCreateSoulGem110()
+                return cArrayCreateSoulGem110()
               elseif indices < 112
-                aArray = cArrayCreateSoulGem111()
+                return cArrayCreateSoulGem111()
               else
-                aArray = cArrayCreateSoulGem112()
+                return cArrayCreateSoulGem112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ SoulGem[] function cArrayCreateSoulGem(Int indices, SoulGem filler = None, Bool 
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateSoulGem113()
+                return cArrayCreateSoulGem113()
               elseif indices < 115
-                aArray = cArrayCreateSoulGem114()
+                return cArrayCreateSoulGem114()
               elseif indices < 116
-                aArray = cArrayCreateSoulGem115()
+                return cArrayCreateSoulGem115()
               else
-                aArray = cArrayCreateSoulGem116()
+                return cArrayCreateSoulGem116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateSoulGem117()
+                return cArrayCreateSoulGem117()
               elseif indices < 119
-                aArray = cArrayCreateSoulGem118()
+                return cArrayCreateSoulGem118()
               elseif indices < 120
-                aArray = cArrayCreateSoulGem119()
+                return cArrayCreateSoulGem119()
               else
-                aArray = cArrayCreateSoulGem120()
+                return cArrayCreateSoulGem120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateSoulGem121()
+                return cArrayCreateSoulGem121()
               elseif indices < 123
-                aArray = cArrayCreateSoulGem122()
+                return cArrayCreateSoulGem122()
               elseif indices < 124
-                aArray = cArrayCreateSoulGem123()
+                return cArrayCreateSoulGem123()
               else
-                aArray = cArrayCreateSoulGem124()
+                return cArrayCreateSoulGem124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateSoulGem125()
+                return cArrayCreateSoulGem125()
               elseif indices < 127
-                aArray = cArrayCreateSoulGem126()
+                return cArrayCreateSoulGem126()
               elseif indices < 128
-                aArray = cArrayCreateSoulGem127()
+                return cArrayCreateSoulGem127()
               else
-                aArray = cArrayCreateSoulGem128()
+                return cArrayCreateSoulGem128()
               endif
             endif
           endif

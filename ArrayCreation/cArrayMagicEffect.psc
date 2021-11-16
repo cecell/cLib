@@ -1,22 +1,14 @@
 Scriptname cArrayMagicEffect Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   MagicEffect[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateMagicEffect()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayMagicEffect::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler =
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateMagicEffect001()
+                return cArrayCreateMagicEffect001()
               elseif indices < 3
-                aArray = cArrayCreateMagicEffect002()
+                return cArrayCreateMagicEffect002()
               elseif indices < 4
-                aArray = cArrayCreateMagicEffect003()
+                return cArrayCreateMagicEffect003()
               else
-                aArray = cArrayCreateMagicEffect004()
+                return cArrayCreateMagicEffect004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateMagicEffect005()
+                return cArrayCreateMagicEffect005()
               elseif indices < 7
-                aArray = cArrayCreateMagicEffect006()
+                return cArrayCreateMagicEffect006()
               elseif indices < 8
-                aArray = cArrayCreateMagicEffect007()
+                return cArrayCreateMagicEffect007()
               else
-                aArray = cArrayCreateMagicEffect008()
+                return cArrayCreateMagicEffect008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateMagicEffect009()
+                return cArrayCreateMagicEffect009()
               elseif indices < 11
-                aArray = cArrayCreateMagicEffect010()
+                return cArrayCreateMagicEffect010()
               elseif indices < 12
-                aArray = cArrayCreateMagicEffect011()
+                return cArrayCreateMagicEffect011()
               else
-                aArray = cArrayCreateMagicEffect012()
+                return cArrayCreateMagicEffect012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateMagicEffect013()
+                return cArrayCreateMagicEffect013()
               elseif indices < 15
-                aArray = cArrayCreateMagicEffect014()
+                return cArrayCreateMagicEffect014()
               elseif indices < 16
-                aArray = cArrayCreateMagicEffect015()
+                return cArrayCreateMagicEffect015()
               else
-                aArray = cArrayCreateMagicEffect016()
+                return cArrayCreateMagicEffect016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler =
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateMagicEffect017()
+                return cArrayCreateMagicEffect017()
               elseif indices < 19
-                aArray = cArrayCreateMagicEffect018()
+                return cArrayCreateMagicEffect018()
               elseif indices < 20
-                aArray = cArrayCreateMagicEffect019()
+                return cArrayCreateMagicEffect019()
               else
-                aArray = cArrayCreateMagicEffect020()
+                return cArrayCreateMagicEffect020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateMagicEffect021()
+                return cArrayCreateMagicEffect021()
               elseif indices < 23
-                aArray = cArrayCreateMagicEffect022()
+                return cArrayCreateMagicEffect022()
               elseif indices < 24
-                aArray = cArrayCreateMagicEffect023()
+                return cArrayCreateMagicEffect023()
               else
-                aArray = cArrayCreateMagicEffect024()
+                return cArrayCreateMagicEffect024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateMagicEffect025()
+                return cArrayCreateMagicEffect025()
               elseif indices < 27
-                aArray = cArrayCreateMagicEffect026()
+                return cArrayCreateMagicEffect026()
               elseif indices < 28
-                aArray = cArrayCreateMagicEffect027()
+                return cArrayCreateMagicEffect027()
               else
-                aArray = cArrayCreateMagicEffect028()
+                return cArrayCreateMagicEffect028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateMagicEffect029()
+                return cArrayCreateMagicEffect029()
               elseif indices < 31
-                aArray = cArrayCreateMagicEffect030()
+                return cArrayCreateMagicEffect030()
               elseif indices < 32
-                aArray = cArrayCreateMagicEffect031()
+                return cArrayCreateMagicEffect031()
               else
-                aArray = cArrayCreateMagicEffect032()
+                return cArrayCreateMagicEffect032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler =
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateMagicEffect033()
+                return cArrayCreateMagicEffect033()
               elseif indices < 35
-                aArray = cArrayCreateMagicEffect034()
+                return cArrayCreateMagicEffect034()
               elseif indices < 36
-                aArray = cArrayCreateMagicEffect035()
+                return cArrayCreateMagicEffect035()
               else
-                aArray = cArrayCreateMagicEffect036()
+                return cArrayCreateMagicEffect036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateMagicEffect037()
+                return cArrayCreateMagicEffect037()
               elseif indices < 39
-                aArray = cArrayCreateMagicEffect038()
+                return cArrayCreateMagicEffect038()
               elseif indices < 40
-                aArray = cArrayCreateMagicEffect039()
+                return cArrayCreateMagicEffect039()
               else
-                aArray = cArrayCreateMagicEffect040()
+                return cArrayCreateMagicEffect040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateMagicEffect041()
+                return cArrayCreateMagicEffect041()
               elseif indices < 43
-                aArray = cArrayCreateMagicEffect042()
+                return cArrayCreateMagicEffect042()
               elseif indices < 44
-                aArray = cArrayCreateMagicEffect043()
+                return cArrayCreateMagicEffect043()
               else
-                aArray = cArrayCreateMagicEffect044()
+                return cArrayCreateMagicEffect044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateMagicEffect045()
+                return cArrayCreateMagicEffect045()
               elseif indices < 47
-                aArray = cArrayCreateMagicEffect046()
+                return cArrayCreateMagicEffect046()
               elseif indices < 48
-                aArray = cArrayCreateMagicEffect047()
+                return cArrayCreateMagicEffect047()
               else
-                aArray = cArrayCreateMagicEffect048()
+                return cArrayCreateMagicEffect048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler =
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateMagicEffect049()
+                return cArrayCreateMagicEffect049()
               elseif indices < 51
-                aArray = cArrayCreateMagicEffect050()
+                return cArrayCreateMagicEffect050()
               elseif indices < 52
-                aArray = cArrayCreateMagicEffect051()
+                return cArrayCreateMagicEffect051()
               else
-                aArray = cArrayCreateMagicEffect052()
+                return cArrayCreateMagicEffect052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateMagicEffect053()
+                return cArrayCreateMagicEffect053()
               elseif indices < 55
-                aArray = cArrayCreateMagicEffect054()
+                return cArrayCreateMagicEffect054()
               elseif indices < 56
-                aArray = cArrayCreateMagicEffect055()
+                return cArrayCreateMagicEffect055()
               else
-                aArray = cArrayCreateMagicEffect056()
+                return cArrayCreateMagicEffect056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateMagicEffect057()
+                return cArrayCreateMagicEffect057()
               elseif indices < 59
-                aArray = cArrayCreateMagicEffect058()
+                return cArrayCreateMagicEffect058()
               elseif indices < 60
-                aArray = cArrayCreateMagicEffect059()
+                return cArrayCreateMagicEffect059()
               else
-                aArray = cArrayCreateMagicEffect060()
+                return cArrayCreateMagicEffect060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateMagicEffect061()
+                return cArrayCreateMagicEffect061()
               elseif indices < 63
-                aArray = cArrayCreateMagicEffect062()
+                return cArrayCreateMagicEffect062()
               elseif indices < 64
-                aArray = cArrayCreateMagicEffect063()
+                return cArrayCreateMagicEffect063()
               else
-                aArray = cArrayCreateMagicEffect064()
+                return cArrayCreateMagicEffect064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler =
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateMagicEffect065()
+                return cArrayCreateMagicEffect065()
               elseif indices < 67
-                aArray = cArrayCreateMagicEffect066()
+                return cArrayCreateMagicEffect066()
               elseif indices < 68
-                aArray = cArrayCreateMagicEffect067()
+                return cArrayCreateMagicEffect067()
               else
-                aArray = cArrayCreateMagicEffect068()
+                return cArrayCreateMagicEffect068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateMagicEffect069()
+                return cArrayCreateMagicEffect069()
               elseif indices < 71
-                aArray = cArrayCreateMagicEffect070()
+                return cArrayCreateMagicEffect070()
               elseif indices < 72
-                aArray = cArrayCreateMagicEffect071()
+                return cArrayCreateMagicEffect071()
               else
-                aArray = cArrayCreateMagicEffect072()
+                return cArrayCreateMagicEffect072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateMagicEffect073()
+                return cArrayCreateMagicEffect073()
               elseif indices < 75
-                aArray = cArrayCreateMagicEffect074()
+                return cArrayCreateMagicEffect074()
               elseif indices < 76
-                aArray = cArrayCreateMagicEffect075()
+                return cArrayCreateMagicEffect075()
               else
-                aArray = cArrayCreateMagicEffect076()
+                return cArrayCreateMagicEffect076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateMagicEffect077()
+                return cArrayCreateMagicEffect077()
               elseif indices < 79
-                aArray = cArrayCreateMagicEffect078()
+                return cArrayCreateMagicEffect078()
               elseif indices < 80
-                aArray = cArrayCreateMagicEffect079()
+                return cArrayCreateMagicEffect079()
               else
-                aArray = cArrayCreateMagicEffect080()
+                return cArrayCreateMagicEffect080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler =
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateMagicEffect081()
+                return cArrayCreateMagicEffect081()
               elseif indices < 83
-                aArray = cArrayCreateMagicEffect082()
+                return cArrayCreateMagicEffect082()
               elseif indices < 84
-                aArray = cArrayCreateMagicEffect083()
+                return cArrayCreateMagicEffect083()
               else
-                aArray = cArrayCreateMagicEffect084()
+                return cArrayCreateMagicEffect084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateMagicEffect085()
+                return cArrayCreateMagicEffect085()
               elseif indices < 87
-                aArray = cArrayCreateMagicEffect086()
+                return cArrayCreateMagicEffect086()
               elseif indices < 88
-                aArray = cArrayCreateMagicEffect087()
+                return cArrayCreateMagicEffect087()
               else
-                aArray = cArrayCreateMagicEffect088()
+                return cArrayCreateMagicEffect088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateMagicEffect089()
+                return cArrayCreateMagicEffect089()
               elseif indices < 91
-                aArray = cArrayCreateMagicEffect090()
+                return cArrayCreateMagicEffect090()
               elseif indices < 92
-                aArray = cArrayCreateMagicEffect091()
+                return cArrayCreateMagicEffect091()
               else
-                aArray = cArrayCreateMagicEffect092()
+                return cArrayCreateMagicEffect092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateMagicEffect093()
+                return cArrayCreateMagicEffect093()
               elseif indices < 95
-                aArray = cArrayCreateMagicEffect094()
+                return cArrayCreateMagicEffect094()
               elseif indices < 96
-                aArray = cArrayCreateMagicEffect095()
+                return cArrayCreateMagicEffect095()
               else
-                aArray = cArrayCreateMagicEffect096()
+                return cArrayCreateMagicEffect096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler =
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateMagicEffect097()
+                return cArrayCreateMagicEffect097()
               elseif indices < 99
-                aArray = cArrayCreateMagicEffect098()
+                return cArrayCreateMagicEffect098()
               elseif indices < 100
-                aArray = cArrayCreateMagicEffect099()
+                return cArrayCreateMagicEffect099()
               else
-                aArray = cArrayCreateMagicEffect100()
+                return cArrayCreateMagicEffect100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateMagicEffect101()
+                return cArrayCreateMagicEffect101()
               elseif indices < 103
-                aArray = cArrayCreateMagicEffect102()
+                return cArrayCreateMagicEffect102()
               elseif indices < 104
-                aArray = cArrayCreateMagicEffect103()
+                return cArrayCreateMagicEffect103()
               else
-                aArray = cArrayCreateMagicEffect104()
+                return cArrayCreateMagicEffect104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateMagicEffect105()
+                return cArrayCreateMagicEffect105()
               elseif indices < 107
-                aArray = cArrayCreateMagicEffect106()
+                return cArrayCreateMagicEffect106()
               elseif indices < 108
-                aArray = cArrayCreateMagicEffect107()
+                return cArrayCreateMagicEffect107()
               else
-                aArray = cArrayCreateMagicEffect108()
+                return cArrayCreateMagicEffect108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateMagicEffect109()
+                return cArrayCreateMagicEffect109()
               elseif indices < 111
-                aArray = cArrayCreateMagicEffect110()
+                return cArrayCreateMagicEffect110()
               elseif indices < 112
-                aArray = cArrayCreateMagicEffect111()
+                return cArrayCreateMagicEffect111()
               else
-                aArray = cArrayCreateMagicEffect112()
+                return cArrayCreateMagicEffect112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ MagicEffect[] function cArrayCreateMagicEffect(Int indices, MagicEffect filler =
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateMagicEffect113()
+                return cArrayCreateMagicEffect113()
               elseif indices < 115
-                aArray = cArrayCreateMagicEffect114()
+                return cArrayCreateMagicEffect114()
               elseif indices < 116
-                aArray = cArrayCreateMagicEffect115()
+                return cArrayCreateMagicEffect115()
               else
-                aArray = cArrayCreateMagicEffect116()
+                return cArrayCreateMagicEffect116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateMagicEffect117()
+                return cArrayCreateMagicEffect117()
               elseif indices < 119
-                aArray = cArrayCreateMagicEffect118()
+                return cArrayCreateMagicEffect118()
               elseif indices < 120
-                aArray = cArrayCreateMagicEffect119()
+                return cArrayCreateMagicEffect119()
               else
-                aArray = cArrayCreateMagicEffect120()
+                return cArrayCreateMagicEffect120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateMagicEffect121()
+                return cArrayCreateMagicEffect121()
               elseif indices < 123
-                aArray = cArrayCreateMagicEffect122()
+                return cArrayCreateMagicEffect122()
               elseif indices < 124
-                aArray = cArrayCreateMagicEffect123()
+                return cArrayCreateMagicEffect123()
               else
-                aArray = cArrayCreateMagicEffect124()
+                return cArrayCreateMagicEffect124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateMagicEffect125()
+                return cArrayCreateMagicEffect125()
               elseif indices < 127
-                aArray = cArrayCreateMagicEffect126()
+                return cArrayCreateMagicEffect126()
               elseif indices < 128
-                aArray = cArrayCreateMagicEffect127()
+                return cArrayCreateMagicEffect127()
               else
-                aArray = cArrayCreateMagicEffect128()
+                return cArrayCreateMagicEffect128()
               endif
             endif
           endif

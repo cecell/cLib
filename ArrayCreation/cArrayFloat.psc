@@ -1,24 +1,14 @@
 Scriptname cArrayFloat Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE = TRUE, Bool outputTrace = TRUE, \
-    Bool useConsoleUtil = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool outputTrace = TRUE) global
+  {Requirements: None}
   Float[] aArray
-  if useSKSE && indices > 0
-    aArray = Utility.CreateFloatArray(indices, filler)
-  elseif indices > 128 || indices < 1
+  if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateFloat()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayFloat::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -27,45 +17,45 @@ Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateFloat001()
+                return cArrayCreateFloat001()
               elseif indices < 3
-                aArray = cArrayCreateFloat002()
+                return cArrayCreateFloat002()
               elseif indices < 4
-                aArray = cArrayCreateFloat003()
+                return cArrayCreateFloat003()
               else
-                aArray = cArrayCreateFloat004()
+                return cArrayCreateFloat004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateFloat005()
+                return cArrayCreateFloat005()
               elseif indices < 7
-                aArray = cArrayCreateFloat006()
+                return cArrayCreateFloat006()
               elseif indices < 8
-                aArray = cArrayCreateFloat007()
+                return cArrayCreateFloat007()
               else
-                aArray = cArrayCreateFloat008()
+                return cArrayCreateFloat008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateFloat009()
+                return cArrayCreateFloat009()
               elseif indices < 11
-                aArray = cArrayCreateFloat010()
+                return cArrayCreateFloat010()
               elseif indices < 12
-                aArray = cArrayCreateFloat011()
+                return cArrayCreateFloat011()
               else
-                aArray = cArrayCreateFloat012()
+                return cArrayCreateFloat012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateFloat013()
+                return cArrayCreateFloat013()
               elseif indices < 15
-                aArray = cArrayCreateFloat014()
+                return cArrayCreateFloat014()
               elseif indices < 16
-                aArray = cArrayCreateFloat015()
+                return cArrayCreateFloat015()
               else
-                aArray = cArrayCreateFloat016()
+                return cArrayCreateFloat016()
               endif
             endif
           endif
@@ -73,45 +63,45 @@ Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateFloat017()
+                return cArrayCreateFloat017()
               elseif indices < 19
-                aArray = cArrayCreateFloat018()
+                return cArrayCreateFloat018()
               elseif indices < 20
-                aArray = cArrayCreateFloat019()
+                return cArrayCreateFloat019()
               else
-                aArray = cArrayCreateFloat020()
+                return cArrayCreateFloat020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateFloat021()
+                return cArrayCreateFloat021()
               elseif indices < 23
-                aArray = cArrayCreateFloat022()
+                return cArrayCreateFloat022()
               elseif indices < 24
-                aArray = cArrayCreateFloat023()
+                return cArrayCreateFloat023()
               else
-                aArray = cArrayCreateFloat024()
+                return cArrayCreateFloat024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateFloat025()
+                return cArrayCreateFloat025()
               elseif indices < 27
-                aArray = cArrayCreateFloat026()
+                return cArrayCreateFloat026()
               elseif indices < 28
-                aArray = cArrayCreateFloat027()
+                return cArrayCreateFloat027()
               else
-                aArray = cArrayCreateFloat028()
+                return cArrayCreateFloat028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateFloat029()
+                return cArrayCreateFloat029()
               elseif indices < 31
-                aArray = cArrayCreateFloat030()
+                return cArrayCreateFloat030()
               elseif indices < 32
-                aArray = cArrayCreateFloat031()
+                return cArrayCreateFloat031()
               else
-                aArray = cArrayCreateFloat032()
+                return cArrayCreateFloat032()
               endif
             endif
           endif
@@ -121,45 +111,45 @@ Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateFloat033()
+                return cArrayCreateFloat033()
               elseif indices < 35
-                aArray = cArrayCreateFloat034()
+                return cArrayCreateFloat034()
               elseif indices < 36
-                aArray = cArrayCreateFloat035()
+                return cArrayCreateFloat035()
               else
-                aArray = cArrayCreateFloat036()
+                return cArrayCreateFloat036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateFloat037()
+                return cArrayCreateFloat037()
               elseif indices < 39
-                aArray = cArrayCreateFloat038()
+                return cArrayCreateFloat038()
               elseif indices < 40
-                aArray = cArrayCreateFloat039()
+                return cArrayCreateFloat039()
               else
-                aArray = cArrayCreateFloat040()
+                return cArrayCreateFloat040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateFloat041()
+                return cArrayCreateFloat041()
               elseif indices < 43
-                aArray = cArrayCreateFloat042()
+                return cArrayCreateFloat042()
               elseif indices < 44
-                aArray = cArrayCreateFloat043()
+                return cArrayCreateFloat043()
               else
-                aArray = cArrayCreateFloat044()
+                return cArrayCreateFloat044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateFloat045()
+                return cArrayCreateFloat045()
               elseif indices < 47
-                aArray = cArrayCreateFloat046()
+                return cArrayCreateFloat046()
               elseif indices < 48
-                aArray = cArrayCreateFloat047()
+                return cArrayCreateFloat047()
               else
-                aArray = cArrayCreateFloat048()
+                return cArrayCreateFloat048()
               endif
             endif
           endif
@@ -167,45 +157,45 @@ Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateFloat049()
+                return cArrayCreateFloat049()
               elseif indices < 51
-                aArray = cArrayCreateFloat050()
+                return cArrayCreateFloat050()
               elseif indices < 52
-                aArray = cArrayCreateFloat051()
+                return cArrayCreateFloat051()
               else
-                aArray = cArrayCreateFloat052()
+                return cArrayCreateFloat052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateFloat053()
+                return cArrayCreateFloat053()
               elseif indices < 55
-                aArray = cArrayCreateFloat054()
+                return cArrayCreateFloat054()
               elseif indices < 56
-                aArray = cArrayCreateFloat055()
+                return cArrayCreateFloat055()
               else
-                aArray = cArrayCreateFloat056()
+                return cArrayCreateFloat056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateFloat057()
+                return cArrayCreateFloat057()
               elseif indices < 59
-                aArray = cArrayCreateFloat058()
+                return cArrayCreateFloat058()
               elseif indices < 60
-                aArray = cArrayCreateFloat059()
+                return cArrayCreateFloat059()
               else
-                aArray = cArrayCreateFloat060()
+                return cArrayCreateFloat060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateFloat061()
+                return cArrayCreateFloat061()
               elseif indices < 63
-                aArray = cArrayCreateFloat062()
+                return cArrayCreateFloat062()
               elseif indices < 64
-                aArray = cArrayCreateFloat063()
+                return cArrayCreateFloat063()
               else
-                aArray = cArrayCreateFloat064()
+                return cArrayCreateFloat064()
               endif
             endif
           endif
@@ -217,45 +207,45 @@ Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateFloat065()
+                return cArrayCreateFloat065()
               elseif indices < 67
-                aArray = cArrayCreateFloat066()
+                return cArrayCreateFloat066()
               elseif indices < 68
-                aArray = cArrayCreateFloat067()
+                return cArrayCreateFloat067()
               else
-                aArray = cArrayCreateFloat068()
+                return cArrayCreateFloat068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateFloat069()
+                return cArrayCreateFloat069()
               elseif indices < 71
-                aArray = cArrayCreateFloat070()
+                return cArrayCreateFloat070()
               elseif indices < 72
-                aArray = cArrayCreateFloat071()
+                return cArrayCreateFloat071()
               else
-                aArray = cArrayCreateFloat072()
+                return cArrayCreateFloat072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateFloat073()
+                return cArrayCreateFloat073()
               elseif indices < 75
-                aArray = cArrayCreateFloat074()
+                return cArrayCreateFloat074()
               elseif indices < 76
-                aArray = cArrayCreateFloat075()
+                return cArrayCreateFloat075()
               else
-                aArray = cArrayCreateFloat076()
+                return cArrayCreateFloat076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateFloat077()
+                return cArrayCreateFloat077()
               elseif indices < 79
-                aArray = cArrayCreateFloat078()
+                return cArrayCreateFloat078()
               elseif indices < 80
-                aArray = cArrayCreateFloat079()
+                return cArrayCreateFloat079()
               else
-                aArray = cArrayCreateFloat080()
+                return cArrayCreateFloat080()
               endif
             endif
           endif
@@ -263,45 +253,45 @@ Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateFloat081()
+                return cArrayCreateFloat081()
               elseif indices < 83
-                aArray = cArrayCreateFloat082()
+                return cArrayCreateFloat082()
               elseif indices < 84
-                aArray = cArrayCreateFloat083()
+                return cArrayCreateFloat083()
               else
-                aArray = cArrayCreateFloat084()
+                return cArrayCreateFloat084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateFloat085()
+                return cArrayCreateFloat085()
               elseif indices < 87
-                aArray = cArrayCreateFloat086()
+                return cArrayCreateFloat086()
               elseif indices < 88
-                aArray = cArrayCreateFloat087()
+                return cArrayCreateFloat087()
               else
-                aArray = cArrayCreateFloat088()
+                return cArrayCreateFloat088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateFloat089()
+                return cArrayCreateFloat089()
               elseif indices < 91
-                aArray = cArrayCreateFloat090()
+                return cArrayCreateFloat090()
               elseif indices < 92
-                aArray = cArrayCreateFloat091()
+                return cArrayCreateFloat091()
               else
-                aArray = cArrayCreateFloat092()
+                return cArrayCreateFloat092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateFloat093()
+                return cArrayCreateFloat093()
               elseif indices < 95
-                aArray = cArrayCreateFloat094()
+                return cArrayCreateFloat094()
               elseif indices < 96
-                aArray = cArrayCreateFloat095()
+                return cArrayCreateFloat095()
               else
-                aArray = cArrayCreateFloat096()
+                return cArrayCreateFloat096()
               endif
             endif
           endif
@@ -311,45 +301,45 @@ Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateFloat097()
+                return cArrayCreateFloat097()
               elseif indices < 99
-                aArray = cArrayCreateFloat098()
+                return cArrayCreateFloat098()
               elseif indices < 100
-                aArray = cArrayCreateFloat099()
+                return cArrayCreateFloat099()
               else
-                aArray = cArrayCreateFloat100()
+                return cArrayCreateFloat100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateFloat101()
+                return cArrayCreateFloat101()
               elseif indices < 103
-                aArray = cArrayCreateFloat102()
+                return cArrayCreateFloat102()
               elseif indices < 104
-                aArray = cArrayCreateFloat103()
+                return cArrayCreateFloat103()
               else
-                aArray = cArrayCreateFloat104()
+                return cArrayCreateFloat104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateFloat105()
+                return cArrayCreateFloat105()
               elseif indices < 107
-                aArray = cArrayCreateFloat106()
+                return cArrayCreateFloat106()
               elseif indices < 108
-                aArray = cArrayCreateFloat107()
+                return cArrayCreateFloat107()
               else
-                aArray = cArrayCreateFloat108()
+                return cArrayCreateFloat108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateFloat109()
+                return cArrayCreateFloat109()
               elseif indices < 111
-                aArray = cArrayCreateFloat110()
+                return cArrayCreateFloat110()
               elseif indices < 112
-                aArray = cArrayCreateFloat111()
+                return cArrayCreateFloat111()
               else
-                aArray = cArrayCreateFloat112()
+                return cArrayCreateFloat112()
               endif
             endif
           endif
@@ -357,45 +347,45 @@ Float[] function cArrayCreateFloat(Int indices, Float filler = 0.0, Bool useSKSE
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateFloat113()
+                return cArrayCreateFloat113()
               elseif indices < 115
-                aArray = cArrayCreateFloat114()
+                return cArrayCreateFloat114()
               elseif indices < 116
-                aArray = cArrayCreateFloat115()
+                return cArrayCreateFloat115()
               else
-                aArray = cArrayCreateFloat116()
+                return cArrayCreateFloat116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateFloat117()
+                return cArrayCreateFloat117()
               elseif indices < 119
-                aArray = cArrayCreateFloat118()
+                return cArrayCreateFloat118()
               elseif indices < 120
-                aArray = cArrayCreateFloat119()
+                return cArrayCreateFloat119()
               else
-                aArray = cArrayCreateFloat120()
+                return cArrayCreateFloat120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateFloat121()
+                return cArrayCreateFloat121()
               elseif indices < 123
-                aArray = cArrayCreateFloat122()
+                return cArrayCreateFloat122()
               elseif indices < 124
-                aArray = cArrayCreateFloat123()
+                return cArrayCreateFloat123()
               else
-                aArray = cArrayCreateFloat124()
+                return cArrayCreateFloat124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateFloat125()
+                return cArrayCreateFloat125()
               elseif indices < 127
-                aArray = cArrayCreateFloat126()
+                return cArrayCreateFloat126()
               elseif indices < 128
-                aArray = cArrayCreateFloat127()
+                return cArrayCreateFloat127()
               else
-                aArray = cArrayCreateFloat128()
+                return cArrayCreateFloat128()
               endif
             endif
           endif

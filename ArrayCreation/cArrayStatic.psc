@@ -1,22 +1,14 @@
 Scriptname cArrayStatic Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Static[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Statics
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateStatic()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayStatic::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool out
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateStatic001()
+                return cArrayCreateStatic001()
               elseif indices < 3
-                aArray = cArrayCreateStatic002()
+                return cArrayCreateStatic002()
               elseif indices < 4
-                aArray = cArrayCreateStatic003()
+                return cArrayCreateStatic003()
               else
-                aArray = cArrayCreateStatic004()
+                return cArrayCreateStatic004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateStatic005()
+                return cArrayCreateStatic005()
               elseif indices < 7
-                aArray = cArrayCreateStatic006()
+                return cArrayCreateStatic006()
               elseif indices < 8
-                aArray = cArrayCreateStatic007()
+                return cArrayCreateStatic007()
               else
-                aArray = cArrayCreateStatic008()
+                return cArrayCreateStatic008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateStatic009()
+                return cArrayCreateStatic009()
               elseif indices < 11
-                aArray = cArrayCreateStatic010()
+                return cArrayCreateStatic010()
               elseif indices < 12
-                aArray = cArrayCreateStatic011()
+                return cArrayCreateStatic011()
               else
-                aArray = cArrayCreateStatic012()
+                return cArrayCreateStatic012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateStatic013()
+                return cArrayCreateStatic013()
               elseif indices < 15
-                aArray = cArrayCreateStatic014()
+                return cArrayCreateStatic014()
               elseif indices < 16
-                aArray = cArrayCreateStatic015()
+                return cArrayCreateStatic015()
               else
-                aArray = cArrayCreateStatic016()
+                return cArrayCreateStatic016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool out
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateStatic017()
+                return cArrayCreateStatic017()
               elseif indices < 19
-                aArray = cArrayCreateStatic018()
+                return cArrayCreateStatic018()
               elseif indices < 20
-                aArray = cArrayCreateStatic019()
+                return cArrayCreateStatic019()
               else
-                aArray = cArrayCreateStatic020()
+                return cArrayCreateStatic020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateStatic021()
+                return cArrayCreateStatic021()
               elseif indices < 23
-                aArray = cArrayCreateStatic022()
+                return cArrayCreateStatic022()
               elseif indices < 24
-                aArray = cArrayCreateStatic023()
+                return cArrayCreateStatic023()
               else
-                aArray = cArrayCreateStatic024()
+                return cArrayCreateStatic024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateStatic025()
+                return cArrayCreateStatic025()
               elseif indices < 27
-                aArray = cArrayCreateStatic026()
+                return cArrayCreateStatic026()
               elseif indices < 28
-                aArray = cArrayCreateStatic027()
+                return cArrayCreateStatic027()
               else
-                aArray = cArrayCreateStatic028()
+                return cArrayCreateStatic028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateStatic029()
+                return cArrayCreateStatic029()
               elseif indices < 31
-                aArray = cArrayCreateStatic030()
+                return cArrayCreateStatic030()
               elseif indices < 32
-                aArray = cArrayCreateStatic031()
+                return cArrayCreateStatic031()
               else
-                aArray = cArrayCreateStatic032()
+                return cArrayCreateStatic032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool out
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateStatic033()
+                return cArrayCreateStatic033()
               elseif indices < 35
-                aArray = cArrayCreateStatic034()
+                return cArrayCreateStatic034()
               elseif indices < 36
-                aArray = cArrayCreateStatic035()
+                return cArrayCreateStatic035()
               else
-                aArray = cArrayCreateStatic036()
+                return cArrayCreateStatic036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateStatic037()
+                return cArrayCreateStatic037()
               elseif indices < 39
-                aArray = cArrayCreateStatic038()
+                return cArrayCreateStatic038()
               elseif indices < 40
-                aArray = cArrayCreateStatic039()
+                return cArrayCreateStatic039()
               else
-                aArray = cArrayCreateStatic040()
+                return cArrayCreateStatic040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateStatic041()
+                return cArrayCreateStatic041()
               elseif indices < 43
-                aArray = cArrayCreateStatic042()
+                return cArrayCreateStatic042()
               elseif indices < 44
-                aArray = cArrayCreateStatic043()
+                return cArrayCreateStatic043()
               else
-                aArray = cArrayCreateStatic044()
+                return cArrayCreateStatic044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateStatic045()
+                return cArrayCreateStatic045()
               elseif indices < 47
-                aArray = cArrayCreateStatic046()
+                return cArrayCreateStatic046()
               elseif indices < 48
-                aArray = cArrayCreateStatic047()
+                return cArrayCreateStatic047()
               else
-                aArray = cArrayCreateStatic048()
+                return cArrayCreateStatic048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool out
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateStatic049()
+                return cArrayCreateStatic049()
               elseif indices < 51
-                aArray = cArrayCreateStatic050()
+                return cArrayCreateStatic050()
               elseif indices < 52
-                aArray = cArrayCreateStatic051()
+                return cArrayCreateStatic051()
               else
-                aArray = cArrayCreateStatic052()
+                return cArrayCreateStatic052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateStatic053()
+                return cArrayCreateStatic053()
               elseif indices < 55
-                aArray = cArrayCreateStatic054()
+                return cArrayCreateStatic054()
               elseif indices < 56
-                aArray = cArrayCreateStatic055()
+                return cArrayCreateStatic055()
               else
-                aArray = cArrayCreateStatic056()
+                return cArrayCreateStatic056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateStatic057()
+                return cArrayCreateStatic057()
               elseif indices < 59
-                aArray = cArrayCreateStatic058()
+                return cArrayCreateStatic058()
               elseif indices < 60
-                aArray = cArrayCreateStatic059()
+                return cArrayCreateStatic059()
               else
-                aArray = cArrayCreateStatic060()
+                return cArrayCreateStatic060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateStatic061()
+                return cArrayCreateStatic061()
               elseif indices < 63
-                aArray = cArrayCreateStatic062()
+                return cArrayCreateStatic062()
               elseif indices < 64
-                aArray = cArrayCreateStatic063()
+                return cArrayCreateStatic063()
               else
-                aArray = cArrayCreateStatic064()
+                return cArrayCreateStatic064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool out
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateStatic065()
+                return cArrayCreateStatic065()
               elseif indices < 67
-                aArray = cArrayCreateStatic066()
+                return cArrayCreateStatic066()
               elseif indices < 68
-                aArray = cArrayCreateStatic067()
+                return cArrayCreateStatic067()
               else
-                aArray = cArrayCreateStatic068()
+                return cArrayCreateStatic068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateStatic069()
+                return cArrayCreateStatic069()
               elseif indices < 71
-                aArray = cArrayCreateStatic070()
+                return cArrayCreateStatic070()
               elseif indices < 72
-                aArray = cArrayCreateStatic071()
+                return cArrayCreateStatic071()
               else
-                aArray = cArrayCreateStatic072()
+                return cArrayCreateStatic072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateStatic073()
+                return cArrayCreateStatic073()
               elseif indices < 75
-                aArray = cArrayCreateStatic074()
+                return cArrayCreateStatic074()
               elseif indices < 76
-                aArray = cArrayCreateStatic075()
+                return cArrayCreateStatic075()
               else
-                aArray = cArrayCreateStatic076()
+                return cArrayCreateStatic076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateStatic077()
+                return cArrayCreateStatic077()
               elseif indices < 79
-                aArray = cArrayCreateStatic078()
+                return cArrayCreateStatic078()
               elseif indices < 80
-                aArray = cArrayCreateStatic079()
+                return cArrayCreateStatic079()
               else
-                aArray = cArrayCreateStatic080()
+                return cArrayCreateStatic080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool out
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateStatic081()
+                return cArrayCreateStatic081()
               elseif indices < 83
-                aArray = cArrayCreateStatic082()
+                return cArrayCreateStatic082()
               elseif indices < 84
-                aArray = cArrayCreateStatic083()
+                return cArrayCreateStatic083()
               else
-                aArray = cArrayCreateStatic084()
+                return cArrayCreateStatic084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateStatic085()
+                return cArrayCreateStatic085()
               elseif indices < 87
-                aArray = cArrayCreateStatic086()
+                return cArrayCreateStatic086()
               elseif indices < 88
-                aArray = cArrayCreateStatic087()
+                return cArrayCreateStatic087()
               else
-                aArray = cArrayCreateStatic088()
+                return cArrayCreateStatic088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateStatic089()
+                return cArrayCreateStatic089()
               elseif indices < 91
-                aArray = cArrayCreateStatic090()
+                return cArrayCreateStatic090()
               elseif indices < 92
-                aArray = cArrayCreateStatic091()
+                return cArrayCreateStatic091()
               else
-                aArray = cArrayCreateStatic092()
+                return cArrayCreateStatic092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateStatic093()
+                return cArrayCreateStatic093()
               elseif indices < 95
-                aArray = cArrayCreateStatic094()
+                return cArrayCreateStatic094()
               elseif indices < 96
-                aArray = cArrayCreateStatic095()
+                return cArrayCreateStatic095()
               else
-                aArray = cArrayCreateStatic096()
+                return cArrayCreateStatic096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool out
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateStatic097()
+                return cArrayCreateStatic097()
               elseif indices < 99
-                aArray = cArrayCreateStatic098()
+                return cArrayCreateStatic098()
               elseif indices < 100
-                aArray = cArrayCreateStatic099()
+                return cArrayCreateStatic099()
               else
-                aArray = cArrayCreateStatic100()
+                return cArrayCreateStatic100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateStatic101()
+                return cArrayCreateStatic101()
               elseif indices < 103
-                aArray = cArrayCreateStatic102()
+                return cArrayCreateStatic102()
               elseif indices < 104
-                aArray = cArrayCreateStatic103()
+                return cArrayCreateStatic103()
               else
-                aArray = cArrayCreateStatic104()
+                return cArrayCreateStatic104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateStatic105()
+                return cArrayCreateStatic105()
               elseif indices < 107
-                aArray = cArrayCreateStatic106()
+                return cArrayCreateStatic106()
               elseif indices < 108
-                aArray = cArrayCreateStatic107()
+                return cArrayCreateStatic107()
               else
-                aArray = cArrayCreateStatic108()
+                return cArrayCreateStatic108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateStatic109()
+                return cArrayCreateStatic109()
               elseif indices < 111
-                aArray = cArrayCreateStatic110()
+                return cArrayCreateStatic110()
               elseif indices < 112
-                aArray = cArrayCreateStatic111()
+                return cArrayCreateStatic111()
               else
-                aArray = cArrayCreateStatic112()
+                return cArrayCreateStatic112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Static[] function cArrayCreateStatic(Int indices, Static filler = None, Bool out
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateStatic113()
+                return cArrayCreateStatic113()
               elseif indices < 115
-                aArray = cArrayCreateStatic114()
+                return cArrayCreateStatic114()
               elseif indices < 116
-                aArray = cArrayCreateStatic115()
+                return cArrayCreateStatic115()
               else
-                aArray = cArrayCreateStatic116()
+                return cArrayCreateStatic116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateStatic117()
+                return cArrayCreateStatic117()
               elseif indices < 119
-                aArray = cArrayCreateStatic118()
+                return cArrayCreateStatic118()
               elseif indices < 120
-                aArray = cArrayCreateStatic119()
+                return cArrayCreateStatic119()
               else
-                aArray = cArrayCreateStatic120()
+                return cArrayCreateStatic120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateStatic121()
+                return cArrayCreateStatic121()
               elseif indices < 123
-                aArray = cArrayCreateStatic122()
+                return cArrayCreateStatic122()
               elseif indices < 124
-                aArray = cArrayCreateStatic123()
+                return cArrayCreateStatic123()
               else
-                aArray = cArrayCreateStatic124()
+                return cArrayCreateStatic124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateStatic125()
+                return cArrayCreateStatic125()
               elseif indices < 127
-                aArray = cArrayCreateStatic126()
+                return cArrayCreateStatic126()
               elseif indices < 128
-                aArray = cArrayCreateStatic127()
+                return cArrayCreateStatic127()
               else
-                aArray = cArrayCreateStatic128()
+                return cArrayCreateStatic128()
               endif
             endif
           endif

@@ -1,22 +1,14 @@
 Scriptname cArrayBook Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Book[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateBook()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayBook::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTra
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateBook001()
+                return cArrayCreateBook001()
               elseif indices < 3
-                aArray = cArrayCreateBook002()
+                return cArrayCreateBook002()
               elseif indices < 4
-                aArray = cArrayCreateBook003()
+                return cArrayCreateBook003()
               else
-                aArray = cArrayCreateBook004()
+                return cArrayCreateBook004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateBook005()
+                return cArrayCreateBook005()
               elseif indices < 7
-                aArray = cArrayCreateBook006()
+                return cArrayCreateBook006()
               elseif indices < 8
-                aArray = cArrayCreateBook007()
+                return cArrayCreateBook007()
               else
-                aArray = cArrayCreateBook008()
+                return cArrayCreateBook008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateBook009()
+                return cArrayCreateBook009()
               elseif indices < 11
-                aArray = cArrayCreateBook010()
+                return cArrayCreateBook010()
               elseif indices < 12
-                aArray = cArrayCreateBook011()
+                return cArrayCreateBook011()
               else
-                aArray = cArrayCreateBook012()
+                return cArrayCreateBook012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateBook013()
+                return cArrayCreateBook013()
               elseif indices < 15
-                aArray = cArrayCreateBook014()
+                return cArrayCreateBook014()
               elseif indices < 16
-                aArray = cArrayCreateBook015()
+                return cArrayCreateBook015()
               else
-                aArray = cArrayCreateBook016()
+                return cArrayCreateBook016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTra
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateBook017()
+                return cArrayCreateBook017()
               elseif indices < 19
-                aArray = cArrayCreateBook018()
+                return cArrayCreateBook018()
               elseif indices < 20
-                aArray = cArrayCreateBook019()
+                return cArrayCreateBook019()
               else
-                aArray = cArrayCreateBook020()
+                return cArrayCreateBook020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateBook021()
+                return cArrayCreateBook021()
               elseif indices < 23
-                aArray = cArrayCreateBook022()
+                return cArrayCreateBook022()
               elseif indices < 24
-                aArray = cArrayCreateBook023()
+                return cArrayCreateBook023()
               else
-                aArray = cArrayCreateBook024()
+                return cArrayCreateBook024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateBook025()
+                return cArrayCreateBook025()
               elseif indices < 27
-                aArray = cArrayCreateBook026()
+                return cArrayCreateBook026()
               elseif indices < 28
-                aArray = cArrayCreateBook027()
+                return cArrayCreateBook027()
               else
-                aArray = cArrayCreateBook028()
+                return cArrayCreateBook028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateBook029()
+                return cArrayCreateBook029()
               elseif indices < 31
-                aArray = cArrayCreateBook030()
+                return cArrayCreateBook030()
               elseif indices < 32
-                aArray = cArrayCreateBook031()
+                return cArrayCreateBook031()
               else
-                aArray = cArrayCreateBook032()
+                return cArrayCreateBook032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTra
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateBook033()
+                return cArrayCreateBook033()
               elseif indices < 35
-                aArray = cArrayCreateBook034()
+                return cArrayCreateBook034()
               elseif indices < 36
-                aArray = cArrayCreateBook035()
+                return cArrayCreateBook035()
               else
-                aArray = cArrayCreateBook036()
+                return cArrayCreateBook036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateBook037()
+                return cArrayCreateBook037()
               elseif indices < 39
-                aArray = cArrayCreateBook038()
+                return cArrayCreateBook038()
               elseif indices < 40
-                aArray = cArrayCreateBook039()
+                return cArrayCreateBook039()
               else
-                aArray = cArrayCreateBook040()
+                return cArrayCreateBook040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateBook041()
+                return cArrayCreateBook041()
               elseif indices < 43
-                aArray = cArrayCreateBook042()
+                return cArrayCreateBook042()
               elseif indices < 44
-                aArray = cArrayCreateBook043()
+                return cArrayCreateBook043()
               else
-                aArray = cArrayCreateBook044()
+                return cArrayCreateBook044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateBook045()
+                return cArrayCreateBook045()
               elseif indices < 47
-                aArray = cArrayCreateBook046()
+                return cArrayCreateBook046()
               elseif indices < 48
-                aArray = cArrayCreateBook047()
+                return cArrayCreateBook047()
               else
-                aArray = cArrayCreateBook048()
+                return cArrayCreateBook048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTra
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateBook049()
+                return cArrayCreateBook049()
               elseif indices < 51
-                aArray = cArrayCreateBook050()
+                return cArrayCreateBook050()
               elseif indices < 52
-                aArray = cArrayCreateBook051()
+                return cArrayCreateBook051()
               else
-                aArray = cArrayCreateBook052()
+                return cArrayCreateBook052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateBook053()
+                return cArrayCreateBook053()
               elseif indices < 55
-                aArray = cArrayCreateBook054()
+                return cArrayCreateBook054()
               elseif indices < 56
-                aArray = cArrayCreateBook055()
+                return cArrayCreateBook055()
               else
-                aArray = cArrayCreateBook056()
+                return cArrayCreateBook056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateBook057()
+                return cArrayCreateBook057()
               elseif indices < 59
-                aArray = cArrayCreateBook058()
+                return cArrayCreateBook058()
               elseif indices < 60
-                aArray = cArrayCreateBook059()
+                return cArrayCreateBook059()
               else
-                aArray = cArrayCreateBook060()
+                return cArrayCreateBook060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateBook061()
+                return cArrayCreateBook061()
               elseif indices < 63
-                aArray = cArrayCreateBook062()
+                return cArrayCreateBook062()
               elseif indices < 64
-                aArray = cArrayCreateBook063()
+                return cArrayCreateBook063()
               else
-                aArray = cArrayCreateBook064()
+                return cArrayCreateBook064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTra
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateBook065()
+                return cArrayCreateBook065()
               elseif indices < 67
-                aArray = cArrayCreateBook066()
+                return cArrayCreateBook066()
               elseif indices < 68
-                aArray = cArrayCreateBook067()
+                return cArrayCreateBook067()
               else
-                aArray = cArrayCreateBook068()
+                return cArrayCreateBook068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateBook069()
+                return cArrayCreateBook069()
               elseif indices < 71
-                aArray = cArrayCreateBook070()
+                return cArrayCreateBook070()
               elseif indices < 72
-                aArray = cArrayCreateBook071()
+                return cArrayCreateBook071()
               else
-                aArray = cArrayCreateBook072()
+                return cArrayCreateBook072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateBook073()
+                return cArrayCreateBook073()
               elseif indices < 75
-                aArray = cArrayCreateBook074()
+                return cArrayCreateBook074()
               elseif indices < 76
-                aArray = cArrayCreateBook075()
+                return cArrayCreateBook075()
               else
-                aArray = cArrayCreateBook076()
+                return cArrayCreateBook076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateBook077()
+                return cArrayCreateBook077()
               elseif indices < 79
-                aArray = cArrayCreateBook078()
+                return cArrayCreateBook078()
               elseif indices < 80
-                aArray = cArrayCreateBook079()
+                return cArrayCreateBook079()
               else
-                aArray = cArrayCreateBook080()
+                return cArrayCreateBook080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTra
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateBook081()
+                return cArrayCreateBook081()
               elseif indices < 83
-                aArray = cArrayCreateBook082()
+                return cArrayCreateBook082()
               elseif indices < 84
-                aArray = cArrayCreateBook083()
+                return cArrayCreateBook083()
               else
-                aArray = cArrayCreateBook084()
+                return cArrayCreateBook084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateBook085()
+                return cArrayCreateBook085()
               elseif indices < 87
-                aArray = cArrayCreateBook086()
+                return cArrayCreateBook086()
               elseif indices < 88
-                aArray = cArrayCreateBook087()
+                return cArrayCreateBook087()
               else
-                aArray = cArrayCreateBook088()
+                return cArrayCreateBook088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateBook089()
+                return cArrayCreateBook089()
               elseif indices < 91
-                aArray = cArrayCreateBook090()
+                return cArrayCreateBook090()
               elseif indices < 92
-                aArray = cArrayCreateBook091()
+                return cArrayCreateBook091()
               else
-                aArray = cArrayCreateBook092()
+                return cArrayCreateBook092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateBook093()
+                return cArrayCreateBook093()
               elseif indices < 95
-                aArray = cArrayCreateBook094()
+                return cArrayCreateBook094()
               elseif indices < 96
-                aArray = cArrayCreateBook095()
+                return cArrayCreateBook095()
               else
-                aArray = cArrayCreateBook096()
+                return cArrayCreateBook096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTra
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateBook097()
+                return cArrayCreateBook097()
               elseif indices < 99
-                aArray = cArrayCreateBook098()
+                return cArrayCreateBook098()
               elseif indices < 100
-                aArray = cArrayCreateBook099()
+                return cArrayCreateBook099()
               else
-                aArray = cArrayCreateBook100()
+                return cArrayCreateBook100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateBook101()
+                return cArrayCreateBook101()
               elseif indices < 103
-                aArray = cArrayCreateBook102()
+                return cArrayCreateBook102()
               elseif indices < 104
-                aArray = cArrayCreateBook103()
+                return cArrayCreateBook103()
               else
-                aArray = cArrayCreateBook104()
+                return cArrayCreateBook104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateBook105()
+                return cArrayCreateBook105()
               elseif indices < 107
-                aArray = cArrayCreateBook106()
+                return cArrayCreateBook106()
               elseif indices < 108
-                aArray = cArrayCreateBook107()
+                return cArrayCreateBook107()
               else
-                aArray = cArrayCreateBook108()
+                return cArrayCreateBook108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateBook109()
+                return cArrayCreateBook109()
               elseif indices < 111
-                aArray = cArrayCreateBook110()
+                return cArrayCreateBook110()
               elseif indices < 112
-                aArray = cArrayCreateBook111()
+                return cArrayCreateBook111()
               else
-                aArray = cArrayCreateBook112()
+                return cArrayCreateBook112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Book[] function cArrayCreateBook(Int indices, Book filler = None, Bool outputTra
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateBook113()
+                return cArrayCreateBook113()
               elseif indices < 115
-                aArray = cArrayCreateBook114()
+                return cArrayCreateBook114()
               elseif indices < 116
-                aArray = cArrayCreateBook115()
+                return cArrayCreateBook115()
               else
-                aArray = cArrayCreateBook116()
+                return cArrayCreateBook116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateBook117()
+                return cArrayCreateBook117()
               elseif indices < 119
-                aArray = cArrayCreateBook118()
+                return cArrayCreateBook118()
               elseif indices < 120
-                aArray = cArrayCreateBook119()
+                return cArrayCreateBook119()
               else
-                aArray = cArrayCreateBook120()
+                return cArrayCreateBook120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateBook121()
+                return cArrayCreateBook121()
               elseif indices < 123
-                aArray = cArrayCreateBook122()
+                return cArrayCreateBook122()
               elseif indices < 124
-                aArray = cArrayCreateBook123()
+                return cArrayCreateBook123()
               else
-                aArray = cArrayCreateBook124()
+                return cArrayCreateBook124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateBook125()
+                return cArrayCreateBook125()
               elseif indices < 127
-                aArray = cArrayCreateBook126()
+                return cArrayCreateBook126()
               elseif indices < 128
-                aArray = cArrayCreateBook127()
+                return cArrayCreateBook127()
               else
-                aArray = cArrayCreateBook128()
+                return cArrayCreateBook128()
               endif
             endif
           endif

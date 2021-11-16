@@ -1,22 +1,14 @@
 Scriptname cArrayFaction Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Faction[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateFaction()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayFaction::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool 
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateFaction001()
+                return cArrayCreateFaction001()
               elseif indices < 3
-                aArray = cArrayCreateFaction002()
+                return cArrayCreateFaction002()
               elseif indices < 4
-                aArray = cArrayCreateFaction003()
+                return cArrayCreateFaction003()
               else
-                aArray = cArrayCreateFaction004()
+                return cArrayCreateFaction004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateFaction005()
+                return cArrayCreateFaction005()
               elseif indices < 7
-                aArray = cArrayCreateFaction006()
+                return cArrayCreateFaction006()
               elseif indices < 8
-                aArray = cArrayCreateFaction007()
+                return cArrayCreateFaction007()
               else
-                aArray = cArrayCreateFaction008()
+                return cArrayCreateFaction008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateFaction009()
+                return cArrayCreateFaction009()
               elseif indices < 11
-                aArray = cArrayCreateFaction010()
+                return cArrayCreateFaction010()
               elseif indices < 12
-                aArray = cArrayCreateFaction011()
+                return cArrayCreateFaction011()
               else
-                aArray = cArrayCreateFaction012()
+                return cArrayCreateFaction012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateFaction013()
+                return cArrayCreateFaction013()
               elseif indices < 15
-                aArray = cArrayCreateFaction014()
+                return cArrayCreateFaction014()
               elseif indices < 16
-                aArray = cArrayCreateFaction015()
+                return cArrayCreateFaction015()
               else
-                aArray = cArrayCreateFaction016()
+                return cArrayCreateFaction016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool 
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateFaction017()
+                return cArrayCreateFaction017()
               elseif indices < 19
-                aArray = cArrayCreateFaction018()
+                return cArrayCreateFaction018()
               elseif indices < 20
-                aArray = cArrayCreateFaction019()
+                return cArrayCreateFaction019()
               else
-                aArray = cArrayCreateFaction020()
+                return cArrayCreateFaction020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateFaction021()
+                return cArrayCreateFaction021()
               elseif indices < 23
-                aArray = cArrayCreateFaction022()
+                return cArrayCreateFaction022()
               elseif indices < 24
-                aArray = cArrayCreateFaction023()
+                return cArrayCreateFaction023()
               else
-                aArray = cArrayCreateFaction024()
+                return cArrayCreateFaction024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateFaction025()
+                return cArrayCreateFaction025()
               elseif indices < 27
-                aArray = cArrayCreateFaction026()
+                return cArrayCreateFaction026()
               elseif indices < 28
-                aArray = cArrayCreateFaction027()
+                return cArrayCreateFaction027()
               else
-                aArray = cArrayCreateFaction028()
+                return cArrayCreateFaction028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateFaction029()
+                return cArrayCreateFaction029()
               elseif indices < 31
-                aArray = cArrayCreateFaction030()
+                return cArrayCreateFaction030()
               elseif indices < 32
-                aArray = cArrayCreateFaction031()
+                return cArrayCreateFaction031()
               else
-                aArray = cArrayCreateFaction032()
+                return cArrayCreateFaction032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool 
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateFaction033()
+                return cArrayCreateFaction033()
               elseif indices < 35
-                aArray = cArrayCreateFaction034()
+                return cArrayCreateFaction034()
               elseif indices < 36
-                aArray = cArrayCreateFaction035()
+                return cArrayCreateFaction035()
               else
-                aArray = cArrayCreateFaction036()
+                return cArrayCreateFaction036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateFaction037()
+                return cArrayCreateFaction037()
               elseif indices < 39
-                aArray = cArrayCreateFaction038()
+                return cArrayCreateFaction038()
               elseif indices < 40
-                aArray = cArrayCreateFaction039()
+                return cArrayCreateFaction039()
               else
-                aArray = cArrayCreateFaction040()
+                return cArrayCreateFaction040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateFaction041()
+                return cArrayCreateFaction041()
               elseif indices < 43
-                aArray = cArrayCreateFaction042()
+                return cArrayCreateFaction042()
               elseif indices < 44
-                aArray = cArrayCreateFaction043()
+                return cArrayCreateFaction043()
               else
-                aArray = cArrayCreateFaction044()
+                return cArrayCreateFaction044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateFaction045()
+                return cArrayCreateFaction045()
               elseif indices < 47
-                aArray = cArrayCreateFaction046()
+                return cArrayCreateFaction046()
               elseif indices < 48
-                aArray = cArrayCreateFaction047()
+                return cArrayCreateFaction047()
               else
-                aArray = cArrayCreateFaction048()
+                return cArrayCreateFaction048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool 
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateFaction049()
+                return cArrayCreateFaction049()
               elseif indices < 51
-                aArray = cArrayCreateFaction050()
+                return cArrayCreateFaction050()
               elseif indices < 52
-                aArray = cArrayCreateFaction051()
+                return cArrayCreateFaction051()
               else
-                aArray = cArrayCreateFaction052()
+                return cArrayCreateFaction052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateFaction053()
+                return cArrayCreateFaction053()
               elseif indices < 55
-                aArray = cArrayCreateFaction054()
+                return cArrayCreateFaction054()
               elseif indices < 56
-                aArray = cArrayCreateFaction055()
+                return cArrayCreateFaction055()
               else
-                aArray = cArrayCreateFaction056()
+                return cArrayCreateFaction056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateFaction057()
+                return cArrayCreateFaction057()
               elseif indices < 59
-                aArray = cArrayCreateFaction058()
+                return cArrayCreateFaction058()
               elseif indices < 60
-                aArray = cArrayCreateFaction059()
+                return cArrayCreateFaction059()
               else
-                aArray = cArrayCreateFaction060()
+                return cArrayCreateFaction060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateFaction061()
+                return cArrayCreateFaction061()
               elseif indices < 63
-                aArray = cArrayCreateFaction062()
+                return cArrayCreateFaction062()
               elseif indices < 64
-                aArray = cArrayCreateFaction063()
+                return cArrayCreateFaction063()
               else
-                aArray = cArrayCreateFaction064()
+                return cArrayCreateFaction064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool 
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateFaction065()
+                return cArrayCreateFaction065()
               elseif indices < 67
-                aArray = cArrayCreateFaction066()
+                return cArrayCreateFaction066()
               elseif indices < 68
-                aArray = cArrayCreateFaction067()
+                return cArrayCreateFaction067()
               else
-                aArray = cArrayCreateFaction068()
+                return cArrayCreateFaction068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateFaction069()
+                return cArrayCreateFaction069()
               elseif indices < 71
-                aArray = cArrayCreateFaction070()
+                return cArrayCreateFaction070()
               elseif indices < 72
-                aArray = cArrayCreateFaction071()
+                return cArrayCreateFaction071()
               else
-                aArray = cArrayCreateFaction072()
+                return cArrayCreateFaction072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateFaction073()
+                return cArrayCreateFaction073()
               elseif indices < 75
-                aArray = cArrayCreateFaction074()
+                return cArrayCreateFaction074()
               elseif indices < 76
-                aArray = cArrayCreateFaction075()
+                return cArrayCreateFaction075()
               else
-                aArray = cArrayCreateFaction076()
+                return cArrayCreateFaction076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateFaction077()
+                return cArrayCreateFaction077()
               elseif indices < 79
-                aArray = cArrayCreateFaction078()
+                return cArrayCreateFaction078()
               elseif indices < 80
-                aArray = cArrayCreateFaction079()
+                return cArrayCreateFaction079()
               else
-                aArray = cArrayCreateFaction080()
+                return cArrayCreateFaction080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool 
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateFaction081()
+                return cArrayCreateFaction081()
               elseif indices < 83
-                aArray = cArrayCreateFaction082()
+                return cArrayCreateFaction082()
               elseif indices < 84
-                aArray = cArrayCreateFaction083()
+                return cArrayCreateFaction083()
               else
-                aArray = cArrayCreateFaction084()
+                return cArrayCreateFaction084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateFaction085()
+                return cArrayCreateFaction085()
               elseif indices < 87
-                aArray = cArrayCreateFaction086()
+                return cArrayCreateFaction086()
               elseif indices < 88
-                aArray = cArrayCreateFaction087()
+                return cArrayCreateFaction087()
               else
-                aArray = cArrayCreateFaction088()
+                return cArrayCreateFaction088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateFaction089()
+                return cArrayCreateFaction089()
               elseif indices < 91
-                aArray = cArrayCreateFaction090()
+                return cArrayCreateFaction090()
               elseif indices < 92
-                aArray = cArrayCreateFaction091()
+                return cArrayCreateFaction091()
               else
-                aArray = cArrayCreateFaction092()
+                return cArrayCreateFaction092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateFaction093()
+                return cArrayCreateFaction093()
               elseif indices < 95
-                aArray = cArrayCreateFaction094()
+                return cArrayCreateFaction094()
               elseif indices < 96
-                aArray = cArrayCreateFaction095()
+                return cArrayCreateFaction095()
               else
-                aArray = cArrayCreateFaction096()
+                return cArrayCreateFaction096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool 
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateFaction097()
+                return cArrayCreateFaction097()
               elseif indices < 99
-                aArray = cArrayCreateFaction098()
+                return cArrayCreateFaction098()
               elseif indices < 100
-                aArray = cArrayCreateFaction099()
+                return cArrayCreateFaction099()
               else
-                aArray = cArrayCreateFaction100()
+                return cArrayCreateFaction100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateFaction101()
+                return cArrayCreateFaction101()
               elseif indices < 103
-                aArray = cArrayCreateFaction102()
+                return cArrayCreateFaction102()
               elseif indices < 104
-                aArray = cArrayCreateFaction103()
+                return cArrayCreateFaction103()
               else
-                aArray = cArrayCreateFaction104()
+                return cArrayCreateFaction104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateFaction105()
+                return cArrayCreateFaction105()
               elseif indices < 107
-                aArray = cArrayCreateFaction106()
+                return cArrayCreateFaction106()
               elseif indices < 108
-                aArray = cArrayCreateFaction107()
+                return cArrayCreateFaction107()
               else
-                aArray = cArrayCreateFaction108()
+                return cArrayCreateFaction108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateFaction109()
+                return cArrayCreateFaction109()
               elseif indices < 111
-                aArray = cArrayCreateFaction110()
+                return cArrayCreateFaction110()
               elseif indices < 112
-                aArray = cArrayCreateFaction111()
+                return cArrayCreateFaction111()
               else
-                aArray = cArrayCreateFaction112()
+                return cArrayCreateFaction112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Faction[] function cArrayCreateFaction(Int indices, Faction filler = None, Bool 
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateFaction113()
+                return cArrayCreateFaction113()
               elseif indices < 115
-                aArray = cArrayCreateFaction114()
+                return cArrayCreateFaction114()
               elseif indices < 116
-                aArray = cArrayCreateFaction115()
+                return cArrayCreateFaction115()
               else
-                aArray = cArrayCreateFaction116()
+                return cArrayCreateFaction116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateFaction117()
+                return cArrayCreateFaction117()
               elseif indices < 119
-                aArray = cArrayCreateFaction118()
+                return cArrayCreateFaction118()
               elseif indices < 120
-                aArray = cArrayCreateFaction119()
+                return cArrayCreateFaction119()
               else
-                aArray = cArrayCreateFaction120()
+                return cArrayCreateFaction120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateFaction121()
+                return cArrayCreateFaction121()
               elseif indices < 123
-                aArray = cArrayCreateFaction122()
+                return cArrayCreateFaction122()
               elseif indices < 124
-                aArray = cArrayCreateFaction123()
+                return cArrayCreateFaction123()
               else
-                aArray = cArrayCreateFaction124()
+                return cArrayCreateFaction124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateFaction125()
+                return cArrayCreateFaction125()
               elseif indices < 127
-                aArray = cArrayCreateFaction126()
+                return cArrayCreateFaction126()
               elseif indices < 128
-                aArray = cArrayCreateFaction127()
+                return cArrayCreateFaction127()
               else
-                aArray = cArrayCreateFaction128()
+                return cArrayCreateFaction128()
               endif
             endif
           endif

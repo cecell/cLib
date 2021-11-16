@@ -1,22 +1,14 @@
 Scriptname cArrayTextureSet Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   TextureSet[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace TextureSets
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateTextureSet()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayTextureSet::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = No
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateTextureSet001()
+                return cArrayCreateTextureSet001()
               elseif indices < 3
-                aArray = cArrayCreateTextureSet002()
+                return cArrayCreateTextureSet002()
               elseif indices < 4
-                aArray = cArrayCreateTextureSet003()
+                return cArrayCreateTextureSet003()
               else
-                aArray = cArrayCreateTextureSet004()
+                return cArrayCreateTextureSet004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateTextureSet005()
+                return cArrayCreateTextureSet005()
               elseif indices < 7
-                aArray = cArrayCreateTextureSet006()
+                return cArrayCreateTextureSet006()
               elseif indices < 8
-                aArray = cArrayCreateTextureSet007()
+                return cArrayCreateTextureSet007()
               else
-                aArray = cArrayCreateTextureSet008()
+                return cArrayCreateTextureSet008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateTextureSet009()
+                return cArrayCreateTextureSet009()
               elseif indices < 11
-                aArray = cArrayCreateTextureSet010()
+                return cArrayCreateTextureSet010()
               elseif indices < 12
-                aArray = cArrayCreateTextureSet011()
+                return cArrayCreateTextureSet011()
               else
-                aArray = cArrayCreateTextureSet012()
+                return cArrayCreateTextureSet012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateTextureSet013()
+                return cArrayCreateTextureSet013()
               elseif indices < 15
-                aArray = cArrayCreateTextureSet014()
+                return cArrayCreateTextureSet014()
               elseif indices < 16
-                aArray = cArrayCreateTextureSet015()
+                return cArrayCreateTextureSet015()
               else
-                aArray = cArrayCreateTextureSet016()
+                return cArrayCreateTextureSet016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = No
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateTextureSet017()
+                return cArrayCreateTextureSet017()
               elseif indices < 19
-                aArray = cArrayCreateTextureSet018()
+                return cArrayCreateTextureSet018()
               elseif indices < 20
-                aArray = cArrayCreateTextureSet019()
+                return cArrayCreateTextureSet019()
               else
-                aArray = cArrayCreateTextureSet020()
+                return cArrayCreateTextureSet020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateTextureSet021()
+                return cArrayCreateTextureSet021()
               elseif indices < 23
-                aArray = cArrayCreateTextureSet022()
+                return cArrayCreateTextureSet022()
               elseif indices < 24
-                aArray = cArrayCreateTextureSet023()
+                return cArrayCreateTextureSet023()
               else
-                aArray = cArrayCreateTextureSet024()
+                return cArrayCreateTextureSet024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateTextureSet025()
+                return cArrayCreateTextureSet025()
               elseif indices < 27
-                aArray = cArrayCreateTextureSet026()
+                return cArrayCreateTextureSet026()
               elseif indices < 28
-                aArray = cArrayCreateTextureSet027()
+                return cArrayCreateTextureSet027()
               else
-                aArray = cArrayCreateTextureSet028()
+                return cArrayCreateTextureSet028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateTextureSet029()
+                return cArrayCreateTextureSet029()
               elseif indices < 31
-                aArray = cArrayCreateTextureSet030()
+                return cArrayCreateTextureSet030()
               elseif indices < 32
-                aArray = cArrayCreateTextureSet031()
+                return cArrayCreateTextureSet031()
               else
-                aArray = cArrayCreateTextureSet032()
+                return cArrayCreateTextureSet032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = No
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateTextureSet033()
+                return cArrayCreateTextureSet033()
               elseif indices < 35
-                aArray = cArrayCreateTextureSet034()
+                return cArrayCreateTextureSet034()
               elseif indices < 36
-                aArray = cArrayCreateTextureSet035()
+                return cArrayCreateTextureSet035()
               else
-                aArray = cArrayCreateTextureSet036()
+                return cArrayCreateTextureSet036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateTextureSet037()
+                return cArrayCreateTextureSet037()
               elseif indices < 39
-                aArray = cArrayCreateTextureSet038()
+                return cArrayCreateTextureSet038()
               elseif indices < 40
-                aArray = cArrayCreateTextureSet039()
+                return cArrayCreateTextureSet039()
               else
-                aArray = cArrayCreateTextureSet040()
+                return cArrayCreateTextureSet040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateTextureSet041()
+                return cArrayCreateTextureSet041()
               elseif indices < 43
-                aArray = cArrayCreateTextureSet042()
+                return cArrayCreateTextureSet042()
               elseif indices < 44
-                aArray = cArrayCreateTextureSet043()
+                return cArrayCreateTextureSet043()
               else
-                aArray = cArrayCreateTextureSet044()
+                return cArrayCreateTextureSet044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateTextureSet045()
+                return cArrayCreateTextureSet045()
               elseif indices < 47
-                aArray = cArrayCreateTextureSet046()
+                return cArrayCreateTextureSet046()
               elseif indices < 48
-                aArray = cArrayCreateTextureSet047()
+                return cArrayCreateTextureSet047()
               else
-                aArray = cArrayCreateTextureSet048()
+                return cArrayCreateTextureSet048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = No
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateTextureSet049()
+                return cArrayCreateTextureSet049()
               elseif indices < 51
-                aArray = cArrayCreateTextureSet050()
+                return cArrayCreateTextureSet050()
               elseif indices < 52
-                aArray = cArrayCreateTextureSet051()
+                return cArrayCreateTextureSet051()
               else
-                aArray = cArrayCreateTextureSet052()
+                return cArrayCreateTextureSet052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateTextureSet053()
+                return cArrayCreateTextureSet053()
               elseif indices < 55
-                aArray = cArrayCreateTextureSet054()
+                return cArrayCreateTextureSet054()
               elseif indices < 56
-                aArray = cArrayCreateTextureSet055()
+                return cArrayCreateTextureSet055()
               else
-                aArray = cArrayCreateTextureSet056()
+                return cArrayCreateTextureSet056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateTextureSet057()
+                return cArrayCreateTextureSet057()
               elseif indices < 59
-                aArray = cArrayCreateTextureSet058()
+                return cArrayCreateTextureSet058()
               elseif indices < 60
-                aArray = cArrayCreateTextureSet059()
+                return cArrayCreateTextureSet059()
               else
-                aArray = cArrayCreateTextureSet060()
+                return cArrayCreateTextureSet060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateTextureSet061()
+                return cArrayCreateTextureSet061()
               elseif indices < 63
-                aArray = cArrayCreateTextureSet062()
+                return cArrayCreateTextureSet062()
               elseif indices < 64
-                aArray = cArrayCreateTextureSet063()
+                return cArrayCreateTextureSet063()
               else
-                aArray = cArrayCreateTextureSet064()
+                return cArrayCreateTextureSet064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = No
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateTextureSet065()
+                return cArrayCreateTextureSet065()
               elseif indices < 67
-                aArray = cArrayCreateTextureSet066()
+                return cArrayCreateTextureSet066()
               elseif indices < 68
-                aArray = cArrayCreateTextureSet067()
+                return cArrayCreateTextureSet067()
               else
-                aArray = cArrayCreateTextureSet068()
+                return cArrayCreateTextureSet068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateTextureSet069()
+                return cArrayCreateTextureSet069()
               elseif indices < 71
-                aArray = cArrayCreateTextureSet070()
+                return cArrayCreateTextureSet070()
               elseif indices < 72
-                aArray = cArrayCreateTextureSet071()
+                return cArrayCreateTextureSet071()
               else
-                aArray = cArrayCreateTextureSet072()
+                return cArrayCreateTextureSet072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateTextureSet073()
+                return cArrayCreateTextureSet073()
               elseif indices < 75
-                aArray = cArrayCreateTextureSet074()
+                return cArrayCreateTextureSet074()
               elseif indices < 76
-                aArray = cArrayCreateTextureSet075()
+                return cArrayCreateTextureSet075()
               else
-                aArray = cArrayCreateTextureSet076()
+                return cArrayCreateTextureSet076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateTextureSet077()
+                return cArrayCreateTextureSet077()
               elseif indices < 79
-                aArray = cArrayCreateTextureSet078()
+                return cArrayCreateTextureSet078()
               elseif indices < 80
-                aArray = cArrayCreateTextureSet079()
+                return cArrayCreateTextureSet079()
               else
-                aArray = cArrayCreateTextureSet080()
+                return cArrayCreateTextureSet080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = No
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateTextureSet081()
+                return cArrayCreateTextureSet081()
               elseif indices < 83
-                aArray = cArrayCreateTextureSet082()
+                return cArrayCreateTextureSet082()
               elseif indices < 84
-                aArray = cArrayCreateTextureSet083()
+                return cArrayCreateTextureSet083()
               else
-                aArray = cArrayCreateTextureSet084()
+                return cArrayCreateTextureSet084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateTextureSet085()
+                return cArrayCreateTextureSet085()
               elseif indices < 87
-                aArray = cArrayCreateTextureSet086()
+                return cArrayCreateTextureSet086()
               elseif indices < 88
-                aArray = cArrayCreateTextureSet087()
+                return cArrayCreateTextureSet087()
               else
-                aArray = cArrayCreateTextureSet088()
+                return cArrayCreateTextureSet088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateTextureSet089()
+                return cArrayCreateTextureSet089()
               elseif indices < 91
-                aArray = cArrayCreateTextureSet090()
+                return cArrayCreateTextureSet090()
               elseif indices < 92
-                aArray = cArrayCreateTextureSet091()
+                return cArrayCreateTextureSet091()
               else
-                aArray = cArrayCreateTextureSet092()
+                return cArrayCreateTextureSet092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateTextureSet093()
+                return cArrayCreateTextureSet093()
               elseif indices < 95
-                aArray = cArrayCreateTextureSet094()
+                return cArrayCreateTextureSet094()
               elseif indices < 96
-                aArray = cArrayCreateTextureSet095()
+                return cArrayCreateTextureSet095()
               else
-                aArray = cArrayCreateTextureSet096()
+                return cArrayCreateTextureSet096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = No
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateTextureSet097()
+                return cArrayCreateTextureSet097()
               elseif indices < 99
-                aArray = cArrayCreateTextureSet098()
+                return cArrayCreateTextureSet098()
               elseif indices < 100
-                aArray = cArrayCreateTextureSet099()
+                return cArrayCreateTextureSet099()
               else
-                aArray = cArrayCreateTextureSet100()
+                return cArrayCreateTextureSet100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateTextureSet101()
+                return cArrayCreateTextureSet101()
               elseif indices < 103
-                aArray = cArrayCreateTextureSet102()
+                return cArrayCreateTextureSet102()
               elseif indices < 104
-                aArray = cArrayCreateTextureSet103()
+                return cArrayCreateTextureSet103()
               else
-                aArray = cArrayCreateTextureSet104()
+                return cArrayCreateTextureSet104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateTextureSet105()
+                return cArrayCreateTextureSet105()
               elseif indices < 107
-                aArray = cArrayCreateTextureSet106()
+                return cArrayCreateTextureSet106()
               elseif indices < 108
-                aArray = cArrayCreateTextureSet107()
+                return cArrayCreateTextureSet107()
               else
-                aArray = cArrayCreateTextureSet108()
+                return cArrayCreateTextureSet108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateTextureSet109()
+                return cArrayCreateTextureSet109()
               elseif indices < 111
-                aArray = cArrayCreateTextureSet110()
+                return cArrayCreateTextureSet110()
               elseif indices < 112
-                aArray = cArrayCreateTextureSet111()
+                return cArrayCreateTextureSet111()
               else
-                aArray = cArrayCreateTextureSet112()
+                return cArrayCreateTextureSet112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ TextureSet[] function cArrayCreateTextureSet(Int indices, TextureSet filler = No
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateTextureSet113()
+                return cArrayCreateTextureSet113()
               elseif indices < 115
-                aArray = cArrayCreateTextureSet114()
+                return cArrayCreateTextureSet114()
               elseif indices < 116
-                aArray = cArrayCreateTextureSet115()
+                return cArrayCreateTextureSet115()
               else
-                aArray = cArrayCreateTextureSet116()
+                return cArrayCreateTextureSet116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateTextureSet117()
+                return cArrayCreateTextureSet117()
               elseif indices < 119
-                aArray = cArrayCreateTextureSet118()
+                return cArrayCreateTextureSet118()
               elseif indices < 120
-                aArray = cArrayCreateTextureSet119()
+                return cArrayCreateTextureSet119()
               else
-                aArray = cArrayCreateTextureSet120()
+                return cArrayCreateTextureSet120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateTextureSet121()
+                return cArrayCreateTextureSet121()
               elseif indices < 123
-                aArray = cArrayCreateTextureSet122()
+                return cArrayCreateTextureSet122()
               elseif indices < 124
-                aArray = cArrayCreateTextureSet123()
+                return cArrayCreateTextureSet123()
               else
-                aArray = cArrayCreateTextureSet124()
+                return cArrayCreateTextureSet124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateTextureSet125()
+                return cArrayCreateTextureSet125()
               elseif indices < 127
-                aArray = cArrayCreateTextureSet126()
+                return cArrayCreateTextureSet126()
               elseif indices < 128
-                aArray = cArrayCreateTextureSet127()
+                return cArrayCreateTextureSet127()
               else
-                aArray = cArrayCreateTextureSet128()
+                return cArrayCreateTextureSet128()
               endif
             endif
           endif

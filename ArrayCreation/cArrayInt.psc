@@ -1,24 +1,14 @@
 Scriptname cArrayInt Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE, Bool outputTrace = TRUE, \
-    Bool useConsoleUtil = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool outputTrace = TRUE) global
+  {Requirements: None}
   Int[] aArray
-  if useSKSE && indices > 0
-    aArray = Utility.CreateIntArray(indices, filler)
-  elseif indices > 128 || indices < 1
+  if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateInt()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayInt::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -27,45 +17,45 @@ Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE,
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateInt001()
+                return cArrayCreateInt001()
               elseif indices < 3
-                aArray = cArrayCreateInt002()
+                return cArrayCreateInt002()
               elseif indices < 4
-                aArray = cArrayCreateInt003()
+                return cArrayCreateInt003()
               else
-                aArray = cArrayCreateInt004()
+                return cArrayCreateInt004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateInt005()
+                return cArrayCreateInt005()
               elseif indices < 7
-                aArray = cArrayCreateInt006()
+                return cArrayCreateInt006()
               elseif indices < 8
-                aArray = cArrayCreateInt007()
+                return cArrayCreateInt007()
               else
-                aArray = cArrayCreateInt008()
+                return cArrayCreateInt008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateInt009()
+                return cArrayCreateInt009()
               elseif indices < 11
-                aArray = cArrayCreateInt010()
+                return cArrayCreateInt010()
               elseif indices < 12
-                aArray = cArrayCreateInt011()
+                return cArrayCreateInt011()
               else
-                aArray = cArrayCreateInt012()
+                return cArrayCreateInt012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateInt013()
+                return cArrayCreateInt013()
               elseif indices < 15
-                aArray = cArrayCreateInt014()
+                return cArrayCreateInt014()
               elseif indices < 16
-                aArray = cArrayCreateInt015()
+                return cArrayCreateInt015()
               else
-                aArray = cArrayCreateInt016()
+                return cArrayCreateInt016()
               endif
             endif
           endif
@@ -73,45 +63,45 @@ Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE,
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateInt017()
+                return cArrayCreateInt017()
               elseif indices < 19
-                aArray = cArrayCreateInt018()
+                return cArrayCreateInt018()
               elseif indices < 20
-                aArray = cArrayCreateInt019()
+                return cArrayCreateInt019()
               else
-                aArray = cArrayCreateInt020()
+                return cArrayCreateInt020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateInt021()
+                return cArrayCreateInt021()
               elseif indices < 23
-                aArray = cArrayCreateInt022()
+                return cArrayCreateInt022()
               elseif indices < 24
-                aArray = cArrayCreateInt023()
+                return cArrayCreateInt023()
               else
-                aArray = cArrayCreateInt024()
+                return cArrayCreateInt024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateInt025()
+                return cArrayCreateInt025()
               elseif indices < 27
-                aArray = cArrayCreateInt026()
+                return cArrayCreateInt026()
               elseif indices < 28
-                aArray = cArrayCreateInt027()
+                return cArrayCreateInt027()
               else
-                aArray = cArrayCreateInt028()
+                return cArrayCreateInt028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateInt029()
+                return cArrayCreateInt029()
               elseif indices < 31
-                aArray = cArrayCreateInt030()
+                return cArrayCreateInt030()
               elseif indices < 32
-                aArray = cArrayCreateInt031()
+                return cArrayCreateInt031()
               else
-                aArray = cArrayCreateInt032()
+                return cArrayCreateInt032()
               endif
             endif
           endif
@@ -121,45 +111,45 @@ Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE,
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateInt033()
+                return cArrayCreateInt033()
               elseif indices < 35
-                aArray = cArrayCreateInt034()
+                return cArrayCreateInt034()
               elseif indices < 36
-                aArray = cArrayCreateInt035()
+                return cArrayCreateInt035()
               else
-                aArray = cArrayCreateInt036()
+                return cArrayCreateInt036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateInt037()
+                return cArrayCreateInt037()
               elseif indices < 39
-                aArray = cArrayCreateInt038()
+                return cArrayCreateInt038()
               elseif indices < 40
-                aArray = cArrayCreateInt039()
+                return cArrayCreateInt039()
               else
-                aArray = cArrayCreateInt040()
+                return cArrayCreateInt040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateInt041()
+                return cArrayCreateInt041()
               elseif indices < 43
-                aArray = cArrayCreateInt042()
+                return cArrayCreateInt042()
               elseif indices < 44
-                aArray = cArrayCreateInt043()
+                return cArrayCreateInt043()
               else
-                aArray = cArrayCreateInt044()
+                return cArrayCreateInt044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateInt045()
+                return cArrayCreateInt045()
               elseif indices < 47
-                aArray = cArrayCreateInt046()
+                return cArrayCreateInt046()
               elseif indices < 48
-                aArray = cArrayCreateInt047()
+                return cArrayCreateInt047()
               else
-                aArray = cArrayCreateInt048()
+                return cArrayCreateInt048()
               endif
             endif
           endif
@@ -167,45 +157,45 @@ Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE,
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateInt049()
+                return cArrayCreateInt049()
               elseif indices < 51
-                aArray = cArrayCreateInt050()
+                return cArrayCreateInt050()
               elseif indices < 52
-                aArray = cArrayCreateInt051()
+                return cArrayCreateInt051()
               else
-                aArray = cArrayCreateInt052()
+                return cArrayCreateInt052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateInt053()
+                return cArrayCreateInt053()
               elseif indices < 55
-                aArray = cArrayCreateInt054()
+                return cArrayCreateInt054()
               elseif indices < 56
-                aArray = cArrayCreateInt055()
+                return cArrayCreateInt055()
               else
-                aArray = cArrayCreateInt056()
+                return cArrayCreateInt056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateInt057()
+                return cArrayCreateInt057()
               elseif indices < 59
-                aArray = cArrayCreateInt058()
+                return cArrayCreateInt058()
               elseif indices < 60
-                aArray = cArrayCreateInt059()
+                return cArrayCreateInt059()
               else
-                aArray = cArrayCreateInt060()
+                return cArrayCreateInt060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateInt061()
+                return cArrayCreateInt061()
               elseif indices < 63
-                aArray = cArrayCreateInt062()
+                return cArrayCreateInt062()
               elseif indices < 64
-                aArray = cArrayCreateInt063()
+                return cArrayCreateInt063()
               else
-                aArray = cArrayCreateInt064()
+                return cArrayCreateInt064()
               endif
             endif
           endif
@@ -217,45 +207,45 @@ Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE,
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateInt065()
+                return cArrayCreateInt065()
               elseif indices < 67
-                aArray = cArrayCreateInt066()
+                return cArrayCreateInt066()
               elseif indices < 68
-                aArray = cArrayCreateInt067()
+                return cArrayCreateInt067()
               else
-                aArray = cArrayCreateInt068()
+                return cArrayCreateInt068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateInt069()
+                return cArrayCreateInt069()
               elseif indices < 71
-                aArray = cArrayCreateInt070()
+                return cArrayCreateInt070()
               elseif indices < 72
-                aArray = cArrayCreateInt071()
+                return cArrayCreateInt071()
               else
-                aArray = cArrayCreateInt072()
+                return cArrayCreateInt072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateInt073()
+                return cArrayCreateInt073()
               elseif indices < 75
-                aArray = cArrayCreateInt074()
+                return cArrayCreateInt074()
               elseif indices < 76
-                aArray = cArrayCreateInt075()
+                return cArrayCreateInt075()
               else
-                aArray = cArrayCreateInt076()
+                return cArrayCreateInt076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateInt077()
+                return cArrayCreateInt077()
               elseif indices < 79
-                aArray = cArrayCreateInt078()
+                return cArrayCreateInt078()
               elseif indices < 80
-                aArray = cArrayCreateInt079()
+                return cArrayCreateInt079()
               else
-                aArray = cArrayCreateInt080()
+                return cArrayCreateInt080()
               endif
             endif
           endif
@@ -263,45 +253,45 @@ Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE,
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateInt081()
+                return cArrayCreateInt081()
               elseif indices < 83
-                aArray = cArrayCreateInt082()
+                return cArrayCreateInt082()
               elseif indices < 84
-                aArray = cArrayCreateInt083()
+                return cArrayCreateInt083()
               else
-                aArray = cArrayCreateInt084()
+                return cArrayCreateInt084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateInt085()
+                return cArrayCreateInt085()
               elseif indices < 87
-                aArray = cArrayCreateInt086()
+                return cArrayCreateInt086()
               elseif indices < 88
-                aArray = cArrayCreateInt087()
+                return cArrayCreateInt087()
               else
-                aArray = cArrayCreateInt088()
+                return cArrayCreateInt088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateInt089()
+                return cArrayCreateInt089()
               elseif indices < 91
-                aArray = cArrayCreateInt090()
+                return cArrayCreateInt090()
               elseif indices < 92
-                aArray = cArrayCreateInt091()
+                return cArrayCreateInt091()
               else
-                aArray = cArrayCreateInt092()
+                return cArrayCreateInt092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateInt093()
+                return cArrayCreateInt093()
               elseif indices < 95
-                aArray = cArrayCreateInt094()
+                return cArrayCreateInt094()
               elseif indices < 96
-                aArray = cArrayCreateInt095()
+                return cArrayCreateInt095()
               else
-                aArray = cArrayCreateInt096()
+                return cArrayCreateInt096()
               endif
             endif
           endif
@@ -311,45 +301,45 @@ Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE,
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateInt097()
+                return cArrayCreateInt097()
               elseif indices < 99
-                aArray = cArrayCreateInt098()
+                return cArrayCreateInt098()
               elseif indices < 100
-                aArray = cArrayCreateInt099()
+                return cArrayCreateInt099()
               else
-                aArray = cArrayCreateInt100()
+                return cArrayCreateInt100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateInt101()
+                return cArrayCreateInt101()
               elseif indices < 103
-                aArray = cArrayCreateInt102()
+                return cArrayCreateInt102()
               elseif indices < 104
-                aArray = cArrayCreateInt103()
+                return cArrayCreateInt103()
               else
-                aArray = cArrayCreateInt104()
+                return cArrayCreateInt104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateInt105()
+                return cArrayCreateInt105()
               elseif indices < 107
-                aArray = cArrayCreateInt106()
+                return cArrayCreateInt106()
               elseif indices < 108
-                aArray = cArrayCreateInt107()
+                return cArrayCreateInt107()
               else
-                aArray = cArrayCreateInt108()
+                return cArrayCreateInt108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateInt109()
+                return cArrayCreateInt109()
               elseif indices < 111
-                aArray = cArrayCreateInt110()
+                return cArrayCreateInt110()
               elseif indices < 112
-                aArray = cArrayCreateInt111()
+                return cArrayCreateInt111()
               else
-                aArray = cArrayCreateInt112()
+                return cArrayCreateInt112()
               endif
             endif
           endif
@@ -357,45 +347,45 @@ Int[] function cArrayCreateInt(Int indices, Int filler = 0, Bool useSKSE = TRUE,
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateInt113()
+                return cArrayCreateInt113()
               elseif indices < 115
-                aArray = cArrayCreateInt114()
+                return cArrayCreateInt114()
               elseif indices < 116
-                aArray = cArrayCreateInt115()
+                return cArrayCreateInt115()
               else
-                aArray = cArrayCreateInt116()
+                return cArrayCreateInt116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateInt117()
+                return cArrayCreateInt117()
               elseif indices < 119
-                aArray = cArrayCreateInt118()
+                return cArrayCreateInt118()
               elseif indices < 120
-                aArray = cArrayCreateInt119()
+                return cArrayCreateInt119()
               else
-                aArray = cArrayCreateInt120()
+                return cArrayCreateInt120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateInt121()
+                return cArrayCreateInt121()
               elseif indices < 123
-                aArray = cArrayCreateInt122()
+                return cArrayCreateInt122()
               elseif indices < 124
-                aArray = cArrayCreateInt123()
+                return cArrayCreateInt123()
               else
-                aArray = cArrayCreateInt124()
+                return cArrayCreateInt124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateInt125()
+                return cArrayCreateInt125()
               elseif indices < 127
-                aArray = cArrayCreateInt126()
+                return cArrayCreateInt126()
               elseif indices < 128
-                aArray = cArrayCreateInt127()
+                return cArrayCreateInt127()
               else
-                aArray = cArrayCreateInt128()
+                return cArrayCreateInt128()
               endif
             endif
           endif

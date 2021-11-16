@@ -1,22 +1,14 @@
 Scriptname cArrayMiscObject Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   MiscObject[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace MiscObjects
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateMiscObject()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayMiscObject::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = No
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateMiscObject001()
+                return cArrayCreateMiscObject001()
               elseif indices < 3
-                aArray = cArrayCreateMiscObject002()
+                return cArrayCreateMiscObject002()
               elseif indices < 4
-                aArray = cArrayCreateMiscObject003()
+                return cArrayCreateMiscObject003()
               else
-                aArray = cArrayCreateMiscObject004()
+                return cArrayCreateMiscObject004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateMiscObject005()
+                return cArrayCreateMiscObject005()
               elseif indices < 7
-                aArray = cArrayCreateMiscObject006()
+                return cArrayCreateMiscObject006()
               elseif indices < 8
-                aArray = cArrayCreateMiscObject007()
+                return cArrayCreateMiscObject007()
               else
-                aArray = cArrayCreateMiscObject008()
+                return cArrayCreateMiscObject008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateMiscObject009()
+                return cArrayCreateMiscObject009()
               elseif indices < 11
-                aArray = cArrayCreateMiscObject010()
+                return cArrayCreateMiscObject010()
               elseif indices < 12
-                aArray = cArrayCreateMiscObject011()
+                return cArrayCreateMiscObject011()
               else
-                aArray = cArrayCreateMiscObject012()
+                return cArrayCreateMiscObject012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateMiscObject013()
+                return cArrayCreateMiscObject013()
               elseif indices < 15
-                aArray = cArrayCreateMiscObject014()
+                return cArrayCreateMiscObject014()
               elseif indices < 16
-                aArray = cArrayCreateMiscObject015()
+                return cArrayCreateMiscObject015()
               else
-                aArray = cArrayCreateMiscObject016()
+                return cArrayCreateMiscObject016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = No
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateMiscObject017()
+                return cArrayCreateMiscObject017()
               elseif indices < 19
-                aArray = cArrayCreateMiscObject018()
+                return cArrayCreateMiscObject018()
               elseif indices < 20
-                aArray = cArrayCreateMiscObject019()
+                return cArrayCreateMiscObject019()
               else
-                aArray = cArrayCreateMiscObject020()
+                return cArrayCreateMiscObject020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateMiscObject021()
+                return cArrayCreateMiscObject021()
               elseif indices < 23
-                aArray = cArrayCreateMiscObject022()
+                return cArrayCreateMiscObject022()
               elseif indices < 24
-                aArray = cArrayCreateMiscObject023()
+                return cArrayCreateMiscObject023()
               else
-                aArray = cArrayCreateMiscObject024()
+                return cArrayCreateMiscObject024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateMiscObject025()
+                return cArrayCreateMiscObject025()
               elseif indices < 27
-                aArray = cArrayCreateMiscObject026()
+                return cArrayCreateMiscObject026()
               elseif indices < 28
-                aArray = cArrayCreateMiscObject027()
+                return cArrayCreateMiscObject027()
               else
-                aArray = cArrayCreateMiscObject028()
+                return cArrayCreateMiscObject028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateMiscObject029()
+                return cArrayCreateMiscObject029()
               elseif indices < 31
-                aArray = cArrayCreateMiscObject030()
+                return cArrayCreateMiscObject030()
               elseif indices < 32
-                aArray = cArrayCreateMiscObject031()
+                return cArrayCreateMiscObject031()
               else
-                aArray = cArrayCreateMiscObject032()
+                return cArrayCreateMiscObject032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = No
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateMiscObject033()
+                return cArrayCreateMiscObject033()
               elseif indices < 35
-                aArray = cArrayCreateMiscObject034()
+                return cArrayCreateMiscObject034()
               elseif indices < 36
-                aArray = cArrayCreateMiscObject035()
+                return cArrayCreateMiscObject035()
               else
-                aArray = cArrayCreateMiscObject036()
+                return cArrayCreateMiscObject036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateMiscObject037()
+                return cArrayCreateMiscObject037()
               elseif indices < 39
-                aArray = cArrayCreateMiscObject038()
+                return cArrayCreateMiscObject038()
               elseif indices < 40
-                aArray = cArrayCreateMiscObject039()
+                return cArrayCreateMiscObject039()
               else
-                aArray = cArrayCreateMiscObject040()
+                return cArrayCreateMiscObject040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateMiscObject041()
+                return cArrayCreateMiscObject041()
               elseif indices < 43
-                aArray = cArrayCreateMiscObject042()
+                return cArrayCreateMiscObject042()
               elseif indices < 44
-                aArray = cArrayCreateMiscObject043()
+                return cArrayCreateMiscObject043()
               else
-                aArray = cArrayCreateMiscObject044()
+                return cArrayCreateMiscObject044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateMiscObject045()
+                return cArrayCreateMiscObject045()
               elseif indices < 47
-                aArray = cArrayCreateMiscObject046()
+                return cArrayCreateMiscObject046()
               elseif indices < 48
-                aArray = cArrayCreateMiscObject047()
+                return cArrayCreateMiscObject047()
               else
-                aArray = cArrayCreateMiscObject048()
+                return cArrayCreateMiscObject048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = No
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateMiscObject049()
+                return cArrayCreateMiscObject049()
               elseif indices < 51
-                aArray = cArrayCreateMiscObject050()
+                return cArrayCreateMiscObject050()
               elseif indices < 52
-                aArray = cArrayCreateMiscObject051()
+                return cArrayCreateMiscObject051()
               else
-                aArray = cArrayCreateMiscObject052()
+                return cArrayCreateMiscObject052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateMiscObject053()
+                return cArrayCreateMiscObject053()
               elseif indices < 55
-                aArray = cArrayCreateMiscObject054()
+                return cArrayCreateMiscObject054()
               elseif indices < 56
-                aArray = cArrayCreateMiscObject055()
+                return cArrayCreateMiscObject055()
               else
-                aArray = cArrayCreateMiscObject056()
+                return cArrayCreateMiscObject056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateMiscObject057()
+                return cArrayCreateMiscObject057()
               elseif indices < 59
-                aArray = cArrayCreateMiscObject058()
+                return cArrayCreateMiscObject058()
               elseif indices < 60
-                aArray = cArrayCreateMiscObject059()
+                return cArrayCreateMiscObject059()
               else
-                aArray = cArrayCreateMiscObject060()
+                return cArrayCreateMiscObject060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateMiscObject061()
+                return cArrayCreateMiscObject061()
               elseif indices < 63
-                aArray = cArrayCreateMiscObject062()
+                return cArrayCreateMiscObject062()
               elseif indices < 64
-                aArray = cArrayCreateMiscObject063()
+                return cArrayCreateMiscObject063()
               else
-                aArray = cArrayCreateMiscObject064()
+                return cArrayCreateMiscObject064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = No
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateMiscObject065()
+                return cArrayCreateMiscObject065()
               elseif indices < 67
-                aArray = cArrayCreateMiscObject066()
+                return cArrayCreateMiscObject066()
               elseif indices < 68
-                aArray = cArrayCreateMiscObject067()
+                return cArrayCreateMiscObject067()
               else
-                aArray = cArrayCreateMiscObject068()
+                return cArrayCreateMiscObject068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateMiscObject069()
+                return cArrayCreateMiscObject069()
               elseif indices < 71
-                aArray = cArrayCreateMiscObject070()
+                return cArrayCreateMiscObject070()
               elseif indices < 72
-                aArray = cArrayCreateMiscObject071()
+                return cArrayCreateMiscObject071()
               else
-                aArray = cArrayCreateMiscObject072()
+                return cArrayCreateMiscObject072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateMiscObject073()
+                return cArrayCreateMiscObject073()
               elseif indices < 75
-                aArray = cArrayCreateMiscObject074()
+                return cArrayCreateMiscObject074()
               elseif indices < 76
-                aArray = cArrayCreateMiscObject075()
+                return cArrayCreateMiscObject075()
               else
-                aArray = cArrayCreateMiscObject076()
+                return cArrayCreateMiscObject076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateMiscObject077()
+                return cArrayCreateMiscObject077()
               elseif indices < 79
-                aArray = cArrayCreateMiscObject078()
+                return cArrayCreateMiscObject078()
               elseif indices < 80
-                aArray = cArrayCreateMiscObject079()
+                return cArrayCreateMiscObject079()
               else
-                aArray = cArrayCreateMiscObject080()
+                return cArrayCreateMiscObject080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = No
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateMiscObject081()
+                return cArrayCreateMiscObject081()
               elseif indices < 83
-                aArray = cArrayCreateMiscObject082()
+                return cArrayCreateMiscObject082()
               elseif indices < 84
-                aArray = cArrayCreateMiscObject083()
+                return cArrayCreateMiscObject083()
               else
-                aArray = cArrayCreateMiscObject084()
+                return cArrayCreateMiscObject084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateMiscObject085()
+                return cArrayCreateMiscObject085()
               elseif indices < 87
-                aArray = cArrayCreateMiscObject086()
+                return cArrayCreateMiscObject086()
               elseif indices < 88
-                aArray = cArrayCreateMiscObject087()
+                return cArrayCreateMiscObject087()
               else
-                aArray = cArrayCreateMiscObject088()
+                return cArrayCreateMiscObject088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateMiscObject089()
+                return cArrayCreateMiscObject089()
               elseif indices < 91
-                aArray = cArrayCreateMiscObject090()
+                return cArrayCreateMiscObject090()
               elseif indices < 92
-                aArray = cArrayCreateMiscObject091()
+                return cArrayCreateMiscObject091()
               else
-                aArray = cArrayCreateMiscObject092()
+                return cArrayCreateMiscObject092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateMiscObject093()
+                return cArrayCreateMiscObject093()
               elseif indices < 95
-                aArray = cArrayCreateMiscObject094()
+                return cArrayCreateMiscObject094()
               elseif indices < 96
-                aArray = cArrayCreateMiscObject095()
+                return cArrayCreateMiscObject095()
               else
-                aArray = cArrayCreateMiscObject096()
+                return cArrayCreateMiscObject096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = No
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateMiscObject097()
+                return cArrayCreateMiscObject097()
               elseif indices < 99
-                aArray = cArrayCreateMiscObject098()
+                return cArrayCreateMiscObject098()
               elseif indices < 100
-                aArray = cArrayCreateMiscObject099()
+                return cArrayCreateMiscObject099()
               else
-                aArray = cArrayCreateMiscObject100()
+                return cArrayCreateMiscObject100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateMiscObject101()
+                return cArrayCreateMiscObject101()
               elseif indices < 103
-                aArray = cArrayCreateMiscObject102()
+                return cArrayCreateMiscObject102()
               elseif indices < 104
-                aArray = cArrayCreateMiscObject103()
+                return cArrayCreateMiscObject103()
               else
-                aArray = cArrayCreateMiscObject104()
+                return cArrayCreateMiscObject104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateMiscObject105()
+                return cArrayCreateMiscObject105()
               elseif indices < 107
-                aArray = cArrayCreateMiscObject106()
+                return cArrayCreateMiscObject106()
               elseif indices < 108
-                aArray = cArrayCreateMiscObject107()
+                return cArrayCreateMiscObject107()
               else
-                aArray = cArrayCreateMiscObject108()
+                return cArrayCreateMiscObject108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateMiscObject109()
+                return cArrayCreateMiscObject109()
               elseif indices < 111
-                aArray = cArrayCreateMiscObject110()
+                return cArrayCreateMiscObject110()
               elseif indices < 112
-                aArray = cArrayCreateMiscObject111()
+                return cArrayCreateMiscObject111()
               else
-                aArray = cArrayCreateMiscObject112()
+                return cArrayCreateMiscObject112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ MiscObject[] function cArrayCreateMiscObject(Int indices, MiscObject filler = No
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateMiscObject113()
+                return cArrayCreateMiscObject113()
               elseif indices < 115
-                aArray = cArrayCreateMiscObject114()
+                return cArrayCreateMiscObject114()
               elseif indices < 116
-                aArray = cArrayCreateMiscObject115()
+                return cArrayCreateMiscObject115()
               else
-                aArray = cArrayCreateMiscObject116()
+                return cArrayCreateMiscObject116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateMiscObject117()
+                return cArrayCreateMiscObject117()
               elseif indices < 119
-                aArray = cArrayCreateMiscObject118()
+                return cArrayCreateMiscObject118()
               elseif indices < 120
-                aArray = cArrayCreateMiscObject119()
+                return cArrayCreateMiscObject119()
               else
-                aArray = cArrayCreateMiscObject120()
+                return cArrayCreateMiscObject120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateMiscObject121()
+                return cArrayCreateMiscObject121()
               elseif indices < 123
-                aArray = cArrayCreateMiscObject122()
+                return cArrayCreateMiscObject122()
               elseif indices < 124
-                aArray = cArrayCreateMiscObject123()
+                return cArrayCreateMiscObject123()
               else
-                aArray = cArrayCreateMiscObject124()
+                return cArrayCreateMiscObject124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateMiscObject125()
+                return cArrayCreateMiscObject125()
               elseif indices < 127
-                aArray = cArrayCreateMiscObject126()
+                return cArrayCreateMiscObject126()
               elseif indices < 128
-                aArray = cArrayCreateMiscObject127()
+                return cArrayCreateMiscObject127()
               else
-                aArray = cArrayCreateMiscObject128()
+                return cArrayCreateMiscObject128()
               endif
             endif
           endif

@@ -1,24 +1,14 @@
 Scriptname cArrayActor Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePapUtil = TRUE, \
-  Bool outputTrace = TRUE, Bool useConsoleUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
+Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool outputTrace = TRUE) global
+  {Requirements: None}
   Actor[] aArray
-  if usePapUtil && clibUse.cUsePapUtil() && indices > 0
-    aArray = PapyrusUtil.ActorArray(indices, filler)
-  elseif indices > 128 || indices < 1
+  if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateActor()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayActor::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -27,45 +17,45 @@ Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePap
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateActor001()
+                return cArrayCreateActor001()
               elseif indices < 3
-                aArray = cArrayCreateActor002()
+                return cArrayCreateActor002()
               elseif indices < 4
-                aArray = cArrayCreateActor003()
+                return cArrayCreateActor003()
               else
-                aArray = cArrayCreateActor004()
+                return cArrayCreateActor004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateActor005()
+                return cArrayCreateActor005()
               elseif indices < 7
-                aArray = cArrayCreateActor006()
+                return cArrayCreateActor006()
               elseif indices < 8
-                aArray = cArrayCreateActor007()
+                return cArrayCreateActor007()
               else
-                aArray = cArrayCreateActor008()
+                return cArrayCreateActor008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateActor009()
+                return cArrayCreateActor009()
               elseif indices < 11
-                aArray = cArrayCreateActor010()
+                return cArrayCreateActor010()
               elseif indices < 12
-                aArray = cArrayCreateActor011()
+                return cArrayCreateActor011()
               else
-                aArray = cArrayCreateActor012()
+                return cArrayCreateActor012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateActor013()
+                return cArrayCreateActor013()
               elseif indices < 15
-                aArray = cArrayCreateActor014()
+                return cArrayCreateActor014()
               elseif indices < 16
-                aArray = cArrayCreateActor015()
+                return cArrayCreateActor015()
               else
-                aArray = cArrayCreateActor016()
+                return cArrayCreateActor016()
               endif
             endif
           endif
@@ -73,45 +63,45 @@ Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePap
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateActor017()
+                return cArrayCreateActor017()
               elseif indices < 19
-                aArray = cArrayCreateActor018()
+                return cArrayCreateActor018()
               elseif indices < 20
-                aArray = cArrayCreateActor019()
+                return cArrayCreateActor019()
               else
-                aArray = cArrayCreateActor020()
+                return cArrayCreateActor020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateActor021()
+                return cArrayCreateActor021()
               elseif indices < 23
-                aArray = cArrayCreateActor022()
+                return cArrayCreateActor022()
               elseif indices < 24
-                aArray = cArrayCreateActor023()
+                return cArrayCreateActor023()
               else
-                aArray = cArrayCreateActor024()
+                return cArrayCreateActor024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateActor025()
+                return cArrayCreateActor025()
               elseif indices < 27
-                aArray = cArrayCreateActor026()
+                return cArrayCreateActor026()
               elseif indices < 28
-                aArray = cArrayCreateActor027()
+                return cArrayCreateActor027()
               else
-                aArray = cArrayCreateActor028()
+                return cArrayCreateActor028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateActor029()
+                return cArrayCreateActor029()
               elseif indices < 31
-                aArray = cArrayCreateActor030()
+                return cArrayCreateActor030()
               elseif indices < 32
-                aArray = cArrayCreateActor031()
+                return cArrayCreateActor031()
               else
-                aArray = cArrayCreateActor032()
+                return cArrayCreateActor032()
               endif
             endif
           endif
@@ -121,45 +111,45 @@ Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePap
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateActor033()
+                return cArrayCreateActor033()
               elseif indices < 35
-                aArray = cArrayCreateActor034()
+                return cArrayCreateActor034()
               elseif indices < 36
-                aArray = cArrayCreateActor035()
+                return cArrayCreateActor035()
               else
-                aArray = cArrayCreateActor036()
+                return cArrayCreateActor036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateActor037()
+                return cArrayCreateActor037()
               elseif indices < 39
-                aArray = cArrayCreateActor038()
+                return cArrayCreateActor038()
               elseif indices < 40
-                aArray = cArrayCreateActor039()
+                return cArrayCreateActor039()
               else
-                aArray = cArrayCreateActor040()
+                return cArrayCreateActor040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateActor041()
+                return cArrayCreateActor041()
               elseif indices < 43
-                aArray = cArrayCreateActor042()
+                return cArrayCreateActor042()
               elseif indices < 44
-                aArray = cArrayCreateActor043()
+                return cArrayCreateActor043()
               else
-                aArray = cArrayCreateActor044()
+                return cArrayCreateActor044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateActor045()
+                return cArrayCreateActor045()
               elseif indices < 47
-                aArray = cArrayCreateActor046()
+                return cArrayCreateActor046()
               elseif indices < 48
-                aArray = cArrayCreateActor047()
+                return cArrayCreateActor047()
               else
-                aArray = cArrayCreateActor048()
+                return cArrayCreateActor048()
               endif
             endif
           endif
@@ -167,45 +157,45 @@ Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePap
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateActor049()
+                return cArrayCreateActor049()
               elseif indices < 51
-                aArray = cArrayCreateActor050()
+                return cArrayCreateActor050()
               elseif indices < 52
-                aArray = cArrayCreateActor051()
+                return cArrayCreateActor051()
               else
-                aArray = cArrayCreateActor052()
+                return cArrayCreateActor052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateActor053()
+                return cArrayCreateActor053()
               elseif indices < 55
-                aArray = cArrayCreateActor054()
+                return cArrayCreateActor054()
               elseif indices < 56
-                aArray = cArrayCreateActor055()
+                return cArrayCreateActor055()
               else
-                aArray = cArrayCreateActor056()
+                return cArrayCreateActor056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateActor057()
+                return cArrayCreateActor057()
               elseif indices < 59
-                aArray = cArrayCreateActor058()
+                return cArrayCreateActor058()
               elseif indices < 60
-                aArray = cArrayCreateActor059()
+                return cArrayCreateActor059()
               else
-                aArray = cArrayCreateActor060()
+                return cArrayCreateActor060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateActor061()
+                return cArrayCreateActor061()
               elseif indices < 63
-                aArray = cArrayCreateActor062()
+                return cArrayCreateActor062()
               elseif indices < 64
-                aArray = cArrayCreateActor063()
+                return cArrayCreateActor063()
               else
-                aArray = cArrayCreateActor064()
+                return cArrayCreateActor064()
               endif
             endif
           endif
@@ -217,45 +207,45 @@ Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePap
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateActor065()
+                return cArrayCreateActor065()
               elseif indices < 67
-                aArray = cArrayCreateActor066()
+                return cArrayCreateActor066()
               elseif indices < 68
-                aArray = cArrayCreateActor067()
+                return cArrayCreateActor067()
               else
-                aArray = cArrayCreateActor068()
+                return cArrayCreateActor068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateActor069()
+                return cArrayCreateActor069()
               elseif indices < 71
-                aArray = cArrayCreateActor070()
+                return cArrayCreateActor070()
               elseif indices < 72
-                aArray = cArrayCreateActor071()
+                return cArrayCreateActor071()
               else
-                aArray = cArrayCreateActor072()
+                return cArrayCreateActor072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateActor073()
+                return cArrayCreateActor073()
               elseif indices < 75
-                aArray = cArrayCreateActor074()
+                return cArrayCreateActor074()
               elseif indices < 76
-                aArray = cArrayCreateActor075()
+                return cArrayCreateActor075()
               else
-                aArray = cArrayCreateActor076()
+                return cArrayCreateActor076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateActor077()
+                return cArrayCreateActor077()
               elseif indices < 79
-                aArray = cArrayCreateActor078()
+                return cArrayCreateActor078()
               elseif indices < 80
-                aArray = cArrayCreateActor079()
+                return cArrayCreateActor079()
               else
-                aArray = cArrayCreateActor080()
+                return cArrayCreateActor080()
               endif
             endif
           endif
@@ -263,45 +253,45 @@ Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePap
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateActor081()
+                return cArrayCreateActor081()
               elseif indices < 83
-                aArray = cArrayCreateActor082()
+                return cArrayCreateActor082()
               elseif indices < 84
-                aArray = cArrayCreateActor083()
+                return cArrayCreateActor083()
               else
-                aArray = cArrayCreateActor084()
+                return cArrayCreateActor084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateActor085()
+                return cArrayCreateActor085()
               elseif indices < 87
-                aArray = cArrayCreateActor086()
+                return cArrayCreateActor086()
               elseif indices < 88
-                aArray = cArrayCreateActor087()
+                return cArrayCreateActor087()
               else
-                aArray = cArrayCreateActor088()
+                return cArrayCreateActor088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateActor089()
+                return cArrayCreateActor089()
               elseif indices < 91
-                aArray = cArrayCreateActor090()
+                return cArrayCreateActor090()
               elseif indices < 92
-                aArray = cArrayCreateActor091()
+                return cArrayCreateActor091()
               else
-                aArray = cArrayCreateActor092()
+                return cArrayCreateActor092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateActor093()
+                return cArrayCreateActor093()
               elseif indices < 95
-                aArray = cArrayCreateActor094()
+                return cArrayCreateActor094()
               elseif indices < 96
-                aArray = cArrayCreateActor095()
+                return cArrayCreateActor095()
               else
-                aArray = cArrayCreateActor096()
+                return cArrayCreateActor096()
               endif
             endif
           endif
@@ -311,45 +301,45 @@ Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePap
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateActor097()
+                return cArrayCreateActor097()
               elseif indices < 99
-                aArray = cArrayCreateActor098()
+                return cArrayCreateActor098()
               elseif indices < 100
-                aArray = cArrayCreateActor099()
+                return cArrayCreateActor099()
               else
-                aArray = cArrayCreateActor100()
+                return cArrayCreateActor100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateActor101()
+                return cArrayCreateActor101()
               elseif indices < 103
-                aArray = cArrayCreateActor102()
+                return cArrayCreateActor102()
               elseif indices < 104
-                aArray = cArrayCreateActor103()
+                return cArrayCreateActor103()
               else
-                aArray = cArrayCreateActor104()
+                return cArrayCreateActor104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateActor105()
+                return cArrayCreateActor105()
               elseif indices < 107
-                aArray = cArrayCreateActor106()
+                return cArrayCreateActor106()
               elseif indices < 108
-                aArray = cArrayCreateActor107()
+                return cArrayCreateActor107()
               else
-                aArray = cArrayCreateActor108()
+                return cArrayCreateActor108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateActor109()
+                return cArrayCreateActor109()
               elseif indices < 111
-                aArray = cArrayCreateActor110()
+                return cArrayCreateActor110()
               elseif indices < 112
-                aArray = cArrayCreateActor111()
+                return cArrayCreateActor111()
               else
-                aArray = cArrayCreateActor112()
+                return cArrayCreateActor112()
               endif
             endif
           endif
@@ -357,45 +347,45 @@ Actor[] function cArrayCreateActor(Int indices, Actor filler = None, Bool usePap
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateActor113()
+                return cArrayCreateActor113()
               elseif indices < 115
-                aArray = cArrayCreateActor114()
+                return cArrayCreateActor114()
               elseif indices < 116
-                aArray = cArrayCreateActor115()
+                return cArrayCreateActor115()
               else
-                aArray = cArrayCreateActor116()
+                return cArrayCreateActor116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateActor117()
+                return cArrayCreateActor117()
               elseif indices < 119
-                aArray = cArrayCreateActor118()
+                return cArrayCreateActor118()
               elseif indices < 120
-                aArray = cArrayCreateActor119()
+                return cArrayCreateActor119()
               else
-                aArray = cArrayCreateActor120()
+                return cArrayCreateActor120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateActor121()
+                return cArrayCreateActor121()
               elseif indices < 123
-                aArray = cArrayCreateActor122()
+                return cArrayCreateActor122()
               elseif indices < 124
-                aArray = cArrayCreateActor123()
+                return cArrayCreateActor123()
               else
-                aArray = cArrayCreateActor124()
+                return cArrayCreateActor124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateActor125()
+                return cArrayCreateActor125()
               elseif indices < 127
-                aArray = cArrayCreateActor126()
+                return cArrayCreateActor126()
               elseif indices < 128
-                aArray = cArrayCreateActor127()
+                return cArrayCreateActor127()
               else
-                aArray = cArrayCreateActor128()
+                return cArrayCreateActor128()
               endif
             endif
           endif

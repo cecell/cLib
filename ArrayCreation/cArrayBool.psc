@@ -1,24 +1,14 @@
 Scriptname cArrayBool Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE = TRUE, Bool outputTrace = TRUE, \
-    Bool useConsoleUtil = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool outputTrace = TRUE) global
+  {Requirements: None}
   Bool[] aArray
-  if useSKSE && indices > 0
-    aArray = Utility.CreateBoolArray(indices, filler)
-  elseif indices > 128 || indices < 1
+  if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateBool()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayBool::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -27,45 +17,45 @@ Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE 
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateBool001()
+                return cArrayCreateBool001()
               elseif indices < 3
-                aArray = cArrayCreateBool002()
+                return cArrayCreateBool002()
               elseif indices < 4
-                aArray = cArrayCreateBool003()
+                return cArrayCreateBool003()
               else
-                aArray = cArrayCreateBool004()
+                return cArrayCreateBool004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateBool005()
+                return cArrayCreateBool005()
               elseif indices < 7
-                aArray = cArrayCreateBool006()
+                return cArrayCreateBool006()
               elseif indices < 8
-                aArray = cArrayCreateBool007()
+                return cArrayCreateBool007()
               else
-                aArray = cArrayCreateBool008()
+                return cArrayCreateBool008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateBool009()
+                return cArrayCreateBool009()
               elseif indices < 11
-                aArray = cArrayCreateBool010()
+                return cArrayCreateBool010()
               elseif indices < 12
-                aArray = cArrayCreateBool011()
+                return cArrayCreateBool011()
               else
-                aArray = cArrayCreateBool012()
+                return cArrayCreateBool012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateBool013()
+                return cArrayCreateBool013()
               elseif indices < 15
-                aArray = cArrayCreateBool014()
+                return cArrayCreateBool014()
               elseif indices < 16
-                aArray = cArrayCreateBool015()
+                return cArrayCreateBool015()
               else
-                aArray = cArrayCreateBool016()
+                return cArrayCreateBool016()
               endif
             endif
           endif
@@ -73,45 +63,45 @@ Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE 
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateBool017()
+                return cArrayCreateBool017()
               elseif indices < 19
-                aArray = cArrayCreateBool018()
+                return cArrayCreateBool018()
               elseif indices < 20
-                aArray = cArrayCreateBool019()
+                return cArrayCreateBool019()
               else
-                aArray = cArrayCreateBool020()
+                return cArrayCreateBool020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateBool021()
+                return cArrayCreateBool021()
               elseif indices < 23
-                aArray = cArrayCreateBool022()
+                return cArrayCreateBool022()
               elseif indices < 24
-                aArray = cArrayCreateBool023()
+                return cArrayCreateBool023()
               else
-                aArray = cArrayCreateBool024()
+                return cArrayCreateBool024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateBool025()
+                return cArrayCreateBool025()
               elseif indices < 27
-                aArray = cArrayCreateBool026()
+                return cArrayCreateBool026()
               elseif indices < 28
-                aArray = cArrayCreateBool027()
+                return cArrayCreateBool027()
               else
-                aArray = cArrayCreateBool028()
+                return cArrayCreateBool028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateBool029()
+                return cArrayCreateBool029()
               elseif indices < 31
-                aArray = cArrayCreateBool030()
+                return cArrayCreateBool030()
               elseif indices < 32
-                aArray = cArrayCreateBool031()
+                return cArrayCreateBool031()
               else
-                aArray = cArrayCreateBool032()
+                return cArrayCreateBool032()
               endif
             endif
           endif
@@ -121,45 +111,45 @@ Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE 
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateBool033()
+                return cArrayCreateBool033()
               elseif indices < 35
-                aArray = cArrayCreateBool034()
+                return cArrayCreateBool034()
               elseif indices < 36
-                aArray = cArrayCreateBool035()
+                return cArrayCreateBool035()
               else
-                aArray = cArrayCreateBool036()
+                return cArrayCreateBool036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateBool037()
+                return cArrayCreateBool037()
               elseif indices < 39
-                aArray = cArrayCreateBool038()
+                return cArrayCreateBool038()
               elseif indices < 40
-                aArray = cArrayCreateBool039()
+                return cArrayCreateBool039()
               else
-                aArray = cArrayCreateBool040()
+                return cArrayCreateBool040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateBool041()
+                return cArrayCreateBool041()
               elseif indices < 43
-                aArray = cArrayCreateBool042()
+                return cArrayCreateBool042()
               elseif indices < 44
-                aArray = cArrayCreateBool043()
+                return cArrayCreateBool043()
               else
-                aArray = cArrayCreateBool044()
+                return cArrayCreateBool044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateBool045()
+                return cArrayCreateBool045()
               elseif indices < 47
-                aArray = cArrayCreateBool046()
+                return cArrayCreateBool046()
               elseif indices < 48
-                aArray = cArrayCreateBool047()
+                return cArrayCreateBool047()
               else
-                aArray = cArrayCreateBool048()
+                return cArrayCreateBool048()
               endif
             endif
           endif
@@ -167,45 +157,45 @@ Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE 
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateBool049()
+                return cArrayCreateBool049()
               elseif indices < 51
-                aArray = cArrayCreateBool050()
+                return cArrayCreateBool050()
               elseif indices < 52
-                aArray = cArrayCreateBool051()
+                return cArrayCreateBool051()
               else
-                aArray = cArrayCreateBool052()
+                return cArrayCreateBool052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateBool053()
+                return cArrayCreateBool053()
               elseif indices < 55
-                aArray = cArrayCreateBool054()
+                return cArrayCreateBool054()
               elseif indices < 56
-                aArray = cArrayCreateBool055()
+                return cArrayCreateBool055()
               else
-                aArray = cArrayCreateBool056()
+                return cArrayCreateBool056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateBool057()
+                return cArrayCreateBool057()
               elseif indices < 59
-                aArray = cArrayCreateBool058()
+                return cArrayCreateBool058()
               elseif indices < 60
-                aArray = cArrayCreateBool059()
+                return cArrayCreateBool059()
               else
-                aArray = cArrayCreateBool060()
+                return cArrayCreateBool060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateBool061()
+                return cArrayCreateBool061()
               elseif indices < 63
-                aArray = cArrayCreateBool062()
+                return cArrayCreateBool062()
               elseif indices < 64
-                aArray = cArrayCreateBool063()
+                return cArrayCreateBool063()
               else
-                aArray = cArrayCreateBool064()
+                return cArrayCreateBool064()
               endif
             endif
           endif
@@ -217,45 +207,45 @@ Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE 
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateBool065()
+                return cArrayCreateBool065()
               elseif indices < 67
-                aArray = cArrayCreateBool066()
+                return cArrayCreateBool066()
               elseif indices < 68
-                aArray = cArrayCreateBool067()
+                return cArrayCreateBool067()
               else
-                aArray = cArrayCreateBool068()
+                return cArrayCreateBool068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateBool069()
+                return cArrayCreateBool069()
               elseif indices < 71
-                aArray = cArrayCreateBool070()
+                return cArrayCreateBool070()
               elseif indices < 72
-                aArray = cArrayCreateBool071()
+                return cArrayCreateBool071()
               else
-                aArray = cArrayCreateBool072()
+                return cArrayCreateBool072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateBool073()
+                return cArrayCreateBool073()
               elseif indices < 75
-                aArray = cArrayCreateBool074()
+                return cArrayCreateBool074()
               elseif indices < 76
-                aArray = cArrayCreateBool075()
+                return cArrayCreateBool075()
               else
-                aArray = cArrayCreateBool076()
+                return cArrayCreateBool076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateBool077()
+                return cArrayCreateBool077()
               elseif indices < 79
-                aArray = cArrayCreateBool078()
+                return cArrayCreateBool078()
               elseif indices < 80
-                aArray = cArrayCreateBool079()
+                return cArrayCreateBool079()
               else
-                aArray = cArrayCreateBool080()
+                return cArrayCreateBool080()
               endif
             endif
           endif
@@ -263,45 +253,45 @@ Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE 
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateBool081()
+                return cArrayCreateBool081()
               elseif indices < 83
-                aArray = cArrayCreateBool082()
+                return cArrayCreateBool082()
               elseif indices < 84
-                aArray = cArrayCreateBool083()
+                return cArrayCreateBool083()
               else
-                aArray = cArrayCreateBool084()
+                return cArrayCreateBool084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateBool085()
+                return cArrayCreateBool085()
               elseif indices < 87
-                aArray = cArrayCreateBool086()
+                return cArrayCreateBool086()
               elseif indices < 88
-                aArray = cArrayCreateBool087()
+                return cArrayCreateBool087()
               else
-                aArray = cArrayCreateBool088()
+                return cArrayCreateBool088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateBool089()
+                return cArrayCreateBool089()
               elseif indices < 91
-                aArray = cArrayCreateBool090()
+                return cArrayCreateBool090()
               elseif indices < 92
-                aArray = cArrayCreateBool091()
+                return cArrayCreateBool091()
               else
-                aArray = cArrayCreateBool092()
+                return cArrayCreateBool092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateBool093()
+                return cArrayCreateBool093()
               elseif indices < 95
-                aArray = cArrayCreateBool094()
+                return cArrayCreateBool094()
               elseif indices < 96
-                aArray = cArrayCreateBool095()
+                return cArrayCreateBool095()
               else
-                aArray = cArrayCreateBool096()
+                return cArrayCreateBool096()
               endif
             endif
           endif
@@ -311,45 +301,45 @@ Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE 
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateBool097()
+                return cArrayCreateBool097()
               elseif indices < 99
-                aArray = cArrayCreateBool098()
+                return cArrayCreateBool098()
               elseif indices < 100
-                aArray = cArrayCreateBool099()
+                return cArrayCreateBool099()
               else
-                aArray = cArrayCreateBool100()
+                return cArrayCreateBool100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateBool101()
+                return cArrayCreateBool101()
               elseif indices < 103
-                aArray = cArrayCreateBool102()
+                return cArrayCreateBool102()
               elseif indices < 104
-                aArray = cArrayCreateBool103()
+                return cArrayCreateBool103()
               else
-                aArray = cArrayCreateBool104()
+                return cArrayCreateBool104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateBool105()
+                return cArrayCreateBool105()
               elseif indices < 107
-                aArray = cArrayCreateBool106()
+                return cArrayCreateBool106()
               elseif indices < 108
-                aArray = cArrayCreateBool107()
+                return cArrayCreateBool107()
               else
-                aArray = cArrayCreateBool108()
+                return cArrayCreateBool108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateBool109()
+                return cArrayCreateBool109()
               elseif indices < 111
-                aArray = cArrayCreateBool110()
+                return cArrayCreateBool110()
               elseif indices < 112
-                aArray = cArrayCreateBool111()
+                return cArrayCreateBool111()
               else
-                aArray = cArrayCreateBool112()
+                return cArrayCreateBool112()
               endif
             endif
           endif
@@ -357,45 +347,45 @@ Bool[] function cArrayCreateBool(Int indices, Bool filler = False, Bool useSKSE 
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateBool113()
+                return cArrayCreateBool113()
               elseif indices < 115
-                aArray = cArrayCreateBool114()
+                return cArrayCreateBool114()
               elseif indices < 116
-                aArray = cArrayCreateBool115()
+                return cArrayCreateBool115()
               else
-                aArray = cArrayCreateBool116()
+                return cArrayCreateBool116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateBool117()
+                return cArrayCreateBool117()
               elseif indices < 119
-                aArray = cArrayCreateBool118()
+                return cArrayCreateBool118()
               elseif indices < 120
-                aArray = cArrayCreateBool119()
+                return cArrayCreateBool119()
               else
-                aArray = cArrayCreateBool120()
+                return cArrayCreateBool120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateBool121()
+                return cArrayCreateBool121()
               elseif indices < 123
-                aArray = cArrayCreateBool122()
+                return cArrayCreateBool122()
               elseif indices < 124
-                aArray = cArrayCreateBool123()
+                return cArrayCreateBool123()
               else
-                aArray = cArrayCreateBool124()
+                return cArrayCreateBool124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateBool125()
+                return cArrayCreateBool125()
               elseif indices < 127
-                aArray = cArrayCreateBool126()
+                return cArrayCreateBool126()
               elseif indices < 128
-                aArray = cArrayCreateBool127()
+                return cArrayCreateBool127()
               else
-                aArray = cArrayCreateBool128()
+                return cArrayCreateBool128()
               endif
             endif
           endif

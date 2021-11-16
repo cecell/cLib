@@ -1,24 +1,14 @@
 Scriptname cArrayForm Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE = TRUE, Bool outputTrace = TRUE, \
-    Bool useConsoleUtil = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool outputTrace = TRUE) global
+  {Requirements: None}
   Form[] aArray
-  if useSKSE && indices > 0
-    aArray = Utility.CreateFormArray(indices, filler)
-  elseif indices > 128 || indices < 1
+  if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateForm()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayForm::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -27,45 +17,45 @@ Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE =
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateForm001()
+                return cArrayCreateForm001()
               elseif indices < 3
-                aArray = cArrayCreateForm002()
+                return cArrayCreateForm002()
               elseif indices < 4
-                aArray = cArrayCreateForm003()
+                return cArrayCreateForm003()
               else
-                aArray = cArrayCreateForm004()
+                return cArrayCreateForm004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateForm005()
+                return cArrayCreateForm005()
               elseif indices < 7
-                aArray = cArrayCreateForm006()
+                return cArrayCreateForm006()
               elseif indices < 8
-                aArray = cArrayCreateForm007()
+                return cArrayCreateForm007()
               else
-                aArray = cArrayCreateForm008()
+                return cArrayCreateForm008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateForm009()
+                return cArrayCreateForm009()
               elseif indices < 11
-                aArray = cArrayCreateForm010()
+                return cArrayCreateForm010()
               elseif indices < 12
-                aArray = cArrayCreateForm011()
+                return cArrayCreateForm011()
               else
-                aArray = cArrayCreateForm012()
+                return cArrayCreateForm012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateForm013()
+                return cArrayCreateForm013()
               elseif indices < 15
-                aArray = cArrayCreateForm014()
+                return cArrayCreateForm014()
               elseif indices < 16
-                aArray = cArrayCreateForm015()
+                return cArrayCreateForm015()
               else
-                aArray = cArrayCreateForm016()
+                return cArrayCreateForm016()
               endif
             endif
           endif
@@ -73,45 +63,45 @@ Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE =
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateForm017()
+                return cArrayCreateForm017()
               elseif indices < 19
-                aArray = cArrayCreateForm018()
+                return cArrayCreateForm018()
               elseif indices < 20
-                aArray = cArrayCreateForm019()
+                return cArrayCreateForm019()
               else
-                aArray = cArrayCreateForm020()
+                return cArrayCreateForm020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateForm021()
+                return cArrayCreateForm021()
               elseif indices < 23
-                aArray = cArrayCreateForm022()
+                return cArrayCreateForm022()
               elseif indices < 24
-                aArray = cArrayCreateForm023()
+                return cArrayCreateForm023()
               else
-                aArray = cArrayCreateForm024()
+                return cArrayCreateForm024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateForm025()
+                return cArrayCreateForm025()
               elseif indices < 27
-                aArray = cArrayCreateForm026()
+                return cArrayCreateForm026()
               elseif indices < 28
-                aArray = cArrayCreateForm027()
+                return cArrayCreateForm027()
               else
-                aArray = cArrayCreateForm028()
+                return cArrayCreateForm028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateForm029()
+                return cArrayCreateForm029()
               elseif indices < 31
-                aArray = cArrayCreateForm030()
+                return cArrayCreateForm030()
               elseif indices < 32
-                aArray = cArrayCreateForm031()
+                return cArrayCreateForm031()
               else
-                aArray = cArrayCreateForm032()
+                return cArrayCreateForm032()
               endif
             endif
           endif
@@ -121,45 +111,45 @@ Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE =
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateForm033()
+                return cArrayCreateForm033()
               elseif indices < 35
-                aArray = cArrayCreateForm034()
+                return cArrayCreateForm034()
               elseif indices < 36
-                aArray = cArrayCreateForm035()
+                return cArrayCreateForm035()
               else
-                aArray = cArrayCreateForm036()
+                return cArrayCreateForm036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateForm037()
+                return cArrayCreateForm037()
               elseif indices < 39
-                aArray = cArrayCreateForm038()
+                return cArrayCreateForm038()
               elseif indices < 40
-                aArray = cArrayCreateForm039()
+                return cArrayCreateForm039()
               else
-                aArray = cArrayCreateForm040()
+                return cArrayCreateForm040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateForm041()
+                return cArrayCreateForm041()
               elseif indices < 43
-                aArray = cArrayCreateForm042()
+                return cArrayCreateForm042()
               elseif indices < 44
-                aArray = cArrayCreateForm043()
+                return cArrayCreateForm043()
               else
-                aArray = cArrayCreateForm044()
+                return cArrayCreateForm044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateForm045()
+                return cArrayCreateForm045()
               elseif indices < 47
-                aArray = cArrayCreateForm046()
+                return cArrayCreateForm046()
               elseif indices < 48
-                aArray = cArrayCreateForm047()
+                return cArrayCreateForm047()
               else
-                aArray = cArrayCreateForm048()
+                return cArrayCreateForm048()
               endif
             endif
           endif
@@ -167,45 +157,45 @@ Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE =
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateForm049()
+                return cArrayCreateForm049()
               elseif indices < 51
-                aArray = cArrayCreateForm050()
+                return cArrayCreateForm050()
               elseif indices < 52
-                aArray = cArrayCreateForm051()
+                return cArrayCreateForm051()
               else
-                aArray = cArrayCreateForm052()
+                return cArrayCreateForm052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateForm053()
+                return cArrayCreateForm053()
               elseif indices < 55
-                aArray = cArrayCreateForm054()
+                return cArrayCreateForm054()
               elseif indices < 56
-                aArray = cArrayCreateForm055()
+                return cArrayCreateForm055()
               else
-                aArray = cArrayCreateForm056()
+                return cArrayCreateForm056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateForm057()
+                return cArrayCreateForm057()
               elseif indices < 59
-                aArray = cArrayCreateForm058()
+                return cArrayCreateForm058()
               elseif indices < 60
-                aArray = cArrayCreateForm059()
+                return cArrayCreateForm059()
               else
-                aArray = cArrayCreateForm060()
+                return cArrayCreateForm060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateForm061()
+                return cArrayCreateForm061()
               elseif indices < 63
-                aArray = cArrayCreateForm062()
+                return cArrayCreateForm062()
               elseif indices < 64
-                aArray = cArrayCreateForm063()
+                return cArrayCreateForm063()
               else
-                aArray = cArrayCreateForm064()
+                return cArrayCreateForm064()
               endif
             endif
           endif
@@ -217,45 +207,45 @@ Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE =
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateForm065()
+                return cArrayCreateForm065()
               elseif indices < 67
-                aArray = cArrayCreateForm066()
+                return cArrayCreateForm066()
               elseif indices < 68
-                aArray = cArrayCreateForm067()
+                return cArrayCreateForm067()
               else
-                aArray = cArrayCreateForm068()
+                return cArrayCreateForm068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateForm069()
+                return cArrayCreateForm069()
               elseif indices < 71
-                aArray = cArrayCreateForm070()
+                return cArrayCreateForm070()
               elseif indices < 72
-                aArray = cArrayCreateForm071()
+                return cArrayCreateForm071()
               else
-                aArray = cArrayCreateForm072()
+                return cArrayCreateForm072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateForm073()
+                return cArrayCreateForm073()
               elseif indices < 75
-                aArray = cArrayCreateForm074()
+                return cArrayCreateForm074()
               elseif indices < 76
-                aArray = cArrayCreateForm075()
+                return cArrayCreateForm075()
               else
-                aArray = cArrayCreateForm076()
+                return cArrayCreateForm076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateForm077()
+                return cArrayCreateForm077()
               elseif indices < 79
-                aArray = cArrayCreateForm078()
+                return cArrayCreateForm078()
               elseif indices < 80
-                aArray = cArrayCreateForm079()
+                return cArrayCreateForm079()
               else
-                aArray = cArrayCreateForm080()
+                return cArrayCreateForm080()
               endif
             endif
           endif
@@ -263,45 +253,45 @@ Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE =
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateForm081()
+                return cArrayCreateForm081()
               elseif indices < 83
-                aArray = cArrayCreateForm082()
+                return cArrayCreateForm082()
               elseif indices < 84
-                aArray = cArrayCreateForm083()
+                return cArrayCreateForm083()
               else
-                aArray = cArrayCreateForm084()
+                return cArrayCreateForm084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateForm085()
+                return cArrayCreateForm085()
               elseif indices < 87
-                aArray = cArrayCreateForm086()
+                return cArrayCreateForm086()
               elseif indices < 88
-                aArray = cArrayCreateForm087()
+                return cArrayCreateForm087()
               else
-                aArray = cArrayCreateForm088()
+                return cArrayCreateForm088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateForm089()
+                return cArrayCreateForm089()
               elseif indices < 91
-                aArray = cArrayCreateForm090()
+                return cArrayCreateForm090()
               elseif indices < 92
-                aArray = cArrayCreateForm091()
+                return cArrayCreateForm091()
               else
-                aArray = cArrayCreateForm092()
+                return cArrayCreateForm092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateForm093()
+                return cArrayCreateForm093()
               elseif indices < 95
-                aArray = cArrayCreateForm094()
+                return cArrayCreateForm094()
               elseif indices < 96
-                aArray = cArrayCreateForm095()
+                return cArrayCreateForm095()
               else
-                aArray = cArrayCreateForm096()
+                return cArrayCreateForm096()
               endif
             endif
           endif
@@ -311,45 +301,45 @@ Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE =
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateForm097()
+                return cArrayCreateForm097()
               elseif indices < 99
-                aArray = cArrayCreateForm098()
+                return cArrayCreateForm098()
               elseif indices < 100
-                aArray = cArrayCreateForm099()
+                return cArrayCreateForm099()
               else
-                aArray = cArrayCreateForm100()
+                return cArrayCreateForm100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateForm101()
+                return cArrayCreateForm101()
               elseif indices < 103
-                aArray = cArrayCreateForm102()
+                return cArrayCreateForm102()
               elseif indices < 104
-                aArray = cArrayCreateForm103()
+                return cArrayCreateForm103()
               else
-                aArray = cArrayCreateForm104()
+                return cArrayCreateForm104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateForm105()
+                return cArrayCreateForm105()
               elseif indices < 107
-                aArray = cArrayCreateForm106()
+                return cArrayCreateForm106()
               elseif indices < 108
-                aArray = cArrayCreateForm107()
+                return cArrayCreateForm107()
               else
-                aArray = cArrayCreateForm108()
+                return cArrayCreateForm108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateForm109()
+                return cArrayCreateForm109()
               elseif indices < 111
-                aArray = cArrayCreateForm110()
+                return cArrayCreateForm110()
               elseif indices < 112
-                aArray = cArrayCreateForm111()
+                return cArrayCreateForm111()
               else
-                aArray = cArrayCreateForm112()
+                return cArrayCreateForm112()
               endif
             endif
           endif
@@ -357,45 +347,45 @@ Form[] function cArrayCreateForm(Int indices, Form filler = None, Bool useSKSE =
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateForm113()
+                return cArrayCreateForm113()
               elseif indices < 115
-                aArray = cArrayCreateForm114()
+                return cArrayCreateForm114()
               elseif indices < 116
-                aArray = cArrayCreateForm115()
+                return cArrayCreateForm115()
               else
-                aArray = cArrayCreateForm116()
+                return cArrayCreateForm116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateForm117()
+                return cArrayCreateForm117()
               elseif indices < 119
-                aArray = cArrayCreateForm118()
+                return cArrayCreateForm118()
               elseif indices < 120
-                aArray = cArrayCreateForm119()
+                return cArrayCreateForm119()
               else
-                aArray = cArrayCreateForm120()
+                return cArrayCreateForm120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateForm121()
+                return cArrayCreateForm121()
               elseif indices < 123
-                aArray = cArrayCreateForm122()
+                return cArrayCreateForm122()
               elseif indices < 124
-                aArray = cArrayCreateForm123()
+                return cArrayCreateForm123()
               else
-                aArray = cArrayCreateForm124()
+                return cArrayCreateForm124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateForm125()
+                return cArrayCreateForm125()
               elseif indices < 127
-                aArray = cArrayCreateForm126()
+                return cArrayCreateForm126()
               elseif indices < 128
-                aArray = cArrayCreateForm127()
+                return cArrayCreateForm127()
               else
-                aArray = cArrayCreateForm128()
+                return cArrayCreateForm128()
               endif
             endif
           endif

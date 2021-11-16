@@ -1,22 +1,14 @@
 Scriptname cArrayLeveledSpell Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   LeveledSpell[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateLeveledSpell()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayLeveledSpell::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell fille
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateLeveledSpell001()
+                return cArrayCreateLeveledSpell001()
               elseif indices < 3
-                aArray = cArrayCreateLeveledSpell002()
+                return cArrayCreateLeveledSpell002()
               elseif indices < 4
-                aArray = cArrayCreateLeveledSpell003()
+                return cArrayCreateLeveledSpell003()
               else
-                aArray = cArrayCreateLeveledSpell004()
+                return cArrayCreateLeveledSpell004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateLeveledSpell005()
+                return cArrayCreateLeveledSpell005()
               elseif indices < 7
-                aArray = cArrayCreateLeveledSpell006()
+                return cArrayCreateLeveledSpell006()
               elseif indices < 8
-                aArray = cArrayCreateLeveledSpell007()
+                return cArrayCreateLeveledSpell007()
               else
-                aArray = cArrayCreateLeveledSpell008()
+                return cArrayCreateLeveledSpell008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateLeveledSpell009()
+                return cArrayCreateLeveledSpell009()
               elseif indices < 11
-                aArray = cArrayCreateLeveledSpell010()
+                return cArrayCreateLeveledSpell010()
               elseif indices < 12
-                aArray = cArrayCreateLeveledSpell011()
+                return cArrayCreateLeveledSpell011()
               else
-                aArray = cArrayCreateLeveledSpell012()
+                return cArrayCreateLeveledSpell012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateLeveledSpell013()
+                return cArrayCreateLeveledSpell013()
               elseif indices < 15
-                aArray = cArrayCreateLeveledSpell014()
+                return cArrayCreateLeveledSpell014()
               elseif indices < 16
-                aArray = cArrayCreateLeveledSpell015()
+                return cArrayCreateLeveledSpell015()
               else
-                aArray = cArrayCreateLeveledSpell016()
+                return cArrayCreateLeveledSpell016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell fille
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateLeveledSpell017()
+                return cArrayCreateLeveledSpell017()
               elseif indices < 19
-                aArray = cArrayCreateLeveledSpell018()
+                return cArrayCreateLeveledSpell018()
               elseif indices < 20
-                aArray = cArrayCreateLeveledSpell019()
+                return cArrayCreateLeveledSpell019()
               else
-                aArray = cArrayCreateLeveledSpell020()
+                return cArrayCreateLeveledSpell020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateLeveledSpell021()
+                return cArrayCreateLeveledSpell021()
               elseif indices < 23
-                aArray = cArrayCreateLeveledSpell022()
+                return cArrayCreateLeveledSpell022()
               elseif indices < 24
-                aArray = cArrayCreateLeveledSpell023()
+                return cArrayCreateLeveledSpell023()
               else
-                aArray = cArrayCreateLeveledSpell024()
+                return cArrayCreateLeveledSpell024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateLeveledSpell025()
+                return cArrayCreateLeveledSpell025()
               elseif indices < 27
-                aArray = cArrayCreateLeveledSpell026()
+                return cArrayCreateLeveledSpell026()
               elseif indices < 28
-                aArray = cArrayCreateLeveledSpell027()
+                return cArrayCreateLeveledSpell027()
               else
-                aArray = cArrayCreateLeveledSpell028()
+                return cArrayCreateLeveledSpell028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateLeveledSpell029()
+                return cArrayCreateLeveledSpell029()
               elseif indices < 31
-                aArray = cArrayCreateLeveledSpell030()
+                return cArrayCreateLeveledSpell030()
               elseif indices < 32
-                aArray = cArrayCreateLeveledSpell031()
+                return cArrayCreateLeveledSpell031()
               else
-                aArray = cArrayCreateLeveledSpell032()
+                return cArrayCreateLeveledSpell032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell fille
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateLeveledSpell033()
+                return cArrayCreateLeveledSpell033()
               elseif indices < 35
-                aArray = cArrayCreateLeveledSpell034()
+                return cArrayCreateLeveledSpell034()
               elseif indices < 36
-                aArray = cArrayCreateLeveledSpell035()
+                return cArrayCreateLeveledSpell035()
               else
-                aArray = cArrayCreateLeveledSpell036()
+                return cArrayCreateLeveledSpell036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateLeveledSpell037()
+                return cArrayCreateLeveledSpell037()
               elseif indices < 39
-                aArray = cArrayCreateLeveledSpell038()
+                return cArrayCreateLeveledSpell038()
               elseif indices < 40
-                aArray = cArrayCreateLeveledSpell039()
+                return cArrayCreateLeveledSpell039()
               else
-                aArray = cArrayCreateLeveledSpell040()
+                return cArrayCreateLeveledSpell040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateLeveledSpell041()
+                return cArrayCreateLeveledSpell041()
               elseif indices < 43
-                aArray = cArrayCreateLeveledSpell042()
+                return cArrayCreateLeveledSpell042()
               elseif indices < 44
-                aArray = cArrayCreateLeveledSpell043()
+                return cArrayCreateLeveledSpell043()
               else
-                aArray = cArrayCreateLeveledSpell044()
+                return cArrayCreateLeveledSpell044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateLeveledSpell045()
+                return cArrayCreateLeveledSpell045()
               elseif indices < 47
-                aArray = cArrayCreateLeveledSpell046()
+                return cArrayCreateLeveledSpell046()
               elseif indices < 48
-                aArray = cArrayCreateLeveledSpell047()
+                return cArrayCreateLeveledSpell047()
               else
-                aArray = cArrayCreateLeveledSpell048()
+                return cArrayCreateLeveledSpell048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell fille
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateLeveledSpell049()
+                return cArrayCreateLeveledSpell049()
               elseif indices < 51
-                aArray = cArrayCreateLeveledSpell050()
+                return cArrayCreateLeveledSpell050()
               elseif indices < 52
-                aArray = cArrayCreateLeveledSpell051()
+                return cArrayCreateLeveledSpell051()
               else
-                aArray = cArrayCreateLeveledSpell052()
+                return cArrayCreateLeveledSpell052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateLeveledSpell053()
+                return cArrayCreateLeveledSpell053()
               elseif indices < 55
-                aArray = cArrayCreateLeveledSpell054()
+                return cArrayCreateLeveledSpell054()
               elseif indices < 56
-                aArray = cArrayCreateLeveledSpell055()
+                return cArrayCreateLeveledSpell055()
               else
-                aArray = cArrayCreateLeveledSpell056()
+                return cArrayCreateLeveledSpell056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateLeveledSpell057()
+                return cArrayCreateLeveledSpell057()
               elseif indices < 59
-                aArray = cArrayCreateLeveledSpell058()
+                return cArrayCreateLeveledSpell058()
               elseif indices < 60
-                aArray = cArrayCreateLeveledSpell059()
+                return cArrayCreateLeveledSpell059()
               else
-                aArray = cArrayCreateLeveledSpell060()
+                return cArrayCreateLeveledSpell060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateLeveledSpell061()
+                return cArrayCreateLeveledSpell061()
               elseif indices < 63
-                aArray = cArrayCreateLeveledSpell062()
+                return cArrayCreateLeveledSpell062()
               elseif indices < 64
-                aArray = cArrayCreateLeveledSpell063()
+                return cArrayCreateLeveledSpell063()
               else
-                aArray = cArrayCreateLeveledSpell064()
+                return cArrayCreateLeveledSpell064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell fille
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateLeveledSpell065()
+                return cArrayCreateLeveledSpell065()
               elseif indices < 67
-                aArray = cArrayCreateLeveledSpell066()
+                return cArrayCreateLeveledSpell066()
               elseif indices < 68
-                aArray = cArrayCreateLeveledSpell067()
+                return cArrayCreateLeveledSpell067()
               else
-                aArray = cArrayCreateLeveledSpell068()
+                return cArrayCreateLeveledSpell068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateLeveledSpell069()
+                return cArrayCreateLeveledSpell069()
               elseif indices < 71
-                aArray = cArrayCreateLeveledSpell070()
+                return cArrayCreateLeveledSpell070()
               elseif indices < 72
-                aArray = cArrayCreateLeveledSpell071()
+                return cArrayCreateLeveledSpell071()
               else
-                aArray = cArrayCreateLeveledSpell072()
+                return cArrayCreateLeveledSpell072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateLeveledSpell073()
+                return cArrayCreateLeveledSpell073()
               elseif indices < 75
-                aArray = cArrayCreateLeveledSpell074()
+                return cArrayCreateLeveledSpell074()
               elseif indices < 76
-                aArray = cArrayCreateLeveledSpell075()
+                return cArrayCreateLeveledSpell075()
               else
-                aArray = cArrayCreateLeveledSpell076()
+                return cArrayCreateLeveledSpell076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateLeveledSpell077()
+                return cArrayCreateLeveledSpell077()
               elseif indices < 79
-                aArray = cArrayCreateLeveledSpell078()
+                return cArrayCreateLeveledSpell078()
               elseif indices < 80
-                aArray = cArrayCreateLeveledSpell079()
+                return cArrayCreateLeveledSpell079()
               else
-                aArray = cArrayCreateLeveledSpell080()
+                return cArrayCreateLeveledSpell080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell fille
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateLeveledSpell081()
+                return cArrayCreateLeveledSpell081()
               elseif indices < 83
-                aArray = cArrayCreateLeveledSpell082()
+                return cArrayCreateLeveledSpell082()
               elseif indices < 84
-                aArray = cArrayCreateLeveledSpell083()
+                return cArrayCreateLeveledSpell083()
               else
-                aArray = cArrayCreateLeveledSpell084()
+                return cArrayCreateLeveledSpell084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateLeveledSpell085()
+                return cArrayCreateLeveledSpell085()
               elseif indices < 87
-                aArray = cArrayCreateLeveledSpell086()
+                return cArrayCreateLeveledSpell086()
               elseif indices < 88
-                aArray = cArrayCreateLeveledSpell087()
+                return cArrayCreateLeveledSpell087()
               else
-                aArray = cArrayCreateLeveledSpell088()
+                return cArrayCreateLeveledSpell088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateLeveledSpell089()
+                return cArrayCreateLeveledSpell089()
               elseif indices < 91
-                aArray = cArrayCreateLeveledSpell090()
+                return cArrayCreateLeveledSpell090()
               elseif indices < 92
-                aArray = cArrayCreateLeveledSpell091()
+                return cArrayCreateLeveledSpell091()
               else
-                aArray = cArrayCreateLeveledSpell092()
+                return cArrayCreateLeveledSpell092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateLeveledSpell093()
+                return cArrayCreateLeveledSpell093()
               elseif indices < 95
-                aArray = cArrayCreateLeveledSpell094()
+                return cArrayCreateLeveledSpell094()
               elseif indices < 96
-                aArray = cArrayCreateLeveledSpell095()
+                return cArrayCreateLeveledSpell095()
               else
-                aArray = cArrayCreateLeveledSpell096()
+                return cArrayCreateLeveledSpell096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell fille
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateLeveledSpell097()
+                return cArrayCreateLeveledSpell097()
               elseif indices < 99
-                aArray = cArrayCreateLeveledSpell098()
+                return cArrayCreateLeveledSpell098()
               elseif indices < 100
-                aArray = cArrayCreateLeveledSpell099()
+                return cArrayCreateLeveledSpell099()
               else
-                aArray = cArrayCreateLeveledSpell100()
+                return cArrayCreateLeveledSpell100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateLeveledSpell101()
+                return cArrayCreateLeveledSpell101()
               elseif indices < 103
-                aArray = cArrayCreateLeveledSpell102()
+                return cArrayCreateLeveledSpell102()
               elseif indices < 104
-                aArray = cArrayCreateLeveledSpell103()
+                return cArrayCreateLeveledSpell103()
               else
-                aArray = cArrayCreateLeveledSpell104()
+                return cArrayCreateLeveledSpell104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateLeveledSpell105()
+                return cArrayCreateLeveledSpell105()
               elseif indices < 107
-                aArray = cArrayCreateLeveledSpell106()
+                return cArrayCreateLeveledSpell106()
               elseif indices < 108
-                aArray = cArrayCreateLeveledSpell107()
+                return cArrayCreateLeveledSpell107()
               else
-                aArray = cArrayCreateLeveledSpell108()
+                return cArrayCreateLeveledSpell108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateLeveledSpell109()
+                return cArrayCreateLeveledSpell109()
               elseif indices < 111
-                aArray = cArrayCreateLeveledSpell110()
+                return cArrayCreateLeveledSpell110()
               elseif indices < 112
-                aArray = cArrayCreateLeveledSpell111()
+                return cArrayCreateLeveledSpell111()
               else
-                aArray = cArrayCreateLeveledSpell112()
+                return cArrayCreateLeveledSpell112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ LeveledSpell[] function cArrayCreateLeveledSpell(Int indices, LeveledSpell fille
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateLeveledSpell113()
+                return cArrayCreateLeveledSpell113()
               elseif indices < 115
-                aArray = cArrayCreateLeveledSpell114()
+                return cArrayCreateLeveledSpell114()
               elseif indices < 116
-                aArray = cArrayCreateLeveledSpell115()
+                return cArrayCreateLeveledSpell115()
               else
-                aArray = cArrayCreateLeveledSpell116()
+                return cArrayCreateLeveledSpell116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateLeveledSpell117()
+                return cArrayCreateLeveledSpell117()
               elseif indices < 119
-                aArray = cArrayCreateLeveledSpell118()
+                return cArrayCreateLeveledSpell118()
               elseif indices < 120
-                aArray = cArrayCreateLeveledSpell119()
+                return cArrayCreateLeveledSpell119()
               else
-                aArray = cArrayCreateLeveledSpell120()
+                return cArrayCreateLeveledSpell120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateLeveledSpell121()
+                return cArrayCreateLeveledSpell121()
               elseif indices < 123
-                aArray = cArrayCreateLeveledSpell122()
+                return cArrayCreateLeveledSpell122()
               elseif indices < 124
-                aArray = cArrayCreateLeveledSpell123()
+                return cArrayCreateLeveledSpell123()
               else
-                aArray = cArrayCreateLeveledSpell124()
+                return cArrayCreateLeveledSpell124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateLeveledSpell125()
+                return cArrayCreateLeveledSpell125()
               elseif indices < 127
-                aArray = cArrayCreateLeveledSpell126()
+                return cArrayCreateLeveledSpell126()
               elseif indices < 128
-                aArray = cArrayCreateLeveledSpell127()
+                return cArrayCreateLeveledSpell127()
               else
-                aArray = cArrayCreateLeveledSpell128()
+                return cArrayCreateLeveledSpell128()
               endif
             endif
           endif

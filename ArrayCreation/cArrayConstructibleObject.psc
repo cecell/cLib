@@ -1,22 +1,14 @@
 Scriptname cArrayConstructibleObject Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, ConstructibleObject filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, ConstructibleObject filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   ConstructibleObject[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateConstructibleObject()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayConstructibleObject::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, Cons
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateConstructibleObject001()
+                return cArrayCreateConstructibleObject001()
               elseif indices < 3
-                aArray = cArrayCreateConstructibleObject002()
+                return cArrayCreateConstructibleObject002()
               elseif indices < 4
-                aArray = cArrayCreateConstructibleObject003()
+                return cArrayCreateConstructibleObject003()
               else
-                aArray = cArrayCreateConstructibleObject004()
+                return cArrayCreateConstructibleObject004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateConstructibleObject005()
+                return cArrayCreateConstructibleObject005()
               elseif indices < 7
-                aArray = cArrayCreateConstructibleObject006()
+                return cArrayCreateConstructibleObject006()
               elseif indices < 8
-                aArray = cArrayCreateConstructibleObject007()
+                return cArrayCreateConstructibleObject007()
               else
-                aArray = cArrayCreateConstructibleObject008()
+                return cArrayCreateConstructibleObject008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateConstructibleObject009()
+                return cArrayCreateConstructibleObject009()
               elseif indices < 11
-                aArray = cArrayCreateConstructibleObject010()
+                return cArrayCreateConstructibleObject010()
               elseif indices < 12
-                aArray = cArrayCreateConstructibleObject011()
+                return cArrayCreateConstructibleObject011()
               else
-                aArray = cArrayCreateConstructibleObject012()
+                return cArrayCreateConstructibleObject012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateConstructibleObject013()
+                return cArrayCreateConstructibleObject013()
               elseif indices < 15
-                aArray = cArrayCreateConstructibleObject014()
+                return cArrayCreateConstructibleObject014()
               elseif indices < 16
-                aArray = cArrayCreateConstructibleObject015()
+                return cArrayCreateConstructibleObject015()
               else
-                aArray = cArrayCreateConstructibleObject016()
+                return cArrayCreateConstructibleObject016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, Cons
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateConstructibleObject017()
+                return cArrayCreateConstructibleObject017()
               elseif indices < 19
-                aArray = cArrayCreateConstructibleObject018()
+                return cArrayCreateConstructibleObject018()
               elseif indices < 20
-                aArray = cArrayCreateConstructibleObject019()
+                return cArrayCreateConstructibleObject019()
               else
-                aArray = cArrayCreateConstructibleObject020()
+                return cArrayCreateConstructibleObject020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateConstructibleObject021()
+                return cArrayCreateConstructibleObject021()
               elseif indices < 23
-                aArray = cArrayCreateConstructibleObject022()
+                return cArrayCreateConstructibleObject022()
               elseif indices < 24
-                aArray = cArrayCreateConstructibleObject023()
+                return cArrayCreateConstructibleObject023()
               else
-                aArray = cArrayCreateConstructibleObject024()
+                return cArrayCreateConstructibleObject024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateConstructibleObject025()
+                return cArrayCreateConstructibleObject025()
               elseif indices < 27
-                aArray = cArrayCreateConstructibleObject026()
+                return cArrayCreateConstructibleObject026()
               elseif indices < 28
-                aArray = cArrayCreateConstructibleObject027()
+                return cArrayCreateConstructibleObject027()
               else
-                aArray = cArrayCreateConstructibleObject028()
+                return cArrayCreateConstructibleObject028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateConstructibleObject029()
+                return cArrayCreateConstructibleObject029()
               elseif indices < 31
-                aArray = cArrayCreateConstructibleObject030()
+                return cArrayCreateConstructibleObject030()
               elseif indices < 32
-                aArray = cArrayCreateConstructibleObject031()
+                return cArrayCreateConstructibleObject031()
               else
-                aArray = cArrayCreateConstructibleObject032()
+                return cArrayCreateConstructibleObject032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, Cons
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateConstructibleObject033()
+                return cArrayCreateConstructibleObject033()
               elseif indices < 35
-                aArray = cArrayCreateConstructibleObject034()
+                return cArrayCreateConstructibleObject034()
               elseif indices < 36
-                aArray = cArrayCreateConstructibleObject035()
+                return cArrayCreateConstructibleObject035()
               else
-                aArray = cArrayCreateConstructibleObject036()
+                return cArrayCreateConstructibleObject036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateConstructibleObject037()
+                return cArrayCreateConstructibleObject037()
               elseif indices < 39
-                aArray = cArrayCreateConstructibleObject038()
+                return cArrayCreateConstructibleObject038()
               elseif indices < 40
-                aArray = cArrayCreateConstructibleObject039()
+                return cArrayCreateConstructibleObject039()
               else
-                aArray = cArrayCreateConstructibleObject040()
+                return cArrayCreateConstructibleObject040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateConstructibleObject041()
+                return cArrayCreateConstructibleObject041()
               elseif indices < 43
-                aArray = cArrayCreateConstructibleObject042()
+                return cArrayCreateConstructibleObject042()
               elseif indices < 44
-                aArray = cArrayCreateConstructibleObject043()
+                return cArrayCreateConstructibleObject043()
               else
-                aArray = cArrayCreateConstructibleObject044()
+                return cArrayCreateConstructibleObject044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateConstructibleObject045()
+                return cArrayCreateConstructibleObject045()
               elseif indices < 47
-                aArray = cArrayCreateConstructibleObject046()
+                return cArrayCreateConstructibleObject046()
               elseif indices < 48
-                aArray = cArrayCreateConstructibleObject047()
+                return cArrayCreateConstructibleObject047()
               else
-                aArray = cArrayCreateConstructibleObject048()
+                return cArrayCreateConstructibleObject048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, Cons
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateConstructibleObject049()
+                return cArrayCreateConstructibleObject049()
               elseif indices < 51
-                aArray = cArrayCreateConstructibleObject050()
+                return cArrayCreateConstructibleObject050()
               elseif indices < 52
-                aArray = cArrayCreateConstructibleObject051()
+                return cArrayCreateConstructibleObject051()
               else
-                aArray = cArrayCreateConstructibleObject052()
+                return cArrayCreateConstructibleObject052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateConstructibleObject053()
+                return cArrayCreateConstructibleObject053()
               elseif indices < 55
-                aArray = cArrayCreateConstructibleObject054()
+                return cArrayCreateConstructibleObject054()
               elseif indices < 56
-                aArray = cArrayCreateConstructibleObject055()
+                return cArrayCreateConstructibleObject055()
               else
-                aArray = cArrayCreateConstructibleObject056()
+                return cArrayCreateConstructibleObject056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateConstructibleObject057()
+                return cArrayCreateConstructibleObject057()
               elseif indices < 59
-                aArray = cArrayCreateConstructibleObject058()
+                return cArrayCreateConstructibleObject058()
               elseif indices < 60
-                aArray = cArrayCreateConstructibleObject059()
+                return cArrayCreateConstructibleObject059()
               else
-                aArray = cArrayCreateConstructibleObject060()
+                return cArrayCreateConstructibleObject060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateConstructibleObject061()
+                return cArrayCreateConstructibleObject061()
               elseif indices < 63
-                aArray = cArrayCreateConstructibleObject062()
+                return cArrayCreateConstructibleObject062()
               elseif indices < 64
-                aArray = cArrayCreateConstructibleObject063()
+                return cArrayCreateConstructibleObject063()
               else
-                aArray = cArrayCreateConstructibleObject064()
+                return cArrayCreateConstructibleObject064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, Cons
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateConstructibleObject065()
+                return cArrayCreateConstructibleObject065()
               elseif indices < 67
-                aArray = cArrayCreateConstructibleObject066()
+                return cArrayCreateConstructibleObject066()
               elseif indices < 68
-                aArray = cArrayCreateConstructibleObject067()
+                return cArrayCreateConstructibleObject067()
               else
-                aArray = cArrayCreateConstructibleObject068()
+                return cArrayCreateConstructibleObject068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateConstructibleObject069()
+                return cArrayCreateConstructibleObject069()
               elseif indices < 71
-                aArray = cArrayCreateConstructibleObject070()
+                return cArrayCreateConstructibleObject070()
               elseif indices < 72
-                aArray = cArrayCreateConstructibleObject071()
+                return cArrayCreateConstructibleObject071()
               else
-                aArray = cArrayCreateConstructibleObject072()
+                return cArrayCreateConstructibleObject072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateConstructibleObject073()
+                return cArrayCreateConstructibleObject073()
               elseif indices < 75
-                aArray = cArrayCreateConstructibleObject074()
+                return cArrayCreateConstructibleObject074()
               elseif indices < 76
-                aArray = cArrayCreateConstructibleObject075()
+                return cArrayCreateConstructibleObject075()
               else
-                aArray = cArrayCreateConstructibleObject076()
+                return cArrayCreateConstructibleObject076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateConstructibleObject077()
+                return cArrayCreateConstructibleObject077()
               elseif indices < 79
-                aArray = cArrayCreateConstructibleObject078()
+                return cArrayCreateConstructibleObject078()
               elseif indices < 80
-                aArray = cArrayCreateConstructibleObject079()
+                return cArrayCreateConstructibleObject079()
               else
-                aArray = cArrayCreateConstructibleObject080()
+                return cArrayCreateConstructibleObject080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, Cons
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateConstructibleObject081()
+                return cArrayCreateConstructibleObject081()
               elseif indices < 83
-                aArray = cArrayCreateConstructibleObject082()
+                return cArrayCreateConstructibleObject082()
               elseif indices < 84
-                aArray = cArrayCreateConstructibleObject083()
+                return cArrayCreateConstructibleObject083()
               else
-                aArray = cArrayCreateConstructibleObject084()
+                return cArrayCreateConstructibleObject084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateConstructibleObject085()
+                return cArrayCreateConstructibleObject085()
               elseif indices < 87
-                aArray = cArrayCreateConstructibleObject086()
+                return cArrayCreateConstructibleObject086()
               elseif indices < 88
-                aArray = cArrayCreateConstructibleObject087()
+                return cArrayCreateConstructibleObject087()
               else
-                aArray = cArrayCreateConstructibleObject088()
+                return cArrayCreateConstructibleObject088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateConstructibleObject089()
+                return cArrayCreateConstructibleObject089()
               elseif indices < 91
-                aArray = cArrayCreateConstructibleObject090()
+                return cArrayCreateConstructibleObject090()
               elseif indices < 92
-                aArray = cArrayCreateConstructibleObject091()
+                return cArrayCreateConstructibleObject091()
               else
-                aArray = cArrayCreateConstructibleObject092()
+                return cArrayCreateConstructibleObject092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateConstructibleObject093()
+                return cArrayCreateConstructibleObject093()
               elseif indices < 95
-                aArray = cArrayCreateConstructibleObject094()
+                return cArrayCreateConstructibleObject094()
               elseif indices < 96
-                aArray = cArrayCreateConstructibleObject095()
+                return cArrayCreateConstructibleObject095()
               else
-                aArray = cArrayCreateConstructibleObject096()
+                return cArrayCreateConstructibleObject096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, Cons
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateConstructibleObject097()
+                return cArrayCreateConstructibleObject097()
               elseif indices < 99
-                aArray = cArrayCreateConstructibleObject098()
+                return cArrayCreateConstructibleObject098()
               elseif indices < 100
-                aArray = cArrayCreateConstructibleObject099()
+                return cArrayCreateConstructibleObject099()
               else
-                aArray = cArrayCreateConstructibleObject100()
+                return cArrayCreateConstructibleObject100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateConstructibleObject101()
+                return cArrayCreateConstructibleObject101()
               elseif indices < 103
-                aArray = cArrayCreateConstructibleObject102()
+                return cArrayCreateConstructibleObject102()
               elseif indices < 104
-                aArray = cArrayCreateConstructibleObject103()
+                return cArrayCreateConstructibleObject103()
               else
-                aArray = cArrayCreateConstructibleObject104()
+                return cArrayCreateConstructibleObject104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateConstructibleObject105()
+                return cArrayCreateConstructibleObject105()
               elseif indices < 107
-                aArray = cArrayCreateConstructibleObject106()
+                return cArrayCreateConstructibleObject106()
               elseif indices < 108
-                aArray = cArrayCreateConstructibleObject107()
+                return cArrayCreateConstructibleObject107()
               else
-                aArray = cArrayCreateConstructibleObject108()
+                return cArrayCreateConstructibleObject108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateConstructibleObject109()
+                return cArrayCreateConstructibleObject109()
               elseif indices < 111
-                aArray = cArrayCreateConstructibleObject110()
+                return cArrayCreateConstructibleObject110()
               elseif indices < 112
-                aArray = cArrayCreateConstructibleObject111()
+                return cArrayCreateConstructibleObject111()
               else
-                aArray = cArrayCreateConstructibleObject112()
+                return cArrayCreateConstructibleObject112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ ConstructibleObject[] function cArrayCreateConstructibleObject(Int indices, Cons
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateConstructibleObject113()
+                return cArrayCreateConstructibleObject113()
               elseif indices < 115
-                aArray = cArrayCreateConstructibleObject114()
+                return cArrayCreateConstructibleObject114()
               elseif indices < 116
-                aArray = cArrayCreateConstructibleObject115()
+                return cArrayCreateConstructibleObject115()
               else
-                aArray = cArrayCreateConstructibleObject116()
+                return cArrayCreateConstructibleObject116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateConstructibleObject117()
+                return cArrayCreateConstructibleObject117()
               elseif indices < 119
-                aArray = cArrayCreateConstructibleObject118()
+                return cArrayCreateConstructibleObject118()
               elseif indices < 120
-                aArray = cArrayCreateConstructibleObject119()
+                return cArrayCreateConstructibleObject119()
               else
-                aArray = cArrayCreateConstructibleObject120()
+                return cArrayCreateConstructibleObject120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateConstructibleObject121()
+                return cArrayCreateConstructibleObject121()
               elseif indices < 123
-                aArray = cArrayCreateConstructibleObject122()
+                return cArrayCreateConstructibleObject122()
               elseif indices < 124
-                aArray = cArrayCreateConstructibleObject123()
+                return cArrayCreateConstructibleObject123()
               else
-                aArray = cArrayCreateConstructibleObject124()
+                return cArrayCreateConstructibleObject124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateConstructibleObject125()
+                return cArrayCreateConstructibleObject125()
               elseif indices < 127
-                aArray = cArrayCreateConstructibleObject126()
+                return cArrayCreateConstructibleObject126()
               elseif indices < 128
-                aArray = cArrayCreateConstructibleObject127()
+                return cArrayCreateConstructibleObject127()
               else
-                aArray = cArrayCreateConstructibleObject128()
+                return cArrayCreateConstructibleObject128()
               endif
             endif
           endif

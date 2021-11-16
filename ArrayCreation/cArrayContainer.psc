@@ -1,22 +1,14 @@
 Scriptname cArrayContainer Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Container[] function cArrayCreateContainer(Int indices, Container filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Container[] function cArrayCreateContainer(Int indices, Container filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Container[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateContainer()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayContainer::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Container[] function cArrayCreateContainer(Int indices, Container filler = None,
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateContainer001()
+                return cArrayCreateContainer001()
               elseif indices < 3
-                aArray = cArrayCreateContainer002()
+                return cArrayCreateContainer002()
               elseif indices < 4
-                aArray = cArrayCreateContainer003()
+                return cArrayCreateContainer003()
               else
-                aArray = cArrayCreateContainer004()
+                return cArrayCreateContainer004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateContainer005()
+                return cArrayCreateContainer005()
               elseif indices < 7
-                aArray = cArrayCreateContainer006()
+                return cArrayCreateContainer006()
               elseif indices < 8
-                aArray = cArrayCreateContainer007()
+                return cArrayCreateContainer007()
               else
-                aArray = cArrayCreateContainer008()
+                return cArrayCreateContainer008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateContainer009()
+                return cArrayCreateContainer009()
               elseif indices < 11
-                aArray = cArrayCreateContainer010()
+                return cArrayCreateContainer010()
               elseif indices < 12
-                aArray = cArrayCreateContainer011()
+                return cArrayCreateContainer011()
               else
-                aArray = cArrayCreateContainer012()
+                return cArrayCreateContainer012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateContainer013()
+                return cArrayCreateContainer013()
               elseif indices < 15
-                aArray = cArrayCreateContainer014()
+                return cArrayCreateContainer014()
               elseif indices < 16
-                aArray = cArrayCreateContainer015()
+                return cArrayCreateContainer015()
               else
-                aArray = cArrayCreateContainer016()
+                return cArrayCreateContainer016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Container[] function cArrayCreateContainer(Int indices, Container filler = None,
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateContainer017()
+                return cArrayCreateContainer017()
               elseif indices < 19
-                aArray = cArrayCreateContainer018()
+                return cArrayCreateContainer018()
               elseif indices < 20
-                aArray = cArrayCreateContainer019()
+                return cArrayCreateContainer019()
               else
-                aArray = cArrayCreateContainer020()
+                return cArrayCreateContainer020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateContainer021()
+                return cArrayCreateContainer021()
               elseif indices < 23
-                aArray = cArrayCreateContainer022()
+                return cArrayCreateContainer022()
               elseif indices < 24
-                aArray = cArrayCreateContainer023()
+                return cArrayCreateContainer023()
               else
-                aArray = cArrayCreateContainer024()
+                return cArrayCreateContainer024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateContainer025()
+                return cArrayCreateContainer025()
               elseif indices < 27
-                aArray = cArrayCreateContainer026()
+                return cArrayCreateContainer026()
               elseif indices < 28
-                aArray = cArrayCreateContainer027()
+                return cArrayCreateContainer027()
               else
-                aArray = cArrayCreateContainer028()
+                return cArrayCreateContainer028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateContainer029()
+                return cArrayCreateContainer029()
               elseif indices < 31
-                aArray = cArrayCreateContainer030()
+                return cArrayCreateContainer030()
               elseif indices < 32
-                aArray = cArrayCreateContainer031()
+                return cArrayCreateContainer031()
               else
-                aArray = cArrayCreateContainer032()
+                return cArrayCreateContainer032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Container[] function cArrayCreateContainer(Int indices, Container filler = None,
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateContainer033()
+                return cArrayCreateContainer033()
               elseif indices < 35
-                aArray = cArrayCreateContainer034()
+                return cArrayCreateContainer034()
               elseif indices < 36
-                aArray = cArrayCreateContainer035()
+                return cArrayCreateContainer035()
               else
-                aArray = cArrayCreateContainer036()
+                return cArrayCreateContainer036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateContainer037()
+                return cArrayCreateContainer037()
               elseif indices < 39
-                aArray = cArrayCreateContainer038()
+                return cArrayCreateContainer038()
               elseif indices < 40
-                aArray = cArrayCreateContainer039()
+                return cArrayCreateContainer039()
               else
-                aArray = cArrayCreateContainer040()
+                return cArrayCreateContainer040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateContainer041()
+                return cArrayCreateContainer041()
               elseif indices < 43
-                aArray = cArrayCreateContainer042()
+                return cArrayCreateContainer042()
               elseif indices < 44
-                aArray = cArrayCreateContainer043()
+                return cArrayCreateContainer043()
               else
-                aArray = cArrayCreateContainer044()
+                return cArrayCreateContainer044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateContainer045()
+                return cArrayCreateContainer045()
               elseif indices < 47
-                aArray = cArrayCreateContainer046()
+                return cArrayCreateContainer046()
               elseif indices < 48
-                aArray = cArrayCreateContainer047()
+                return cArrayCreateContainer047()
               else
-                aArray = cArrayCreateContainer048()
+                return cArrayCreateContainer048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Container[] function cArrayCreateContainer(Int indices, Container filler = None,
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateContainer049()
+                return cArrayCreateContainer049()
               elseif indices < 51
-                aArray = cArrayCreateContainer050()
+                return cArrayCreateContainer050()
               elseif indices < 52
-                aArray = cArrayCreateContainer051()
+                return cArrayCreateContainer051()
               else
-                aArray = cArrayCreateContainer052()
+                return cArrayCreateContainer052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateContainer053()
+                return cArrayCreateContainer053()
               elseif indices < 55
-                aArray = cArrayCreateContainer054()
+                return cArrayCreateContainer054()
               elseif indices < 56
-                aArray = cArrayCreateContainer055()
+                return cArrayCreateContainer055()
               else
-                aArray = cArrayCreateContainer056()
+                return cArrayCreateContainer056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateContainer057()
+                return cArrayCreateContainer057()
               elseif indices < 59
-                aArray = cArrayCreateContainer058()
+                return cArrayCreateContainer058()
               elseif indices < 60
-                aArray = cArrayCreateContainer059()
+                return cArrayCreateContainer059()
               else
-                aArray = cArrayCreateContainer060()
+                return cArrayCreateContainer060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateContainer061()
+                return cArrayCreateContainer061()
               elseif indices < 63
-                aArray = cArrayCreateContainer062()
+                return cArrayCreateContainer062()
               elseif indices < 64
-                aArray = cArrayCreateContainer063()
+                return cArrayCreateContainer063()
               else
-                aArray = cArrayCreateContainer064()
+                return cArrayCreateContainer064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Container[] function cArrayCreateContainer(Int indices, Container filler = None,
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateContainer065()
+                return cArrayCreateContainer065()
               elseif indices < 67
-                aArray = cArrayCreateContainer066()
+                return cArrayCreateContainer066()
               elseif indices < 68
-                aArray = cArrayCreateContainer067()
+                return cArrayCreateContainer067()
               else
-                aArray = cArrayCreateContainer068()
+                return cArrayCreateContainer068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateContainer069()
+                return cArrayCreateContainer069()
               elseif indices < 71
-                aArray = cArrayCreateContainer070()
+                return cArrayCreateContainer070()
               elseif indices < 72
-                aArray = cArrayCreateContainer071()
+                return cArrayCreateContainer071()
               else
-                aArray = cArrayCreateContainer072()
+                return cArrayCreateContainer072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateContainer073()
+                return cArrayCreateContainer073()
               elseif indices < 75
-                aArray = cArrayCreateContainer074()
+                return cArrayCreateContainer074()
               elseif indices < 76
-                aArray = cArrayCreateContainer075()
+                return cArrayCreateContainer075()
               else
-                aArray = cArrayCreateContainer076()
+                return cArrayCreateContainer076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateContainer077()
+                return cArrayCreateContainer077()
               elseif indices < 79
-                aArray = cArrayCreateContainer078()
+                return cArrayCreateContainer078()
               elseif indices < 80
-                aArray = cArrayCreateContainer079()
+                return cArrayCreateContainer079()
               else
-                aArray = cArrayCreateContainer080()
+                return cArrayCreateContainer080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Container[] function cArrayCreateContainer(Int indices, Container filler = None,
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateContainer081()
+                return cArrayCreateContainer081()
               elseif indices < 83
-                aArray = cArrayCreateContainer082()
+                return cArrayCreateContainer082()
               elseif indices < 84
-                aArray = cArrayCreateContainer083()
+                return cArrayCreateContainer083()
               else
-                aArray = cArrayCreateContainer084()
+                return cArrayCreateContainer084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateContainer085()
+                return cArrayCreateContainer085()
               elseif indices < 87
-                aArray = cArrayCreateContainer086()
+                return cArrayCreateContainer086()
               elseif indices < 88
-                aArray = cArrayCreateContainer087()
+                return cArrayCreateContainer087()
               else
-                aArray = cArrayCreateContainer088()
+                return cArrayCreateContainer088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateContainer089()
+                return cArrayCreateContainer089()
               elseif indices < 91
-                aArray = cArrayCreateContainer090()
+                return cArrayCreateContainer090()
               elseif indices < 92
-                aArray = cArrayCreateContainer091()
+                return cArrayCreateContainer091()
               else
-                aArray = cArrayCreateContainer092()
+                return cArrayCreateContainer092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateContainer093()
+                return cArrayCreateContainer093()
               elseif indices < 95
-                aArray = cArrayCreateContainer094()
+                return cArrayCreateContainer094()
               elseif indices < 96
-                aArray = cArrayCreateContainer095()
+                return cArrayCreateContainer095()
               else
-                aArray = cArrayCreateContainer096()
+                return cArrayCreateContainer096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Container[] function cArrayCreateContainer(Int indices, Container filler = None,
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateContainer097()
+                return cArrayCreateContainer097()
               elseif indices < 99
-                aArray = cArrayCreateContainer098()
+                return cArrayCreateContainer098()
               elseif indices < 100
-                aArray = cArrayCreateContainer099()
+                return cArrayCreateContainer099()
               else
-                aArray = cArrayCreateContainer100()
+                return cArrayCreateContainer100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateContainer101()
+                return cArrayCreateContainer101()
               elseif indices < 103
-                aArray = cArrayCreateContainer102()
+                return cArrayCreateContainer102()
               elseif indices < 104
-                aArray = cArrayCreateContainer103()
+                return cArrayCreateContainer103()
               else
-                aArray = cArrayCreateContainer104()
+                return cArrayCreateContainer104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateContainer105()
+                return cArrayCreateContainer105()
               elseif indices < 107
-                aArray = cArrayCreateContainer106()
+                return cArrayCreateContainer106()
               elseif indices < 108
-                aArray = cArrayCreateContainer107()
+                return cArrayCreateContainer107()
               else
-                aArray = cArrayCreateContainer108()
+                return cArrayCreateContainer108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateContainer109()
+                return cArrayCreateContainer109()
               elseif indices < 111
-                aArray = cArrayCreateContainer110()
+                return cArrayCreateContainer110()
               elseif indices < 112
-                aArray = cArrayCreateContainer111()
+                return cArrayCreateContainer111()
               else
-                aArray = cArrayCreateContainer112()
+                return cArrayCreateContainer112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Container[] function cArrayCreateContainer(Int indices, Container filler = None,
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateContainer113()
+                return cArrayCreateContainer113()
               elseif indices < 115
-                aArray = cArrayCreateContainer114()
+                return cArrayCreateContainer114()
               elseif indices < 116
-                aArray = cArrayCreateContainer115()
+                return cArrayCreateContainer115()
               else
-                aArray = cArrayCreateContainer116()
+                return cArrayCreateContainer116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateContainer117()
+                return cArrayCreateContainer117()
               elseif indices < 119
-                aArray = cArrayCreateContainer118()
+                return cArrayCreateContainer118()
               elseif indices < 120
-                aArray = cArrayCreateContainer119()
+                return cArrayCreateContainer119()
               else
-                aArray = cArrayCreateContainer120()
+                return cArrayCreateContainer120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateContainer121()
+                return cArrayCreateContainer121()
               elseif indices < 123
-                aArray = cArrayCreateContainer122()
+                return cArrayCreateContainer122()
               elseif indices < 124
-                aArray = cArrayCreateContainer123()
+                return cArrayCreateContainer123()
               else
-                aArray = cArrayCreateContainer124()
+                return cArrayCreateContainer124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateContainer125()
+                return cArrayCreateContainer125()
               elseif indices < 127
-                aArray = cArrayCreateContainer126()
+                return cArrayCreateContainer126()
               elseif indices < 128
-                aArray = cArrayCreateContainer127()
+                return cArrayCreateContainer127()
               else
-                aArray = cArrayCreateContainer128()
+                return cArrayCreateContainer128()
               endif
             endif
           endif

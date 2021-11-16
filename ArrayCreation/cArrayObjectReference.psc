@@ -1,28 +1,19 @@
 Scriptname cArrayObjectReference Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
 ObjectReference[] function cArrayCreateObjRef(Int indices, ObjectReference filler = None) global
-  return cArrayCreateObjectReference(indices, filler)
+    return cArrayCreateObjectReference(indices, filler)
 endfunction
 
-ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectReference filler = None, Bool usePapUtil = TRUE, \
-  Bool outputTrace = TRUE, Bool useConsoleUtil = TRUE) global
-  {Requirements: None, PapyrusUtil:Soft}
+ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectReference filler = None, \
+    Bool outputTrace = TRUE) global
+  {Requirements: None}
   ObjectReference[] aArray
-  if usePapUtil && clibUse.cUsePapUtil() && indices > 0
-    aArray = PapyrusUtil.ObjRefArray(indices, filler)
-  elseif indices > 128 || indices < 1
+  if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateObjRef()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayObjectReference::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -31,45 +22,45 @@ ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectRefere
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateObjRef001()
+                return cArrayCreateObjRef001()
               elseif indices < 3
-                aArray = cArrayCreateObjRef002()
+                return cArrayCreateObjRef002()
               elseif indices < 4
-                aArray = cArrayCreateObjRef003()
+                return cArrayCreateObjRef003()
               else
-                aArray = cArrayCreateObjRef004()
+                return cArrayCreateObjRef004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateObjRef005()
+                return cArrayCreateObjRef005()
               elseif indices < 7
-                aArray = cArrayCreateObjRef006()
+                return cArrayCreateObjRef006()
               elseif indices < 8
-                aArray = cArrayCreateObjRef007()
+                return cArrayCreateObjRef007()
               else
-                aArray = cArrayCreateObjRef008()
+                return cArrayCreateObjRef008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateObjRef009()
+                return cArrayCreateObjRef009()
               elseif indices < 11
-                aArray = cArrayCreateObjRef010()
+                return cArrayCreateObjRef010()
               elseif indices < 12
-                aArray = cArrayCreateObjRef011()
+                return cArrayCreateObjRef011()
               else
-                aArray = cArrayCreateObjRef012()
+                return cArrayCreateObjRef012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateObjRef013()
+                return cArrayCreateObjRef013()
               elseif indices < 15
-                aArray = cArrayCreateObjRef014()
+                return cArrayCreateObjRef014()
               elseif indices < 16
-                aArray = cArrayCreateObjRef015()
+                return cArrayCreateObjRef015()
               else
-                aArray = cArrayCreateObjRef016()
+                return cArrayCreateObjRef016()
               endif
             endif
           endif
@@ -77,45 +68,45 @@ ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectRefere
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateObjRef017()
+                return cArrayCreateObjRef017()
               elseif indices < 19
-                aArray = cArrayCreateObjRef018()
+                return cArrayCreateObjRef018()
               elseif indices < 20
-                aArray = cArrayCreateObjRef019()
+                return cArrayCreateObjRef019()
               else
-                aArray = cArrayCreateObjRef020()
+                return cArrayCreateObjRef020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateObjRef021()
+                return cArrayCreateObjRef021()
               elseif indices < 23
-                aArray = cArrayCreateObjRef022()
+                return cArrayCreateObjRef022()
               elseif indices < 24
-                aArray = cArrayCreateObjRef023()
+                return cArrayCreateObjRef023()
               else
-                aArray = cArrayCreateObjRef024()
+                return cArrayCreateObjRef024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateObjRef025()
+                return cArrayCreateObjRef025()
               elseif indices < 27
-                aArray = cArrayCreateObjRef026()
+                return cArrayCreateObjRef026()
               elseif indices < 28
-                aArray = cArrayCreateObjRef027()
+                return cArrayCreateObjRef027()
               else
-                aArray = cArrayCreateObjRef028()
+                return cArrayCreateObjRef028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateObjRef029()
+                return cArrayCreateObjRef029()
               elseif indices < 31
-                aArray = cArrayCreateObjRef030()
+                return cArrayCreateObjRef030()
               elseif indices < 32
-                aArray = cArrayCreateObjRef031()
+                return cArrayCreateObjRef031()
               else
-                aArray = cArrayCreateObjRef032()
+                return cArrayCreateObjRef032()
               endif
             endif
           endif
@@ -125,45 +116,45 @@ ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectRefere
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateObjRef033()
+                return cArrayCreateObjRef033()
               elseif indices < 35
-                aArray = cArrayCreateObjRef034()
+                return cArrayCreateObjRef034()
               elseif indices < 36
-                aArray = cArrayCreateObjRef035()
+                return cArrayCreateObjRef035()
               else
-                aArray = cArrayCreateObjRef036()
+                return cArrayCreateObjRef036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateObjRef037()
+                return cArrayCreateObjRef037()
               elseif indices < 39
-                aArray = cArrayCreateObjRef038()
+                return cArrayCreateObjRef038()
               elseif indices < 40
-                aArray = cArrayCreateObjRef039()
+                return cArrayCreateObjRef039()
               else
-                aArray = cArrayCreateObjRef040()
+                return cArrayCreateObjRef040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateObjRef041()
+                return cArrayCreateObjRef041()
               elseif indices < 43
-                aArray = cArrayCreateObjRef042()
+                return cArrayCreateObjRef042()
               elseif indices < 44
-                aArray = cArrayCreateObjRef043()
+                return cArrayCreateObjRef043()
               else
-                aArray = cArrayCreateObjRef044()
+                return cArrayCreateObjRef044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateObjRef045()
+                return cArrayCreateObjRef045()
               elseif indices < 47
-                aArray = cArrayCreateObjRef046()
+                return cArrayCreateObjRef046()
               elseif indices < 48
-                aArray = cArrayCreateObjRef047()
+                return cArrayCreateObjRef047()
               else
-                aArray = cArrayCreateObjRef048()
+                return cArrayCreateObjRef048()
               endif
             endif
           endif
@@ -171,45 +162,45 @@ ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectRefere
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateObjRef049()
+                return cArrayCreateObjRef049()
               elseif indices < 51
-                aArray = cArrayCreateObjRef050()
+                return cArrayCreateObjRef050()
               elseif indices < 52
-                aArray = cArrayCreateObjRef051()
+                return cArrayCreateObjRef051()
               else
-                aArray = cArrayCreateObjRef052()
+                return cArrayCreateObjRef052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateObjRef053()
+                return cArrayCreateObjRef053()
               elseif indices < 55
-                aArray = cArrayCreateObjRef054()
+                return cArrayCreateObjRef054()
               elseif indices < 56
-                aArray = cArrayCreateObjRef055()
+                return cArrayCreateObjRef055()
               else
-                aArray = cArrayCreateObjRef056()
+                return cArrayCreateObjRef056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateObjRef057()
+                return cArrayCreateObjRef057()
               elseif indices < 59
-                aArray = cArrayCreateObjRef058()
+                return cArrayCreateObjRef058()
               elseif indices < 60
-                aArray = cArrayCreateObjRef059()
+                return cArrayCreateObjRef059()
               else
-                aArray = cArrayCreateObjRef060()
+                return cArrayCreateObjRef060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateObjRef061()
+                return cArrayCreateObjRef061()
               elseif indices < 63
-                aArray = cArrayCreateObjRef062()
+                return cArrayCreateObjRef062()
               elseif indices < 64
-                aArray = cArrayCreateObjRef063()
+                return cArrayCreateObjRef063()
               else
-                aArray = cArrayCreateObjRef064()
+                return cArrayCreateObjRef064()
               endif
             endif
           endif
@@ -221,45 +212,45 @@ ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectRefere
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateObjRef065()
+                return cArrayCreateObjRef065()
               elseif indices < 67
-                aArray = cArrayCreateObjRef066()
+                return cArrayCreateObjRef066()
               elseif indices < 68
-                aArray = cArrayCreateObjRef067()
+                return cArrayCreateObjRef067()
               else
-                aArray = cArrayCreateObjRef068()
+                return cArrayCreateObjRef068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateObjRef069()
+                return cArrayCreateObjRef069()
               elseif indices < 71
-                aArray = cArrayCreateObjRef070()
+                return cArrayCreateObjRef070()
               elseif indices < 72
-                aArray = cArrayCreateObjRef071()
+                return cArrayCreateObjRef071()
               else
-                aArray = cArrayCreateObjRef072()
+                return cArrayCreateObjRef072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateObjRef073()
+                return cArrayCreateObjRef073()
               elseif indices < 75
-                aArray = cArrayCreateObjRef074()
+                return cArrayCreateObjRef074()
               elseif indices < 76
-                aArray = cArrayCreateObjRef075()
+                return cArrayCreateObjRef075()
               else
-                aArray = cArrayCreateObjRef076()
+                return cArrayCreateObjRef076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateObjRef077()
+                return cArrayCreateObjRef077()
               elseif indices < 79
-                aArray = cArrayCreateObjRef078()
+                return cArrayCreateObjRef078()
               elseif indices < 80
-                aArray = cArrayCreateObjRef079()
+                return cArrayCreateObjRef079()
               else
-                aArray = cArrayCreateObjRef080()
+                return cArrayCreateObjRef080()
               endif
             endif
           endif
@@ -267,45 +258,45 @@ ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectRefere
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateObjRef081()
+                return cArrayCreateObjRef081()
               elseif indices < 83
-                aArray = cArrayCreateObjRef082()
+                return cArrayCreateObjRef082()
               elseif indices < 84
-                aArray = cArrayCreateObjRef083()
+                return cArrayCreateObjRef083()
               else
-                aArray = cArrayCreateObjRef084()
+                return cArrayCreateObjRef084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateObjRef085()
+                return cArrayCreateObjRef085()
               elseif indices < 87
-                aArray = cArrayCreateObjRef086()
+                return cArrayCreateObjRef086()
               elseif indices < 88
-                aArray = cArrayCreateObjRef087()
+                return cArrayCreateObjRef087()
               else
-                aArray = cArrayCreateObjRef088()
+                return cArrayCreateObjRef088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateObjRef089()
+                return cArrayCreateObjRef089()
               elseif indices < 91
-                aArray = cArrayCreateObjRef090()
+                return cArrayCreateObjRef090()
               elseif indices < 92
-                aArray = cArrayCreateObjRef091()
+                return cArrayCreateObjRef091()
               else
-                aArray = cArrayCreateObjRef092()
+                return cArrayCreateObjRef092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateObjRef093()
+                return cArrayCreateObjRef093()
               elseif indices < 95
-                aArray = cArrayCreateObjRef094()
+                return cArrayCreateObjRef094()
               elseif indices < 96
-                aArray = cArrayCreateObjRef095()
+                return cArrayCreateObjRef095()
               else
-                aArray = cArrayCreateObjRef096()
+                return cArrayCreateObjRef096()
               endif
             endif
           endif
@@ -315,45 +306,45 @@ ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectRefere
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateObjRef097()
+                return cArrayCreateObjRef097()
               elseif indices < 99
-                aArray = cArrayCreateObjRef098()
+                return cArrayCreateObjRef098()
               elseif indices < 100
-                aArray = cArrayCreateObjRef099()
+                return cArrayCreateObjRef099()
               else
-                aArray = cArrayCreateObjRef100()
+                return cArrayCreateObjRef100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateObjRef101()
+                return cArrayCreateObjRef101()
               elseif indices < 103
-                aArray = cArrayCreateObjRef102()
+                return cArrayCreateObjRef102()
               elseif indices < 104
-                aArray = cArrayCreateObjRef103()
+                return cArrayCreateObjRef103()
               else
-                aArray = cArrayCreateObjRef104()
+                return cArrayCreateObjRef104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateObjRef105()
+                return cArrayCreateObjRef105()
               elseif indices < 107
-                aArray = cArrayCreateObjRef106()
+                return cArrayCreateObjRef106()
               elseif indices < 108
-                aArray = cArrayCreateObjRef107()
+                return cArrayCreateObjRef107()
               else
-                aArray = cArrayCreateObjRef108()
+                return cArrayCreateObjRef108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateObjRef109()
+                return cArrayCreateObjRef109()
               elseif indices < 111
-                aArray = cArrayCreateObjRef110()
+                return cArrayCreateObjRef110()
               elseif indices < 112
-                aArray = cArrayCreateObjRef111()
+                return cArrayCreateObjRef111()
               else
-                aArray = cArrayCreateObjRef112()
+                return cArrayCreateObjRef112()
               endif
             endif
           endif
@@ -361,45 +352,45 @@ ObjectReference[] function cArrayCreateObjectReference(Int indices, ObjectRefere
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateObjRef113()
+                return cArrayCreateObjRef113()
               elseif indices < 115
-                aArray = cArrayCreateObjRef114()
+                return cArrayCreateObjRef114()
               elseif indices < 116
-                aArray = cArrayCreateObjRef115()
+                return cArrayCreateObjRef115()
               else
-                aArray = cArrayCreateObjRef116()
+                return cArrayCreateObjRef116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateObjRef117()
+                return cArrayCreateObjRef117()
               elseif indices < 119
-                aArray = cArrayCreateObjRef118()
+                return cArrayCreateObjRef118()
               elseif indices < 120
-                aArray = cArrayCreateObjRef119()
+                return cArrayCreateObjRef119()
               else
-                aArray = cArrayCreateObjRef120()
+                return cArrayCreateObjRef120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateObjRef121()
+                return cArrayCreateObjRef121()
               elseif indices < 123
-                aArray = cArrayCreateObjRef122()
+                return cArrayCreateObjRef122()
               elseif indices < 124
-                aArray = cArrayCreateObjRef123()
+                return cArrayCreateObjRef123()
               else
-                aArray = cArrayCreateObjRef124()
+                return cArrayCreateObjRef124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateObjRef125()
+                return cArrayCreateObjRef125()
               elseif indices < 127
-                aArray = cArrayCreateObjRef126()
+                return cArrayCreateObjRef126()
               elseif indices < 128
-                aArray = cArrayCreateObjRef127()
+                return cArrayCreateObjRef127()
               else
-                aArray = cArrayCreateObjRef128()
+                return cArrayCreateObjRef128()
               endif
             endif
           endif

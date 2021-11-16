@@ -1,22 +1,14 @@
 Scriptname cArrayPackage Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Package[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Packages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreatePackage()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayPackage::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool 
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreatePackage001()
+                return cArrayCreatePackage001()
               elseif indices < 3
-                aArray = cArrayCreatePackage002()
+                return cArrayCreatePackage002()
               elseif indices < 4
-                aArray = cArrayCreatePackage003()
+                return cArrayCreatePackage003()
               else
-                aArray = cArrayCreatePackage004()
+                return cArrayCreatePackage004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreatePackage005()
+                return cArrayCreatePackage005()
               elseif indices < 7
-                aArray = cArrayCreatePackage006()
+                return cArrayCreatePackage006()
               elseif indices < 8
-                aArray = cArrayCreatePackage007()
+                return cArrayCreatePackage007()
               else
-                aArray = cArrayCreatePackage008()
+                return cArrayCreatePackage008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreatePackage009()
+                return cArrayCreatePackage009()
               elseif indices < 11
-                aArray = cArrayCreatePackage010()
+                return cArrayCreatePackage010()
               elseif indices < 12
-                aArray = cArrayCreatePackage011()
+                return cArrayCreatePackage011()
               else
-                aArray = cArrayCreatePackage012()
+                return cArrayCreatePackage012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreatePackage013()
+                return cArrayCreatePackage013()
               elseif indices < 15
-                aArray = cArrayCreatePackage014()
+                return cArrayCreatePackage014()
               elseif indices < 16
-                aArray = cArrayCreatePackage015()
+                return cArrayCreatePackage015()
               else
-                aArray = cArrayCreatePackage016()
+                return cArrayCreatePackage016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool 
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreatePackage017()
+                return cArrayCreatePackage017()
               elseif indices < 19
-                aArray = cArrayCreatePackage018()
+                return cArrayCreatePackage018()
               elseif indices < 20
-                aArray = cArrayCreatePackage019()
+                return cArrayCreatePackage019()
               else
-                aArray = cArrayCreatePackage020()
+                return cArrayCreatePackage020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreatePackage021()
+                return cArrayCreatePackage021()
               elseif indices < 23
-                aArray = cArrayCreatePackage022()
+                return cArrayCreatePackage022()
               elseif indices < 24
-                aArray = cArrayCreatePackage023()
+                return cArrayCreatePackage023()
               else
-                aArray = cArrayCreatePackage024()
+                return cArrayCreatePackage024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreatePackage025()
+                return cArrayCreatePackage025()
               elseif indices < 27
-                aArray = cArrayCreatePackage026()
+                return cArrayCreatePackage026()
               elseif indices < 28
-                aArray = cArrayCreatePackage027()
+                return cArrayCreatePackage027()
               else
-                aArray = cArrayCreatePackage028()
+                return cArrayCreatePackage028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreatePackage029()
+                return cArrayCreatePackage029()
               elseif indices < 31
-                aArray = cArrayCreatePackage030()
+                return cArrayCreatePackage030()
               elseif indices < 32
-                aArray = cArrayCreatePackage031()
+                return cArrayCreatePackage031()
               else
-                aArray = cArrayCreatePackage032()
+                return cArrayCreatePackage032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool 
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreatePackage033()
+                return cArrayCreatePackage033()
               elseif indices < 35
-                aArray = cArrayCreatePackage034()
+                return cArrayCreatePackage034()
               elseif indices < 36
-                aArray = cArrayCreatePackage035()
+                return cArrayCreatePackage035()
               else
-                aArray = cArrayCreatePackage036()
+                return cArrayCreatePackage036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreatePackage037()
+                return cArrayCreatePackage037()
               elseif indices < 39
-                aArray = cArrayCreatePackage038()
+                return cArrayCreatePackage038()
               elseif indices < 40
-                aArray = cArrayCreatePackage039()
+                return cArrayCreatePackage039()
               else
-                aArray = cArrayCreatePackage040()
+                return cArrayCreatePackage040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreatePackage041()
+                return cArrayCreatePackage041()
               elseif indices < 43
-                aArray = cArrayCreatePackage042()
+                return cArrayCreatePackage042()
               elseif indices < 44
-                aArray = cArrayCreatePackage043()
+                return cArrayCreatePackage043()
               else
-                aArray = cArrayCreatePackage044()
+                return cArrayCreatePackage044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreatePackage045()
+                return cArrayCreatePackage045()
               elseif indices < 47
-                aArray = cArrayCreatePackage046()
+                return cArrayCreatePackage046()
               elseif indices < 48
-                aArray = cArrayCreatePackage047()
+                return cArrayCreatePackage047()
               else
-                aArray = cArrayCreatePackage048()
+                return cArrayCreatePackage048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool 
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreatePackage049()
+                return cArrayCreatePackage049()
               elseif indices < 51
-                aArray = cArrayCreatePackage050()
+                return cArrayCreatePackage050()
               elseif indices < 52
-                aArray = cArrayCreatePackage051()
+                return cArrayCreatePackage051()
               else
-                aArray = cArrayCreatePackage052()
+                return cArrayCreatePackage052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreatePackage053()
+                return cArrayCreatePackage053()
               elseif indices < 55
-                aArray = cArrayCreatePackage054()
+                return cArrayCreatePackage054()
               elseif indices < 56
-                aArray = cArrayCreatePackage055()
+                return cArrayCreatePackage055()
               else
-                aArray = cArrayCreatePackage056()
+                return cArrayCreatePackage056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreatePackage057()
+                return cArrayCreatePackage057()
               elseif indices < 59
-                aArray = cArrayCreatePackage058()
+                return cArrayCreatePackage058()
               elseif indices < 60
-                aArray = cArrayCreatePackage059()
+                return cArrayCreatePackage059()
               else
-                aArray = cArrayCreatePackage060()
+                return cArrayCreatePackage060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreatePackage061()
+                return cArrayCreatePackage061()
               elseif indices < 63
-                aArray = cArrayCreatePackage062()
+                return cArrayCreatePackage062()
               elseif indices < 64
-                aArray = cArrayCreatePackage063()
+                return cArrayCreatePackage063()
               else
-                aArray = cArrayCreatePackage064()
+                return cArrayCreatePackage064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool 
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreatePackage065()
+                return cArrayCreatePackage065()
               elseif indices < 67
-                aArray = cArrayCreatePackage066()
+                return cArrayCreatePackage066()
               elseif indices < 68
-                aArray = cArrayCreatePackage067()
+                return cArrayCreatePackage067()
               else
-                aArray = cArrayCreatePackage068()
+                return cArrayCreatePackage068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreatePackage069()
+                return cArrayCreatePackage069()
               elseif indices < 71
-                aArray = cArrayCreatePackage070()
+                return cArrayCreatePackage070()
               elseif indices < 72
-                aArray = cArrayCreatePackage071()
+                return cArrayCreatePackage071()
               else
-                aArray = cArrayCreatePackage072()
+                return cArrayCreatePackage072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreatePackage073()
+                return cArrayCreatePackage073()
               elseif indices < 75
-                aArray = cArrayCreatePackage074()
+                return cArrayCreatePackage074()
               elseif indices < 76
-                aArray = cArrayCreatePackage075()
+                return cArrayCreatePackage075()
               else
-                aArray = cArrayCreatePackage076()
+                return cArrayCreatePackage076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreatePackage077()
+                return cArrayCreatePackage077()
               elseif indices < 79
-                aArray = cArrayCreatePackage078()
+                return cArrayCreatePackage078()
               elseif indices < 80
-                aArray = cArrayCreatePackage079()
+                return cArrayCreatePackage079()
               else
-                aArray = cArrayCreatePackage080()
+                return cArrayCreatePackage080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool 
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreatePackage081()
+                return cArrayCreatePackage081()
               elseif indices < 83
-                aArray = cArrayCreatePackage082()
+                return cArrayCreatePackage082()
               elseif indices < 84
-                aArray = cArrayCreatePackage083()
+                return cArrayCreatePackage083()
               else
-                aArray = cArrayCreatePackage084()
+                return cArrayCreatePackage084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreatePackage085()
+                return cArrayCreatePackage085()
               elseif indices < 87
-                aArray = cArrayCreatePackage086()
+                return cArrayCreatePackage086()
               elseif indices < 88
-                aArray = cArrayCreatePackage087()
+                return cArrayCreatePackage087()
               else
-                aArray = cArrayCreatePackage088()
+                return cArrayCreatePackage088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreatePackage089()
+                return cArrayCreatePackage089()
               elseif indices < 91
-                aArray = cArrayCreatePackage090()
+                return cArrayCreatePackage090()
               elseif indices < 92
-                aArray = cArrayCreatePackage091()
+                return cArrayCreatePackage091()
               else
-                aArray = cArrayCreatePackage092()
+                return cArrayCreatePackage092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreatePackage093()
+                return cArrayCreatePackage093()
               elseif indices < 95
-                aArray = cArrayCreatePackage094()
+                return cArrayCreatePackage094()
               elseif indices < 96
-                aArray = cArrayCreatePackage095()
+                return cArrayCreatePackage095()
               else
-                aArray = cArrayCreatePackage096()
+                return cArrayCreatePackage096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool 
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreatePackage097()
+                return cArrayCreatePackage097()
               elseif indices < 99
-                aArray = cArrayCreatePackage098()
+                return cArrayCreatePackage098()
               elseif indices < 100
-                aArray = cArrayCreatePackage099()
+                return cArrayCreatePackage099()
               else
-                aArray = cArrayCreatePackage100()
+                return cArrayCreatePackage100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreatePackage101()
+                return cArrayCreatePackage101()
               elseif indices < 103
-                aArray = cArrayCreatePackage102()
+                return cArrayCreatePackage102()
               elseif indices < 104
-                aArray = cArrayCreatePackage103()
+                return cArrayCreatePackage103()
               else
-                aArray = cArrayCreatePackage104()
+                return cArrayCreatePackage104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreatePackage105()
+                return cArrayCreatePackage105()
               elseif indices < 107
-                aArray = cArrayCreatePackage106()
+                return cArrayCreatePackage106()
               elseif indices < 108
-                aArray = cArrayCreatePackage107()
+                return cArrayCreatePackage107()
               else
-                aArray = cArrayCreatePackage108()
+                return cArrayCreatePackage108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreatePackage109()
+                return cArrayCreatePackage109()
               elseif indices < 111
-                aArray = cArrayCreatePackage110()
+                return cArrayCreatePackage110()
               elseif indices < 112
-                aArray = cArrayCreatePackage111()
+                return cArrayCreatePackage111()
               else
-                aArray = cArrayCreatePackage112()
+                return cArrayCreatePackage112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Package[] function cArrayCreatePackage(Int indices, Package filler = None, Bool 
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreatePackage113()
+                return cArrayCreatePackage113()
               elseif indices < 115
-                aArray = cArrayCreatePackage114()
+                return cArrayCreatePackage114()
               elseif indices < 116
-                aArray = cArrayCreatePackage115()
+                return cArrayCreatePackage115()
               else
-                aArray = cArrayCreatePackage116()
+                return cArrayCreatePackage116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreatePackage117()
+                return cArrayCreatePackage117()
               elseif indices < 119
-                aArray = cArrayCreatePackage118()
+                return cArrayCreatePackage118()
               elseif indices < 120
-                aArray = cArrayCreatePackage119()
+                return cArrayCreatePackage119()
               else
-                aArray = cArrayCreatePackage120()
+                return cArrayCreatePackage120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreatePackage121()
+                return cArrayCreatePackage121()
               elseif indices < 123
-                aArray = cArrayCreatePackage122()
+                return cArrayCreatePackage122()
               elseif indices < 124
-                aArray = cArrayCreatePackage123()
+                return cArrayCreatePackage123()
               else
-                aArray = cArrayCreatePackage124()
+                return cArrayCreatePackage124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreatePackage125()
+                return cArrayCreatePackage125()
               elseif indices < 127
-                aArray = cArrayCreatePackage126()
+                return cArrayCreatePackage126()
               elseif indices < 128
-                aArray = cArrayCreatePackage127()
+                return cArrayCreatePackage127()
               else
-                aArray = cArrayCreatePackage128()
+                return cArrayCreatePackage128()
               endif
             endif
           endif

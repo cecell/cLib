@@ -1,24 +1,14 @@
 Scriptname cArrayString Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-String[] function cArrayCreateString(Int indices, String filler = "", Bool useSKSE = TRUE, Bool outputTrace = TRUE, \
-    Bool useConsoleUtil = TRUE) global
-  {Requirements: None, SKSE:Soft}
+String[] function cArrayCreateString(Int indices, String filler = "", Bool outputTrace = TRUE) global
+  {Requirements: None}
   String[] aArray
-  if useSKSE && indices > 0
-    aArray = Utility.CreateStringArray(indices, filler)
-  elseif indices > 128 || indices < 1
+  if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateString()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayString::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -27,45 +17,45 @@ String[] function cArrayCreateString(Int indices, String filler = "", Bool useSK
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateString001()
+                return cArrayCreateString001()
               elseif indices < 3
-                aArray = cArrayCreateString002()
+                return cArrayCreateString002()
               elseif indices < 4
-                aArray = cArrayCreateString003()
+                return cArrayCreateString003()
               else
-                aArray = cArrayCreateString004()
+                return cArrayCreateString004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateString005()
+                return cArrayCreateString005()
               elseif indices < 7
-                aArray = cArrayCreateString006()
+                return cArrayCreateString006()
               elseif indices < 8
-                aArray = cArrayCreateString007()
+                return cArrayCreateString007()
               else
-                aArray = cArrayCreateString008()
+                return cArrayCreateString008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateString009()
+                return cArrayCreateString009()
               elseif indices < 11
-                aArray = cArrayCreateString010()
+                return cArrayCreateString010()
               elseif indices < 12
-                aArray = cArrayCreateString011()
+                return cArrayCreateString011()
               else
-                aArray = cArrayCreateString012()
+                return cArrayCreateString012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateString013()
+                return cArrayCreateString013()
               elseif indices < 15
-                aArray = cArrayCreateString014()
+                return cArrayCreateString014()
               elseif indices < 16
-                aArray = cArrayCreateString015()
+                return cArrayCreateString015()
               else
-                aArray = cArrayCreateString016()
+                return cArrayCreateString016()
               endif
             endif
           endif
@@ -73,45 +63,45 @@ String[] function cArrayCreateString(Int indices, String filler = "", Bool useSK
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateString017()
+                return cArrayCreateString017()
               elseif indices < 19
-                aArray = cArrayCreateString018()
+                return cArrayCreateString018()
               elseif indices < 20
-                aArray = cArrayCreateString019()
+                return cArrayCreateString019()
               else
-                aArray = cArrayCreateString020()
+                return cArrayCreateString020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateString021()
+                return cArrayCreateString021()
               elseif indices < 23
-                aArray = cArrayCreateString022()
+                return cArrayCreateString022()
               elseif indices < 24
-                aArray = cArrayCreateString023()
+                return cArrayCreateString023()
               else
-                aArray = cArrayCreateString024()
+                return cArrayCreateString024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateString025()
+                return cArrayCreateString025()
               elseif indices < 27
-                aArray = cArrayCreateString026()
+                return cArrayCreateString026()
               elseif indices < 28
-                aArray = cArrayCreateString027()
+                return cArrayCreateString027()
               else
-                aArray = cArrayCreateString028()
+                return cArrayCreateString028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateString029()
+                return cArrayCreateString029()
               elseif indices < 31
-                aArray = cArrayCreateString030()
+                return cArrayCreateString030()
               elseif indices < 32
-                aArray = cArrayCreateString031()
+                return cArrayCreateString031()
               else
-                aArray = cArrayCreateString032()
+                return cArrayCreateString032()
               endif
             endif
           endif
@@ -121,45 +111,45 @@ String[] function cArrayCreateString(Int indices, String filler = "", Bool useSK
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateString033()
+                return cArrayCreateString033()
               elseif indices < 35
-                aArray = cArrayCreateString034()
+                return cArrayCreateString034()
               elseif indices < 36
-                aArray = cArrayCreateString035()
+                return cArrayCreateString035()
               else
-                aArray = cArrayCreateString036()
+                return cArrayCreateString036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateString037()
+                return cArrayCreateString037()
               elseif indices < 39
-                aArray = cArrayCreateString038()
+                return cArrayCreateString038()
               elseif indices < 40
-                aArray = cArrayCreateString039()
+                return cArrayCreateString039()
               else
-                aArray = cArrayCreateString040()
+                return cArrayCreateString040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateString041()
+                return cArrayCreateString041()
               elseif indices < 43
-                aArray = cArrayCreateString042()
+                return cArrayCreateString042()
               elseif indices < 44
-                aArray = cArrayCreateString043()
+                return cArrayCreateString043()
               else
-                aArray = cArrayCreateString044()
+                return cArrayCreateString044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateString045()
+                return cArrayCreateString045()
               elseif indices < 47
-                aArray = cArrayCreateString046()
+                return cArrayCreateString046()
               elseif indices < 48
-                aArray = cArrayCreateString047()
+                return cArrayCreateString047()
               else
-                aArray = cArrayCreateString048()
+                return cArrayCreateString048()
               endif
             endif
           endif
@@ -167,45 +157,45 @@ String[] function cArrayCreateString(Int indices, String filler = "", Bool useSK
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateString049()
+                return cArrayCreateString049()
               elseif indices < 51
-                aArray = cArrayCreateString050()
+                return cArrayCreateString050()
               elseif indices < 52
-                aArray = cArrayCreateString051()
+                return cArrayCreateString051()
               else
-                aArray = cArrayCreateString052()
+                return cArrayCreateString052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateString053()
+                return cArrayCreateString053()
               elseif indices < 55
-                aArray = cArrayCreateString054()
+                return cArrayCreateString054()
               elseif indices < 56
-                aArray = cArrayCreateString055()
+                return cArrayCreateString055()
               else
-                aArray = cArrayCreateString056()
+                return cArrayCreateString056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateString057()
+                return cArrayCreateString057()
               elseif indices < 59
-                aArray = cArrayCreateString058()
+                return cArrayCreateString058()
               elseif indices < 60
-                aArray = cArrayCreateString059()
+                return cArrayCreateString059()
               else
-                aArray = cArrayCreateString060()
+                return cArrayCreateString060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateString061()
+                return cArrayCreateString061()
               elseif indices < 63
-                aArray = cArrayCreateString062()
+                return cArrayCreateString062()
               elseif indices < 64
-                aArray = cArrayCreateString063()
+                return cArrayCreateString063()
               else
-                aArray = cArrayCreateString064()
+                return cArrayCreateString064()
               endif
             endif
           endif
@@ -217,45 +207,45 @@ String[] function cArrayCreateString(Int indices, String filler = "", Bool useSK
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateString065()
+                return cArrayCreateString065()
               elseif indices < 67
-                aArray = cArrayCreateString066()
+                return cArrayCreateString066()
               elseif indices < 68
-                aArray = cArrayCreateString067()
+                return cArrayCreateString067()
               else
-                aArray = cArrayCreateString068()
+                return cArrayCreateString068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateString069()
+                return cArrayCreateString069()
               elseif indices < 71
-                aArray = cArrayCreateString070()
+                return cArrayCreateString070()
               elseif indices < 72
-                aArray = cArrayCreateString071()
+                return cArrayCreateString071()
               else
-                aArray = cArrayCreateString072()
+                return cArrayCreateString072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateString073()
+                return cArrayCreateString073()
               elseif indices < 75
-                aArray = cArrayCreateString074()
+                return cArrayCreateString074()
               elseif indices < 76
-                aArray = cArrayCreateString075()
+                return cArrayCreateString075()
               else
-                aArray = cArrayCreateString076()
+                return cArrayCreateString076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateString077()
+                return cArrayCreateString077()
               elseif indices < 79
-                aArray = cArrayCreateString078()
+                return cArrayCreateString078()
               elseif indices < 80
-                aArray = cArrayCreateString079()
+                return cArrayCreateString079()
               else
-                aArray = cArrayCreateString080()
+                return cArrayCreateString080()
               endif
             endif
           endif
@@ -263,45 +253,45 @@ String[] function cArrayCreateString(Int indices, String filler = "", Bool useSK
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateString081()
+                return cArrayCreateString081()
               elseif indices < 83
-                aArray = cArrayCreateString082()
+                return cArrayCreateString082()
               elseif indices < 84
-                aArray = cArrayCreateString083()
+                return cArrayCreateString083()
               else
-                aArray = cArrayCreateString084()
+                return cArrayCreateString084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateString085()
+                return cArrayCreateString085()
               elseif indices < 87
-                aArray = cArrayCreateString086()
+                return cArrayCreateString086()
               elseif indices < 88
-                aArray = cArrayCreateString087()
+                return cArrayCreateString087()
               else
-                aArray = cArrayCreateString088()
+                return cArrayCreateString088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateString089()
+                return cArrayCreateString089()
               elseif indices < 91
-                aArray = cArrayCreateString090()
+                return cArrayCreateString090()
               elseif indices < 92
-                aArray = cArrayCreateString091()
+                return cArrayCreateString091()
               else
-                aArray = cArrayCreateString092()
+                return cArrayCreateString092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateString093()
+                return cArrayCreateString093()
               elseif indices < 95
-                aArray = cArrayCreateString094()
+                return cArrayCreateString094()
               elseif indices < 96
-                aArray = cArrayCreateString095()
+                return cArrayCreateString095()
               else
-                aArray = cArrayCreateString096()
+                return cArrayCreateString096()
               endif
             endif
           endif
@@ -311,45 +301,45 @@ String[] function cArrayCreateString(Int indices, String filler = "", Bool useSK
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateString097()
+                return cArrayCreateString097()
               elseif indices < 99
-                aArray = cArrayCreateString098()
+                return cArrayCreateString098()
               elseif indices < 100
-                aArray = cArrayCreateString099()
+                return cArrayCreateString099()
               else
-                aArray = cArrayCreateString100()
+                return cArrayCreateString100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateString101()
+                return cArrayCreateString101()
               elseif indices < 103
-                aArray = cArrayCreateString102()
+                return cArrayCreateString102()
               elseif indices < 104
-                aArray = cArrayCreateString103()
+                return cArrayCreateString103()
               else
-                aArray = cArrayCreateString104()
+                return cArrayCreateString104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateString105()
+                return cArrayCreateString105()
               elseif indices < 107
-                aArray = cArrayCreateString106()
+                return cArrayCreateString106()
               elseif indices < 108
-                aArray = cArrayCreateString107()
+                return cArrayCreateString107()
               else
-                aArray = cArrayCreateString108()
+                return cArrayCreateString108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateString109()
+                return cArrayCreateString109()
               elseif indices < 111
-                aArray = cArrayCreateString110()
+                return cArrayCreateString110()
               elseif indices < 112
-                aArray = cArrayCreateString111()
+                return cArrayCreateString111()
               else
-                aArray = cArrayCreateString112()
+                return cArrayCreateString112()
               endif
             endif
           endif
@@ -357,45 +347,45 @@ String[] function cArrayCreateString(Int indices, String filler = "", Bool useSK
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateString113()
+                return cArrayCreateString113()
               elseif indices < 115
-                aArray = cArrayCreateString114()
+                return cArrayCreateString114()
               elseif indices < 116
-                aArray = cArrayCreateString115()
+                return cArrayCreateString115()
               else
-                aArray = cArrayCreateString116()
+                return cArrayCreateString116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateString117()
+                return cArrayCreateString117()
               elseif indices < 119
-                aArray = cArrayCreateString118()
+                return cArrayCreateString118()
               elseif indices < 120
-                aArray = cArrayCreateString119()
+                return cArrayCreateString119()
               else
-                aArray = cArrayCreateString120()
+                return cArrayCreateString120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateString121()
+                return cArrayCreateString121()
               elseif indices < 123
-                aArray = cArrayCreateString122()
+                return cArrayCreateString122()
               elseif indices < 124
-                aArray = cArrayCreateString123()
+                return cArrayCreateString123()
               else
-                aArray = cArrayCreateString124()
+                return cArrayCreateString124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateString125()
+                return cArrayCreateString125()
               elseif indices < 127
-                aArray = cArrayCreateString126()
+                return cArrayCreateString126()
               elseif indices < 128
-                aArray = cArrayCreateString127()
+                return cArrayCreateString127()
               else
-                aArray = cArrayCreateString128()
+                return cArrayCreateString128()
               endif
             endif
           endif

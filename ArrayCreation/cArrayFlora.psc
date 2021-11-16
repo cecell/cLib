@@ -1,22 +1,14 @@
 Scriptname cArrayFlora Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Flora[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateFlora()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayFlora::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool output
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateFlora001()
+                return cArrayCreateFlora001()
               elseif indices < 3
-                aArray = cArrayCreateFlora002()
+                return cArrayCreateFlora002()
               elseif indices < 4
-                aArray = cArrayCreateFlora003()
+                return cArrayCreateFlora003()
               else
-                aArray = cArrayCreateFlora004()
+                return cArrayCreateFlora004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateFlora005()
+                return cArrayCreateFlora005()
               elseif indices < 7
-                aArray = cArrayCreateFlora006()
+                return cArrayCreateFlora006()
               elseif indices < 8
-                aArray = cArrayCreateFlora007()
+                return cArrayCreateFlora007()
               else
-                aArray = cArrayCreateFlora008()
+                return cArrayCreateFlora008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateFlora009()
+                return cArrayCreateFlora009()
               elseif indices < 11
-                aArray = cArrayCreateFlora010()
+                return cArrayCreateFlora010()
               elseif indices < 12
-                aArray = cArrayCreateFlora011()
+                return cArrayCreateFlora011()
               else
-                aArray = cArrayCreateFlora012()
+                return cArrayCreateFlora012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateFlora013()
+                return cArrayCreateFlora013()
               elseif indices < 15
-                aArray = cArrayCreateFlora014()
+                return cArrayCreateFlora014()
               elseif indices < 16
-                aArray = cArrayCreateFlora015()
+                return cArrayCreateFlora015()
               else
-                aArray = cArrayCreateFlora016()
+                return cArrayCreateFlora016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool output
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateFlora017()
+                return cArrayCreateFlora017()
               elseif indices < 19
-                aArray = cArrayCreateFlora018()
+                return cArrayCreateFlora018()
               elseif indices < 20
-                aArray = cArrayCreateFlora019()
+                return cArrayCreateFlora019()
               else
-                aArray = cArrayCreateFlora020()
+                return cArrayCreateFlora020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateFlora021()
+                return cArrayCreateFlora021()
               elseif indices < 23
-                aArray = cArrayCreateFlora022()
+                return cArrayCreateFlora022()
               elseif indices < 24
-                aArray = cArrayCreateFlora023()
+                return cArrayCreateFlora023()
               else
-                aArray = cArrayCreateFlora024()
+                return cArrayCreateFlora024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateFlora025()
+                return cArrayCreateFlora025()
               elseif indices < 27
-                aArray = cArrayCreateFlora026()
+                return cArrayCreateFlora026()
               elseif indices < 28
-                aArray = cArrayCreateFlora027()
+                return cArrayCreateFlora027()
               else
-                aArray = cArrayCreateFlora028()
+                return cArrayCreateFlora028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateFlora029()
+                return cArrayCreateFlora029()
               elseif indices < 31
-                aArray = cArrayCreateFlora030()
+                return cArrayCreateFlora030()
               elseif indices < 32
-                aArray = cArrayCreateFlora031()
+                return cArrayCreateFlora031()
               else
-                aArray = cArrayCreateFlora032()
+                return cArrayCreateFlora032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool output
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateFlora033()
+                return cArrayCreateFlora033()
               elseif indices < 35
-                aArray = cArrayCreateFlora034()
+                return cArrayCreateFlora034()
               elseif indices < 36
-                aArray = cArrayCreateFlora035()
+                return cArrayCreateFlora035()
               else
-                aArray = cArrayCreateFlora036()
+                return cArrayCreateFlora036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateFlora037()
+                return cArrayCreateFlora037()
               elseif indices < 39
-                aArray = cArrayCreateFlora038()
+                return cArrayCreateFlora038()
               elseif indices < 40
-                aArray = cArrayCreateFlora039()
+                return cArrayCreateFlora039()
               else
-                aArray = cArrayCreateFlora040()
+                return cArrayCreateFlora040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateFlora041()
+                return cArrayCreateFlora041()
               elseif indices < 43
-                aArray = cArrayCreateFlora042()
+                return cArrayCreateFlora042()
               elseif indices < 44
-                aArray = cArrayCreateFlora043()
+                return cArrayCreateFlora043()
               else
-                aArray = cArrayCreateFlora044()
+                return cArrayCreateFlora044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateFlora045()
+                return cArrayCreateFlora045()
               elseif indices < 47
-                aArray = cArrayCreateFlora046()
+                return cArrayCreateFlora046()
               elseif indices < 48
-                aArray = cArrayCreateFlora047()
+                return cArrayCreateFlora047()
               else
-                aArray = cArrayCreateFlora048()
+                return cArrayCreateFlora048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool output
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateFlora049()
+                return cArrayCreateFlora049()
               elseif indices < 51
-                aArray = cArrayCreateFlora050()
+                return cArrayCreateFlora050()
               elseif indices < 52
-                aArray = cArrayCreateFlora051()
+                return cArrayCreateFlora051()
               else
-                aArray = cArrayCreateFlora052()
+                return cArrayCreateFlora052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateFlora053()
+                return cArrayCreateFlora053()
               elseif indices < 55
-                aArray = cArrayCreateFlora054()
+                return cArrayCreateFlora054()
               elseif indices < 56
-                aArray = cArrayCreateFlora055()
+                return cArrayCreateFlora055()
               else
-                aArray = cArrayCreateFlora056()
+                return cArrayCreateFlora056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateFlora057()
+                return cArrayCreateFlora057()
               elseif indices < 59
-                aArray = cArrayCreateFlora058()
+                return cArrayCreateFlora058()
               elseif indices < 60
-                aArray = cArrayCreateFlora059()
+                return cArrayCreateFlora059()
               else
-                aArray = cArrayCreateFlora060()
+                return cArrayCreateFlora060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateFlora061()
+                return cArrayCreateFlora061()
               elseif indices < 63
-                aArray = cArrayCreateFlora062()
+                return cArrayCreateFlora062()
               elseif indices < 64
-                aArray = cArrayCreateFlora063()
+                return cArrayCreateFlora063()
               else
-                aArray = cArrayCreateFlora064()
+                return cArrayCreateFlora064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool output
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateFlora065()
+                return cArrayCreateFlora065()
               elseif indices < 67
-                aArray = cArrayCreateFlora066()
+                return cArrayCreateFlora066()
               elseif indices < 68
-                aArray = cArrayCreateFlora067()
+                return cArrayCreateFlora067()
               else
-                aArray = cArrayCreateFlora068()
+                return cArrayCreateFlora068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateFlora069()
+                return cArrayCreateFlora069()
               elseif indices < 71
-                aArray = cArrayCreateFlora070()
+                return cArrayCreateFlora070()
               elseif indices < 72
-                aArray = cArrayCreateFlora071()
+                return cArrayCreateFlora071()
               else
-                aArray = cArrayCreateFlora072()
+                return cArrayCreateFlora072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateFlora073()
+                return cArrayCreateFlora073()
               elseif indices < 75
-                aArray = cArrayCreateFlora074()
+                return cArrayCreateFlora074()
               elseif indices < 76
-                aArray = cArrayCreateFlora075()
+                return cArrayCreateFlora075()
               else
-                aArray = cArrayCreateFlora076()
+                return cArrayCreateFlora076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateFlora077()
+                return cArrayCreateFlora077()
               elseif indices < 79
-                aArray = cArrayCreateFlora078()
+                return cArrayCreateFlora078()
               elseif indices < 80
-                aArray = cArrayCreateFlora079()
+                return cArrayCreateFlora079()
               else
-                aArray = cArrayCreateFlora080()
+                return cArrayCreateFlora080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool output
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateFlora081()
+                return cArrayCreateFlora081()
               elseif indices < 83
-                aArray = cArrayCreateFlora082()
+                return cArrayCreateFlora082()
               elseif indices < 84
-                aArray = cArrayCreateFlora083()
+                return cArrayCreateFlora083()
               else
-                aArray = cArrayCreateFlora084()
+                return cArrayCreateFlora084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateFlora085()
+                return cArrayCreateFlora085()
               elseif indices < 87
-                aArray = cArrayCreateFlora086()
+                return cArrayCreateFlora086()
               elseif indices < 88
-                aArray = cArrayCreateFlora087()
+                return cArrayCreateFlora087()
               else
-                aArray = cArrayCreateFlora088()
+                return cArrayCreateFlora088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateFlora089()
+                return cArrayCreateFlora089()
               elseif indices < 91
-                aArray = cArrayCreateFlora090()
+                return cArrayCreateFlora090()
               elseif indices < 92
-                aArray = cArrayCreateFlora091()
+                return cArrayCreateFlora091()
               else
-                aArray = cArrayCreateFlora092()
+                return cArrayCreateFlora092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateFlora093()
+                return cArrayCreateFlora093()
               elseif indices < 95
-                aArray = cArrayCreateFlora094()
+                return cArrayCreateFlora094()
               elseif indices < 96
-                aArray = cArrayCreateFlora095()
+                return cArrayCreateFlora095()
               else
-                aArray = cArrayCreateFlora096()
+                return cArrayCreateFlora096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool output
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateFlora097()
+                return cArrayCreateFlora097()
               elseif indices < 99
-                aArray = cArrayCreateFlora098()
+                return cArrayCreateFlora098()
               elseif indices < 100
-                aArray = cArrayCreateFlora099()
+                return cArrayCreateFlora099()
               else
-                aArray = cArrayCreateFlora100()
+                return cArrayCreateFlora100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateFlora101()
+                return cArrayCreateFlora101()
               elseif indices < 103
-                aArray = cArrayCreateFlora102()
+                return cArrayCreateFlora102()
               elseif indices < 104
-                aArray = cArrayCreateFlora103()
+                return cArrayCreateFlora103()
               else
-                aArray = cArrayCreateFlora104()
+                return cArrayCreateFlora104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateFlora105()
+                return cArrayCreateFlora105()
               elseif indices < 107
-                aArray = cArrayCreateFlora106()
+                return cArrayCreateFlora106()
               elseif indices < 108
-                aArray = cArrayCreateFlora107()
+                return cArrayCreateFlora107()
               else
-                aArray = cArrayCreateFlora108()
+                return cArrayCreateFlora108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateFlora109()
+                return cArrayCreateFlora109()
               elseif indices < 111
-                aArray = cArrayCreateFlora110()
+                return cArrayCreateFlora110()
               elseif indices < 112
-                aArray = cArrayCreateFlora111()
+                return cArrayCreateFlora111()
               else
-                aArray = cArrayCreateFlora112()
+                return cArrayCreateFlora112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Flora[] function cArrayCreateFlora(Int indices, Flora filler = None, Bool output
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateFlora113()
+                return cArrayCreateFlora113()
               elseif indices < 115
-                aArray = cArrayCreateFlora114()
+                return cArrayCreateFlora114()
               elseif indices < 116
-                aArray = cArrayCreateFlora115()
+                return cArrayCreateFlora115()
               else
-                aArray = cArrayCreateFlora116()
+                return cArrayCreateFlora116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateFlora117()
+                return cArrayCreateFlora117()
               elseif indices < 119
-                aArray = cArrayCreateFlora118()
+                return cArrayCreateFlora118()
               elseif indices < 120
-                aArray = cArrayCreateFlora119()
+                return cArrayCreateFlora119()
               else
-                aArray = cArrayCreateFlora120()
+                return cArrayCreateFlora120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateFlora121()
+                return cArrayCreateFlora121()
               elseif indices < 123
-                aArray = cArrayCreateFlora122()
+                return cArrayCreateFlora122()
               elseif indices < 124
-                aArray = cArrayCreateFlora123()
+                return cArrayCreateFlora123()
               else
-                aArray = cArrayCreateFlora124()
+                return cArrayCreateFlora124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateFlora125()
+                return cArrayCreateFlora125()
               elseif indices < 127
-                aArray = cArrayCreateFlora126()
+                return cArrayCreateFlora126()
               elseif indices < 128
-                aArray = cArrayCreateFlora127()
+                return cArrayCreateFlora127()
               else
-                aArray = cArrayCreateFlora128()
+                return cArrayCreateFlora128()
               endif
             endif
           endif

@@ -1,22 +1,14 @@
 Scriptname cArrayWordOfPower Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   WordOfPower[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace WordOfPowers
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateWordOfPower()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayWordOfPower::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler =
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateWordOfPower001()
+                return cArrayCreateWordOfPower001()
               elseif indices < 3
-                aArray = cArrayCreateWordOfPower002()
+                return cArrayCreateWordOfPower002()
               elseif indices < 4
-                aArray = cArrayCreateWordOfPower003()
+                return cArrayCreateWordOfPower003()
               else
-                aArray = cArrayCreateWordOfPower004()
+                return cArrayCreateWordOfPower004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateWordOfPower005()
+                return cArrayCreateWordOfPower005()
               elseif indices < 7
-                aArray = cArrayCreateWordOfPower006()
+                return cArrayCreateWordOfPower006()
               elseif indices < 8
-                aArray = cArrayCreateWordOfPower007()
+                return cArrayCreateWordOfPower007()
               else
-                aArray = cArrayCreateWordOfPower008()
+                return cArrayCreateWordOfPower008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateWordOfPower009()
+                return cArrayCreateWordOfPower009()
               elseif indices < 11
-                aArray = cArrayCreateWordOfPower010()
+                return cArrayCreateWordOfPower010()
               elseif indices < 12
-                aArray = cArrayCreateWordOfPower011()
+                return cArrayCreateWordOfPower011()
               else
-                aArray = cArrayCreateWordOfPower012()
+                return cArrayCreateWordOfPower012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateWordOfPower013()
+                return cArrayCreateWordOfPower013()
               elseif indices < 15
-                aArray = cArrayCreateWordOfPower014()
+                return cArrayCreateWordOfPower014()
               elseif indices < 16
-                aArray = cArrayCreateWordOfPower015()
+                return cArrayCreateWordOfPower015()
               else
-                aArray = cArrayCreateWordOfPower016()
+                return cArrayCreateWordOfPower016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler =
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateWordOfPower017()
+                return cArrayCreateWordOfPower017()
               elseif indices < 19
-                aArray = cArrayCreateWordOfPower018()
+                return cArrayCreateWordOfPower018()
               elseif indices < 20
-                aArray = cArrayCreateWordOfPower019()
+                return cArrayCreateWordOfPower019()
               else
-                aArray = cArrayCreateWordOfPower020()
+                return cArrayCreateWordOfPower020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateWordOfPower021()
+                return cArrayCreateWordOfPower021()
               elseif indices < 23
-                aArray = cArrayCreateWordOfPower022()
+                return cArrayCreateWordOfPower022()
               elseif indices < 24
-                aArray = cArrayCreateWordOfPower023()
+                return cArrayCreateWordOfPower023()
               else
-                aArray = cArrayCreateWordOfPower024()
+                return cArrayCreateWordOfPower024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateWordOfPower025()
+                return cArrayCreateWordOfPower025()
               elseif indices < 27
-                aArray = cArrayCreateWordOfPower026()
+                return cArrayCreateWordOfPower026()
               elseif indices < 28
-                aArray = cArrayCreateWordOfPower027()
+                return cArrayCreateWordOfPower027()
               else
-                aArray = cArrayCreateWordOfPower028()
+                return cArrayCreateWordOfPower028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateWordOfPower029()
+                return cArrayCreateWordOfPower029()
               elseif indices < 31
-                aArray = cArrayCreateWordOfPower030()
+                return cArrayCreateWordOfPower030()
               elseif indices < 32
-                aArray = cArrayCreateWordOfPower031()
+                return cArrayCreateWordOfPower031()
               else
-                aArray = cArrayCreateWordOfPower032()
+                return cArrayCreateWordOfPower032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler =
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateWordOfPower033()
+                return cArrayCreateWordOfPower033()
               elseif indices < 35
-                aArray = cArrayCreateWordOfPower034()
+                return cArrayCreateWordOfPower034()
               elseif indices < 36
-                aArray = cArrayCreateWordOfPower035()
+                return cArrayCreateWordOfPower035()
               else
-                aArray = cArrayCreateWordOfPower036()
+                return cArrayCreateWordOfPower036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateWordOfPower037()
+                return cArrayCreateWordOfPower037()
               elseif indices < 39
-                aArray = cArrayCreateWordOfPower038()
+                return cArrayCreateWordOfPower038()
               elseif indices < 40
-                aArray = cArrayCreateWordOfPower039()
+                return cArrayCreateWordOfPower039()
               else
-                aArray = cArrayCreateWordOfPower040()
+                return cArrayCreateWordOfPower040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateWordOfPower041()
+                return cArrayCreateWordOfPower041()
               elseif indices < 43
-                aArray = cArrayCreateWordOfPower042()
+                return cArrayCreateWordOfPower042()
               elseif indices < 44
-                aArray = cArrayCreateWordOfPower043()
+                return cArrayCreateWordOfPower043()
               else
-                aArray = cArrayCreateWordOfPower044()
+                return cArrayCreateWordOfPower044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateWordOfPower045()
+                return cArrayCreateWordOfPower045()
               elseif indices < 47
-                aArray = cArrayCreateWordOfPower046()
+                return cArrayCreateWordOfPower046()
               elseif indices < 48
-                aArray = cArrayCreateWordOfPower047()
+                return cArrayCreateWordOfPower047()
               else
-                aArray = cArrayCreateWordOfPower048()
+                return cArrayCreateWordOfPower048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler =
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateWordOfPower049()
+                return cArrayCreateWordOfPower049()
               elseif indices < 51
-                aArray = cArrayCreateWordOfPower050()
+                return cArrayCreateWordOfPower050()
               elseif indices < 52
-                aArray = cArrayCreateWordOfPower051()
+                return cArrayCreateWordOfPower051()
               else
-                aArray = cArrayCreateWordOfPower052()
+                return cArrayCreateWordOfPower052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateWordOfPower053()
+                return cArrayCreateWordOfPower053()
               elseif indices < 55
-                aArray = cArrayCreateWordOfPower054()
+                return cArrayCreateWordOfPower054()
               elseif indices < 56
-                aArray = cArrayCreateWordOfPower055()
+                return cArrayCreateWordOfPower055()
               else
-                aArray = cArrayCreateWordOfPower056()
+                return cArrayCreateWordOfPower056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateWordOfPower057()
+                return cArrayCreateWordOfPower057()
               elseif indices < 59
-                aArray = cArrayCreateWordOfPower058()
+                return cArrayCreateWordOfPower058()
               elseif indices < 60
-                aArray = cArrayCreateWordOfPower059()
+                return cArrayCreateWordOfPower059()
               else
-                aArray = cArrayCreateWordOfPower060()
+                return cArrayCreateWordOfPower060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateWordOfPower061()
+                return cArrayCreateWordOfPower061()
               elseif indices < 63
-                aArray = cArrayCreateWordOfPower062()
+                return cArrayCreateWordOfPower062()
               elseif indices < 64
-                aArray = cArrayCreateWordOfPower063()
+                return cArrayCreateWordOfPower063()
               else
-                aArray = cArrayCreateWordOfPower064()
+                return cArrayCreateWordOfPower064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler =
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateWordOfPower065()
+                return cArrayCreateWordOfPower065()
               elseif indices < 67
-                aArray = cArrayCreateWordOfPower066()
+                return cArrayCreateWordOfPower066()
               elseif indices < 68
-                aArray = cArrayCreateWordOfPower067()
+                return cArrayCreateWordOfPower067()
               else
-                aArray = cArrayCreateWordOfPower068()
+                return cArrayCreateWordOfPower068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateWordOfPower069()
+                return cArrayCreateWordOfPower069()
               elseif indices < 71
-                aArray = cArrayCreateWordOfPower070()
+                return cArrayCreateWordOfPower070()
               elseif indices < 72
-                aArray = cArrayCreateWordOfPower071()
+                return cArrayCreateWordOfPower071()
               else
-                aArray = cArrayCreateWordOfPower072()
+                return cArrayCreateWordOfPower072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateWordOfPower073()
+                return cArrayCreateWordOfPower073()
               elseif indices < 75
-                aArray = cArrayCreateWordOfPower074()
+                return cArrayCreateWordOfPower074()
               elseif indices < 76
-                aArray = cArrayCreateWordOfPower075()
+                return cArrayCreateWordOfPower075()
               else
-                aArray = cArrayCreateWordOfPower076()
+                return cArrayCreateWordOfPower076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateWordOfPower077()
+                return cArrayCreateWordOfPower077()
               elseif indices < 79
-                aArray = cArrayCreateWordOfPower078()
+                return cArrayCreateWordOfPower078()
               elseif indices < 80
-                aArray = cArrayCreateWordOfPower079()
+                return cArrayCreateWordOfPower079()
               else
-                aArray = cArrayCreateWordOfPower080()
+                return cArrayCreateWordOfPower080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler =
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateWordOfPower081()
+                return cArrayCreateWordOfPower081()
               elseif indices < 83
-                aArray = cArrayCreateWordOfPower082()
+                return cArrayCreateWordOfPower082()
               elseif indices < 84
-                aArray = cArrayCreateWordOfPower083()
+                return cArrayCreateWordOfPower083()
               else
-                aArray = cArrayCreateWordOfPower084()
+                return cArrayCreateWordOfPower084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateWordOfPower085()
+                return cArrayCreateWordOfPower085()
               elseif indices < 87
-                aArray = cArrayCreateWordOfPower086()
+                return cArrayCreateWordOfPower086()
               elseif indices < 88
-                aArray = cArrayCreateWordOfPower087()
+                return cArrayCreateWordOfPower087()
               else
-                aArray = cArrayCreateWordOfPower088()
+                return cArrayCreateWordOfPower088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateWordOfPower089()
+                return cArrayCreateWordOfPower089()
               elseif indices < 91
-                aArray = cArrayCreateWordOfPower090()
+                return cArrayCreateWordOfPower090()
               elseif indices < 92
-                aArray = cArrayCreateWordOfPower091()
+                return cArrayCreateWordOfPower091()
               else
-                aArray = cArrayCreateWordOfPower092()
+                return cArrayCreateWordOfPower092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateWordOfPower093()
+                return cArrayCreateWordOfPower093()
               elseif indices < 95
-                aArray = cArrayCreateWordOfPower094()
+                return cArrayCreateWordOfPower094()
               elseif indices < 96
-                aArray = cArrayCreateWordOfPower095()
+                return cArrayCreateWordOfPower095()
               else
-                aArray = cArrayCreateWordOfPower096()
+                return cArrayCreateWordOfPower096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler =
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateWordOfPower097()
+                return cArrayCreateWordOfPower097()
               elseif indices < 99
-                aArray = cArrayCreateWordOfPower098()
+                return cArrayCreateWordOfPower098()
               elseif indices < 100
-                aArray = cArrayCreateWordOfPower099()
+                return cArrayCreateWordOfPower099()
               else
-                aArray = cArrayCreateWordOfPower100()
+                return cArrayCreateWordOfPower100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateWordOfPower101()
+                return cArrayCreateWordOfPower101()
               elseif indices < 103
-                aArray = cArrayCreateWordOfPower102()
+                return cArrayCreateWordOfPower102()
               elseif indices < 104
-                aArray = cArrayCreateWordOfPower103()
+                return cArrayCreateWordOfPower103()
               else
-                aArray = cArrayCreateWordOfPower104()
+                return cArrayCreateWordOfPower104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateWordOfPower105()
+                return cArrayCreateWordOfPower105()
               elseif indices < 107
-                aArray = cArrayCreateWordOfPower106()
+                return cArrayCreateWordOfPower106()
               elseif indices < 108
-                aArray = cArrayCreateWordOfPower107()
+                return cArrayCreateWordOfPower107()
               else
-                aArray = cArrayCreateWordOfPower108()
+                return cArrayCreateWordOfPower108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateWordOfPower109()
+                return cArrayCreateWordOfPower109()
               elseif indices < 111
-                aArray = cArrayCreateWordOfPower110()
+                return cArrayCreateWordOfPower110()
               elseif indices < 112
-                aArray = cArrayCreateWordOfPower111()
+                return cArrayCreateWordOfPower111()
               else
-                aArray = cArrayCreateWordOfPower112()
+                return cArrayCreateWordOfPower112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ WordOfPower[] function cArrayCreateWordOfPower(Int indices, WordOfPower filler =
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateWordOfPower113()
+                return cArrayCreateWordOfPower113()
               elseif indices < 115
-                aArray = cArrayCreateWordOfPower114()
+                return cArrayCreateWordOfPower114()
               elseif indices < 116
-                aArray = cArrayCreateWordOfPower115()
+                return cArrayCreateWordOfPower115()
               else
-                aArray = cArrayCreateWordOfPower116()
+                return cArrayCreateWordOfPower116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateWordOfPower117()
+                return cArrayCreateWordOfPower117()
               elseif indices < 119
-                aArray = cArrayCreateWordOfPower118()
+                return cArrayCreateWordOfPower118()
               elseif indices < 120
-                aArray = cArrayCreateWordOfPower119()
+                return cArrayCreateWordOfPower119()
               else
-                aArray = cArrayCreateWordOfPower120()
+                return cArrayCreateWordOfPower120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateWordOfPower121()
+                return cArrayCreateWordOfPower121()
               elseif indices < 123
-                aArray = cArrayCreateWordOfPower122()
+                return cArrayCreateWordOfPower122()
               elseif indices < 124
-                aArray = cArrayCreateWordOfPower123()
+                return cArrayCreateWordOfPower123()
               else
-                aArray = cArrayCreateWordOfPower124()
+                return cArrayCreateWordOfPower124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateWordOfPower125()
+                return cArrayCreateWordOfPower125()
               elseif indices < 127
-                aArray = cArrayCreateWordOfPower126()
+                return cArrayCreateWordOfPower126()
               elseif indices < 128
-                aArray = cArrayCreateWordOfPower127()
+                return cArrayCreateWordOfPower127()
               else
-                aArray = cArrayCreateWordOfPower128()
+                return cArrayCreateWordOfPower128()
               endif
             endif
           endif
