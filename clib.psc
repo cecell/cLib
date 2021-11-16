@@ -680,38 +680,6 @@ Float[] function cGetCoCXYFromCKCoords(Int ckX, Int ckY, ObjectReference aObject
   endif
   return returnArray
 endfunction
-  ;>>> Cell object retrieval (Tamriel only for now)
-Cell    function cGetCellFromCoords(Int ckX, Int ckY, Float xVar = 0.0, Float yVar = 0.0) global
-  {Requirements: None}
-  ;Grid Map for reference
-  ;https://docs.google.com/spreadsheets/d/1yhsNb12btLWpRNRIpZ2DfjVsWR946qEZTmVML_Wi9U8/edit?usp=sharing
-  Cell returnCell
-  if !cIsBetweenInt(ckX, -57, 60)
-    cErrInvalidArg("GetCellFromCoords", "!cIsBetweenInt(ckX, -57, 60)")
-  elseif !cIsBetweenInt(ckY, -43, 50)
-    cErrInvalidArg("GetCellFromCoords", "!cIsBetweenInt(ckY, -43, 50)")
-  else
-    returnCell = cGetCell.GetCellFromCoords(ckX, ckY, xVar, yVar) as Cell
-  endif
-  return returnCell
-endfunction
-Int     function cGetCellFormIDFromCoords(Int ckX, Int ckY, Float xVar = 0.0, Float yVar = 0.0) global
-  {Requirements: None}
-  ;https://docs.google.com/spreadsheets/d/1yhsNb12btLWpRNRIpZ2DfjVsWR946qEZTmVML_Wi9U8/edit?usp=sharing
-  Int returnInt
-  if !cIsBetweenInt(ckX, -57, 60)
-    cErrInvalidArg("cGetCellFormIDFromCoords", "!cIsBetweenInt(ckX, -57, 60)", 0)
-  elseif !cIsBetweenInt(ckY, -43, 50)
-    cErrInvalidArg("cGetCellFormIDFromCoords", "!cIsBetweenInt(ckY, -43, 50)", 0)
-  elseif !cIsBetweenFloat(xVar, -235520.0, 247808.0) 
-    cErrInvalidArg("cGetCellFormIDFromCoords", "!cIsBetweenFloat(xVar, -235520.0, 247808.0)", 0)
-  elseif !cIsBetweenFloat(yVar, 206848.0, -178176.0)
-    cErrInvalidArg("cGetCellFormIDFromCoords", "!cIsBetweenFloat(yVar, 206848.0, -178176.0)", 0)
-  else
-    returnInt = cGetCell.GetCellFormIDFromCoords(ckX, ckY, xVar, yVar)
-  endif
-  return returnInt
-endfunction
   ;>>> get the distances of array of objects from object aObj
 Float[] function cArrayGetDistancesObjRef(ObjectReference aObj, ObjectReference[] aArray) global
   {Requirements:None}

@@ -4,26 +4,16 @@ String function cGetScriptName() global
   return "cGetCell"
 endfunction
 
-function clibTrace(String msg, Int errorLevel, Bool condition = TRUE, Bool useConsoleUtil = TRUE) global
+function clibTrace(String msg, Int errorLevel, Bool condition = TRUE) global
   if condition
     Debug.Trace(msg, errorLevel)
-    if useConsoleUtil && ConsoleUtil.GetVersion()
-      if errorLevel == 2
-        msg = "Error! " + msg
-      elseif errorLevel == 1
-        msg = "Warning! " + msg
-      elseif errorLevel == 0
-        msg = "Info: " + msg
-      endif
-      ConsoleUtil.PrintMessage(msg)
-    endif
   endif
 endfunction
 
 Bool function cIsBetweenFloat(Float aValue, Float minV, Float maxV) global
   {Requirements: None}
   if minV > maxV
-    clibTrace("cIsBetweenFloat() Argument error! minV > maxV, Returning False", 2)
+    clibTrace("cIsBetweenFloat():: minV > maxV", 2)
   else
     return minV <= maxV && aValue >= minV && aValue <= maxV
   endif
@@ -52,10 +42,16 @@ Int[]   function cGetCKCoordsFromXY(Float xVar, Float yVar, ObjectReference aObj
   return returnArray
 endfunction
 
-Form function GetCellFromCoords(Int ckXVar, Int ckYVar, Float xVar = 0.0, Float yVar = 0.0) global
-  return Game.GetForm(GetCellFormIDFromCoords(ckXVar, ckYVar, xVar, yVar))
+Form function cGetCellFromCoords(Int ckXVar, Int ckYVar, Float xVar = 0.0, Float yVar = 0.0) global
+  if !cIsBetweenInt(ckXVar, -57, 60)
+    clibTrace("cGetCellFromCoords():: !cIsBetweenInt(ckXVar, -57, 60)", 2)
+  elseif !cIsBetweenInt(ckYVar, -43, 50)
+    clibTrace("cGetCellFromCoords():: !cIsBetweenInt(ckYVar, -43, 50)", 2)
+  else
+    return Game.GetForm(cGetCellFormIDFromCoords(ckXVar, ckYVar, xVar, yVar))
+  endif
 endfunction
-Int function  GetCellFormIDFromCoords(Int ckXVar, Int ckYVar, Float xVar = 0.0, Float yVar = 0.0) global
+Int function  cGetCellFormIDFromCoords(Int ckXVar, Int ckYVar, Float xVar = 0.0, Float yVar = 0.0) global
   if xVar != 0 || yVar != 0
     Int[] ckCoords = cGetCKCoordsFromXY(xVar, yVar)
     ckXVar = ckCoords[0]
@@ -22706,4 +22702,14 @@ Int function  GetCellFormIDFromCoords(Int ckXVar, Int ckYVar, Float xVar = 0.0, 
       endif
     endif
   endif
+endfunction
+
+Bool function cIsBetweenInt(Int aValue, Int minV, Int maxV) global
+  {Requirements: None}
+  if minV > maxV
+    clibTrace("cIsBetweenInt():: minV > maxV", 2)
+  else
+    return minV <= maxV && aValue >= minV && aValue <= maxV
+  endif
+  return False
 endfunction
