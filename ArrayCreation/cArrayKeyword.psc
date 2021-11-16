@@ -1,22 +1,14 @@
 Scriptname cArrayKeyword Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Keyword[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateKeyword()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayKeyword::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool 
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateKeyword001()
+                return cArrayCreateKeyword001()
               elseif indices < 3
-                aArray = cArrayCreateKeyword002()
+                return cArrayCreateKeyword002()
               elseif indices < 4
-                aArray = cArrayCreateKeyword003()
+                return cArrayCreateKeyword003()
               else
-                aArray = cArrayCreateKeyword004()
+                return cArrayCreateKeyword004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateKeyword005()
+                return cArrayCreateKeyword005()
               elseif indices < 7
-                aArray = cArrayCreateKeyword006()
+                return cArrayCreateKeyword006()
               elseif indices < 8
-                aArray = cArrayCreateKeyword007()
+                return cArrayCreateKeyword007()
               else
-                aArray = cArrayCreateKeyword008()
+                return cArrayCreateKeyword008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateKeyword009()
+                return cArrayCreateKeyword009()
               elseif indices < 11
-                aArray = cArrayCreateKeyword010()
+                return cArrayCreateKeyword010()
               elseif indices < 12
-                aArray = cArrayCreateKeyword011()
+                return cArrayCreateKeyword011()
               else
-                aArray = cArrayCreateKeyword012()
+                return cArrayCreateKeyword012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateKeyword013()
+                return cArrayCreateKeyword013()
               elseif indices < 15
-                aArray = cArrayCreateKeyword014()
+                return cArrayCreateKeyword014()
               elseif indices < 16
-                aArray = cArrayCreateKeyword015()
+                return cArrayCreateKeyword015()
               else
-                aArray = cArrayCreateKeyword016()
+                return cArrayCreateKeyword016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool 
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateKeyword017()
+                return cArrayCreateKeyword017()
               elseif indices < 19
-                aArray = cArrayCreateKeyword018()
+                return cArrayCreateKeyword018()
               elseif indices < 20
-                aArray = cArrayCreateKeyword019()
+                return cArrayCreateKeyword019()
               else
-                aArray = cArrayCreateKeyword020()
+                return cArrayCreateKeyword020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateKeyword021()
+                return cArrayCreateKeyword021()
               elseif indices < 23
-                aArray = cArrayCreateKeyword022()
+                return cArrayCreateKeyword022()
               elseif indices < 24
-                aArray = cArrayCreateKeyword023()
+                return cArrayCreateKeyword023()
               else
-                aArray = cArrayCreateKeyword024()
+                return cArrayCreateKeyword024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateKeyword025()
+                return cArrayCreateKeyword025()
               elseif indices < 27
-                aArray = cArrayCreateKeyword026()
+                return cArrayCreateKeyword026()
               elseif indices < 28
-                aArray = cArrayCreateKeyword027()
+                return cArrayCreateKeyword027()
               else
-                aArray = cArrayCreateKeyword028()
+                return cArrayCreateKeyword028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateKeyword029()
+                return cArrayCreateKeyword029()
               elseif indices < 31
-                aArray = cArrayCreateKeyword030()
+                return cArrayCreateKeyword030()
               elseif indices < 32
-                aArray = cArrayCreateKeyword031()
+                return cArrayCreateKeyword031()
               else
-                aArray = cArrayCreateKeyword032()
+                return cArrayCreateKeyword032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool 
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateKeyword033()
+                return cArrayCreateKeyword033()
               elseif indices < 35
-                aArray = cArrayCreateKeyword034()
+                return cArrayCreateKeyword034()
               elseif indices < 36
-                aArray = cArrayCreateKeyword035()
+                return cArrayCreateKeyword035()
               else
-                aArray = cArrayCreateKeyword036()
+                return cArrayCreateKeyword036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateKeyword037()
+                return cArrayCreateKeyword037()
               elseif indices < 39
-                aArray = cArrayCreateKeyword038()
+                return cArrayCreateKeyword038()
               elseif indices < 40
-                aArray = cArrayCreateKeyword039()
+                return cArrayCreateKeyword039()
               else
-                aArray = cArrayCreateKeyword040()
+                return cArrayCreateKeyword040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateKeyword041()
+                return cArrayCreateKeyword041()
               elseif indices < 43
-                aArray = cArrayCreateKeyword042()
+                return cArrayCreateKeyword042()
               elseif indices < 44
-                aArray = cArrayCreateKeyword043()
+                return cArrayCreateKeyword043()
               else
-                aArray = cArrayCreateKeyword044()
+                return cArrayCreateKeyword044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateKeyword045()
+                return cArrayCreateKeyword045()
               elseif indices < 47
-                aArray = cArrayCreateKeyword046()
+                return cArrayCreateKeyword046()
               elseif indices < 48
-                aArray = cArrayCreateKeyword047()
+                return cArrayCreateKeyword047()
               else
-                aArray = cArrayCreateKeyword048()
+                return cArrayCreateKeyword048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool 
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateKeyword049()
+                return cArrayCreateKeyword049()
               elseif indices < 51
-                aArray = cArrayCreateKeyword050()
+                return cArrayCreateKeyword050()
               elseif indices < 52
-                aArray = cArrayCreateKeyword051()
+                return cArrayCreateKeyword051()
               else
-                aArray = cArrayCreateKeyword052()
+                return cArrayCreateKeyword052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateKeyword053()
+                return cArrayCreateKeyword053()
               elseif indices < 55
-                aArray = cArrayCreateKeyword054()
+                return cArrayCreateKeyword054()
               elseif indices < 56
-                aArray = cArrayCreateKeyword055()
+                return cArrayCreateKeyword055()
               else
-                aArray = cArrayCreateKeyword056()
+                return cArrayCreateKeyword056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateKeyword057()
+                return cArrayCreateKeyword057()
               elseif indices < 59
-                aArray = cArrayCreateKeyword058()
+                return cArrayCreateKeyword058()
               elseif indices < 60
-                aArray = cArrayCreateKeyword059()
+                return cArrayCreateKeyword059()
               else
-                aArray = cArrayCreateKeyword060()
+                return cArrayCreateKeyword060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateKeyword061()
+                return cArrayCreateKeyword061()
               elseif indices < 63
-                aArray = cArrayCreateKeyword062()
+                return cArrayCreateKeyword062()
               elseif indices < 64
-                aArray = cArrayCreateKeyword063()
+                return cArrayCreateKeyword063()
               else
-                aArray = cArrayCreateKeyword064()
+                return cArrayCreateKeyword064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool 
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateKeyword065()
+                return cArrayCreateKeyword065()
               elseif indices < 67
-                aArray = cArrayCreateKeyword066()
+                return cArrayCreateKeyword066()
               elseif indices < 68
-                aArray = cArrayCreateKeyword067()
+                return cArrayCreateKeyword067()
               else
-                aArray = cArrayCreateKeyword068()
+                return cArrayCreateKeyword068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateKeyword069()
+                return cArrayCreateKeyword069()
               elseif indices < 71
-                aArray = cArrayCreateKeyword070()
+                return cArrayCreateKeyword070()
               elseif indices < 72
-                aArray = cArrayCreateKeyword071()
+                return cArrayCreateKeyword071()
               else
-                aArray = cArrayCreateKeyword072()
+                return cArrayCreateKeyword072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateKeyword073()
+                return cArrayCreateKeyword073()
               elseif indices < 75
-                aArray = cArrayCreateKeyword074()
+                return cArrayCreateKeyword074()
               elseif indices < 76
-                aArray = cArrayCreateKeyword075()
+                return cArrayCreateKeyword075()
               else
-                aArray = cArrayCreateKeyword076()
+                return cArrayCreateKeyword076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateKeyword077()
+                return cArrayCreateKeyword077()
               elseif indices < 79
-                aArray = cArrayCreateKeyword078()
+                return cArrayCreateKeyword078()
               elseif indices < 80
-                aArray = cArrayCreateKeyword079()
+                return cArrayCreateKeyword079()
               else
-                aArray = cArrayCreateKeyword080()
+                return cArrayCreateKeyword080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool 
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateKeyword081()
+                return cArrayCreateKeyword081()
               elseif indices < 83
-                aArray = cArrayCreateKeyword082()
+                return cArrayCreateKeyword082()
               elseif indices < 84
-                aArray = cArrayCreateKeyword083()
+                return cArrayCreateKeyword083()
               else
-                aArray = cArrayCreateKeyword084()
+                return cArrayCreateKeyword084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateKeyword085()
+                return cArrayCreateKeyword085()
               elseif indices < 87
-                aArray = cArrayCreateKeyword086()
+                return cArrayCreateKeyword086()
               elseif indices < 88
-                aArray = cArrayCreateKeyword087()
+                return cArrayCreateKeyword087()
               else
-                aArray = cArrayCreateKeyword088()
+                return cArrayCreateKeyword088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateKeyword089()
+                return cArrayCreateKeyword089()
               elseif indices < 91
-                aArray = cArrayCreateKeyword090()
+                return cArrayCreateKeyword090()
               elseif indices < 92
-                aArray = cArrayCreateKeyword091()
+                return cArrayCreateKeyword091()
               else
-                aArray = cArrayCreateKeyword092()
+                return cArrayCreateKeyword092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateKeyword093()
+                return cArrayCreateKeyword093()
               elseif indices < 95
-                aArray = cArrayCreateKeyword094()
+                return cArrayCreateKeyword094()
               elseif indices < 96
-                aArray = cArrayCreateKeyword095()
+                return cArrayCreateKeyword095()
               else
-                aArray = cArrayCreateKeyword096()
+                return cArrayCreateKeyword096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool 
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateKeyword097()
+                return cArrayCreateKeyword097()
               elseif indices < 99
-                aArray = cArrayCreateKeyword098()
+                return cArrayCreateKeyword098()
               elseif indices < 100
-                aArray = cArrayCreateKeyword099()
+                return cArrayCreateKeyword099()
               else
-                aArray = cArrayCreateKeyword100()
+                return cArrayCreateKeyword100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateKeyword101()
+                return cArrayCreateKeyword101()
               elseif indices < 103
-                aArray = cArrayCreateKeyword102()
+                return cArrayCreateKeyword102()
               elseif indices < 104
-                aArray = cArrayCreateKeyword103()
+                return cArrayCreateKeyword103()
               else
-                aArray = cArrayCreateKeyword104()
+                return cArrayCreateKeyword104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateKeyword105()
+                return cArrayCreateKeyword105()
               elseif indices < 107
-                aArray = cArrayCreateKeyword106()
+                return cArrayCreateKeyword106()
               elseif indices < 108
-                aArray = cArrayCreateKeyword107()
+                return cArrayCreateKeyword107()
               else
-                aArray = cArrayCreateKeyword108()
+                return cArrayCreateKeyword108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateKeyword109()
+                return cArrayCreateKeyword109()
               elseif indices < 111
-                aArray = cArrayCreateKeyword110()
+                return cArrayCreateKeyword110()
               elseif indices < 112
-                aArray = cArrayCreateKeyword111()
+                return cArrayCreateKeyword111()
               else
-                aArray = cArrayCreateKeyword112()
+                return cArrayCreateKeyword112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Keyword[] function cArrayCreateKeyword(Int indices, Keyword filler = None, Bool 
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateKeyword113()
+                return cArrayCreateKeyword113()
               elseif indices < 115
-                aArray = cArrayCreateKeyword114()
+                return cArrayCreateKeyword114()
               elseif indices < 116
-                aArray = cArrayCreateKeyword115()
+                return cArrayCreateKeyword115()
               else
-                aArray = cArrayCreateKeyword116()
+                return cArrayCreateKeyword116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateKeyword117()
+                return cArrayCreateKeyword117()
               elseif indices < 119
-                aArray = cArrayCreateKeyword118()
+                return cArrayCreateKeyword118()
               elseif indices < 120
-                aArray = cArrayCreateKeyword119()
+                return cArrayCreateKeyword119()
               else
-                aArray = cArrayCreateKeyword120()
+                return cArrayCreateKeyword120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateKeyword121()
+                return cArrayCreateKeyword121()
               elseif indices < 123
-                aArray = cArrayCreateKeyword122()
+                return cArrayCreateKeyword122()
               elseif indices < 124
-                aArray = cArrayCreateKeyword123()
+                return cArrayCreateKeyword123()
               else
-                aArray = cArrayCreateKeyword124()
+                return cArrayCreateKeyword124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateKeyword125()
+                return cArrayCreateKeyword125()
               elseif indices < 127
-                aArray = cArrayCreateKeyword126()
+                return cArrayCreateKeyword126()
               elseif indices < 128
-                aArray = cArrayCreateKeyword127()
+                return cArrayCreateKeyword127()
               else
-                aArray = cArrayCreateKeyword128()
+                return cArrayCreateKeyword128()
               endif
             endif
           endif

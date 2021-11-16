@@ -1,22 +1,14 @@
 Scriptname cArrayLeveledActor Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   LeveledActor[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateLeveledActor()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayLeveledActor::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor fille
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateLeveledActor001()
+                return cArrayCreateLeveledActor001()
               elseif indices < 3
-                aArray = cArrayCreateLeveledActor002()
+                return cArrayCreateLeveledActor002()
               elseif indices < 4
-                aArray = cArrayCreateLeveledActor003()
+                return cArrayCreateLeveledActor003()
               else
-                aArray = cArrayCreateLeveledActor004()
+                return cArrayCreateLeveledActor004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateLeveledActor005()
+                return cArrayCreateLeveledActor005()
               elseif indices < 7
-                aArray = cArrayCreateLeveledActor006()
+                return cArrayCreateLeveledActor006()
               elseif indices < 8
-                aArray = cArrayCreateLeveledActor007()
+                return cArrayCreateLeveledActor007()
               else
-                aArray = cArrayCreateLeveledActor008()
+                return cArrayCreateLeveledActor008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateLeveledActor009()
+                return cArrayCreateLeveledActor009()
               elseif indices < 11
-                aArray = cArrayCreateLeveledActor010()
+                return cArrayCreateLeveledActor010()
               elseif indices < 12
-                aArray = cArrayCreateLeveledActor011()
+                return cArrayCreateLeveledActor011()
               else
-                aArray = cArrayCreateLeveledActor012()
+                return cArrayCreateLeveledActor012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateLeveledActor013()
+                return cArrayCreateLeveledActor013()
               elseif indices < 15
-                aArray = cArrayCreateLeveledActor014()
+                return cArrayCreateLeveledActor014()
               elseif indices < 16
-                aArray = cArrayCreateLeveledActor015()
+                return cArrayCreateLeveledActor015()
               else
-                aArray = cArrayCreateLeveledActor016()
+                return cArrayCreateLeveledActor016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor fille
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateLeveledActor017()
+                return cArrayCreateLeveledActor017()
               elseif indices < 19
-                aArray = cArrayCreateLeveledActor018()
+                return cArrayCreateLeveledActor018()
               elseif indices < 20
-                aArray = cArrayCreateLeveledActor019()
+                return cArrayCreateLeveledActor019()
               else
-                aArray = cArrayCreateLeveledActor020()
+                return cArrayCreateLeveledActor020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateLeveledActor021()
+                return cArrayCreateLeveledActor021()
               elseif indices < 23
-                aArray = cArrayCreateLeveledActor022()
+                return cArrayCreateLeveledActor022()
               elseif indices < 24
-                aArray = cArrayCreateLeveledActor023()
+                return cArrayCreateLeveledActor023()
               else
-                aArray = cArrayCreateLeveledActor024()
+                return cArrayCreateLeveledActor024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateLeveledActor025()
+                return cArrayCreateLeveledActor025()
               elseif indices < 27
-                aArray = cArrayCreateLeveledActor026()
+                return cArrayCreateLeveledActor026()
               elseif indices < 28
-                aArray = cArrayCreateLeveledActor027()
+                return cArrayCreateLeveledActor027()
               else
-                aArray = cArrayCreateLeveledActor028()
+                return cArrayCreateLeveledActor028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateLeveledActor029()
+                return cArrayCreateLeveledActor029()
               elseif indices < 31
-                aArray = cArrayCreateLeveledActor030()
+                return cArrayCreateLeveledActor030()
               elseif indices < 32
-                aArray = cArrayCreateLeveledActor031()
+                return cArrayCreateLeveledActor031()
               else
-                aArray = cArrayCreateLeveledActor032()
+                return cArrayCreateLeveledActor032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor fille
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateLeveledActor033()
+                return cArrayCreateLeveledActor033()
               elseif indices < 35
-                aArray = cArrayCreateLeveledActor034()
+                return cArrayCreateLeveledActor034()
               elseif indices < 36
-                aArray = cArrayCreateLeveledActor035()
+                return cArrayCreateLeveledActor035()
               else
-                aArray = cArrayCreateLeveledActor036()
+                return cArrayCreateLeveledActor036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateLeveledActor037()
+                return cArrayCreateLeveledActor037()
               elseif indices < 39
-                aArray = cArrayCreateLeveledActor038()
+                return cArrayCreateLeveledActor038()
               elseif indices < 40
-                aArray = cArrayCreateLeveledActor039()
+                return cArrayCreateLeveledActor039()
               else
-                aArray = cArrayCreateLeveledActor040()
+                return cArrayCreateLeveledActor040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateLeveledActor041()
+                return cArrayCreateLeveledActor041()
               elseif indices < 43
-                aArray = cArrayCreateLeveledActor042()
+                return cArrayCreateLeveledActor042()
               elseif indices < 44
-                aArray = cArrayCreateLeveledActor043()
+                return cArrayCreateLeveledActor043()
               else
-                aArray = cArrayCreateLeveledActor044()
+                return cArrayCreateLeveledActor044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateLeveledActor045()
+                return cArrayCreateLeveledActor045()
               elseif indices < 47
-                aArray = cArrayCreateLeveledActor046()
+                return cArrayCreateLeveledActor046()
               elseif indices < 48
-                aArray = cArrayCreateLeveledActor047()
+                return cArrayCreateLeveledActor047()
               else
-                aArray = cArrayCreateLeveledActor048()
+                return cArrayCreateLeveledActor048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor fille
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateLeveledActor049()
+                return cArrayCreateLeveledActor049()
               elseif indices < 51
-                aArray = cArrayCreateLeveledActor050()
+                return cArrayCreateLeveledActor050()
               elseif indices < 52
-                aArray = cArrayCreateLeveledActor051()
+                return cArrayCreateLeveledActor051()
               else
-                aArray = cArrayCreateLeveledActor052()
+                return cArrayCreateLeveledActor052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateLeveledActor053()
+                return cArrayCreateLeveledActor053()
               elseif indices < 55
-                aArray = cArrayCreateLeveledActor054()
+                return cArrayCreateLeveledActor054()
               elseif indices < 56
-                aArray = cArrayCreateLeveledActor055()
+                return cArrayCreateLeveledActor055()
               else
-                aArray = cArrayCreateLeveledActor056()
+                return cArrayCreateLeveledActor056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateLeveledActor057()
+                return cArrayCreateLeveledActor057()
               elseif indices < 59
-                aArray = cArrayCreateLeveledActor058()
+                return cArrayCreateLeveledActor058()
               elseif indices < 60
-                aArray = cArrayCreateLeveledActor059()
+                return cArrayCreateLeveledActor059()
               else
-                aArray = cArrayCreateLeveledActor060()
+                return cArrayCreateLeveledActor060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateLeveledActor061()
+                return cArrayCreateLeveledActor061()
               elseif indices < 63
-                aArray = cArrayCreateLeveledActor062()
+                return cArrayCreateLeveledActor062()
               elseif indices < 64
-                aArray = cArrayCreateLeveledActor063()
+                return cArrayCreateLeveledActor063()
               else
-                aArray = cArrayCreateLeveledActor064()
+                return cArrayCreateLeveledActor064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor fille
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateLeveledActor065()
+                return cArrayCreateLeveledActor065()
               elseif indices < 67
-                aArray = cArrayCreateLeveledActor066()
+                return cArrayCreateLeveledActor066()
               elseif indices < 68
-                aArray = cArrayCreateLeveledActor067()
+                return cArrayCreateLeveledActor067()
               else
-                aArray = cArrayCreateLeveledActor068()
+                return cArrayCreateLeveledActor068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateLeveledActor069()
+                return cArrayCreateLeveledActor069()
               elseif indices < 71
-                aArray = cArrayCreateLeveledActor070()
+                return cArrayCreateLeveledActor070()
               elseif indices < 72
-                aArray = cArrayCreateLeveledActor071()
+                return cArrayCreateLeveledActor071()
               else
-                aArray = cArrayCreateLeveledActor072()
+                return cArrayCreateLeveledActor072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateLeveledActor073()
+                return cArrayCreateLeveledActor073()
               elseif indices < 75
-                aArray = cArrayCreateLeveledActor074()
+                return cArrayCreateLeveledActor074()
               elseif indices < 76
-                aArray = cArrayCreateLeveledActor075()
+                return cArrayCreateLeveledActor075()
               else
-                aArray = cArrayCreateLeveledActor076()
+                return cArrayCreateLeveledActor076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateLeveledActor077()
+                return cArrayCreateLeveledActor077()
               elseif indices < 79
-                aArray = cArrayCreateLeveledActor078()
+                return cArrayCreateLeveledActor078()
               elseif indices < 80
-                aArray = cArrayCreateLeveledActor079()
+                return cArrayCreateLeveledActor079()
               else
-                aArray = cArrayCreateLeveledActor080()
+                return cArrayCreateLeveledActor080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor fille
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateLeveledActor081()
+                return cArrayCreateLeveledActor081()
               elseif indices < 83
-                aArray = cArrayCreateLeveledActor082()
+                return cArrayCreateLeveledActor082()
               elseif indices < 84
-                aArray = cArrayCreateLeveledActor083()
+                return cArrayCreateLeveledActor083()
               else
-                aArray = cArrayCreateLeveledActor084()
+                return cArrayCreateLeveledActor084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateLeveledActor085()
+                return cArrayCreateLeveledActor085()
               elseif indices < 87
-                aArray = cArrayCreateLeveledActor086()
+                return cArrayCreateLeveledActor086()
               elseif indices < 88
-                aArray = cArrayCreateLeveledActor087()
+                return cArrayCreateLeveledActor087()
               else
-                aArray = cArrayCreateLeveledActor088()
+                return cArrayCreateLeveledActor088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateLeveledActor089()
+                return cArrayCreateLeveledActor089()
               elseif indices < 91
-                aArray = cArrayCreateLeveledActor090()
+                return cArrayCreateLeveledActor090()
               elseif indices < 92
-                aArray = cArrayCreateLeveledActor091()
+                return cArrayCreateLeveledActor091()
               else
-                aArray = cArrayCreateLeveledActor092()
+                return cArrayCreateLeveledActor092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateLeveledActor093()
+                return cArrayCreateLeveledActor093()
               elseif indices < 95
-                aArray = cArrayCreateLeveledActor094()
+                return cArrayCreateLeveledActor094()
               elseif indices < 96
-                aArray = cArrayCreateLeveledActor095()
+                return cArrayCreateLeveledActor095()
               else
-                aArray = cArrayCreateLeveledActor096()
+                return cArrayCreateLeveledActor096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor fille
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateLeveledActor097()
+                return cArrayCreateLeveledActor097()
               elseif indices < 99
-                aArray = cArrayCreateLeveledActor098()
+                return cArrayCreateLeveledActor098()
               elseif indices < 100
-                aArray = cArrayCreateLeveledActor099()
+                return cArrayCreateLeveledActor099()
               else
-                aArray = cArrayCreateLeveledActor100()
+                return cArrayCreateLeveledActor100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateLeveledActor101()
+                return cArrayCreateLeveledActor101()
               elseif indices < 103
-                aArray = cArrayCreateLeveledActor102()
+                return cArrayCreateLeveledActor102()
               elseif indices < 104
-                aArray = cArrayCreateLeveledActor103()
+                return cArrayCreateLeveledActor103()
               else
-                aArray = cArrayCreateLeveledActor104()
+                return cArrayCreateLeveledActor104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateLeveledActor105()
+                return cArrayCreateLeveledActor105()
               elseif indices < 107
-                aArray = cArrayCreateLeveledActor106()
+                return cArrayCreateLeveledActor106()
               elseif indices < 108
-                aArray = cArrayCreateLeveledActor107()
+                return cArrayCreateLeveledActor107()
               else
-                aArray = cArrayCreateLeveledActor108()
+                return cArrayCreateLeveledActor108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateLeveledActor109()
+                return cArrayCreateLeveledActor109()
               elseif indices < 111
-                aArray = cArrayCreateLeveledActor110()
+                return cArrayCreateLeveledActor110()
               elseif indices < 112
-                aArray = cArrayCreateLeveledActor111()
+                return cArrayCreateLeveledActor111()
               else
-                aArray = cArrayCreateLeveledActor112()
+                return cArrayCreateLeveledActor112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ LeveledActor[] function cArrayCreateLeveledActor(Int indices, LeveledActor fille
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateLeveledActor113()
+                return cArrayCreateLeveledActor113()
               elseif indices < 115
-                aArray = cArrayCreateLeveledActor114()
+                return cArrayCreateLeveledActor114()
               elseif indices < 116
-                aArray = cArrayCreateLeveledActor115()
+                return cArrayCreateLeveledActor115()
               else
-                aArray = cArrayCreateLeveledActor116()
+                return cArrayCreateLeveledActor116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateLeveledActor117()
+                return cArrayCreateLeveledActor117()
               elseif indices < 119
-                aArray = cArrayCreateLeveledActor118()
+                return cArrayCreateLeveledActor118()
               elseif indices < 120
-                aArray = cArrayCreateLeveledActor119()
+                return cArrayCreateLeveledActor119()
               else
-                aArray = cArrayCreateLeveledActor120()
+                return cArrayCreateLeveledActor120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateLeveledActor121()
+                return cArrayCreateLeveledActor121()
               elseif indices < 123
-                aArray = cArrayCreateLeveledActor122()
+                return cArrayCreateLeveledActor122()
               elseif indices < 124
-                aArray = cArrayCreateLeveledActor123()
+                return cArrayCreateLeveledActor123()
               else
-                aArray = cArrayCreateLeveledActor124()
+                return cArrayCreateLeveledActor124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateLeveledActor125()
+                return cArrayCreateLeveledActor125()
               elseif indices < 127
-                aArray = cArrayCreateLeveledActor126()
+                return cArrayCreateLeveledActor126()
               elseif indices < 128
-                aArray = cArrayCreateLeveledActor127()
+                return cArrayCreateLeveledActor127()
               else
-                aArray = cArrayCreateLeveledActor128()
+                return cArrayCreateLeveledActor128()
               endif
             endif
           endif

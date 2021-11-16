@@ -1,22 +1,14 @@
 Scriptname cArrayCell Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Cell[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateCell()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayCell::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTra
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateCell001()
+                return cArrayCreateCell001()
               elseif indices < 3
-                aArray = cArrayCreateCell002()
+                return cArrayCreateCell002()
               elseif indices < 4
-                aArray = cArrayCreateCell003()
+                return cArrayCreateCell003()
               else
-                aArray = cArrayCreateCell004()
+                return cArrayCreateCell004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateCell005()
+                return cArrayCreateCell005()
               elseif indices < 7
-                aArray = cArrayCreateCell006()
+                return cArrayCreateCell006()
               elseif indices < 8
-                aArray = cArrayCreateCell007()
+                return cArrayCreateCell007()
               else
-                aArray = cArrayCreateCell008()
+                return cArrayCreateCell008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateCell009()
+                return cArrayCreateCell009()
               elseif indices < 11
-                aArray = cArrayCreateCell010()
+                return cArrayCreateCell010()
               elseif indices < 12
-                aArray = cArrayCreateCell011()
+                return cArrayCreateCell011()
               else
-                aArray = cArrayCreateCell012()
+                return cArrayCreateCell012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateCell013()
+                return cArrayCreateCell013()
               elseif indices < 15
-                aArray = cArrayCreateCell014()
+                return cArrayCreateCell014()
               elseif indices < 16
-                aArray = cArrayCreateCell015()
+                return cArrayCreateCell015()
               else
-                aArray = cArrayCreateCell016()
+                return cArrayCreateCell016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTra
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateCell017()
+                return cArrayCreateCell017()
               elseif indices < 19
-                aArray = cArrayCreateCell018()
+                return cArrayCreateCell018()
               elseif indices < 20
-                aArray = cArrayCreateCell019()
+                return cArrayCreateCell019()
               else
-                aArray = cArrayCreateCell020()
+                return cArrayCreateCell020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateCell021()
+                return cArrayCreateCell021()
               elseif indices < 23
-                aArray = cArrayCreateCell022()
+                return cArrayCreateCell022()
               elseif indices < 24
-                aArray = cArrayCreateCell023()
+                return cArrayCreateCell023()
               else
-                aArray = cArrayCreateCell024()
+                return cArrayCreateCell024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateCell025()
+                return cArrayCreateCell025()
               elseif indices < 27
-                aArray = cArrayCreateCell026()
+                return cArrayCreateCell026()
               elseif indices < 28
-                aArray = cArrayCreateCell027()
+                return cArrayCreateCell027()
               else
-                aArray = cArrayCreateCell028()
+                return cArrayCreateCell028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateCell029()
+                return cArrayCreateCell029()
               elseif indices < 31
-                aArray = cArrayCreateCell030()
+                return cArrayCreateCell030()
               elseif indices < 32
-                aArray = cArrayCreateCell031()
+                return cArrayCreateCell031()
               else
-                aArray = cArrayCreateCell032()
+                return cArrayCreateCell032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTra
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateCell033()
+                return cArrayCreateCell033()
               elseif indices < 35
-                aArray = cArrayCreateCell034()
+                return cArrayCreateCell034()
               elseif indices < 36
-                aArray = cArrayCreateCell035()
+                return cArrayCreateCell035()
               else
-                aArray = cArrayCreateCell036()
+                return cArrayCreateCell036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateCell037()
+                return cArrayCreateCell037()
               elseif indices < 39
-                aArray = cArrayCreateCell038()
+                return cArrayCreateCell038()
               elseif indices < 40
-                aArray = cArrayCreateCell039()
+                return cArrayCreateCell039()
               else
-                aArray = cArrayCreateCell040()
+                return cArrayCreateCell040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateCell041()
+                return cArrayCreateCell041()
               elseif indices < 43
-                aArray = cArrayCreateCell042()
+                return cArrayCreateCell042()
               elseif indices < 44
-                aArray = cArrayCreateCell043()
+                return cArrayCreateCell043()
               else
-                aArray = cArrayCreateCell044()
+                return cArrayCreateCell044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateCell045()
+                return cArrayCreateCell045()
               elseif indices < 47
-                aArray = cArrayCreateCell046()
+                return cArrayCreateCell046()
               elseif indices < 48
-                aArray = cArrayCreateCell047()
+                return cArrayCreateCell047()
               else
-                aArray = cArrayCreateCell048()
+                return cArrayCreateCell048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTra
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateCell049()
+                return cArrayCreateCell049()
               elseif indices < 51
-                aArray = cArrayCreateCell050()
+                return cArrayCreateCell050()
               elseif indices < 52
-                aArray = cArrayCreateCell051()
+                return cArrayCreateCell051()
               else
-                aArray = cArrayCreateCell052()
+                return cArrayCreateCell052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateCell053()
+                return cArrayCreateCell053()
               elseif indices < 55
-                aArray = cArrayCreateCell054()
+                return cArrayCreateCell054()
               elseif indices < 56
-                aArray = cArrayCreateCell055()
+                return cArrayCreateCell055()
               else
-                aArray = cArrayCreateCell056()
+                return cArrayCreateCell056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateCell057()
+                return cArrayCreateCell057()
               elseif indices < 59
-                aArray = cArrayCreateCell058()
+                return cArrayCreateCell058()
               elseif indices < 60
-                aArray = cArrayCreateCell059()
+                return cArrayCreateCell059()
               else
-                aArray = cArrayCreateCell060()
+                return cArrayCreateCell060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateCell061()
+                return cArrayCreateCell061()
               elseif indices < 63
-                aArray = cArrayCreateCell062()
+                return cArrayCreateCell062()
               elseif indices < 64
-                aArray = cArrayCreateCell063()
+                return cArrayCreateCell063()
               else
-                aArray = cArrayCreateCell064()
+                return cArrayCreateCell064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTra
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateCell065()
+                return cArrayCreateCell065()
               elseif indices < 67
-                aArray = cArrayCreateCell066()
+                return cArrayCreateCell066()
               elseif indices < 68
-                aArray = cArrayCreateCell067()
+                return cArrayCreateCell067()
               else
-                aArray = cArrayCreateCell068()
+                return cArrayCreateCell068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateCell069()
+                return cArrayCreateCell069()
               elseif indices < 71
-                aArray = cArrayCreateCell070()
+                return cArrayCreateCell070()
               elseif indices < 72
-                aArray = cArrayCreateCell071()
+                return cArrayCreateCell071()
               else
-                aArray = cArrayCreateCell072()
+                return cArrayCreateCell072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateCell073()
+                return cArrayCreateCell073()
               elseif indices < 75
-                aArray = cArrayCreateCell074()
+                return cArrayCreateCell074()
               elseif indices < 76
-                aArray = cArrayCreateCell075()
+                return cArrayCreateCell075()
               else
-                aArray = cArrayCreateCell076()
+                return cArrayCreateCell076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateCell077()
+                return cArrayCreateCell077()
               elseif indices < 79
-                aArray = cArrayCreateCell078()
+                return cArrayCreateCell078()
               elseif indices < 80
-                aArray = cArrayCreateCell079()
+                return cArrayCreateCell079()
               else
-                aArray = cArrayCreateCell080()
+                return cArrayCreateCell080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTra
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateCell081()
+                return cArrayCreateCell081()
               elseif indices < 83
-                aArray = cArrayCreateCell082()
+                return cArrayCreateCell082()
               elseif indices < 84
-                aArray = cArrayCreateCell083()
+                return cArrayCreateCell083()
               else
-                aArray = cArrayCreateCell084()
+                return cArrayCreateCell084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateCell085()
+                return cArrayCreateCell085()
               elseif indices < 87
-                aArray = cArrayCreateCell086()
+                return cArrayCreateCell086()
               elseif indices < 88
-                aArray = cArrayCreateCell087()
+                return cArrayCreateCell087()
               else
-                aArray = cArrayCreateCell088()
+                return cArrayCreateCell088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateCell089()
+                return cArrayCreateCell089()
               elseif indices < 91
-                aArray = cArrayCreateCell090()
+                return cArrayCreateCell090()
               elseif indices < 92
-                aArray = cArrayCreateCell091()
+                return cArrayCreateCell091()
               else
-                aArray = cArrayCreateCell092()
+                return cArrayCreateCell092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateCell093()
+                return cArrayCreateCell093()
               elseif indices < 95
-                aArray = cArrayCreateCell094()
+                return cArrayCreateCell094()
               elseif indices < 96
-                aArray = cArrayCreateCell095()
+                return cArrayCreateCell095()
               else
-                aArray = cArrayCreateCell096()
+                return cArrayCreateCell096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTra
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateCell097()
+                return cArrayCreateCell097()
               elseif indices < 99
-                aArray = cArrayCreateCell098()
+                return cArrayCreateCell098()
               elseif indices < 100
-                aArray = cArrayCreateCell099()
+                return cArrayCreateCell099()
               else
-                aArray = cArrayCreateCell100()
+                return cArrayCreateCell100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateCell101()
+                return cArrayCreateCell101()
               elseif indices < 103
-                aArray = cArrayCreateCell102()
+                return cArrayCreateCell102()
               elseif indices < 104
-                aArray = cArrayCreateCell103()
+                return cArrayCreateCell103()
               else
-                aArray = cArrayCreateCell104()
+                return cArrayCreateCell104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateCell105()
+                return cArrayCreateCell105()
               elseif indices < 107
-                aArray = cArrayCreateCell106()
+                return cArrayCreateCell106()
               elseif indices < 108
-                aArray = cArrayCreateCell107()
+                return cArrayCreateCell107()
               else
-                aArray = cArrayCreateCell108()
+                return cArrayCreateCell108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateCell109()
+                return cArrayCreateCell109()
               elseif indices < 111
-                aArray = cArrayCreateCell110()
+                return cArrayCreateCell110()
               elseif indices < 112
-                aArray = cArrayCreateCell111()
+                return cArrayCreateCell111()
               else
-                aArray = cArrayCreateCell112()
+                return cArrayCreateCell112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Cell[] function cArrayCreateCell(Int indices, Cell filler = None, Bool outputTra
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateCell113()
+                return cArrayCreateCell113()
               elseif indices < 115
-                aArray = cArrayCreateCell114()
+                return cArrayCreateCell114()
               elseif indices < 116
-                aArray = cArrayCreateCell115()
+                return cArrayCreateCell115()
               else
-                aArray = cArrayCreateCell116()
+                return cArrayCreateCell116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateCell117()
+                return cArrayCreateCell117()
               elseif indices < 119
-                aArray = cArrayCreateCell118()
+                return cArrayCreateCell118()
               elseif indices < 120
-                aArray = cArrayCreateCell119()
+                return cArrayCreateCell119()
               else
-                aArray = cArrayCreateCell120()
+                return cArrayCreateCell120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateCell121()
+                return cArrayCreateCell121()
               elseif indices < 123
-                aArray = cArrayCreateCell122()
+                return cArrayCreateCell122()
               elseif indices < 124
-                aArray = cArrayCreateCell123()
+                return cArrayCreateCell123()
               else
-                aArray = cArrayCreateCell124()
+                return cArrayCreateCell124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateCell125()
+                return cArrayCreateCell125()
               elseif indices < 127
-                aArray = cArrayCreateCell126()
+                return cArrayCreateCell126()
               elseif indices < 128
-                aArray = cArrayCreateCell127()
+                return cArrayCreateCell127()
               else
-                aArray = cArrayCreateCell128()
+                return cArrayCreateCell128()
               endif
             endif
           endif

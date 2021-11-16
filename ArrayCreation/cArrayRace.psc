@@ -1,22 +1,14 @@
 Scriptname cArrayRace Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Race[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Races
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateRace()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayRace::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTra
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateRace001()
+                return cArrayCreateRace001()
               elseif indices < 3
-                aArray = cArrayCreateRace002()
+                return cArrayCreateRace002()
               elseif indices < 4
-                aArray = cArrayCreateRace003()
+                return cArrayCreateRace003()
               else
-                aArray = cArrayCreateRace004()
+                return cArrayCreateRace004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateRace005()
+                return cArrayCreateRace005()
               elseif indices < 7
-                aArray = cArrayCreateRace006()
+                return cArrayCreateRace006()
               elseif indices < 8
-                aArray = cArrayCreateRace007()
+                return cArrayCreateRace007()
               else
-                aArray = cArrayCreateRace008()
+                return cArrayCreateRace008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateRace009()
+                return cArrayCreateRace009()
               elseif indices < 11
-                aArray = cArrayCreateRace010()
+                return cArrayCreateRace010()
               elseif indices < 12
-                aArray = cArrayCreateRace011()
+                return cArrayCreateRace011()
               else
-                aArray = cArrayCreateRace012()
+                return cArrayCreateRace012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateRace013()
+                return cArrayCreateRace013()
               elseif indices < 15
-                aArray = cArrayCreateRace014()
+                return cArrayCreateRace014()
               elseif indices < 16
-                aArray = cArrayCreateRace015()
+                return cArrayCreateRace015()
               else
-                aArray = cArrayCreateRace016()
+                return cArrayCreateRace016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTra
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateRace017()
+                return cArrayCreateRace017()
               elseif indices < 19
-                aArray = cArrayCreateRace018()
+                return cArrayCreateRace018()
               elseif indices < 20
-                aArray = cArrayCreateRace019()
+                return cArrayCreateRace019()
               else
-                aArray = cArrayCreateRace020()
+                return cArrayCreateRace020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateRace021()
+                return cArrayCreateRace021()
               elseif indices < 23
-                aArray = cArrayCreateRace022()
+                return cArrayCreateRace022()
               elseif indices < 24
-                aArray = cArrayCreateRace023()
+                return cArrayCreateRace023()
               else
-                aArray = cArrayCreateRace024()
+                return cArrayCreateRace024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateRace025()
+                return cArrayCreateRace025()
               elseif indices < 27
-                aArray = cArrayCreateRace026()
+                return cArrayCreateRace026()
               elseif indices < 28
-                aArray = cArrayCreateRace027()
+                return cArrayCreateRace027()
               else
-                aArray = cArrayCreateRace028()
+                return cArrayCreateRace028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateRace029()
+                return cArrayCreateRace029()
               elseif indices < 31
-                aArray = cArrayCreateRace030()
+                return cArrayCreateRace030()
               elseif indices < 32
-                aArray = cArrayCreateRace031()
+                return cArrayCreateRace031()
               else
-                aArray = cArrayCreateRace032()
+                return cArrayCreateRace032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTra
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateRace033()
+                return cArrayCreateRace033()
               elseif indices < 35
-                aArray = cArrayCreateRace034()
+                return cArrayCreateRace034()
               elseif indices < 36
-                aArray = cArrayCreateRace035()
+                return cArrayCreateRace035()
               else
-                aArray = cArrayCreateRace036()
+                return cArrayCreateRace036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateRace037()
+                return cArrayCreateRace037()
               elseif indices < 39
-                aArray = cArrayCreateRace038()
+                return cArrayCreateRace038()
               elseif indices < 40
-                aArray = cArrayCreateRace039()
+                return cArrayCreateRace039()
               else
-                aArray = cArrayCreateRace040()
+                return cArrayCreateRace040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateRace041()
+                return cArrayCreateRace041()
               elseif indices < 43
-                aArray = cArrayCreateRace042()
+                return cArrayCreateRace042()
               elseif indices < 44
-                aArray = cArrayCreateRace043()
+                return cArrayCreateRace043()
               else
-                aArray = cArrayCreateRace044()
+                return cArrayCreateRace044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateRace045()
+                return cArrayCreateRace045()
               elseif indices < 47
-                aArray = cArrayCreateRace046()
+                return cArrayCreateRace046()
               elseif indices < 48
-                aArray = cArrayCreateRace047()
+                return cArrayCreateRace047()
               else
-                aArray = cArrayCreateRace048()
+                return cArrayCreateRace048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTra
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateRace049()
+                return cArrayCreateRace049()
               elseif indices < 51
-                aArray = cArrayCreateRace050()
+                return cArrayCreateRace050()
               elseif indices < 52
-                aArray = cArrayCreateRace051()
+                return cArrayCreateRace051()
               else
-                aArray = cArrayCreateRace052()
+                return cArrayCreateRace052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateRace053()
+                return cArrayCreateRace053()
               elseif indices < 55
-                aArray = cArrayCreateRace054()
+                return cArrayCreateRace054()
               elseif indices < 56
-                aArray = cArrayCreateRace055()
+                return cArrayCreateRace055()
               else
-                aArray = cArrayCreateRace056()
+                return cArrayCreateRace056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateRace057()
+                return cArrayCreateRace057()
               elseif indices < 59
-                aArray = cArrayCreateRace058()
+                return cArrayCreateRace058()
               elseif indices < 60
-                aArray = cArrayCreateRace059()
+                return cArrayCreateRace059()
               else
-                aArray = cArrayCreateRace060()
+                return cArrayCreateRace060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateRace061()
+                return cArrayCreateRace061()
               elseif indices < 63
-                aArray = cArrayCreateRace062()
+                return cArrayCreateRace062()
               elseif indices < 64
-                aArray = cArrayCreateRace063()
+                return cArrayCreateRace063()
               else
-                aArray = cArrayCreateRace064()
+                return cArrayCreateRace064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTra
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateRace065()
+                return cArrayCreateRace065()
               elseif indices < 67
-                aArray = cArrayCreateRace066()
+                return cArrayCreateRace066()
               elseif indices < 68
-                aArray = cArrayCreateRace067()
+                return cArrayCreateRace067()
               else
-                aArray = cArrayCreateRace068()
+                return cArrayCreateRace068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateRace069()
+                return cArrayCreateRace069()
               elseif indices < 71
-                aArray = cArrayCreateRace070()
+                return cArrayCreateRace070()
               elseif indices < 72
-                aArray = cArrayCreateRace071()
+                return cArrayCreateRace071()
               else
-                aArray = cArrayCreateRace072()
+                return cArrayCreateRace072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateRace073()
+                return cArrayCreateRace073()
               elseif indices < 75
-                aArray = cArrayCreateRace074()
+                return cArrayCreateRace074()
               elseif indices < 76
-                aArray = cArrayCreateRace075()
+                return cArrayCreateRace075()
               else
-                aArray = cArrayCreateRace076()
+                return cArrayCreateRace076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateRace077()
+                return cArrayCreateRace077()
               elseif indices < 79
-                aArray = cArrayCreateRace078()
+                return cArrayCreateRace078()
               elseif indices < 80
-                aArray = cArrayCreateRace079()
+                return cArrayCreateRace079()
               else
-                aArray = cArrayCreateRace080()
+                return cArrayCreateRace080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTra
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateRace081()
+                return cArrayCreateRace081()
               elseif indices < 83
-                aArray = cArrayCreateRace082()
+                return cArrayCreateRace082()
               elseif indices < 84
-                aArray = cArrayCreateRace083()
+                return cArrayCreateRace083()
               else
-                aArray = cArrayCreateRace084()
+                return cArrayCreateRace084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateRace085()
+                return cArrayCreateRace085()
               elseif indices < 87
-                aArray = cArrayCreateRace086()
+                return cArrayCreateRace086()
               elseif indices < 88
-                aArray = cArrayCreateRace087()
+                return cArrayCreateRace087()
               else
-                aArray = cArrayCreateRace088()
+                return cArrayCreateRace088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateRace089()
+                return cArrayCreateRace089()
               elseif indices < 91
-                aArray = cArrayCreateRace090()
+                return cArrayCreateRace090()
               elseif indices < 92
-                aArray = cArrayCreateRace091()
+                return cArrayCreateRace091()
               else
-                aArray = cArrayCreateRace092()
+                return cArrayCreateRace092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateRace093()
+                return cArrayCreateRace093()
               elseif indices < 95
-                aArray = cArrayCreateRace094()
+                return cArrayCreateRace094()
               elseif indices < 96
-                aArray = cArrayCreateRace095()
+                return cArrayCreateRace095()
               else
-                aArray = cArrayCreateRace096()
+                return cArrayCreateRace096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTra
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateRace097()
+                return cArrayCreateRace097()
               elseif indices < 99
-                aArray = cArrayCreateRace098()
+                return cArrayCreateRace098()
               elseif indices < 100
-                aArray = cArrayCreateRace099()
+                return cArrayCreateRace099()
               else
-                aArray = cArrayCreateRace100()
+                return cArrayCreateRace100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateRace101()
+                return cArrayCreateRace101()
               elseif indices < 103
-                aArray = cArrayCreateRace102()
+                return cArrayCreateRace102()
               elseif indices < 104
-                aArray = cArrayCreateRace103()
+                return cArrayCreateRace103()
               else
-                aArray = cArrayCreateRace104()
+                return cArrayCreateRace104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateRace105()
+                return cArrayCreateRace105()
               elseif indices < 107
-                aArray = cArrayCreateRace106()
+                return cArrayCreateRace106()
               elseif indices < 108
-                aArray = cArrayCreateRace107()
+                return cArrayCreateRace107()
               else
-                aArray = cArrayCreateRace108()
+                return cArrayCreateRace108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateRace109()
+                return cArrayCreateRace109()
               elseif indices < 111
-                aArray = cArrayCreateRace110()
+                return cArrayCreateRace110()
               elseif indices < 112
-                aArray = cArrayCreateRace111()
+                return cArrayCreateRace111()
               else
-                aArray = cArrayCreateRace112()
+                return cArrayCreateRace112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Race[] function cArrayCreateRace(Int indices, Race filler = None, Bool outputTra
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateRace113()
+                return cArrayCreateRace113()
               elseif indices < 115
-                aArray = cArrayCreateRace114()
+                return cArrayCreateRace114()
               elseif indices < 116
-                aArray = cArrayCreateRace115()
+                return cArrayCreateRace115()
               else
-                aArray = cArrayCreateRace116()
+                return cArrayCreateRace116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateRace117()
+                return cArrayCreateRace117()
               elseif indices < 119
-                aArray = cArrayCreateRace118()
+                return cArrayCreateRace118()
               elseif indices < 120
-                aArray = cArrayCreateRace119()
+                return cArrayCreateRace119()
               else
-                aArray = cArrayCreateRace120()
+                return cArrayCreateRace120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateRace121()
+                return cArrayCreateRace121()
               elseif indices < 123
-                aArray = cArrayCreateRace122()
+                return cArrayCreateRace122()
               elseif indices < 124
-                aArray = cArrayCreateRace123()
+                return cArrayCreateRace123()
               else
-                aArray = cArrayCreateRace124()
+                return cArrayCreateRace124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateRace125()
+                return cArrayCreateRace125()
               elseif indices < 127
-                aArray = cArrayCreateRace126()
+                return cArrayCreateRace126()
               elseif indices < 128
-                aArray = cArrayCreateRace127()
+                return cArrayCreateRace127()
               else
-                aArray = cArrayCreateRace128()
+                return cArrayCreateRace128()
               endif
             endif
           endif

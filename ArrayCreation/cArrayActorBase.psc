@@ -1,22 +1,14 @@
 Scriptname cArrayActorBase Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   ActorBase[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateActorBase()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayActorBase::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None,
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateActorBase001()
+                return cArrayCreateActorBase001()
               elseif indices < 3
-                aArray = cArrayCreateActorBase002()
+                return cArrayCreateActorBase002()
               elseif indices < 4
-                aArray = cArrayCreateActorBase003()
+                return cArrayCreateActorBase003()
               else
-                aArray = cArrayCreateActorBase004()
+                return cArrayCreateActorBase004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateActorBase005()
+                return cArrayCreateActorBase005()
               elseif indices < 7
-                aArray = cArrayCreateActorBase006()
+                return cArrayCreateActorBase006()
               elseif indices < 8
-                aArray = cArrayCreateActorBase007()
+                return cArrayCreateActorBase007()
               else
-                aArray = cArrayCreateActorBase008()
+                return cArrayCreateActorBase008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateActorBase009()
+                return cArrayCreateActorBase009()
               elseif indices < 11
-                aArray = cArrayCreateActorBase010()
+                return cArrayCreateActorBase010()
               elseif indices < 12
-                aArray = cArrayCreateActorBase011()
+                return cArrayCreateActorBase011()
               else
-                aArray = cArrayCreateActorBase012()
+                return cArrayCreateActorBase012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateActorBase013()
+                return cArrayCreateActorBase013()
               elseif indices < 15
-                aArray = cArrayCreateActorBase014()
+                return cArrayCreateActorBase014()
               elseif indices < 16
-                aArray = cArrayCreateActorBase015()
+                return cArrayCreateActorBase015()
               else
-                aArray = cArrayCreateActorBase016()
+                return cArrayCreateActorBase016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None,
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateActorBase017()
+                return cArrayCreateActorBase017()
               elseif indices < 19
-                aArray = cArrayCreateActorBase018()
+                return cArrayCreateActorBase018()
               elseif indices < 20
-                aArray = cArrayCreateActorBase019()
+                return cArrayCreateActorBase019()
               else
-                aArray = cArrayCreateActorBase020()
+                return cArrayCreateActorBase020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateActorBase021()
+                return cArrayCreateActorBase021()
               elseif indices < 23
-                aArray = cArrayCreateActorBase022()
+                return cArrayCreateActorBase022()
               elseif indices < 24
-                aArray = cArrayCreateActorBase023()
+                return cArrayCreateActorBase023()
               else
-                aArray = cArrayCreateActorBase024()
+                return cArrayCreateActorBase024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateActorBase025()
+                return cArrayCreateActorBase025()
               elseif indices < 27
-                aArray = cArrayCreateActorBase026()
+                return cArrayCreateActorBase026()
               elseif indices < 28
-                aArray = cArrayCreateActorBase027()
+                return cArrayCreateActorBase027()
               else
-                aArray = cArrayCreateActorBase028()
+                return cArrayCreateActorBase028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateActorBase029()
+                return cArrayCreateActorBase029()
               elseif indices < 31
-                aArray = cArrayCreateActorBase030()
+                return cArrayCreateActorBase030()
               elseif indices < 32
-                aArray = cArrayCreateActorBase031()
+                return cArrayCreateActorBase031()
               else
-                aArray = cArrayCreateActorBase032()
+                return cArrayCreateActorBase032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None,
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateActorBase033()
+                return cArrayCreateActorBase033()
               elseif indices < 35
-                aArray = cArrayCreateActorBase034()
+                return cArrayCreateActorBase034()
               elseif indices < 36
-                aArray = cArrayCreateActorBase035()
+                return cArrayCreateActorBase035()
               else
-                aArray = cArrayCreateActorBase036()
+                return cArrayCreateActorBase036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateActorBase037()
+                return cArrayCreateActorBase037()
               elseif indices < 39
-                aArray = cArrayCreateActorBase038()
+                return cArrayCreateActorBase038()
               elseif indices < 40
-                aArray = cArrayCreateActorBase039()
+                return cArrayCreateActorBase039()
               else
-                aArray = cArrayCreateActorBase040()
+                return cArrayCreateActorBase040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateActorBase041()
+                return cArrayCreateActorBase041()
               elseif indices < 43
-                aArray = cArrayCreateActorBase042()
+                return cArrayCreateActorBase042()
               elseif indices < 44
-                aArray = cArrayCreateActorBase043()
+                return cArrayCreateActorBase043()
               else
-                aArray = cArrayCreateActorBase044()
+                return cArrayCreateActorBase044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateActorBase045()
+                return cArrayCreateActorBase045()
               elseif indices < 47
-                aArray = cArrayCreateActorBase046()
+                return cArrayCreateActorBase046()
               elseif indices < 48
-                aArray = cArrayCreateActorBase047()
+                return cArrayCreateActorBase047()
               else
-                aArray = cArrayCreateActorBase048()
+                return cArrayCreateActorBase048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None,
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateActorBase049()
+                return cArrayCreateActorBase049()
               elseif indices < 51
-                aArray = cArrayCreateActorBase050()
+                return cArrayCreateActorBase050()
               elseif indices < 52
-                aArray = cArrayCreateActorBase051()
+                return cArrayCreateActorBase051()
               else
-                aArray = cArrayCreateActorBase052()
+                return cArrayCreateActorBase052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateActorBase053()
+                return cArrayCreateActorBase053()
               elseif indices < 55
-                aArray = cArrayCreateActorBase054()
+                return cArrayCreateActorBase054()
               elseif indices < 56
-                aArray = cArrayCreateActorBase055()
+                return cArrayCreateActorBase055()
               else
-                aArray = cArrayCreateActorBase056()
+                return cArrayCreateActorBase056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateActorBase057()
+                return cArrayCreateActorBase057()
               elseif indices < 59
-                aArray = cArrayCreateActorBase058()
+                return cArrayCreateActorBase058()
               elseif indices < 60
-                aArray = cArrayCreateActorBase059()
+                return cArrayCreateActorBase059()
               else
-                aArray = cArrayCreateActorBase060()
+                return cArrayCreateActorBase060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateActorBase061()
+                return cArrayCreateActorBase061()
               elseif indices < 63
-                aArray = cArrayCreateActorBase062()
+                return cArrayCreateActorBase062()
               elseif indices < 64
-                aArray = cArrayCreateActorBase063()
+                return cArrayCreateActorBase063()
               else
-                aArray = cArrayCreateActorBase064()
+                return cArrayCreateActorBase064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None,
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateActorBase065()
+                return cArrayCreateActorBase065()
               elseif indices < 67
-                aArray = cArrayCreateActorBase066()
+                return cArrayCreateActorBase066()
               elseif indices < 68
-                aArray = cArrayCreateActorBase067()
+                return cArrayCreateActorBase067()
               else
-                aArray = cArrayCreateActorBase068()
+                return cArrayCreateActorBase068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateActorBase069()
+                return cArrayCreateActorBase069()
               elseif indices < 71
-                aArray = cArrayCreateActorBase070()
+                return cArrayCreateActorBase070()
               elseif indices < 72
-                aArray = cArrayCreateActorBase071()
+                return cArrayCreateActorBase071()
               else
-                aArray = cArrayCreateActorBase072()
+                return cArrayCreateActorBase072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateActorBase073()
+                return cArrayCreateActorBase073()
               elseif indices < 75
-                aArray = cArrayCreateActorBase074()
+                return cArrayCreateActorBase074()
               elseif indices < 76
-                aArray = cArrayCreateActorBase075()
+                return cArrayCreateActorBase075()
               else
-                aArray = cArrayCreateActorBase076()
+                return cArrayCreateActorBase076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateActorBase077()
+                return cArrayCreateActorBase077()
               elseif indices < 79
-                aArray = cArrayCreateActorBase078()
+                return cArrayCreateActorBase078()
               elseif indices < 80
-                aArray = cArrayCreateActorBase079()
+                return cArrayCreateActorBase079()
               else
-                aArray = cArrayCreateActorBase080()
+                return cArrayCreateActorBase080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None,
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateActorBase081()
+                return cArrayCreateActorBase081()
               elseif indices < 83
-                aArray = cArrayCreateActorBase082()
+                return cArrayCreateActorBase082()
               elseif indices < 84
-                aArray = cArrayCreateActorBase083()
+                return cArrayCreateActorBase083()
               else
-                aArray = cArrayCreateActorBase084()
+                return cArrayCreateActorBase084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateActorBase085()
+                return cArrayCreateActorBase085()
               elseif indices < 87
-                aArray = cArrayCreateActorBase086()
+                return cArrayCreateActorBase086()
               elseif indices < 88
-                aArray = cArrayCreateActorBase087()
+                return cArrayCreateActorBase087()
               else
-                aArray = cArrayCreateActorBase088()
+                return cArrayCreateActorBase088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateActorBase089()
+                return cArrayCreateActorBase089()
               elseif indices < 91
-                aArray = cArrayCreateActorBase090()
+                return cArrayCreateActorBase090()
               elseif indices < 92
-                aArray = cArrayCreateActorBase091()
+                return cArrayCreateActorBase091()
               else
-                aArray = cArrayCreateActorBase092()
+                return cArrayCreateActorBase092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateActorBase093()
+                return cArrayCreateActorBase093()
               elseif indices < 95
-                aArray = cArrayCreateActorBase094()
+                return cArrayCreateActorBase094()
               elseif indices < 96
-                aArray = cArrayCreateActorBase095()
+                return cArrayCreateActorBase095()
               else
-                aArray = cArrayCreateActorBase096()
+                return cArrayCreateActorBase096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None,
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateActorBase097()
+                return cArrayCreateActorBase097()
               elseif indices < 99
-                aArray = cArrayCreateActorBase098()
+                return cArrayCreateActorBase098()
               elseif indices < 100
-                aArray = cArrayCreateActorBase099()
+                return cArrayCreateActorBase099()
               else
-                aArray = cArrayCreateActorBase100()
+                return cArrayCreateActorBase100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateActorBase101()
+                return cArrayCreateActorBase101()
               elseif indices < 103
-                aArray = cArrayCreateActorBase102()
+                return cArrayCreateActorBase102()
               elseif indices < 104
-                aArray = cArrayCreateActorBase103()
+                return cArrayCreateActorBase103()
               else
-                aArray = cArrayCreateActorBase104()
+                return cArrayCreateActorBase104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateActorBase105()
+                return cArrayCreateActorBase105()
               elseif indices < 107
-                aArray = cArrayCreateActorBase106()
+                return cArrayCreateActorBase106()
               elseif indices < 108
-                aArray = cArrayCreateActorBase107()
+                return cArrayCreateActorBase107()
               else
-                aArray = cArrayCreateActorBase108()
+                return cArrayCreateActorBase108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateActorBase109()
+                return cArrayCreateActorBase109()
               elseif indices < 111
-                aArray = cArrayCreateActorBase110()
+                return cArrayCreateActorBase110()
               elseif indices < 112
-                aArray = cArrayCreateActorBase111()
+                return cArrayCreateActorBase111()
               else
-                aArray = cArrayCreateActorBase112()
+                return cArrayCreateActorBase112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ ActorBase[] function cArrayCreateActorBase(Int indices, ActorBase filler = None,
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateActorBase113()
+                return cArrayCreateActorBase113()
               elseif indices < 115
-                aArray = cArrayCreateActorBase114()
+                return cArrayCreateActorBase114()
               elseif indices < 116
-                aArray = cArrayCreateActorBase115()
+                return cArrayCreateActorBase115()
               else
-                aArray = cArrayCreateActorBase116()
+                return cArrayCreateActorBase116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateActorBase117()
+                return cArrayCreateActorBase117()
               elseif indices < 119
-                aArray = cArrayCreateActorBase118()
+                return cArrayCreateActorBase118()
               elseif indices < 120
-                aArray = cArrayCreateActorBase119()
+                return cArrayCreateActorBase119()
               else
-                aArray = cArrayCreateActorBase120()
+                return cArrayCreateActorBase120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateActorBase121()
+                return cArrayCreateActorBase121()
               elseif indices < 123
-                aArray = cArrayCreateActorBase122()
+                return cArrayCreateActorBase122()
               elseif indices < 124
-                aArray = cArrayCreateActorBase123()
+                return cArrayCreateActorBase123()
               else
-                aArray = cArrayCreateActorBase124()
+                return cArrayCreateActorBase124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateActorBase125()
+                return cArrayCreateActorBase125()
               elseif indices < 127
-                aArray = cArrayCreateActorBase126()
+                return cArrayCreateActorBase126()
               elseif indices < 128
-                aArray = cArrayCreateActorBase127()
+                return cArrayCreateActorBase127()
               else
-                aArray = cArrayCreateActorBase128()
+                return cArrayCreateActorBase128()
               endif
             endif
           endif

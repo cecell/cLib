@@ -1,22 +1,14 @@
 Scriptname cArrayQuest Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Quest[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Quests
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateQuest()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayQuest::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool output
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateQuest001()
+                return cArrayCreateQuest001()
               elseif indices < 3
-                aArray = cArrayCreateQuest002()
+                return cArrayCreateQuest002()
               elseif indices < 4
-                aArray = cArrayCreateQuest003()
+                return cArrayCreateQuest003()
               else
-                aArray = cArrayCreateQuest004()
+                return cArrayCreateQuest004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateQuest005()
+                return cArrayCreateQuest005()
               elseif indices < 7
-                aArray = cArrayCreateQuest006()
+                return cArrayCreateQuest006()
               elseif indices < 8
-                aArray = cArrayCreateQuest007()
+                return cArrayCreateQuest007()
               else
-                aArray = cArrayCreateQuest008()
+                return cArrayCreateQuest008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateQuest009()
+                return cArrayCreateQuest009()
               elseif indices < 11
-                aArray = cArrayCreateQuest010()
+                return cArrayCreateQuest010()
               elseif indices < 12
-                aArray = cArrayCreateQuest011()
+                return cArrayCreateQuest011()
               else
-                aArray = cArrayCreateQuest012()
+                return cArrayCreateQuest012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateQuest013()
+                return cArrayCreateQuest013()
               elseif indices < 15
-                aArray = cArrayCreateQuest014()
+                return cArrayCreateQuest014()
               elseif indices < 16
-                aArray = cArrayCreateQuest015()
+                return cArrayCreateQuest015()
               else
-                aArray = cArrayCreateQuest016()
+                return cArrayCreateQuest016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool output
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateQuest017()
+                return cArrayCreateQuest017()
               elseif indices < 19
-                aArray = cArrayCreateQuest018()
+                return cArrayCreateQuest018()
               elseif indices < 20
-                aArray = cArrayCreateQuest019()
+                return cArrayCreateQuest019()
               else
-                aArray = cArrayCreateQuest020()
+                return cArrayCreateQuest020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateQuest021()
+                return cArrayCreateQuest021()
               elseif indices < 23
-                aArray = cArrayCreateQuest022()
+                return cArrayCreateQuest022()
               elseif indices < 24
-                aArray = cArrayCreateQuest023()
+                return cArrayCreateQuest023()
               else
-                aArray = cArrayCreateQuest024()
+                return cArrayCreateQuest024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateQuest025()
+                return cArrayCreateQuest025()
               elseif indices < 27
-                aArray = cArrayCreateQuest026()
+                return cArrayCreateQuest026()
               elseif indices < 28
-                aArray = cArrayCreateQuest027()
+                return cArrayCreateQuest027()
               else
-                aArray = cArrayCreateQuest028()
+                return cArrayCreateQuest028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateQuest029()
+                return cArrayCreateQuest029()
               elseif indices < 31
-                aArray = cArrayCreateQuest030()
+                return cArrayCreateQuest030()
               elseif indices < 32
-                aArray = cArrayCreateQuest031()
+                return cArrayCreateQuest031()
               else
-                aArray = cArrayCreateQuest032()
+                return cArrayCreateQuest032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool output
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateQuest033()
+                return cArrayCreateQuest033()
               elseif indices < 35
-                aArray = cArrayCreateQuest034()
+                return cArrayCreateQuest034()
               elseif indices < 36
-                aArray = cArrayCreateQuest035()
+                return cArrayCreateQuest035()
               else
-                aArray = cArrayCreateQuest036()
+                return cArrayCreateQuest036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateQuest037()
+                return cArrayCreateQuest037()
               elseif indices < 39
-                aArray = cArrayCreateQuest038()
+                return cArrayCreateQuest038()
               elseif indices < 40
-                aArray = cArrayCreateQuest039()
+                return cArrayCreateQuest039()
               else
-                aArray = cArrayCreateQuest040()
+                return cArrayCreateQuest040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateQuest041()
+                return cArrayCreateQuest041()
               elseif indices < 43
-                aArray = cArrayCreateQuest042()
+                return cArrayCreateQuest042()
               elseif indices < 44
-                aArray = cArrayCreateQuest043()
+                return cArrayCreateQuest043()
               else
-                aArray = cArrayCreateQuest044()
+                return cArrayCreateQuest044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateQuest045()
+                return cArrayCreateQuest045()
               elseif indices < 47
-                aArray = cArrayCreateQuest046()
+                return cArrayCreateQuest046()
               elseif indices < 48
-                aArray = cArrayCreateQuest047()
+                return cArrayCreateQuest047()
               else
-                aArray = cArrayCreateQuest048()
+                return cArrayCreateQuest048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool output
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateQuest049()
+                return cArrayCreateQuest049()
               elseif indices < 51
-                aArray = cArrayCreateQuest050()
+                return cArrayCreateQuest050()
               elseif indices < 52
-                aArray = cArrayCreateQuest051()
+                return cArrayCreateQuest051()
               else
-                aArray = cArrayCreateQuest052()
+                return cArrayCreateQuest052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateQuest053()
+                return cArrayCreateQuest053()
               elseif indices < 55
-                aArray = cArrayCreateQuest054()
+                return cArrayCreateQuest054()
               elseif indices < 56
-                aArray = cArrayCreateQuest055()
+                return cArrayCreateQuest055()
               else
-                aArray = cArrayCreateQuest056()
+                return cArrayCreateQuest056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateQuest057()
+                return cArrayCreateQuest057()
               elseif indices < 59
-                aArray = cArrayCreateQuest058()
+                return cArrayCreateQuest058()
               elseif indices < 60
-                aArray = cArrayCreateQuest059()
+                return cArrayCreateQuest059()
               else
-                aArray = cArrayCreateQuest060()
+                return cArrayCreateQuest060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateQuest061()
+                return cArrayCreateQuest061()
               elseif indices < 63
-                aArray = cArrayCreateQuest062()
+                return cArrayCreateQuest062()
               elseif indices < 64
-                aArray = cArrayCreateQuest063()
+                return cArrayCreateQuest063()
               else
-                aArray = cArrayCreateQuest064()
+                return cArrayCreateQuest064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool output
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateQuest065()
+                return cArrayCreateQuest065()
               elseif indices < 67
-                aArray = cArrayCreateQuest066()
+                return cArrayCreateQuest066()
               elseif indices < 68
-                aArray = cArrayCreateQuest067()
+                return cArrayCreateQuest067()
               else
-                aArray = cArrayCreateQuest068()
+                return cArrayCreateQuest068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateQuest069()
+                return cArrayCreateQuest069()
               elseif indices < 71
-                aArray = cArrayCreateQuest070()
+                return cArrayCreateQuest070()
               elseif indices < 72
-                aArray = cArrayCreateQuest071()
+                return cArrayCreateQuest071()
               else
-                aArray = cArrayCreateQuest072()
+                return cArrayCreateQuest072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateQuest073()
+                return cArrayCreateQuest073()
               elseif indices < 75
-                aArray = cArrayCreateQuest074()
+                return cArrayCreateQuest074()
               elseif indices < 76
-                aArray = cArrayCreateQuest075()
+                return cArrayCreateQuest075()
               else
-                aArray = cArrayCreateQuest076()
+                return cArrayCreateQuest076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateQuest077()
+                return cArrayCreateQuest077()
               elseif indices < 79
-                aArray = cArrayCreateQuest078()
+                return cArrayCreateQuest078()
               elseif indices < 80
-                aArray = cArrayCreateQuest079()
+                return cArrayCreateQuest079()
               else
-                aArray = cArrayCreateQuest080()
+                return cArrayCreateQuest080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool output
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateQuest081()
+                return cArrayCreateQuest081()
               elseif indices < 83
-                aArray = cArrayCreateQuest082()
+                return cArrayCreateQuest082()
               elseif indices < 84
-                aArray = cArrayCreateQuest083()
+                return cArrayCreateQuest083()
               else
-                aArray = cArrayCreateQuest084()
+                return cArrayCreateQuest084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateQuest085()
+                return cArrayCreateQuest085()
               elseif indices < 87
-                aArray = cArrayCreateQuest086()
+                return cArrayCreateQuest086()
               elseif indices < 88
-                aArray = cArrayCreateQuest087()
+                return cArrayCreateQuest087()
               else
-                aArray = cArrayCreateQuest088()
+                return cArrayCreateQuest088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateQuest089()
+                return cArrayCreateQuest089()
               elseif indices < 91
-                aArray = cArrayCreateQuest090()
+                return cArrayCreateQuest090()
               elseif indices < 92
-                aArray = cArrayCreateQuest091()
+                return cArrayCreateQuest091()
               else
-                aArray = cArrayCreateQuest092()
+                return cArrayCreateQuest092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateQuest093()
+                return cArrayCreateQuest093()
               elseif indices < 95
-                aArray = cArrayCreateQuest094()
+                return cArrayCreateQuest094()
               elseif indices < 96
-                aArray = cArrayCreateQuest095()
+                return cArrayCreateQuest095()
               else
-                aArray = cArrayCreateQuest096()
+                return cArrayCreateQuest096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool output
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateQuest097()
+                return cArrayCreateQuest097()
               elseif indices < 99
-                aArray = cArrayCreateQuest098()
+                return cArrayCreateQuest098()
               elseif indices < 100
-                aArray = cArrayCreateQuest099()
+                return cArrayCreateQuest099()
               else
-                aArray = cArrayCreateQuest100()
+                return cArrayCreateQuest100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateQuest101()
+                return cArrayCreateQuest101()
               elseif indices < 103
-                aArray = cArrayCreateQuest102()
+                return cArrayCreateQuest102()
               elseif indices < 104
-                aArray = cArrayCreateQuest103()
+                return cArrayCreateQuest103()
               else
-                aArray = cArrayCreateQuest104()
+                return cArrayCreateQuest104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateQuest105()
+                return cArrayCreateQuest105()
               elseif indices < 107
-                aArray = cArrayCreateQuest106()
+                return cArrayCreateQuest106()
               elseif indices < 108
-                aArray = cArrayCreateQuest107()
+                return cArrayCreateQuest107()
               else
-                aArray = cArrayCreateQuest108()
+                return cArrayCreateQuest108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateQuest109()
+                return cArrayCreateQuest109()
               elseif indices < 111
-                aArray = cArrayCreateQuest110()
+                return cArrayCreateQuest110()
               elseif indices < 112
-                aArray = cArrayCreateQuest111()
+                return cArrayCreateQuest111()
               else
-                aArray = cArrayCreateQuest112()
+                return cArrayCreateQuest112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Quest[] function cArrayCreateQuest(Int indices, Quest filler = None, Bool output
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateQuest113()
+                return cArrayCreateQuest113()
               elseif indices < 115
-                aArray = cArrayCreateQuest114()
+                return cArrayCreateQuest114()
               elseif indices < 116
-                aArray = cArrayCreateQuest115()
+                return cArrayCreateQuest115()
               else
-                aArray = cArrayCreateQuest116()
+                return cArrayCreateQuest116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateQuest117()
+                return cArrayCreateQuest117()
               elseif indices < 119
-                aArray = cArrayCreateQuest118()
+                return cArrayCreateQuest118()
               elseif indices < 120
-                aArray = cArrayCreateQuest119()
+                return cArrayCreateQuest119()
               else
-                aArray = cArrayCreateQuest120()
+                return cArrayCreateQuest120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateQuest121()
+                return cArrayCreateQuest121()
               elseif indices < 123
-                aArray = cArrayCreateQuest122()
+                return cArrayCreateQuest122()
               elseif indices < 124
-                aArray = cArrayCreateQuest123()
+                return cArrayCreateQuest123()
               else
-                aArray = cArrayCreateQuest124()
+                return cArrayCreateQuest124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateQuest125()
+                return cArrayCreateQuest125()
               elseif indices < 127
-                aArray = cArrayCreateQuest126()
+                return cArrayCreateQuest126()
               elseif indices < 128
-                aArray = cArrayCreateQuest127()
+                return cArrayCreateQuest127()
               else
-                aArray = cArrayCreateQuest128()
+                return cArrayCreateQuest128()
               endif
             endif
           endif

@@ -1,22 +1,14 @@
 Scriptname cArrayMessage Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Message[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateMessage()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayMessage::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool 
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateMessage001()
+                return cArrayCreateMessage001()
               elseif indices < 3
-                aArray = cArrayCreateMessage002()
+                return cArrayCreateMessage002()
               elseif indices < 4
-                aArray = cArrayCreateMessage003()
+                return cArrayCreateMessage003()
               else
-                aArray = cArrayCreateMessage004()
+                return cArrayCreateMessage004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateMessage005()
+                return cArrayCreateMessage005()
               elseif indices < 7
-                aArray = cArrayCreateMessage006()
+                return cArrayCreateMessage006()
               elseif indices < 8
-                aArray = cArrayCreateMessage007()
+                return cArrayCreateMessage007()
               else
-                aArray = cArrayCreateMessage008()
+                return cArrayCreateMessage008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateMessage009()
+                return cArrayCreateMessage009()
               elseif indices < 11
-                aArray = cArrayCreateMessage010()
+                return cArrayCreateMessage010()
               elseif indices < 12
-                aArray = cArrayCreateMessage011()
+                return cArrayCreateMessage011()
               else
-                aArray = cArrayCreateMessage012()
+                return cArrayCreateMessage012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateMessage013()
+                return cArrayCreateMessage013()
               elseif indices < 15
-                aArray = cArrayCreateMessage014()
+                return cArrayCreateMessage014()
               elseif indices < 16
-                aArray = cArrayCreateMessage015()
+                return cArrayCreateMessage015()
               else
-                aArray = cArrayCreateMessage016()
+                return cArrayCreateMessage016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool 
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateMessage017()
+                return cArrayCreateMessage017()
               elseif indices < 19
-                aArray = cArrayCreateMessage018()
+                return cArrayCreateMessage018()
               elseif indices < 20
-                aArray = cArrayCreateMessage019()
+                return cArrayCreateMessage019()
               else
-                aArray = cArrayCreateMessage020()
+                return cArrayCreateMessage020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateMessage021()
+                return cArrayCreateMessage021()
               elseif indices < 23
-                aArray = cArrayCreateMessage022()
+                return cArrayCreateMessage022()
               elseif indices < 24
-                aArray = cArrayCreateMessage023()
+                return cArrayCreateMessage023()
               else
-                aArray = cArrayCreateMessage024()
+                return cArrayCreateMessage024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateMessage025()
+                return cArrayCreateMessage025()
               elseif indices < 27
-                aArray = cArrayCreateMessage026()
+                return cArrayCreateMessage026()
               elseif indices < 28
-                aArray = cArrayCreateMessage027()
+                return cArrayCreateMessage027()
               else
-                aArray = cArrayCreateMessage028()
+                return cArrayCreateMessage028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateMessage029()
+                return cArrayCreateMessage029()
               elseif indices < 31
-                aArray = cArrayCreateMessage030()
+                return cArrayCreateMessage030()
               elseif indices < 32
-                aArray = cArrayCreateMessage031()
+                return cArrayCreateMessage031()
               else
-                aArray = cArrayCreateMessage032()
+                return cArrayCreateMessage032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool 
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateMessage033()
+                return cArrayCreateMessage033()
               elseif indices < 35
-                aArray = cArrayCreateMessage034()
+                return cArrayCreateMessage034()
               elseif indices < 36
-                aArray = cArrayCreateMessage035()
+                return cArrayCreateMessage035()
               else
-                aArray = cArrayCreateMessage036()
+                return cArrayCreateMessage036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateMessage037()
+                return cArrayCreateMessage037()
               elseif indices < 39
-                aArray = cArrayCreateMessage038()
+                return cArrayCreateMessage038()
               elseif indices < 40
-                aArray = cArrayCreateMessage039()
+                return cArrayCreateMessage039()
               else
-                aArray = cArrayCreateMessage040()
+                return cArrayCreateMessage040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateMessage041()
+                return cArrayCreateMessage041()
               elseif indices < 43
-                aArray = cArrayCreateMessage042()
+                return cArrayCreateMessage042()
               elseif indices < 44
-                aArray = cArrayCreateMessage043()
+                return cArrayCreateMessage043()
               else
-                aArray = cArrayCreateMessage044()
+                return cArrayCreateMessage044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateMessage045()
+                return cArrayCreateMessage045()
               elseif indices < 47
-                aArray = cArrayCreateMessage046()
+                return cArrayCreateMessage046()
               elseif indices < 48
-                aArray = cArrayCreateMessage047()
+                return cArrayCreateMessage047()
               else
-                aArray = cArrayCreateMessage048()
+                return cArrayCreateMessage048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool 
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateMessage049()
+                return cArrayCreateMessage049()
               elseif indices < 51
-                aArray = cArrayCreateMessage050()
+                return cArrayCreateMessage050()
               elseif indices < 52
-                aArray = cArrayCreateMessage051()
+                return cArrayCreateMessage051()
               else
-                aArray = cArrayCreateMessage052()
+                return cArrayCreateMessage052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateMessage053()
+                return cArrayCreateMessage053()
               elseif indices < 55
-                aArray = cArrayCreateMessage054()
+                return cArrayCreateMessage054()
               elseif indices < 56
-                aArray = cArrayCreateMessage055()
+                return cArrayCreateMessage055()
               else
-                aArray = cArrayCreateMessage056()
+                return cArrayCreateMessage056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateMessage057()
+                return cArrayCreateMessage057()
               elseif indices < 59
-                aArray = cArrayCreateMessage058()
+                return cArrayCreateMessage058()
               elseif indices < 60
-                aArray = cArrayCreateMessage059()
+                return cArrayCreateMessage059()
               else
-                aArray = cArrayCreateMessage060()
+                return cArrayCreateMessage060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateMessage061()
+                return cArrayCreateMessage061()
               elseif indices < 63
-                aArray = cArrayCreateMessage062()
+                return cArrayCreateMessage062()
               elseif indices < 64
-                aArray = cArrayCreateMessage063()
+                return cArrayCreateMessage063()
               else
-                aArray = cArrayCreateMessage064()
+                return cArrayCreateMessage064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool 
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateMessage065()
+                return cArrayCreateMessage065()
               elseif indices < 67
-                aArray = cArrayCreateMessage066()
+                return cArrayCreateMessage066()
               elseif indices < 68
-                aArray = cArrayCreateMessage067()
+                return cArrayCreateMessage067()
               else
-                aArray = cArrayCreateMessage068()
+                return cArrayCreateMessage068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateMessage069()
+                return cArrayCreateMessage069()
               elseif indices < 71
-                aArray = cArrayCreateMessage070()
+                return cArrayCreateMessage070()
               elseif indices < 72
-                aArray = cArrayCreateMessage071()
+                return cArrayCreateMessage071()
               else
-                aArray = cArrayCreateMessage072()
+                return cArrayCreateMessage072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateMessage073()
+                return cArrayCreateMessage073()
               elseif indices < 75
-                aArray = cArrayCreateMessage074()
+                return cArrayCreateMessage074()
               elseif indices < 76
-                aArray = cArrayCreateMessage075()
+                return cArrayCreateMessage075()
               else
-                aArray = cArrayCreateMessage076()
+                return cArrayCreateMessage076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateMessage077()
+                return cArrayCreateMessage077()
               elseif indices < 79
-                aArray = cArrayCreateMessage078()
+                return cArrayCreateMessage078()
               elseif indices < 80
-                aArray = cArrayCreateMessage079()
+                return cArrayCreateMessage079()
               else
-                aArray = cArrayCreateMessage080()
+                return cArrayCreateMessage080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool 
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateMessage081()
+                return cArrayCreateMessage081()
               elseif indices < 83
-                aArray = cArrayCreateMessage082()
+                return cArrayCreateMessage082()
               elseif indices < 84
-                aArray = cArrayCreateMessage083()
+                return cArrayCreateMessage083()
               else
-                aArray = cArrayCreateMessage084()
+                return cArrayCreateMessage084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateMessage085()
+                return cArrayCreateMessage085()
               elseif indices < 87
-                aArray = cArrayCreateMessage086()
+                return cArrayCreateMessage086()
               elseif indices < 88
-                aArray = cArrayCreateMessage087()
+                return cArrayCreateMessage087()
               else
-                aArray = cArrayCreateMessage088()
+                return cArrayCreateMessage088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateMessage089()
+                return cArrayCreateMessage089()
               elseif indices < 91
-                aArray = cArrayCreateMessage090()
+                return cArrayCreateMessage090()
               elseif indices < 92
-                aArray = cArrayCreateMessage091()
+                return cArrayCreateMessage091()
               else
-                aArray = cArrayCreateMessage092()
+                return cArrayCreateMessage092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateMessage093()
+                return cArrayCreateMessage093()
               elseif indices < 95
-                aArray = cArrayCreateMessage094()
+                return cArrayCreateMessage094()
               elseif indices < 96
-                aArray = cArrayCreateMessage095()
+                return cArrayCreateMessage095()
               else
-                aArray = cArrayCreateMessage096()
+                return cArrayCreateMessage096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool 
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateMessage097()
+                return cArrayCreateMessage097()
               elseif indices < 99
-                aArray = cArrayCreateMessage098()
+                return cArrayCreateMessage098()
               elseif indices < 100
-                aArray = cArrayCreateMessage099()
+                return cArrayCreateMessage099()
               else
-                aArray = cArrayCreateMessage100()
+                return cArrayCreateMessage100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateMessage101()
+                return cArrayCreateMessage101()
               elseif indices < 103
-                aArray = cArrayCreateMessage102()
+                return cArrayCreateMessage102()
               elseif indices < 104
-                aArray = cArrayCreateMessage103()
+                return cArrayCreateMessage103()
               else
-                aArray = cArrayCreateMessage104()
+                return cArrayCreateMessage104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateMessage105()
+                return cArrayCreateMessage105()
               elseif indices < 107
-                aArray = cArrayCreateMessage106()
+                return cArrayCreateMessage106()
               elseif indices < 108
-                aArray = cArrayCreateMessage107()
+                return cArrayCreateMessage107()
               else
-                aArray = cArrayCreateMessage108()
+                return cArrayCreateMessage108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateMessage109()
+                return cArrayCreateMessage109()
               elseif indices < 111
-                aArray = cArrayCreateMessage110()
+                return cArrayCreateMessage110()
               elseif indices < 112
-                aArray = cArrayCreateMessage111()
+                return cArrayCreateMessage111()
               else
-                aArray = cArrayCreateMessage112()
+                return cArrayCreateMessage112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Message[] function cArrayCreateMessage(Int indices, Message filler = None, Bool 
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateMessage113()
+                return cArrayCreateMessage113()
               elseif indices < 115
-                aArray = cArrayCreateMessage114()
+                return cArrayCreateMessage114()
               elseif indices < 116
-                aArray = cArrayCreateMessage115()
+                return cArrayCreateMessage115()
               else
-                aArray = cArrayCreateMessage116()
+                return cArrayCreateMessage116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateMessage117()
+                return cArrayCreateMessage117()
               elseif indices < 119
-                aArray = cArrayCreateMessage118()
+                return cArrayCreateMessage118()
               elseif indices < 120
-                aArray = cArrayCreateMessage119()
+                return cArrayCreateMessage119()
               else
-                aArray = cArrayCreateMessage120()
+                return cArrayCreateMessage120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateMessage121()
+                return cArrayCreateMessage121()
               elseif indices < 123
-                aArray = cArrayCreateMessage122()
+                return cArrayCreateMessage122()
               elseif indices < 124
-                aArray = cArrayCreateMessage123()
+                return cArrayCreateMessage123()
               else
-                aArray = cArrayCreateMessage124()
+                return cArrayCreateMessage124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateMessage125()
+                return cArrayCreateMessage125()
               elseif indices < 127
-                aArray = cArrayCreateMessage126()
+                return cArrayCreateMessage126()
               elseif indices < 128
-                aArray = cArrayCreateMessage127()
+                return cArrayCreateMessage127()
               else
-                aArray = cArrayCreateMessage128()
+                return cArrayCreateMessage128()
               endif
             endif
           endif

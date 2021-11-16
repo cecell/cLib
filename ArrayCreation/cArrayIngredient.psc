@@ -1,22 +1,14 @@
 Scriptname cArrayIngredient Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Ingredient[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateIngredient()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayIngredient::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = No
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateIngredient001()
+                return cArrayCreateIngredient001()
               elseif indices < 3
-                aArray = cArrayCreateIngredient002()
+                return cArrayCreateIngredient002()
               elseif indices < 4
-                aArray = cArrayCreateIngredient003()
+                return cArrayCreateIngredient003()
               else
-                aArray = cArrayCreateIngredient004()
+                return cArrayCreateIngredient004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateIngredient005()
+                return cArrayCreateIngredient005()
               elseif indices < 7
-                aArray = cArrayCreateIngredient006()
+                return cArrayCreateIngredient006()
               elseif indices < 8
-                aArray = cArrayCreateIngredient007()
+                return cArrayCreateIngredient007()
               else
-                aArray = cArrayCreateIngredient008()
+                return cArrayCreateIngredient008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateIngredient009()
+                return cArrayCreateIngredient009()
               elseif indices < 11
-                aArray = cArrayCreateIngredient010()
+                return cArrayCreateIngredient010()
               elseif indices < 12
-                aArray = cArrayCreateIngredient011()
+                return cArrayCreateIngredient011()
               else
-                aArray = cArrayCreateIngredient012()
+                return cArrayCreateIngredient012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateIngredient013()
+                return cArrayCreateIngredient013()
               elseif indices < 15
-                aArray = cArrayCreateIngredient014()
+                return cArrayCreateIngredient014()
               elseif indices < 16
-                aArray = cArrayCreateIngredient015()
+                return cArrayCreateIngredient015()
               else
-                aArray = cArrayCreateIngredient016()
+                return cArrayCreateIngredient016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = No
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateIngredient017()
+                return cArrayCreateIngredient017()
               elseif indices < 19
-                aArray = cArrayCreateIngredient018()
+                return cArrayCreateIngredient018()
               elseif indices < 20
-                aArray = cArrayCreateIngredient019()
+                return cArrayCreateIngredient019()
               else
-                aArray = cArrayCreateIngredient020()
+                return cArrayCreateIngredient020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateIngredient021()
+                return cArrayCreateIngredient021()
               elseif indices < 23
-                aArray = cArrayCreateIngredient022()
+                return cArrayCreateIngredient022()
               elseif indices < 24
-                aArray = cArrayCreateIngredient023()
+                return cArrayCreateIngredient023()
               else
-                aArray = cArrayCreateIngredient024()
+                return cArrayCreateIngredient024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateIngredient025()
+                return cArrayCreateIngredient025()
               elseif indices < 27
-                aArray = cArrayCreateIngredient026()
+                return cArrayCreateIngredient026()
               elseif indices < 28
-                aArray = cArrayCreateIngredient027()
+                return cArrayCreateIngredient027()
               else
-                aArray = cArrayCreateIngredient028()
+                return cArrayCreateIngredient028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateIngredient029()
+                return cArrayCreateIngredient029()
               elseif indices < 31
-                aArray = cArrayCreateIngredient030()
+                return cArrayCreateIngredient030()
               elseif indices < 32
-                aArray = cArrayCreateIngredient031()
+                return cArrayCreateIngredient031()
               else
-                aArray = cArrayCreateIngredient032()
+                return cArrayCreateIngredient032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = No
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateIngredient033()
+                return cArrayCreateIngredient033()
               elseif indices < 35
-                aArray = cArrayCreateIngredient034()
+                return cArrayCreateIngredient034()
               elseif indices < 36
-                aArray = cArrayCreateIngredient035()
+                return cArrayCreateIngredient035()
               else
-                aArray = cArrayCreateIngredient036()
+                return cArrayCreateIngredient036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateIngredient037()
+                return cArrayCreateIngredient037()
               elseif indices < 39
-                aArray = cArrayCreateIngredient038()
+                return cArrayCreateIngredient038()
               elseif indices < 40
-                aArray = cArrayCreateIngredient039()
+                return cArrayCreateIngredient039()
               else
-                aArray = cArrayCreateIngredient040()
+                return cArrayCreateIngredient040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateIngredient041()
+                return cArrayCreateIngredient041()
               elseif indices < 43
-                aArray = cArrayCreateIngredient042()
+                return cArrayCreateIngredient042()
               elseif indices < 44
-                aArray = cArrayCreateIngredient043()
+                return cArrayCreateIngredient043()
               else
-                aArray = cArrayCreateIngredient044()
+                return cArrayCreateIngredient044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateIngredient045()
+                return cArrayCreateIngredient045()
               elseif indices < 47
-                aArray = cArrayCreateIngredient046()
+                return cArrayCreateIngredient046()
               elseif indices < 48
-                aArray = cArrayCreateIngredient047()
+                return cArrayCreateIngredient047()
               else
-                aArray = cArrayCreateIngredient048()
+                return cArrayCreateIngredient048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = No
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateIngredient049()
+                return cArrayCreateIngredient049()
               elseif indices < 51
-                aArray = cArrayCreateIngredient050()
+                return cArrayCreateIngredient050()
               elseif indices < 52
-                aArray = cArrayCreateIngredient051()
+                return cArrayCreateIngredient051()
               else
-                aArray = cArrayCreateIngredient052()
+                return cArrayCreateIngredient052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateIngredient053()
+                return cArrayCreateIngredient053()
               elseif indices < 55
-                aArray = cArrayCreateIngredient054()
+                return cArrayCreateIngredient054()
               elseif indices < 56
-                aArray = cArrayCreateIngredient055()
+                return cArrayCreateIngredient055()
               else
-                aArray = cArrayCreateIngredient056()
+                return cArrayCreateIngredient056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateIngredient057()
+                return cArrayCreateIngredient057()
               elseif indices < 59
-                aArray = cArrayCreateIngredient058()
+                return cArrayCreateIngredient058()
               elseif indices < 60
-                aArray = cArrayCreateIngredient059()
+                return cArrayCreateIngredient059()
               else
-                aArray = cArrayCreateIngredient060()
+                return cArrayCreateIngredient060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateIngredient061()
+                return cArrayCreateIngredient061()
               elseif indices < 63
-                aArray = cArrayCreateIngredient062()
+                return cArrayCreateIngredient062()
               elseif indices < 64
-                aArray = cArrayCreateIngredient063()
+                return cArrayCreateIngredient063()
               else
-                aArray = cArrayCreateIngredient064()
+                return cArrayCreateIngredient064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = No
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateIngredient065()
+                return cArrayCreateIngredient065()
               elseif indices < 67
-                aArray = cArrayCreateIngredient066()
+                return cArrayCreateIngredient066()
               elseif indices < 68
-                aArray = cArrayCreateIngredient067()
+                return cArrayCreateIngredient067()
               else
-                aArray = cArrayCreateIngredient068()
+                return cArrayCreateIngredient068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateIngredient069()
+                return cArrayCreateIngredient069()
               elseif indices < 71
-                aArray = cArrayCreateIngredient070()
+                return cArrayCreateIngredient070()
               elseif indices < 72
-                aArray = cArrayCreateIngredient071()
+                return cArrayCreateIngredient071()
               else
-                aArray = cArrayCreateIngredient072()
+                return cArrayCreateIngredient072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateIngredient073()
+                return cArrayCreateIngredient073()
               elseif indices < 75
-                aArray = cArrayCreateIngredient074()
+                return cArrayCreateIngredient074()
               elseif indices < 76
-                aArray = cArrayCreateIngredient075()
+                return cArrayCreateIngredient075()
               else
-                aArray = cArrayCreateIngredient076()
+                return cArrayCreateIngredient076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateIngredient077()
+                return cArrayCreateIngredient077()
               elseif indices < 79
-                aArray = cArrayCreateIngredient078()
+                return cArrayCreateIngredient078()
               elseif indices < 80
-                aArray = cArrayCreateIngredient079()
+                return cArrayCreateIngredient079()
               else
-                aArray = cArrayCreateIngredient080()
+                return cArrayCreateIngredient080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = No
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateIngredient081()
+                return cArrayCreateIngredient081()
               elseif indices < 83
-                aArray = cArrayCreateIngredient082()
+                return cArrayCreateIngredient082()
               elseif indices < 84
-                aArray = cArrayCreateIngredient083()
+                return cArrayCreateIngredient083()
               else
-                aArray = cArrayCreateIngredient084()
+                return cArrayCreateIngredient084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateIngredient085()
+                return cArrayCreateIngredient085()
               elseif indices < 87
-                aArray = cArrayCreateIngredient086()
+                return cArrayCreateIngredient086()
               elseif indices < 88
-                aArray = cArrayCreateIngredient087()
+                return cArrayCreateIngredient087()
               else
-                aArray = cArrayCreateIngredient088()
+                return cArrayCreateIngredient088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateIngredient089()
+                return cArrayCreateIngredient089()
               elseif indices < 91
-                aArray = cArrayCreateIngredient090()
+                return cArrayCreateIngredient090()
               elseif indices < 92
-                aArray = cArrayCreateIngredient091()
+                return cArrayCreateIngredient091()
               else
-                aArray = cArrayCreateIngredient092()
+                return cArrayCreateIngredient092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateIngredient093()
+                return cArrayCreateIngredient093()
               elseif indices < 95
-                aArray = cArrayCreateIngredient094()
+                return cArrayCreateIngredient094()
               elseif indices < 96
-                aArray = cArrayCreateIngredient095()
+                return cArrayCreateIngredient095()
               else
-                aArray = cArrayCreateIngredient096()
+                return cArrayCreateIngredient096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = No
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateIngredient097()
+                return cArrayCreateIngredient097()
               elseif indices < 99
-                aArray = cArrayCreateIngredient098()
+                return cArrayCreateIngredient098()
               elseif indices < 100
-                aArray = cArrayCreateIngredient099()
+                return cArrayCreateIngredient099()
               else
-                aArray = cArrayCreateIngredient100()
+                return cArrayCreateIngredient100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateIngredient101()
+                return cArrayCreateIngredient101()
               elseif indices < 103
-                aArray = cArrayCreateIngredient102()
+                return cArrayCreateIngredient102()
               elseif indices < 104
-                aArray = cArrayCreateIngredient103()
+                return cArrayCreateIngredient103()
               else
-                aArray = cArrayCreateIngredient104()
+                return cArrayCreateIngredient104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateIngredient105()
+                return cArrayCreateIngredient105()
               elseif indices < 107
-                aArray = cArrayCreateIngredient106()
+                return cArrayCreateIngredient106()
               elseif indices < 108
-                aArray = cArrayCreateIngredient107()
+                return cArrayCreateIngredient107()
               else
-                aArray = cArrayCreateIngredient108()
+                return cArrayCreateIngredient108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateIngredient109()
+                return cArrayCreateIngredient109()
               elseif indices < 111
-                aArray = cArrayCreateIngredient110()
+                return cArrayCreateIngredient110()
               elseif indices < 112
-                aArray = cArrayCreateIngredient111()
+                return cArrayCreateIngredient111()
               else
-                aArray = cArrayCreateIngredient112()
+                return cArrayCreateIngredient112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Ingredient[] function cArrayCreateIngredient(Int indices, Ingredient filler = No
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateIngredient113()
+                return cArrayCreateIngredient113()
               elseif indices < 115
-                aArray = cArrayCreateIngredient114()
+                return cArrayCreateIngredient114()
               elseif indices < 116
-                aArray = cArrayCreateIngredient115()
+                return cArrayCreateIngredient115()
               else
-                aArray = cArrayCreateIngredient116()
+                return cArrayCreateIngredient116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateIngredient117()
+                return cArrayCreateIngredient117()
               elseif indices < 119
-                aArray = cArrayCreateIngredient118()
+                return cArrayCreateIngredient118()
               elseif indices < 120
-                aArray = cArrayCreateIngredient119()
+                return cArrayCreateIngredient119()
               else
-                aArray = cArrayCreateIngredient120()
+                return cArrayCreateIngredient120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateIngredient121()
+                return cArrayCreateIngredient121()
               elseif indices < 123
-                aArray = cArrayCreateIngredient122()
+                return cArrayCreateIngredient122()
               elseif indices < 124
-                aArray = cArrayCreateIngredient123()
+                return cArrayCreateIngredient123()
               else
-                aArray = cArrayCreateIngredient124()
+                return cArrayCreateIngredient124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateIngredient125()
+                return cArrayCreateIngredient125()
               elseif indices < 127
-                aArray = cArrayCreateIngredient126()
+                return cArrayCreateIngredient126()
               elseif indices < 128
-                aArray = cArrayCreateIngredient127()
+                return cArrayCreateIngredient127()
               else
-                aArray = cArrayCreateIngredient128()
+                return cArrayCreateIngredient128()
               endif
             endif
           endif

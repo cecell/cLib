@@ -1,22 +1,14 @@
 Scriptname cArrayFormlist Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Formlist[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateFormlist()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayFormlist::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bo
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateFormlist001()
+                return cArrayCreateFormlist001()
               elseif indices < 3
-                aArray = cArrayCreateFormlist002()
+                return cArrayCreateFormlist002()
               elseif indices < 4
-                aArray = cArrayCreateFormlist003()
+                return cArrayCreateFormlist003()
               else
-                aArray = cArrayCreateFormlist004()
+                return cArrayCreateFormlist004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateFormlist005()
+                return cArrayCreateFormlist005()
               elseif indices < 7
-                aArray = cArrayCreateFormlist006()
+                return cArrayCreateFormlist006()
               elseif indices < 8
-                aArray = cArrayCreateFormlist007()
+                return cArrayCreateFormlist007()
               else
-                aArray = cArrayCreateFormlist008()
+                return cArrayCreateFormlist008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateFormlist009()
+                return cArrayCreateFormlist009()
               elseif indices < 11
-                aArray = cArrayCreateFormlist010()
+                return cArrayCreateFormlist010()
               elseif indices < 12
-                aArray = cArrayCreateFormlist011()
+                return cArrayCreateFormlist011()
               else
-                aArray = cArrayCreateFormlist012()
+                return cArrayCreateFormlist012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateFormlist013()
+                return cArrayCreateFormlist013()
               elseif indices < 15
-                aArray = cArrayCreateFormlist014()
+                return cArrayCreateFormlist014()
               elseif indices < 16
-                aArray = cArrayCreateFormlist015()
+                return cArrayCreateFormlist015()
               else
-                aArray = cArrayCreateFormlist016()
+                return cArrayCreateFormlist016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bo
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateFormlist017()
+                return cArrayCreateFormlist017()
               elseif indices < 19
-                aArray = cArrayCreateFormlist018()
+                return cArrayCreateFormlist018()
               elseif indices < 20
-                aArray = cArrayCreateFormlist019()
+                return cArrayCreateFormlist019()
               else
-                aArray = cArrayCreateFormlist020()
+                return cArrayCreateFormlist020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateFormlist021()
+                return cArrayCreateFormlist021()
               elseif indices < 23
-                aArray = cArrayCreateFormlist022()
+                return cArrayCreateFormlist022()
               elseif indices < 24
-                aArray = cArrayCreateFormlist023()
+                return cArrayCreateFormlist023()
               else
-                aArray = cArrayCreateFormlist024()
+                return cArrayCreateFormlist024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateFormlist025()
+                return cArrayCreateFormlist025()
               elseif indices < 27
-                aArray = cArrayCreateFormlist026()
+                return cArrayCreateFormlist026()
               elseif indices < 28
-                aArray = cArrayCreateFormlist027()
+                return cArrayCreateFormlist027()
               else
-                aArray = cArrayCreateFormlist028()
+                return cArrayCreateFormlist028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateFormlist029()
+                return cArrayCreateFormlist029()
               elseif indices < 31
-                aArray = cArrayCreateFormlist030()
+                return cArrayCreateFormlist030()
               elseif indices < 32
-                aArray = cArrayCreateFormlist031()
+                return cArrayCreateFormlist031()
               else
-                aArray = cArrayCreateFormlist032()
+                return cArrayCreateFormlist032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bo
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateFormlist033()
+                return cArrayCreateFormlist033()
               elseif indices < 35
-                aArray = cArrayCreateFormlist034()
+                return cArrayCreateFormlist034()
               elseif indices < 36
-                aArray = cArrayCreateFormlist035()
+                return cArrayCreateFormlist035()
               else
-                aArray = cArrayCreateFormlist036()
+                return cArrayCreateFormlist036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateFormlist037()
+                return cArrayCreateFormlist037()
               elseif indices < 39
-                aArray = cArrayCreateFormlist038()
+                return cArrayCreateFormlist038()
               elseif indices < 40
-                aArray = cArrayCreateFormlist039()
+                return cArrayCreateFormlist039()
               else
-                aArray = cArrayCreateFormlist040()
+                return cArrayCreateFormlist040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateFormlist041()
+                return cArrayCreateFormlist041()
               elseif indices < 43
-                aArray = cArrayCreateFormlist042()
+                return cArrayCreateFormlist042()
               elseif indices < 44
-                aArray = cArrayCreateFormlist043()
+                return cArrayCreateFormlist043()
               else
-                aArray = cArrayCreateFormlist044()
+                return cArrayCreateFormlist044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateFormlist045()
+                return cArrayCreateFormlist045()
               elseif indices < 47
-                aArray = cArrayCreateFormlist046()
+                return cArrayCreateFormlist046()
               elseif indices < 48
-                aArray = cArrayCreateFormlist047()
+                return cArrayCreateFormlist047()
               else
-                aArray = cArrayCreateFormlist048()
+                return cArrayCreateFormlist048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bo
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateFormlist049()
+                return cArrayCreateFormlist049()
               elseif indices < 51
-                aArray = cArrayCreateFormlist050()
+                return cArrayCreateFormlist050()
               elseif indices < 52
-                aArray = cArrayCreateFormlist051()
+                return cArrayCreateFormlist051()
               else
-                aArray = cArrayCreateFormlist052()
+                return cArrayCreateFormlist052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateFormlist053()
+                return cArrayCreateFormlist053()
               elseif indices < 55
-                aArray = cArrayCreateFormlist054()
+                return cArrayCreateFormlist054()
               elseif indices < 56
-                aArray = cArrayCreateFormlist055()
+                return cArrayCreateFormlist055()
               else
-                aArray = cArrayCreateFormlist056()
+                return cArrayCreateFormlist056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateFormlist057()
+                return cArrayCreateFormlist057()
               elseif indices < 59
-                aArray = cArrayCreateFormlist058()
+                return cArrayCreateFormlist058()
               elseif indices < 60
-                aArray = cArrayCreateFormlist059()
+                return cArrayCreateFormlist059()
               else
-                aArray = cArrayCreateFormlist060()
+                return cArrayCreateFormlist060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateFormlist061()
+                return cArrayCreateFormlist061()
               elseif indices < 63
-                aArray = cArrayCreateFormlist062()
+                return cArrayCreateFormlist062()
               elseif indices < 64
-                aArray = cArrayCreateFormlist063()
+                return cArrayCreateFormlist063()
               else
-                aArray = cArrayCreateFormlist064()
+                return cArrayCreateFormlist064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bo
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateFormlist065()
+                return cArrayCreateFormlist065()
               elseif indices < 67
-                aArray = cArrayCreateFormlist066()
+                return cArrayCreateFormlist066()
               elseif indices < 68
-                aArray = cArrayCreateFormlist067()
+                return cArrayCreateFormlist067()
               else
-                aArray = cArrayCreateFormlist068()
+                return cArrayCreateFormlist068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateFormlist069()
+                return cArrayCreateFormlist069()
               elseif indices < 71
-                aArray = cArrayCreateFormlist070()
+                return cArrayCreateFormlist070()
               elseif indices < 72
-                aArray = cArrayCreateFormlist071()
+                return cArrayCreateFormlist071()
               else
-                aArray = cArrayCreateFormlist072()
+                return cArrayCreateFormlist072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateFormlist073()
+                return cArrayCreateFormlist073()
               elseif indices < 75
-                aArray = cArrayCreateFormlist074()
+                return cArrayCreateFormlist074()
               elseif indices < 76
-                aArray = cArrayCreateFormlist075()
+                return cArrayCreateFormlist075()
               else
-                aArray = cArrayCreateFormlist076()
+                return cArrayCreateFormlist076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateFormlist077()
+                return cArrayCreateFormlist077()
               elseif indices < 79
-                aArray = cArrayCreateFormlist078()
+                return cArrayCreateFormlist078()
               elseif indices < 80
-                aArray = cArrayCreateFormlist079()
+                return cArrayCreateFormlist079()
               else
-                aArray = cArrayCreateFormlist080()
+                return cArrayCreateFormlist080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bo
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateFormlist081()
+                return cArrayCreateFormlist081()
               elseif indices < 83
-                aArray = cArrayCreateFormlist082()
+                return cArrayCreateFormlist082()
               elseif indices < 84
-                aArray = cArrayCreateFormlist083()
+                return cArrayCreateFormlist083()
               else
-                aArray = cArrayCreateFormlist084()
+                return cArrayCreateFormlist084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateFormlist085()
+                return cArrayCreateFormlist085()
               elseif indices < 87
-                aArray = cArrayCreateFormlist086()
+                return cArrayCreateFormlist086()
               elseif indices < 88
-                aArray = cArrayCreateFormlist087()
+                return cArrayCreateFormlist087()
               else
-                aArray = cArrayCreateFormlist088()
+                return cArrayCreateFormlist088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateFormlist089()
+                return cArrayCreateFormlist089()
               elseif indices < 91
-                aArray = cArrayCreateFormlist090()
+                return cArrayCreateFormlist090()
               elseif indices < 92
-                aArray = cArrayCreateFormlist091()
+                return cArrayCreateFormlist091()
               else
-                aArray = cArrayCreateFormlist092()
+                return cArrayCreateFormlist092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateFormlist093()
+                return cArrayCreateFormlist093()
               elseif indices < 95
-                aArray = cArrayCreateFormlist094()
+                return cArrayCreateFormlist094()
               elseif indices < 96
-                aArray = cArrayCreateFormlist095()
+                return cArrayCreateFormlist095()
               else
-                aArray = cArrayCreateFormlist096()
+                return cArrayCreateFormlist096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bo
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateFormlist097()
+                return cArrayCreateFormlist097()
               elseif indices < 99
-                aArray = cArrayCreateFormlist098()
+                return cArrayCreateFormlist098()
               elseif indices < 100
-                aArray = cArrayCreateFormlist099()
+                return cArrayCreateFormlist099()
               else
-                aArray = cArrayCreateFormlist100()
+                return cArrayCreateFormlist100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateFormlist101()
+                return cArrayCreateFormlist101()
               elseif indices < 103
-                aArray = cArrayCreateFormlist102()
+                return cArrayCreateFormlist102()
               elseif indices < 104
-                aArray = cArrayCreateFormlist103()
+                return cArrayCreateFormlist103()
               else
-                aArray = cArrayCreateFormlist104()
+                return cArrayCreateFormlist104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateFormlist105()
+                return cArrayCreateFormlist105()
               elseif indices < 107
-                aArray = cArrayCreateFormlist106()
+                return cArrayCreateFormlist106()
               elseif indices < 108
-                aArray = cArrayCreateFormlist107()
+                return cArrayCreateFormlist107()
               else
-                aArray = cArrayCreateFormlist108()
+                return cArrayCreateFormlist108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateFormlist109()
+                return cArrayCreateFormlist109()
               elseif indices < 111
-                aArray = cArrayCreateFormlist110()
+                return cArrayCreateFormlist110()
               elseif indices < 112
-                aArray = cArrayCreateFormlist111()
+                return cArrayCreateFormlist111()
               else
-                aArray = cArrayCreateFormlist112()
+                return cArrayCreateFormlist112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Formlist[] function cArrayCreateFormlist(Int indices, Formlist filler = None, Bo
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateFormlist113()
+                return cArrayCreateFormlist113()
               elseif indices < 115
-                aArray = cArrayCreateFormlist114()
+                return cArrayCreateFormlist114()
               elseif indices < 116
-                aArray = cArrayCreateFormlist115()
+                return cArrayCreateFormlist115()
               else
-                aArray = cArrayCreateFormlist116()
+                return cArrayCreateFormlist116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateFormlist117()
+                return cArrayCreateFormlist117()
               elseif indices < 119
-                aArray = cArrayCreateFormlist118()
+                return cArrayCreateFormlist118()
               elseif indices < 120
-                aArray = cArrayCreateFormlist119()
+                return cArrayCreateFormlist119()
               else
-                aArray = cArrayCreateFormlist120()
+                return cArrayCreateFormlist120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateFormlist121()
+                return cArrayCreateFormlist121()
               elseif indices < 123
-                aArray = cArrayCreateFormlist122()
+                return cArrayCreateFormlist122()
               elseif indices < 124
-                aArray = cArrayCreateFormlist123()
+                return cArrayCreateFormlist123()
               else
-                aArray = cArrayCreateFormlist124()
+                return cArrayCreateFormlist124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateFormlist125()
+                return cArrayCreateFormlist125()
               elseif indices < 127
-                aArray = cArrayCreateFormlist126()
+                return cArrayCreateFormlist126()
               elseif indices < 128
-                aArray = cArrayCreateFormlist127()
+                return cArrayCreateFormlist127()
               else
-                aArray = cArrayCreateFormlist128()
+                return cArrayCreateFormlist128()
               endif
             endif
           endif

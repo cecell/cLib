@@ -1,22 +1,14 @@
 Scriptname cArrayLeveledItem Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   LeveledItem[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateLeveledItem()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayLeveledItem::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler =
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateLeveledItem001()
+                return cArrayCreateLeveledItem001()
               elseif indices < 3
-                aArray = cArrayCreateLeveledItem002()
+                return cArrayCreateLeveledItem002()
               elseif indices < 4
-                aArray = cArrayCreateLeveledItem003()
+                return cArrayCreateLeveledItem003()
               else
-                aArray = cArrayCreateLeveledItem004()
+                return cArrayCreateLeveledItem004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateLeveledItem005()
+                return cArrayCreateLeveledItem005()
               elseif indices < 7
-                aArray = cArrayCreateLeveledItem006()
+                return cArrayCreateLeveledItem006()
               elseif indices < 8
-                aArray = cArrayCreateLeveledItem007()
+                return cArrayCreateLeveledItem007()
               else
-                aArray = cArrayCreateLeveledItem008()
+                return cArrayCreateLeveledItem008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateLeveledItem009()
+                return cArrayCreateLeveledItem009()
               elseif indices < 11
-                aArray = cArrayCreateLeveledItem010()
+                return cArrayCreateLeveledItem010()
               elseif indices < 12
-                aArray = cArrayCreateLeveledItem011()
+                return cArrayCreateLeveledItem011()
               else
-                aArray = cArrayCreateLeveledItem012()
+                return cArrayCreateLeveledItem012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateLeveledItem013()
+                return cArrayCreateLeveledItem013()
               elseif indices < 15
-                aArray = cArrayCreateLeveledItem014()
+                return cArrayCreateLeveledItem014()
               elseif indices < 16
-                aArray = cArrayCreateLeveledItem015()
+                return cArrayCreateLeveledItem015()
               else
-                aArray = cArrayCreateLeveledItem016()
+                return cArrayCreateLeveledItem016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler =
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateLeveledItem017()
+                return cArrayCreateLeveledItem017()
               elseif indices < 19
-                aArray = cArrayCreateLeveledItem018()
+                return cArrayCreateLeveledItem018()
               elseif indices < 20
-                aArray = cArrayCreateLeveledItem019()
+                return cArrayCreateLeveledItem019()
               else
-                aArray = cArrayCreateLeveledItem020()
+                return cArrayCreateLeveledItem020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateLeveledItem021()
+                return cArrayCreateLeveledItem021()
               elseif indices < 23
-                aArray = cArrayCreateLeveledItem022()
+                return cArrayCreateLeveledItem022()
               elseif indices < 24
-                aArray = cArrayCreateLeveledItem023()
+                return cArrayCreateLeveledItem023()
               else
-                aArray = cArrayCreateLeveledItem024()
+                return cArrayCreateLeveledItem024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateLeveledItem025()
+                return cArrayCreateLeveledItem025()
               elseif indices < 27
-                aArray = cArrayCreateLeveledItem026()
+                return cArrayCreateLeveledItem026()
               elseif indices < 28
-                aArray = cArrayCreateLeveledItem027()
+                return cArrayCreateLeveledItem027()
               else
-                aArray = cArrayCreateLeveledItem028()
+                return cArrayCreateLeveledItem028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateLeveledItem029()
+                return cArrayCreateLeveledItem029()
               elseif indices < 31
-                aArray = cArrayCreateLeveledItem030()
+                return cArrayCreateLeveledItem030()
               elseif indices < 32
-                aArray = cArrayCreateLeveledItem031()
+                return cArrayCreateLeveledItem031()
               else
-                aArray = cArrayCreateLeveledItem032()
+                return cArrayCreateLeveledItem032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler =
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateLeveledItem033()
+                return cArrayCreateLeveledItem033()
               elseif indices < 35
-                aArray = cArrayCreateLeveledItem034()
+                return cArrayCreateLeveledItem034()
               elseif indices < 36
-                aArray = cArrayCreateLeveledItem035()
+                return cArrayCreateLeveledItem035()
               else
-                aArray = cArrayCreateLeveledItem036()
+                return cArrayCreateLeveledItem036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateLeveledItem037()
+                return cArrayCreateLeveledItem037()
               elseif indices < 39
-                aArray = cArrayCreateLeveledItem038()
+                return cArrayCreateLeveledItem038()
               elseif indices < 40
-                aArray = cArrayCreateLeveledItem039()
+                return cArrayCreateLeveledItem039()
               else
-                aArray = cArrayCreateLeveledItem040()
+                return cArrayCreateLeveledItem040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateLeveledItem041()
+                return cArrayCreateLeveledItem041()
               elseif indices < 43
-                aArray = cArrayCreateLeveledItem042()
+                return cArrayCreateLeveledItem042()
               elseif indices < 44
-                aArray = cArrayCreateLeveledItem043()
+                return cArrayCreateLeveledItem043()
               else
-                aArray = cArrayCreateLeveledItem044()
+                return cArrayCreateLeveledItem044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateLeveledItem045()
+                return cArrayCreateLeveledItem045()
               elseif indices < 47
-                aArray = cArrayCreateLeveledItem046()
+                return cArrayCreateLeveledItem046()
               elseif indices < 48
-                aArray = cArrayCreateLeveledItem047()
+                return cArrayCreateLeveledItem047()
               else
-                aArray = cArrayCreateLeveledItem048()
+                return cArrayCreateLeveledItem048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler =
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateLeveledItem049()
+                return cArrayCreateLeveledItem049()
               elseif indices < 51
-                aArray = cArrayCreateLeveledItem050()
+                return cArrayCreateLeveledItem050()
               elseif indices < 52
-                aArray = cArrayCreateLeveledItem051()
+                return cArrayCreateLeveledItem051()
               else
-                aArray = cArrayCreateLeveledItem052()
+                return cArrayCreateLeveledItem052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateLeveledItem053()
+                return cArrayCreateLeveledItem053()
               elseif indices < 55
-                aArray = cArrayCreateLeveledItem054()
+                return cArrayCreateLeveledItem054()
               elseif indices < 56
-                aArray = cArrayCreateLeveledItem055()
+                return cArrayCreateLeveledItem055()
               else
-                aArray = cArrayCreateLeveledItem056()
+                return cArrayCreateLeveledItem056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateLeveledItem057()
+                return cArrayCreateLeveledItem057()
               elseif indices < 59
-                aArray = cArrayCreateLeveledItem058()
+                return cArrayCreateLeveledItem058()
               elseif indices < 60
-                aArray = cArrayCreateLeveledItem059()
+                return cArrayCreateLeveledItem059()
               else
-                aArray = cArrayCreateLeveledItem060()
+                return cArrayCreateLeveledItem060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateLeveledItem061()
+                return cArrayCreateLeveledItem061()
               elseif indices < 63
-                aArray = cArrayCreateLeveledItem062()
+                return cArrayCreateLeveledItem062()
               elseif indices < 64
-                aArray = cArrayCreateLeveledItem063()
+                return cArrayCreateLeveledItem063()
               else
-                aArray = cArrayCreateLeveledItem064()
+                return cArrayCreateLeveledItem064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler =
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateLeveledItem065()
+                return cArrayCreateLeveledItem065()
               elseif indices < 67
-                aArray = cArrayCreateLeveledItem066()
+                return cArrayCreateLeveledItem066()
               elseif indices < 68
-                aArray = cArrayCreateLeveledItem067()
+                return cArrayCreateLeveledItem067()
               else
-                aArray = cArrayCreateLeveledItem068()
+                return cArrayCreateLeveledItem068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateLeveledItem069()
+                return cArrayCreateLeveledItem069()
               elseif indices < 71
-                aArray = cArrayCreateLeveledItem070()
+                return cArrayCreateLeveledItem070()
               elseif indices < 72
-                aArray = cArrayCreateLeveledItem071()
+                return cArrayCreateLeveledItem071()
               else
-                aArray = cArrayCreateLeveledItem072()
+                return cArrayCreateLeveledItem072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateLeveledItem073()
+                return cArrayCreateLeveledItem073()
               elseif indices < 75
-                aArray = cArrayCreateLeveledItem074()
+                return cArrayCreateLeveledItem074()
               elseif indices < 76
-                aArray = cArrayCreateLeveledItem075()
+                return cArrayCreateLeveledItem075()
               else
-                aArray = cArrayCreateLeveledItem076()
+                return cArrayCreateLeveledItem076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateLeveledItem077()
+                return cArrayCreateLeveledItem077()
               elseif indices < 79
-                aArray = cArrayCreateLeveledItem078()
+                return cArrayCreateLeveledItem078()
               elseif indices < 80
-                aArray = cArrayCreateLeveledItem079()
+                return cArrayCreateLeveledItem079()
               else
-                aArray = cArrayCreateLeveledItem080()
+                return cArrayCreateLeveledItem080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler =
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateLeveledItem081()
+                return cArrayCreateLeveledItem081()
               elseif indices < 83
-                aArray = cArrayCreateLeveledItem082()
+                return cArrayCreateLeveledItem082()
               elseif indices < 84
-                aArray = cArrayCreateLeveledItem083()
+                return cArrayCreateLeveledItem083()
               else
-                aArray = cArrayCreateLeveledItem084()
+                return cArrayCreateLeveledItem084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateLeveledItem085()
+                return cArrayCreateLeveledItem085()
               elseif indices < 87
-                aArray = cArrayCreateLeveledItem086()
+                return cArrayCreateLeveledItem086()
               elseif indices < 88
-                aArray = cArrayCreateLeveledItem087()
+                return cArrayCreateLeveledItem087()
               else
-                aArray = cArrayCreateLeveledItem088()
+                return cArrayCreateLeveledItem088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateLeveledItem089()
+                return cArrayCreateLeveledItem089()
               elseif indices < 91
-                aArray = cArrayCreateLeveledItem090()
+                return cArrayCreateLeveledItem090()
               elseif indices < 92
-                aArray = cArrayCreateLeveledItem091()
+                return cArrayCreateLeveledItem091()
               else
-                aArray = cArrayCreateLeveledItem092()
+                return cArrayCreateLeveledItem092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateLeveledItem093()
+                return cArrayCreateLeveledItem093()
               elseif indices < 95
-                aArray = cArrayCreateLeveledItem094()
+                return cArrayCreateLeveledItem094()
               elseif indices < 96
-                aArray = cArrayCreateLeveledItem095()
+                return cArrayCreateLeveledItem095()
               else
-                aArray = cArrayCreateLeveledItem096()
+                return cArrayCreateLeveledItem096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler =
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateLeveledItem097()
+                return cArrayCreateLeveledItem097()
               elseif indices < 99
-                aArray = cArrayCreateLeveledItem098()
+                return cArrayCreateLeveledItem098()
               elseif indices < 100
-                aArray = cArrayCreateLeveledItem099()
+                return cArrayCreateLeveledItem099()
               else
-                aArray = cArrayCreateLeveledItem100()
+                return cArrayCreateLeveledItem100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateLeveledItem101()
+                return cArrayCreateLeveledItem101()
               elseif indices < 103
-                aArray = cArrayCreateLeveledItem102()
+                return cArrayCreateLeveledItem102()
               elseif indices < 104
-                aArray = cArrayCreateLeveledItem103()
+                return cArrayCreateLeveledItem103()
               else
-                aArray = cArrayCreateLeveledItem104()
+                return cArrayCreateLeveledItem104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateLeveledItem105()
+                return cArrayCreateLeveledItem105()
               elseif indices < 107
-                aArray = cArrayCreateLeveledItem106()
+                return cArrayCreateLeveledItem106()
               elseif indices < 108
-                aArray = cArrayCreateLeveledItem107()
+                return cArrayCreateLeveledItem107()
               else
-                aArray = cArrayCreateLeveledItem108()
+                return cArrayCreateLeveledItem108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateLeveledItem109()
+                return cArrayCreateLeveledItem109()
               elseif indices < 111
-                aArray = cArrayCreateLeveledItem110()
+                return cArrayCreateLeveledItem110()
               elseif indices < 112
-                aArray = cArrayCreateLeveledItem111()
+                return cArrayCreateLeveledItem111()
               else
-                aArray = cArrayCreateLeveledItem112()
+                return cArrayCreateLeveledItem112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ LeveledItem[] function cArrayCreateLeveledItem(Int indices, LeveledItem filler =
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateLeveledItem113()
+                return cArrayCreateLeveledItem113()
               elseif indices < 115
-                aArray = cArrayCreateLeveledItem114()
+                return cArrayCreateLeveledItem114()
               elseif indices < 116
-                aArray = cArrayCreateLeveledItem115()
+                return cArrayCreateLeveledItem115()
               else
-                aArray = cArrayCreateLeveledItem116()
+                return cArrayCreateLeveledItem116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateLeveledItem117()
+                return cArrayCreateLeveledItem117()
               elseif indices < 119
-                aArray = cArrayCreateLeveledItem118()
+                return cArrayCreateLeveledItem118()
               elseif indices < 120
-                aArray = cArrayCreateLeveledItem119()
+                return cArrayCreateLeveledItem119()
               else
-                aArray = cArrayCreateLeveledItem120()
+                return cArrayCreateLeveledItem120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateLeveledItem121()
+                return cArrayCreateLeveledItem121()
               elseif indices < 123
-                aArray = cArrayCreateLeveledItem122()
+                return cArrayCreateLeveledItem122()
               elseif indices < 124
-                aArray = cArrayCreateLeveledItem123()
+                return cArrayCreateLeveledItem123()
               else
-                aArray = cArrayCreateLeveledItem124()
+                return cArrayCreateLeveledItem124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateLeveledItem125()
+                return cArrayCreateLeveledItem125()
               elseif indices < 127
-                aArray = cArrayCreateLeveledItem126()
+                return cArrayCreateLeveledItem126()
               elseif indices < 128
-                aArray = cArrayCreateLeveledItem127()
+                return cArrayCreateLeveledItem127()
               else
-                aArray = cArrayCreateLeveledItem128()
+                return cArrayCreateLeveledItem128()
               endif
             endif
           endif

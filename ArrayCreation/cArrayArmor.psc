@@ -1,22 +1,14 @@
 Scriptname cArrayArmor Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Armor[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateArmor()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayArmor::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool output
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateArmor001()
+                return cArrayCreateArmor001()
               elseif indices < 3
-                aArray = cArrayCreateArmor002()
+                return cArrayCreateArmor002()
               elseif indices < 4
-                aArray = cArrayCreateArmor003()
+                return cArrayCreateArmor003()
               else
-                aArray = cArrayCreateArmor004()
+                return cArrayCreateArmor004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateArmor005()
+                return cArrayCreateArmor005()
               elseif indices < 7
-                aArray = cArrayCreateArmor006()
+                return cArrayCreateArmor006()
               elseif indices < 8
-                aArray = cArrayCreateArmor007()
+                return cArrayCreateArmor007()
               else
-                aArray = cArrayCreateArmor008()
+                return cArrayCreateArmor008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateArmor009()
+                return cArrayCreateArmor009()
               elseif indices < 11
-                aArray = cArrayCreateArmor010()
+                return cArrayCreateArmor010()
               elseif indices < 12
-                aArray = cArrayCreateArmor011()
+                return cArrayCreateArmor011()
               else
-                aArray = cArrayCreateArmor012()
+                return cArrayCreateArmor012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateArmor013()
+                return cArrayCreateArmor013()
               elseif indices < 15
-                aArray = cArrayCreateArmor014()
+                return cArrayCreateArmor014()
               elseif indices < 16
-                aArray = cArrayCreateArmor015()
+                return cArrayCreateArmor015()
               else
-                aArray = cArrayCreateArmor016()
+                return cArrayCreateArmor016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool output
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateArmor017()
+                return cArrayCreateArmor017()
               elseif indices < 19
-                aArray = cArrayCreateArmor018()
+                return cArrayCreateArmor018()
               elseif indices < 20
-                aArray = cArrayCreateArmor019()
+                return cArrayCreateArmor019()
               else
-                aArray = cArrayCreateArmor020()
+                return cArrayCreateArmor020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateArmor021()
+                return cArrayCreateArmor021()
               elseif indices < 23
-                aArray = cArrayCreateArmor022()
+                return cArrayCreateArmor022()
               elseif indices < 24
-                aArray = cArrayCreateArmor023()
+                return cArrayCreateArmor023()
               else
-                aArray = cArrayCreateArmor024()
+                return cArrayCreateArmor024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateArmor025()
+                return cArrayCreateArmor025()
               elseif indices < 27
-                aArray = cArrayCreateArmor026()
+                return cArrayCreateArmor026()
               elseif indices < 28
-                aArray = cArrayCreateArmor027()
+                return cArrayCreateArmor027()
               else
-                aArray = cArrayCreateArmor028()
+                return cArrayCreateArmor028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateArmor029()
+                return cArrayCreateArmor029()
               elseif indices < 31
-                aArray = cArrayCreateArmor030()
+                return cArrayCreateArmor030()
               elseif indices < 32
-                aArray = cArrayCreateArmor031()
+                return cArrayCreateArmor031()
               else
-                aArray = cArrayCreateArmor032()
+                return cArrayCreateArmor032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool output
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateArmor033()
+                return cArrayCreateArmor033()
               elseif indices < 35
-                aArray = cArrayCreateArmor034()
+                return cArrayCreateArmor034()
               elseif indices < 36
-                aArray = cArrayCreateArmor035()
+                return cArrayCreateArmor035()
               else
-                aArray = cArrayCreateArmor036()
+                return cArrayCreateArmor036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateArmor037()
+                return cArrayCreateArmor037()
               elseif indices < 39
-                aArray = cArrayCreateArmor038()
+                return cArrayCreateArmor038()
               elseif indices < 40
-                aArray = cArrayCreateArmor039()
+                return cArrayCreateArmor039()
               else
-                aArray = cArrayCreateArmor040()
+                return cArrayCreateArmor040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateArmor041()
+                return cArrayCreateArmor041()
               elseif indices < 43
-                aArray = cArrayCreateArmor042()
+                return cArrayCreateArmor042()
               elseif indices < 44
-                aArray = cArrayCreateArmor043()
+                return cArrayCreateArmor043()
               else
-                aArray = cArrayCreateArmor044()
+                return cArrayCreateArmor044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateArmor045()
+                return cArrayCreateArmor045()
               elseif indices < 47
-                aArray = cArrayCreateArmor046()
+                return cArrayCreateArmor046()
               elseif indices < 48
-                aArray = cArrayCreateArmor047()
+                return cArrayCreateArmor047()
               else
-                aArray = cArrayCreateArmor048()
+                return cArrayCreateArmor048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool output
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateArmor049()
+                return cArrayCreateArmor049()
               elseif indices < 51
-                aArray = cArrayCreateArmor050()
+                return cArrayCreateArmor050()
               elseif indices < 52
-                aArray = cArrayCreateArmor051()
+                return cArrayCreateArmor051()
               else
-                aArray = cArrayCreateArmor052()
+                return cArrayCreateArmor052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateArmor053()
+                return cArrayCreateArmor053()
               elseif indices < 55
-                aArray = cArrayCreateArmor054()
+                return cArrayCreateArmor054()
               elseif indices < 56
-                aArray = cArrayCreateArmor055()
+                return cArrayCreateArmor055()
               else
-                aArray = cArrayCreateArmor056()
+                return cArrayCreateArmor056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateArmor057()
+                return cArrayCreateArmor057()
               elseif indices < 59
-                aArray = cArrayCreateArmor058()
+                return cArrayCreateArmor058()
               elseif indices < 60
-                aArray = cArrayCreateArmor059()
+                return cArrayCreateArmor059()
               else
-                aArray = cArrayCreateArmor060()
+                return cArrayCreateArmor060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateArmor061()
+                return cArrayCreateArmor061()
               elseif indices < 63
-                aArray = cArrayCreateArmor062()
+                return cArrayCreateArmor062()
               elseif indices < 64
-                aArray = cArrayCreateArmor063()
+                return cArrayCreateArmor063()
               else
-                aArray = cArrayCreateArmor064()
+                return cArrayCreateArmor064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool output
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateArmor065()
+                return cArrayCreateArmor065()
               elseif indices < 67
-                aArray = cArrayCreateArmor066()
+                return cArrayCreateArmor066()
               elseif indices < 68
-                aArray = cArrayCreateArmor067()
+                return cArrayCreateArmor067()
               else
-                aArray = cArrayCreateArmor068()
+                return cArrayCreateArmor068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateArmor069()
+                return cArrayCreateArmor069()
               elseif indices < 71
-                aArray = cArrayCreateArmor070()
+                return cArrayCreateArmor070()
               elseif indices < 72
-                aArray = cArrayCreateArmor071()
+                return cArrayCreateArmor071()
               else
-                aArray = cArrayCreateArmor072()
+                return cArrayCreateArmor072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateArmor073()
+                return cArrayCreateArmor073()
               elseif indices < 75
-                aArray = cArrayCreateArmor074()
+                return cArrayCreateArmor074()
               elseif indices < 76
-                aArray = cArrayCreateArmor075()
+                return cArrayCreateArmor075()
               else
-                aArray = cArrayCreateArmor076()
+                return cArrayCreateArmor076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateArmor077()
+                return cArrayCreateArmor077()
               elseif indices < 79
-                aArray = cArrayCreateArmor078()
+                return cArrayCreateArmor078()
               elseif indices < 80
-                aArray = cArrayCreateArmor079()
+                return cArrayCreateArmor079()
               else
-                aArray = cArrayCreateArmor080()
+                return cArrayCreateArmor080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool output
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateArmor081()
+                return cArrayCreateArmor081()
               elseif indices < 83
-                aArray = cArrayCreateArmor082()
+                return cArrayCreateArmor082()
               elseif indices < 84
-                aArray = cArrayCreateArmor083()
+                return cArrayCreateArmor083()
               else
-                aArray = cArrayCreateArmor084()
+                return cArrayCreateArmor084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateArmor085()
+                return cArrayCreateArmor085()
               elseif indices < 87
-                aArray = cArrayCreateArmor086()
+                return cArrayCreateArmor086()
               elseif indices < 88
-                aArray = cArrayCreateArmor087()
+                return cArrayCreateArmor087()
               else
-                aArray = cArrayCreateArmor088()
+                return cArrayCreateArmor088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateArmor089()
+                return cArrayCreateArmor089()
               elseif indices < 91
-                aArray = cArrayCreateArmor090()
+                return cArrayCreateArmor090()
               elseif indices < 92
-                aArray = cArrayCreateArmor091()
+                return cArrayCreateArmor091()
               else
-                aArray = cArrayCreateArmor092()
+                return cArrayCreateArmor092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateArmor093()
+                return cArrayCreateArmor093()
               elseif indices < 95
-                aArray = cArrayCreateArmor094()
+                return cArrayCreateArmor094()
               elseif indices < 96
-                aArray = cArrayCreateArmor095()
+                return cArrayCreateArmor095()
               else
-                aArray = cArrayCreateArmor096()
+                return cArrayCreateArmor096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool output
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateArmor097()
+                return cArrayCreateArmor097()
               elseif indices < 99
-                aArray = cArrayCreateArmor098()
+                return cArrayCreateArmor098()
               elseif indices < 100
-                aArray = cArrayCreateArmor099()
+                return cArrayCreateArmor099()
               else
-                aArray = cArrayCreateArmor100()
+                return cArrayCreateArmor100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateArmor101()
+                return cArrayCreateArmor101()
               elseif indices < 103
-                aArray = cArrayCreateArmor102()
+                return cArrayCreateArmor102()
               elseif indices < 104
-                aArray = cArrayCreateArmor103()
+                return cArrayCreateArmor103()
               else
-                aArray = cArrayCreateArmor104()
+                return cArrayCreateArmor104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateArmor105()
+                return cArrayCreateArmor105()
               elseif indices < 107
-                aArray = cArrayCreateArmor106()
+                return cArrayCreateArmor106()
               elseif indices < 108
-                aArray = cArrayCreateArmor107()
+                return cArrayCreateArmor107()
               else
-                aArray = cArrayCreateArmor108()
+                return cArrayCreateArmor108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateArmor109()
+                return cArrayCreateArmor109()
               elseif indices < 111
-                aArray = cArrayCreateArmor110()
+                return cArrayCreateArmor110()
               elseif indices < 112
-                aArray = cArrayCreateArmor111()
+                return cArrayCreateArmor111()
               else
-                aArray = cArrayCreateArmor112()
+                return cArrayCreateArmor112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Armor[] function cArrayCreateArmor(Int indices, Armor filler = None, Bool output
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateArmor113()
+                return cArrayCreateArmor113()
               elseif indices < 115
-                aArray = cArrayCreateArmor114()
+                return cArrayCreateArmor114()
               elseif indices < 116
-                aArray = cArrayCreateArmor115()
+                return cArrayCreateArmor115()
               else
-                aArray = cArrayCreateArmor116()
+                return cArrayCreateArmor116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateArmor117()
+                return cArrayCreateArmor117()
               elseif indices < 119
-                aArray = cArrayCreateArmor118()
+                return cArrayCreateArmor118()
               elseif indices < 120
-                aArray = cArrayCreateArmor119()
+                return cArrayCreateArmor119()
               else
-                aArray = cArrayCreateArmor120()
+                return cArrayCreateArmor120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateArmor121()
+                return cArrayCreateArmor121()
               elseif indices < 123
-                aArray = cArrayCreateArmor122()
+                return cArrayCreateArmor122()
               elseif indices < 124
-                aArray = cArrayCreateArmor123()
+                return cArrayCreateArmor123()
               else
-                aArray = cArrayCreateArmor124()
+                return cArrayCreateArmor124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateArmor125()
+                return cArrayCreateArmor125()
               elseif indices < 127
-                aArray = cArrayCreateArmor126()
+                return cArrayCreateArmor126()
               elseif indices < 128
-                aArray = cArrayCreateArmor127()
+                return cArrayCreateArmor127()
               else
-                aArray = cArrayCreateArmor128()
+                return cArrayCreateArmor128()
               endif
             endif
           endif

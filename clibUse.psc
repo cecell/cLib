@@ -1,11 +1,11 @@
 ScriptName clibUse Hidden
 
-; Bool useSKSE = False
+; Bool useSKSE = TRUE
 ; Bool usePO3 = False
 ; Bool usePapUtil = False
 ; Bool useConsoleUtil = False
 
-Bool function cUseSKSE(Bool useSKSE = False, Bool forceCheck = False) global
+Bool function cUseSKSE(Bool useSKSE = TRUE, Bool forceCheck = False) global
   {Requirements: None}
   if forceCheck
     return (SKSE.GetVersion() as Bool)
@@ -35,6 +35,11 @@ Bool function cUseConsoleUtil(Bool useConsoleUtil = False, Bool forceCheck = Fal
     return (ConsoleUtil.GetVersion() as Bool)
   endif
   return useConsoleUtil
+endfunction
+
+Bool function cUseCLibESP() global
+  {Requirements: None}
+  return Game.GetFormFromFile(0x00000802, "cLibraries.esp") as Bool
 endfunction
 
 String function cGetScriptName() global

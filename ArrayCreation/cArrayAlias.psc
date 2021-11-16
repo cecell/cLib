@@ -1,24 +1,14 @@
 Scriptname cArrayAlias Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKSE = TRUE, Bool outputTrace = TRUE, \
-    Bool useConsoleUtil = TRUE) global
-  {Requirements: None, SKSE:Soft}
+Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool outputTrace = TRUE) global
+  {Requirements: None}
   Alias[] aArray
-  if useSKSE && indices > 0
-    aArray = Utility.CreateAliasArray(indices, filler)
-  elseif indices > 128 || indices < 1
+  if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateAlias()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayAlias::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -27,45 +17,45 @@ Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKS
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateAlias001()
+                return cArrayCreateAlias001()
               elseif indices < 3
-                aArray = cArrayCreateAlias002()
+                return cArrayCreateAlias002()
               elseif indices < 4
-                aArray = cArrayCreateAlias003()
+                return cArrayCreateAlias003()
               else
-                aArray = cArrayCreateAlias004()
+                return cArrayCreateAlias004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateAlias005()
+                return cArrayCreateAlias005()
               elseif indices < 7
-                aArray = cArrayCreateAlias006()
+                return cArrayCreateAlias006()
               elseif indices < 8
-                aArray = cArrayCreateAlias007()
+                return cArrayCreateAlias007()
               else
-                aArray = cArrayCreateAlias008()
+                return cArrayCreateAlias008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateAlias009()
+                return cArrayCreateAlias009()
               elseif indices < 11
-                aArray = cArrayCreateAlias010()
+                return cArrayCreateAlias010()
               elseif indices < 12
-                aArray = cArrayCreateAlias011()
+                return cArrayCreateAlias011()
               else
-                aArray = cArrayCreateAlias012()
+                return cArrayCreateAlias012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateAlias013()
+                return cArrayCreateAlias013()
               elseif indices < 15
-                aArray = cArrayCreateAlias014()
+                return cArrayCreateAlias014()
               elseif indices < 16
-                aArray = cArrayCreateAlias015()
+                return cArrayCreateAlias015()
               else
-                aArray = cArrayCreateAlias016()
+                return cArrayCreateAlias016()
               endif
             endif
           endif
@@ -73,45 +63,45 @@ Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKS
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateAlias017()
+                return cArrayCreateAlias017()
               elseif indices < 19
-                aArray = cArrayCreateAlias018()
+                return cArrayCreateAlias018()
               elseif indices < 20
-                aArray = cArrayCreateAlias019()
+                return cArrayCreateAlias019()
               else
-                aArray = cArrayCreateAlias020()
+                return cArrayCreateAlias020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateAlias021()
+                return cArrayCreateAlias021()
               elseif indices < 23
-                aArray = cArrayCreateAlias022()
+                return cArrayCreateAlias022()
               elseif indices < 24
-                aArray = cArrayCreateAlias023()
+                return cArrayCreateAlias023()
               else
-                aArray = cArrayCreateAlias024()
+                return cArrayCreateAlias024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateAlias025()
+                return cArrayCreateAlias025()
               elseif indices < 27
-                aArray = cArrayCreateAlias026()
+                return cArrayCreateAlias026()
               elseif indices < 28
-                aArray = cArrayCreateAlias027()
+                return cArrayCreateAlias027()
               else
-                aArray = cArrayCreateAlias028()
+                return cArrayCreateAlias028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateAlias029()
+                return cArrayCreateAlias029()
               elseif indices < 31
-                aArray = cArrayCreateAlias030()
+                return cArrayCreateAlias030()
               elseif indices < 32
-                aArray = cArrayCreateAlias031()
+                return cArrayCreateAlias031()
               else
-                aArray = cArrayCreateAlias032()
+                return cArrayCreateAlias032()
               endif
             endif
           endif
@@ -121,45 +111,45 @@ Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKS
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateAlias033()
+                return cArrayCreateAlias033()
               elseif indices < 35
-                aArray = cArrayCreateAlias034()
+                return cArrayCreateAlias034()
               elseif indices < 36
-                aArray = cArrayCreateAlias035()
+                return cArrayCreateAlias035()
               else
-                aArray = cArrayCreateAlias036()
+                return cArrayCreateAlias036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateAlias037()
+                return cArrayCreateAlias037()
               elseif indices < 39
-                aArray = cArrayCreateAlias038()
+                return cArrayCreateAlias038()
               elseif indices < 40
-                aArray = cArrayCreateAlias039()
+                return cArrayCreateAlias039()
               else
-                aArray = cArrayCreateAlias040()
+                return cArrayCreateAlias040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateAlias041()
+                return cArrayCreateAlias041()
               elseif indices < 43
-                aArray = cArrayCreateAlias042()
+                return cArrayCreateAlias042()
               elseif indices < 44
-                aArray = cArrayCreateAlias043()
+                return cArrayCreateAlias043()
               else
-                aArray = cArrayCreateAlias044()
+                return cArrayCreateAlias044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateAlias045()
+                return cArrayCreateAlias045()
               elseif indices < 47
-                aArray = cArrayCreateAlias046()
+                return cArrayCreateAlias046()
               elseif indices < 48
-                aArray = cArrayCreateAlias047()
+                return cArrayCreateAlias047()
               else
-                aArray = cArrayCreateAlias048()
+                return cArrayCreateAlias048()
               endif
             endif
           endif
@@ -167,45 +157,45 @@ Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKS
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateAlias049()
+                return cArrayCreateAlias049()
               elseif indices < 51
-                aArray = cArrayCreateAlias050()
+                return cArrayCreateAlias050()
               elseif indices < 52
-                aArray = cArrayCreateAlias051()
+                return cArrayCreateAlias051()
               else
-                aArray = cArrayCreateAlias052()
+                return cArrayCreateAlias052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateAlias053()
+                return cArrayCreateAlias053()
               elseif indices < 55
-                aArray = cArrayCreateAlias054()
+                return cArrayCreateAlias054()
               elseif indices < 56
-                aArray = cArrayCreateAlias055()
+                return cArrayCreateAlias055()
               else
-                aArray = cArrayCreateAlias056()
+                return cArrayCreateAlias056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateAlias057()
+                return cArrayCreateAlias057()
               elseif indices < 59
-                aArray = cArrayCreateAlias058()
+                return cArrayCreateAlias058()
               elseif indices < 60
-                aArray = cArrayCreateAlias059()
+                return cArrayCreateAlias059()
               else
-                aArray = cArrayCreateAlias060()
+                return cArrayCreateAlias060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateAlias061()
+                return cArrayCreateAlias061()
               elseif indices < 63
-                aArray = cArrayCreateAlias062()
+                return cArrayCreateAlias062()
               elseif indices < 64
-                aArray = cArrayCreateAlias063()
+                return cArrayCreateAlias063()
               else
-                aArray = cArrayCreateAlias064()
+                return cArrayCreateAlias064()
               endif
             endif
           endif
@@ -217,45 +207,45 @@ Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKS
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateAlias065()
+                return cArrayCreateAlias065()
               elseif indices < 67
-                aArray = cArrayCreateAlias066()
+                return cArrayCreateAlias066()
               elseif indices < 68
-                aArray = cArrayCreateAlias067()
+                return cArrayCreateAlias067()
               else
-                aArray = cArrayCreateAlias068()
+                return cArrayCreateAlias068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateAlias069()
+                return cArrayCreateAlias069()
               elseif indices < 71
-                aArray = cArrayCreateAlias070()
+                return cArrayCreateAlias070()
               elseif indices < 72
-                aArray = cArrayCreateAlias071()
+                return cArrayCreateAlias071()
               else
-                aArray = cArrayCreateAlias072()
+                return cArrayCreateAlias072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateAlias073()
+                return cArrayCreateAlias073()
               elseif indices < 75
-                aArray = cArrayCreateAlias074()
+                return cArrayCreateAlias074()
               elseif indices < 76
-                aArray = cArrayCreateAlias075()
+                return cArrayCreateAlias075()
               else
-                aArray = cArrayCreateAlias076()
+                return cArrayCreateAlias076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateAlias077()
+                return cArrayCreateAlias077()
               elseif indices < 79
-                aArray = cArrayCreateAlias078()
+                return cArrayCreateAlias078()
               elseif indices < 80
-                aArray = cArrayCreateAlias079()
+                return cArrayCreateAlias079()
               else
-                aArray = cArrayCreateAlias080()
+                return cArrayCreateAlias080()
               endif
             endif
           endif
@@ -263,45 +253,45 @@ Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKS
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateAlias081()
+                return cArrayCreateAlias081()
               elseif indices < 83
-                aArray = cArrayCreateAlias082()
+                return cArrayCreateAlias082()
               elseif indices < 84
-                aArray = cArrayCreateAlias083()
+                return cArrayCreateAlias083()
               else
-                aArray = cArrayCreateAlias084()
+                return cArrayCreateAlias084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateAlias085()
+                return cArrayCreateAlias085()
               elseif indices < 87
-                aArray = cArrayCreateAlias086()
+                return cArrayCreateAlias086()
               elseif indices < 88
-                aArray = cArrayCreateAlias087()
+                return cArrayCreateAlias087()
               else
-                aArray = cArrayCreateAlias088()
+                return cArrayCreateAlias088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateAlias089()
+                return cArrayCreateAlias089()
               elseif indices < 91
-                aArray = cArrayCreateAlias090()
+                return cArrayCreateAlias090()
               elseif indices < 92
-                aArray = cArrayCreateAlias091()
+                return cArrayCreateAlias091()
               else
-                aArray = cArrayCreateAlias092()
+                return cArrayCreateAlias092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateAlias093()
+                return cArrayCreateAlias093()
               elseif indices < 95
-                aArray = cArrayCreateAlias094()
+                return cArrayCreateAlias094()
               elseif indices < 96
-                aArray = cArrayCreateAlias095()
+                return cArrayCreateAlias095()
               else
-                aArray = cArrayCreateAlias096()
+                return cArrayCreateAlias096()
               endif
             endif
           endif
@@ -311,45 +301,45 @@ Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKS
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateAlias097()
+                return cArrayCreateAlias097()
               elseif indices < 99
-                aArray = cArrayCreateAlias098()
+                return cArrayCreateAlias098()
               elseif indices < 100
-                aArray = cArrayCreateAlias099()
+                return cArrayCreateAlias099()
               else
-                aArray = cArrayCreateAlias100()
+                return cArrayCreateAlias100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateAlias101()
+                return cArrayCreateAlias101()
               elseif indices < 103
-                aArray = cArrayCreateAlias102()
+                return cArrayCreateAlias102()
               elseif indices < 104
-                aArray = cArrayCreateAlias103()
+                return cArrayCreateAlias103()
               else
-                aArray = cArrayCreateAlias104()
+                return cArrayCreateAlias104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateAlias105()
+                return cArrayCreateAlias105()
               elseif indices < 107
-                aArray = cArrayCreateAlias106()
+                return cArrayCreateAlias106()
               elseif indices < 108
-                aArray = cArrayCreateAlias107()
+                return cArrayCreateAlias107()
               else
-                aArray = cArrayCreateAlias108()
+                return cArrayCreateAlias108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateAlias109()
+                return cArrayCreateAlias109()
               elseif indices < 111
-                aArray = cArrayCreateAlias110()
+                return cArrayCreateAlias110()
               elseif indices < 112
-                aArray = cArrayCreateAlias111()
+                return cArrayCreateAlias111()
               else
-                aArray = cArrayCreateAlias112()
+                return cArrayCreateAlias112()
               endif
             endif
           endif
@@ -357,45 +347,45 @@ Alias[] function cArrayCreateAlias(Int indices, Alias filler = None, Bool useSKS
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateAlias113()
+                return cArrayCreateAlias113()
               elseif indices < 115
-                aArray = cArrayCreateAlias114()
+                return cArrayCreateAlias114()
               elseif indices < 116
-                aArray = cArrayCreateAlias115()
+                return cArrayCreateAlias115()
               else
-                aArray = cArrayCreateAlias116()
+                return cArrayCreateAlias116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateAlias117()
+                return cArrayCreateAlias117()
               elseif indices < 119
-                aArray = cArrayCreateAlias118()
+                return cArrayCreateAlias118()
               elseif indices < 120
-                aArray = cArrayCreateAlias119()
+                return cArrayCreateAlias119()
               else
-                aArray = cArrayCreateAlias120()
+                return cArrayCreateAlias120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateAlias121()
+                return cArrayCreateAlias121()
               elseif indices < 123
-                aArray = cArrayCreateAlias122()
+                return cArrayCreateAlias122()
               elseif indices < 124
-                aArray = cArrayCreateAlias123()
+                return cArrayCreateAlias123()
               else
-                aArray = cArrayCreateAlias124()
+                return cArrayCreateAlias124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateAlias125()
+                return cArrayCreateAlias125()
               elseif indices < 127
-                aArray = cArrayCreateAlias126()
+                return cArrayCreateAlias126()
               elseif indices < 128
-                aArray = cArrayCreateAlias127()
+                return cArrayCreateAlias127()
               else
-                aArray = cArrayCreateAlias128()
+                return cArrayCreateAlias128()
               endif
             endif
           endif

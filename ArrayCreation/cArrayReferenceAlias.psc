@@ -1,27 +1,18 @@
 Scriptname cArrayReferenceAlias Hidden
 
-Int function cGetVersion() global
-  return 9001
+
+ReferenceAlias[] function cArrayCreateRefAlias(Int indices, ReferenceAlias filler = None, Bool outputTrace = TRUE) global
+    return cArrayCreateReferenceAlias(indices, filler, outputTrace)
 endfunction
 
-ReferenceAlias[] function cArrayCreateRefAlias(Int indices, ReferenceAlias filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
-  return cArrayCreateReferenceAlias(indices, filler, outputTrace, useConsoleUtil)
-endfunction
-
-ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   ReferenceAlias[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateReferenceAlias()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayReferenceAlias::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -30,45 +21,45 @@ ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateReferenceAlias001()
+                return cArrayCreateReferenceAlias001()
               elseif indices < 3
-                aArray = cArrayCreateReferenceAlias002()
+                return cArrayCreateReferenceAlias002()
               elseif indices < 4
-                aArray = cArrayCreateReferenceAlias003()
+                return cArrayCreateReferenceAlias003()
               else
-                aArray = cArrayCreateReferenceAlias004()
+                return cArrayCreateReferenceAlias004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateReferenceAlias005()
+                return cArrayCreateReferenceAlias005()
               elseif indices < 7
-                aArray = cArrayCreateReferenceAlias006()
+                return cArrayCreateReferenceAlias006()
               elseif indices < 8
-                aArray = cArrayCreateReferenceAlias007()
+                return cArrayCreateReferenceAlias007()
               else
-                aArray = cArrayCreateReferenceAlias008()
+                return cArrayCreateReferenceAlias008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateReferenceAlias009()
+                return cArrayCreateReferenceAlias009()
               elseif indices < 11
-                aArray = cArrayCreateReferenceAlias010()
+                return cArrayCreateReferenceAlias010()
               elseif indices < 12
-                aArray = cArrayCreateReferenceAlias011()
+                return cArrayCreateReferenceAlias011()
               else
-                aArray = cArrayCreateReferenceAlias012()
+                return cArrayCreateReferenceAlias012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateReferenceAlias013()
+                return cArrayCreateReferenceAlias013()
               elseif indices < 15
-                aArray = cArrayCreateReferenceAlias014()
+                return cArrayCreateReferenceAlias014()
               elseif indices < 16
-                aArray = cArrayCreateReferenceAlias015()
+                return cArrayCreateReferenceAlias015()
               else
-                aArray = cArrayCreateReferenceAlias016()
+                return cArrayCreateReferenceAlias016()
               endif
             endif
           endif
@@ -76,45 +67,45 @@ ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateReferenceAlias017()
+                return cArrayCreateReferenceAlias017()
               elseif indices < 19
-                aArray = cArrayCreateReferenceAlias018()
+                return cArrayCreateReferenceAlias018()
               elseif indices < 20
-                aArray = cArrayCreateReferenceAlias019()
+                return cArrayCreateReferenceAlias019()
               else
-                aArray = cArrayCreateReferenceAlias020()
+                return cArrayCreateReferenceAlias020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateReferenceAlias021()
+                return cArrayCreateReferenceAlias021()
               elseif indices < 23
-                aArray = cArrayCreateReferenceAlias022()
+                return cArrayCreateReferenceAlias022()
               elseif indices < 24
-                aArray = cArrayCreateReferenceAlias023()
+                return cArrayCreateReferenceAlias023()
               else
-                aArray = cArrayCreateReferenceAlias024()
+                return cArrayCreateReferenceAlias024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateReferenceAlias025()
+                return cArrayCreateReferenceAlias025()
               elseif indices < 27
-                aArray = cArrayCreateReferenceAlias026()
+                return cArrayCreateReferenceAlias026()
               elseif indices < 28
-                aArray = cArrayCreateReferenceAlias027()
+                return cArrayCreateReferenceAlias027()
               else
-                aArray = cArrayCreateReferenceAlias028()
+                return cArrayCreateReferenceAlias028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateReferenceAlias029()
+                return cArrayCreateReferenceAlias029()
               elseif indices < 31
-                aArray = cArrayCreateReferenceAlias030()
+                return cArrayCreateReferenceAlias030()
               elseif indices < 32
-                aArray = cArrayCreateReferenceAlias031()
+                return cArrayCreateReferenceAlias031()
               else
-                aArray = cArrayCreateReferenceAlias032()
+                return cArrayCreateReferenceAlias032()
               endif
             endif
           endif
@@ -124,45 +115,45 @@ ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateReferenceAlias033()
+                return cArrayCreateReferenceAlias033()
               elseif indices < 35
-                aArray = cArrayCreateReferenceAlias034()
+                return cArrayCreateReferenceAlias034()
               elseif indices < 36
-                aArray = cArrayCreateReferenceAlias035()
+                return cArrayCreateReferenceAlias035()
               else
-                aArray = cArrayCreateReferenceAlias036()
+                return cArrayCreateReferenceAlias036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateReferenceAlias037()
+                return cArrayCreateReferenceAlias037()
               elseif indices < 39
-                aArray = cArrayCreateReferenceAlias038()
+                return cArrayCreateReferenceAlias038()
               elseif indices < 40
-                aArray = cArrayCreateReferenceAlias039()
+                return cArrayCreateReferenceAlias039()
               else
-                aArray = cArrayCreateReferenceAlias040()
+                return cArrayCreateReferenceAlias040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateReferenceAlias041()
+                return cArrayCreateReferenceAlias041()
               elseif indices < 43
-                aArray = cArrayCreateReferenceAlias042()
+                return cArrayCreateReferenceAlias042()
               elseif indices < 44
-                aArray = cArrayCreateReferenceAlias043()
+                return cArrayCreateReferenceAlias043()
               else
-                aArray = cArrayCreateReferenceAlias044()
+                return cArrayCreateReferenceAlias044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateReferenceAlias045()
+                return cArrayCreateReferenceAlias045()
               elseif indices < 47
-                aArray = cArrayCreateReferenceAlias046()
+                return cArrayCreateReferenceAlias046()
               elseif indices < 48
-                aArray = cArrayCreateReferenceAlias047()
+                return cArrayCreateReferenceAlias047()
               else
-                aArray = cArrayCreateReferenceAlias048()
+                return cArrayCreateReferenceAlias048()
               endif
             endif
           endif
@@ -170,45 +161,45 @@ ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateReferenceAlias049()
+                return cArrayCreateReferenceAlias049()
               elseif indices < 51
-                aArray = cArrayCreateReferenceAlias050()
+                return cArrayCreateReferenceAlias050()
               elseif indices < 52
-                aArray = cArrayCreateReferenceAlias051()
+                return cArrayCreateReferenceAlias051()
               else
-                aArray = cArrayCreateReferenceAlias052()
+                return cArrayCreateReferenceAlias052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateReferenceAlias053()
+                return cArrayCreateReferenceAlias053()
               elseif indices < 55
-                aArray = cArrayCreateReferenceAlias054()
+                return cArrayCreateReferenceAlias054()
               elseif indices < 56
-                aArray = cArrayCreateReferenceAlias055()
+                return cArrayCreateReferenceAlias055()
               else
-                aArray = cArrayCreateReferenceAlias056()
+                return cArrayCreateReferenceAlias056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateReferenceAlias057()
+                return cArrayCreateReferenceAlias057()
               elseif indices < 59
-                aArray = cArrayCreateReferenceAlias058()
+                return cArrayCreateReferenceAlias058()
               elseif indices < 60
-                aArray = cArrayCreateReferenceAlias059()
+                return cArrayCreateReferenceAlias059()
               else
-                aArray = cArrayCreateReferenceAlias060()
+                return cArrayCreateReferenceAlias060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateReferenceAlias061()
+                return cArrayCreateReferenceAlias061()
               elseif indices < 63
-                aArray = cArrayCreateReferenceAlias062()
+                return cArrayCreateReferenceAlias062()
               elseif indices < 64
-                aArray = cArrayCreateReferenceAlias063()
+                return cArrayCreateReferenceAlias063()
               else
-                aArray = cArrayCreateReferenceAlias064()
+                return cArrayCreateReferenceAlias064()
               endif
             endif
           endif
@@ -220,45 +211,45 @@ ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateReferenceAlias065()
+                return cArrayCreateReferenceAlias065()
               elseif indices < 67
-                aArray = cArrayCreateReferenceAlias066()
+                return cArrayCreateReferenceAlias066()
               elseif indices < 68
-                aArray = cArrayCreateReferenceAlias067()
+                return cArrayCreateReferenceAlias067()
               else
-                aArray = cArrayCreateReferenceAlias068()
+                return cArrayCreateReferenceAlias068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateReferenceAlias069()
+                return cArrayCreateReferenceAlias069()
               elseif indices < 71
-                aArray = cArrayCreateReferenceAlias070()
+                return cArrayCreateReferenceAlias070()
               elseif indices < 72
-                aArray = cArrayCreateReferenceAlias071()
+                return cArrayCreateReferenceAlias071()
               else
-                aArray = cArrayCreateReferenceAlias072()
+                return cArrayCreateReferenceAlias072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateReferenceAlias073()
+                return cArrayCreateReferenceAlias073()
               elseif indices < 75
-                aArray = cArrayCreateReferenceAlias074()
+                return cArrayCreateReferenceAlias074()
               elseif indices < 76
-                aArray = cArrayCreateReferenceAlias075()
+                return cArrayCreateReferenceAlias075()
               else
-                aArray = cArrayCreateReferenceAlias076()
+                return cArrayCreateReferenceAlias076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateReferenceAlias077()
+                return cArrayCreateReferenceAlias077()
               elseif indices < 79
-                aArray = cArrayCreateReferenceAlias078()
+                return cArrayCreateReferenceAlias078()
               elseif indices < 80
-                aArray = cArrayCreateReferenceAlias079()
+                return cArrayCreateReferenceAlias079()
               else
-                aArray = cArrayCreateReferenceAlias080()
+                return cArrayCreateReferenceAlias080()
               endif
             endif
           endif
@@ -266,45 +257,45 @@ ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateReferenceAlias081()
+                return cArrayCreateReferenceAlias081()
               elseif indices < 83
-                aArray = cArrayCreateReferenceAlias082()
+                return cArrayCreateReferenceAlias082()
               elseif indices < 84
-                aArray = cArrayCreateReferenceAlias083()
+                return cArrayCreateReferenceAlias083()
               else
-                aArray = cArrayCreateReferenceAlias084()
+                return cArrayCreateReferenceAlias084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateReferenceAlias085()
+                return cArrayCreateReferenceAlias085()
               elseif indices < 87
-                aArray = cArrayCreateReferenceAlias086()
+                return cArrayCreateReferenceAlias086()
               elseif indices < 88
-                aArray = cArrayCreateReferenceAlias087()
+                return cArrayCreateReferenceAlias087()
               else
-                aArray = cArrayCreateReferenceAlias088()
+                return cArrayCreateReferenceAlias088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateReferenceAlias089()
+                return cArrayCreateReferenceAlias089()
               elseif indices < 91
-                aArray = cArrayCreateReferenceAlias090()
+                return cArrayCreateReferenceAlias090()
               elseif indices < 92
-                aArray = cArrayCreateReferenceAlias091()
+                return cArrayCreateReferenceAlias091()
               else
-                aArray = cArrayCreateReferenceAlias092()
+                return cArrayCreateReferenceAlias092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateReferenceAlias093()
+                return cArrayCreateReferenceAlias093()
               elseif indices < 95
-                aArray = cArrayCreateReferenceAlias094()
+                return cArrayCreateReferenceAlias094()
               elseif indices < 96
-                aArray = cArrayCreateReferenceAlias095()
+                return cArrayCreateReferenceAlias095()
               else
-                aArray = cArrayCreateReferenceAlias096()
+                return cArrayCreateReferenceAlias096()
               endif
             endif
           endif
@@ -314,45 +305,45 @@ ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateReferenceAlias097()
+                return cArrayCreateReferenceAlias097()
               elseif indices < 99
-                aArray = cArrayCreateReferenceAlias098()
+                return cArrayCreateReferenceAlias098()
               elseif indices < 100
-                aArray = cArrayCreateReferenceAlias099()
+                return cArrayCreateReferenceAlias099()
               else
-                aArray = cArrayCreateReferenceAlias100()
+                return cArrayCreateReferenceAlias100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateReferenceAlias101()
+                return cArrayCreateReferenceAlias101()
               elseif indices < 103
-                aArray = cArrayCreateReferenceAlias102()
+                return cArrayCreateReferenceAlias102()
               elseif indices < 104
-                aArray = cArrayCreateReferenceAlias103()
+                return cArrayCreateReferenceAlias103()
               else
-                aArray = cArrayCreateReferenceAlias104()
+                return cArrayCreateReferenceAlias104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateReferenceAlias105()
+                return cArrayCreateReferenceAlias105()
               elseif indices < 107
-                aArray = cArrayCreateReferenceAlias106()
+                return cArrayCreateReferenceAlias106()
               elseif indices < 108
-                aArray = cArrayCreateReferenceAlias107()
+                return cArrayCreateReferenceAlias107()
               else
-                aArray = cArrayCreateReferenceAlias108()
+                return cArrayCreateReferenceAlias108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateReferenceAlias109()
+                return cArrayCreateReferenceAlias109()
               elseif indices < 111
-                aArray = cArrayCreateReferenceAlias110()
+                return cArrayCreateReferenceAlias110()
               elseif indices < 112
-                aArray = cArrayCreateReferenceAlias111()
+                return cArrayCreateReferenceAlias111()
               else
-                aArray = cArrayCreateReferenceAlias112()
+                return cArrayCreateReferenceAlias112()
               endif
             endif
           endif
@@ -360,45 +351,45 @@ ReferenceAlias[] function cArrayCreateReferenceAlias(Int indices, ReferenceAlias
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateReferenceAlias113()
+                return cArrayCreateReferenceAlias113()
               elseif indices < 115
-                aArray = cArrayCreateReferenceAlias114()
+                return cArrayCreateReferenceAlias114()
               elseif indices < 116
-                aArray = cArrayCreateReferenceAlias115()
+                return cArrayCreateReferenceAlias115()
               else
-                aArray = cArrayCreateReferenceAlias116()
+                return cArrayCreateReferenceAlias116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateReferenceAlias117()
+                return cArrayCreateReferenceAlias117()
               elseif indices < 119
-                aArray = cArrayCreateReferenceAlias118()
+                return cArrayCreateReferenceAlias118()
               elseif indices < 120
-                aArray = cArrayCreateReferenceAlias119()
+                return cArrayCreateReferenceAlias119()
               else
-                aArray = cArrayCreateReferenceAlias120()
+                return cArrayCreateReferenceAlias120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateReferenceAlias121()
+                return cArrayCreateReferenceAlias121()
               elseif indices < 123
-                aArray = cArrayCreateReferenceAlias122()
+                return cArrayCreateReferenceAlias122()
               elseif indices < 124
-                aArray = cArrayCreateReferenceAlias123()
+                return cArrayCreateReferenceAlias123()
               else
-                aArray = cArrayCreateReferenceAlias124()
+                return cArrayCreateReferenceAlias124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateReferenceAlias125()
+                return cArrayCreateReferenceAlias125()
               elseif indices < 127
-                aArray = cArrayCreateReferenceAlias126()
+                return cArrayCreateReferenceAlias126()
               elseif indices < 128
-                aArray = cArrayCreateReferenceAlias127()
+                return cArrayCreateReferenceAlias127()
               else
-                aArray = cArrayCreateReferenceAlias128()
+                return cArrayCreateReferenceAlias128()
               endif
             endif
           endif

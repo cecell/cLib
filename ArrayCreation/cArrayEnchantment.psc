@@ -1,22 +1,14 @@
 Scriptname cArrayEnchantment Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Enchantment[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateEnchantment()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayEnchantment::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler =
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateEnchantment001()
+                return cArrayCreateEnchantment001()
               elseif indices < 3
-                aArray = cArrayCreateEnchantment002()
+                return cArrayCreateEnchantment002()
               elseif indices < 4
-                aArray = cArrayCreateEnchantment003()
+                return cArrayCreateEnchantment003()
               else
-                aArray = cArrayCreateEnchantment004()
+                return cArrayCreateEnchantment004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateEnchantment005()
+                return cArrayCreateEnchantment005()
               elseif indices < 7
-                aArray = cArrayCreateEnchantment006()
+                return cArrayCreateEnchantment006()
               elseif indices < 8
-                aArray = cArrayCreateEnchantment007()
+                return cArrayCreateEnchantment007()
               else
-                aArray = cArrayCreateEnchantment008()
+                return cArrayCreateEnchantment008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateEnchantment009()
+                return cArrayCreateEnchantment009()
               elseif indices < 11
-                aArray = cArrayCreateEnchantment010()
+                return cArrayCreateEnchantment010()
               elseif indices < 12
-                aArray = cArrayCreateEnchantment011()
+                return cArrayCreateEnchantment011()
               else
-                aArray = cArrayCreateEnchantment012()
+                return cArrayCreateEnchantment012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateEnchantment013()
+                return cArrayCreateEnchantment013()
               elseif indices < 15
-                aArray = cArrayCreateEnchantment014()
+                return cArrayCreateEnchantment014()
               elseif indices < 16
-                aArray = cArrayCreateEnchantment015()
+                return cArrayCreateEnchantment015()
               else
-                aArray = cArrayCreateEnchantment016()
+                return cArrayCreateEnchantment016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler =
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateEnchantment017()
+                return cArrayCreateEnchantment017()
               elseif indices < 19
-                aArray = cArrayCreateEnchantment018()
+                return cArrayCreateEnchantment018()
               elseif indices < 20
-                aArray = cArrayCreateEnchantment019()
+                return cArrayCreateEnchantment019()
               else
-                aArray = cArrayCreateEnchantment020()
+                return cArrayCreateEnchantment020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateEnchantment021()
+                return cArrayCreateEnchantment021()
               elseif indices < 23
-                aArray = cArrayCreateEnchantment022()
+                return cArrayCreateEnchantment022()
               elseif indices < 24
-                aArray = cArrayCreateEnchantment023()
+                return cArrayCreateEnchantment023()
               else
-                aArray = cArrayCreateEnchantment024()
+                return cArrayCreateEnchantment024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateEnchantment025()
+                return cArrayCreateEnchantment025()
               elseif indices < 27
-                aArray = cArrayCreateEnchantment026()
+                return cArrayCreateEnchantment026()
               elseif indices < 28
-                aArray = cArrayCreateEnchantment027()
+                return cArrayCreateEnchantment027()
               else
-                aArray = cArrayCreateEnchantment028()
+                return cArrayCreateEnchantment028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateEnchantment029()
+                return cArrayCreateEnchantment029()
               elseif indices < 31
-                aArray = cArrayCreateEnchantment030()
+                return cArrayCreateEnchantment030()
               elseif indices < 32
-                aArray = cArrayCreateEnchantment031()
+                return cArrayCreateEnchantment031()
               else
-                aArray = cArrayCreateEnchantment032()
+                return cArrayCreateEnchantment032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler =
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateEnchantment033()
+                return cArrayCreateEnchantment033()
               elseif indices < 35
-                aArray = cArrayCreateEnchantment034()
+                return cArrayCreateEnchantment034()
               elseif indices < 36
-                aArray = cArrayCreateEnchantment035()
+                return cArrayCreateEnchantment035()
               else
-                aArray = cArrayCreateEnchantment036()
+                return cArrayCreateEnchantment036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateEnchantment037()
+                return cArrayCreateEnchantment037()
               elseif indices < 39
-                aArray = cArrayCreateEnchantment038()
+                return cArrayCreateEnchantment038()
               elseif indices < 40
-                aArray = cArrayCreateEnchantment039()
+                return cArrayCreateEnchantment039()
               else
-                aArray = cArrayCreateEnchantment040()
+                return cArrayCreateEnchantment040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateEnchantment041()
+                return cArrayCreateEnchantment041()
               elseif indices < 43
-                aArray = cArrayCreateEnchantment042()
+                return cArrayCreateEnchantment042()
               elseif indices < 44
-                aArray = cArrayCreateEnchantment043()
+                return cArrayCreateEnchantment043()
               else
-                aArray = cArrayCreateEnchantment044()
+                return cArrayCreateEnchantment044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateEnchantment045()
+                return cArrayCreateEnchantment045()
               elseif indices < 47
-                aArray = cArrayCreateEnchantment046()
+                return cArrayCreateEnchantment046()
               elseif indices < 48
-                aArray = cArrayCreateEnchantment047()
+                return cArrayCreateEnchantment047()
               else
-                aArray = cArrayCreateEnchantment048()
+                return cArrayCreateEnchantment048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler =
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateEnchantment049()
+                return cArrayCreateEnchantment049()
               elseif indices < 51
-                aArray = cArrayCreateEnchantment050()
+                return cArrayCreateEnchantment050()
               elseif indices < 52
-                aArray = cArrayCreateEnchantment051()
+                return cArrayCreateEnchantment051()
               else
-                aArray = cArrayCreateEnchantment052()
+                return cArrayCreateEnchantment052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateEnchantment053()
+                return cArrayCreateEnchantment053()
               elseif indices < 55
-                aArray = cArrayCreateEnchantment054()
+                return cArrayCreateEnchantment054()
               elseif indices < 56
-                aArray = cArrayCreateEnchantment055()
+                return cArrayCreateEnchantment055()
               else
-                aArray = cArrayCreateEnchantment056()
+                return cArrayCreateEnchantment056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateEnchantment057()
+                return cArrayCreateEnchantment057()
               elseif indices < 59
-                aArray = cArrayCreateEnchantment058()
+                return cArrayCreateEnchantment058()
               elseif indices < 60
-                aArray = cArrayCreateEnchantment059()
+                return cArrayCreateEnchantment059()
               else
-                aArray = cArrayCreateEnchantment060()
+                return cArrayCreateEnchantment060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateEnchantment061()
+                return cArrayCreateEnchantment061()
               elseif indices < 63
-                aArray = cArrayCreateEnchantment062()
+                return cArrayCreateEnchantment062()
               elseif indices < 64
-                aArray = cArrayCreateEnchantment063()
+                return cArrayCreateEnchantment063()
               else
-                aArray = cArrayCreateEnchantment064()
+                return cArrayCreateEnchantment064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler =
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateEnchantment065()
+                return cArrayCreateEnchantment065()
               elseif indices < 67
-                aArray = cArrayCreateEnchantment066()
+                return cArrayCreateEnchantment066()
               elseif indices < 68
-                aArray = cArrayCreateEnchantment067()
+                return cArrayCreateEnchantment067()
               else
-                aArray = cArrayCreateEnchantment068()
+                return cArrayCreateEnchantment068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateEnchantment069()
+                return cArrayCreateEnchantment069()
               elseif indices < 71
-                aArray = cArrayCreateEnchantment070()
+                return cArrayCreateEnchantment070()
               elseif indices < 72
-                aArray = cArrayCreateEnchantment071()
+                return cArrayCreateEnchantment071()
               else
-                aArray = cArrayCreateEnchantment072()
+                return cArrayCreateEnchantment072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateEnchantment073()
+                return cArrayCreateEnchantment073()
               elseif indices < 75
-                aArray = cArrayCreateEnchantment074()
+                return cArrayCreateEnchantment074()
               elseif indices < 76
-                aArray = cArrayCreateEnchantment075()
+                return cArrayCreateEnchantment075()
               else
-                aArray = cArrayCreateEnchantment076()
+                return cArrayCreateEnchantment076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateEnchantment077()
+                return cArrayCreateEnchantment077()
               elseif indices < 79
-                aArray = cArrayCreateEnchantment078()
+                return cArrayCreateEnchantment078()
               elseif indices < 80
-                aArray = cArrayCreateEnchantment079()
+                return cArrayCreateEnchantment079()
               else
-                aArray = cArrayCreateEnchantment080()
+                return cArrayCreateEnchantment080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler =
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateEnchantment081()
+                return cArrayCreateEnchantment081()
               elseif indices < 83
-                aArray = cArrayCreateEnchantment082()
+                return cArrayCreateEnchantment082()
               elseif indices < 84
-                aArray = cArrayCreateEnchantment083()
+                return cArrayCreateEnchantment083()
               else
-                aArray = cArrayCreateEnchantment084()
+                return cArrayCreateEnchantment084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateEnchantment085()
+                return cArrayCreateEnchantment085()
               elseif indices < 87
-                aArray = cArrayCreateEnchantment086()
+                return cArrayCreateEnchantment086()
               elseif indices < 88
-                aArray = cArrayCreateEnchantment087()
+                return cArrayCreateEnchantment087()
               else
-                aArray = cArrayCreateEnchantment088()
+                return cArrayCreateEnchantment088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateEnchantment089()
+                return cArrayCreateEnchantment089()
               elseif indices < 91
-                aArray = cArrayCreateEnchantment090()
+                return cArrayCreateEnchantment090()
               elseif indices < 92
-                aArray = cArrayCreateEnchantment091()
+                return cArrayCreateEnchantment091()
               else
-                aArray = cArrayCreateEnchantment092()
+                return cArrayCreateEnchantment092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateEnchantment093()
+                return cArrayCreateEnchantment093()
               elseif indices < 95
-                aArray = cArrayCreateEnchantment094()
+                return cArrayCreateEnchantment094()
               elseif indices < 96
-                aArray = cArrayCreateEnchantment095()
+                return cArrayCreateEnchantment095()
               else
-                aArray = cArrayCreateEnchantment096()
+                return cArrayCreateEnchantment096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler =
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateEnchantment097()
+                return cArrayCreateEnchantment097()
               elseif indices < 99
-                aArray = cArrayCreateEnchantment098()
+                return cArrayCreateEnchantment098()
               elseif indices < 100
-                aArray = cArrayCreateEnchantment099()
+                return cArrayCreateEnchantment099()
               else
-                aArray = cArrayCreateEnchantment100()
+                return cArrayCreateEnchantment100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateEnchantment101()
+                return cArrayCreateEnchantment101()
               elseif indices < 103
-                aArray = cArrayCreateEnchantment102()
+                return cArrayCreateEnchantment102()
               elseif indices < 104
-                aArray = cArrayCreateEnchantment103()
+                return cArrayCreateEnchantment103()
               else
-                aArray = cArrayCreateEnchantment104()
+                return cArrayCreateEnchantment104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateEnchantment105()
+                return cArrayCreateEnchantment105()
               elseif indices < 107
-                aArray = cArrayCreateEnchantment106()
+                return cArrayCreateEnchantment106()
               elseif indices < 108
-                aArray = cArrayCreateEnchantment107()
+                return cArrayCreateEnchantment107()
               else
-                aArray = cArrayCreateEnchantment108()
+                return cArrayCreateEnchantment108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateEnchantment109()
+                return cArrayCreateEnchantment109()
               elseif indices < 111
-                aArray = cArrayCreateEnchantment110()
+                return cArrayCreateEnchantment110()
               elseif indices < 112
-                aArray = cArrayCreateEnchantment111()
+                return cArrayCreateEnchantment111()
               else
-                aArray = cArrayCreateEnchantment112()
+                return cArrayCreateEnchantment112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Enchantment[] function cArrayCreateEnchantment(Int indices, Enchantment filler =
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateEnchantment113()
+                return cArrayCreateEnchantment113()
               elseif indices < 115
-                aArray = cArrayCreateEnchantment114()
+                return cArrayCreateEnchantment114()
               elseif indices < 116
-                aArray = cArrayCreateEnchantment115()
+                return cArrayCreateEnchantment115()
               else
-                aArray = cArrayCreateEnchantment116()
+                return cArrayCreateEnchantment116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateEnchantment117()
+                return cArrayCreateEnchantment117()
               elseif indices < 119
-                aArray = cArrayCreateEnchantment118()
+                return cArrayCreateEnchantment118()
               elseif indices < 120
-                aArray = cArrayCreateEnchantment119()
+                return cArrayCreateEnchantment119()
               else
-                aArray = cArrayCreateEnchantment120()
+                return cArrayCreateEnchantment120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateEnchantment121()
+                return cArrayCreateEnchantment121()
               elseif indices < 123
-                aArray = cArrayCreateEnchantment122()
+                return cArrayCreateEnchantment122()
               elseif indices < 124
-                aArray = cArrayCreateEnchantment123()
+                return cArrayCreateEnchantment123()
               else
-                aArray = cArrayCreateEnchantment124()
+                return cArrayCreateEnchantment124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateEnchantment125()
+                return cArrayCreateEnchantment125()
               elseif indices < 127
-                aArray = cArrayCreateEnchantment126()
+                return cArrayCreateEnchantment126()
               elseif indices < 128
-                aArray = cArrayCreateEnchantment127()
+                return cArrayCreateEnchantment127()
               else
-                aArray = cArrayCreateEnchantment128()
+                return cArrayCreateEnchantment128()
               endif
             endif
           endif

@@ -1,22 +1,14 @@
 Scriptname cArrayLocation Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Location[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace messages
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateLocation()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayLocation::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bo
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateLocation001()
+                return cArrayCreateLocation001()
               elseif indices < 3
-                aArray = cArrayCreateLocation002()
+                return cArrayCreateLocation002()
               elseif indices < 4
-                aArray = cArrayCreateLocation003()
+                return cArrayCreateLocation003()
               else
-                aArray = cArrayCreateLocation004()
+                return cArrayCreateLocation004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateLocation005()
+                return cArrayCreateLocation005()
               elseif indices < 7
-                aArray = cArrayCreateLocation006()
+                return cArrayCreateLocation006()
               elseif indices < 8
-                aArray = cArrayCreateLocation007()
+                return cArrayCreateLocation007()
               else
-                aArray = cArrayCreateLocation008()
+                return cArrayCreateLocation008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateLocation009()
+                return cArrayCreateLocation009()
               elseif indices < 11
-                aArray = cArrayCreateLocation010()
+                return cArrayCreateLocation010()
               elseif indices < 12
-                aArray = cArrayCreateLocation011()
+                return cArrayCreateLocation011()
               else
-                aArray = cArrayCreateLocation012()
+                return cArrayCreateLocation012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateLocation013()
+                return cArrayCreateLocation013()
               elseif indices < 15
-                aArray = cArrayCreateLocation014()
+                return cArrayCreateLocation014()
               elseif indices < 16
-                aArray = cArrayCreateLocation015()
+                return cArrayCreateLocation015()
               else
-                aArray = cArrayCreateLocation016()
+                return cArrayCreateLocation016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bo
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateLocation017()
+                return cArrayCreateLocation017()
               elseif indices < 19
-                aArray = cArrayCreateLocation018()
+                return cArrayCreateLocation018()
               elseif indices < 20
-                aArray = cArrayCreateLocation019()
+                return cArrayCreateLocation019()
               else
-                aArray = cArrayCreateLocation020()
+                return cArrayCreateLocation020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateLocation021()
+                return cArrayCreateLocation021()
               elseif indices < 23
-                aArray = cArrayCreateLocation022()
+                return cArrayCreateLocation022()
               elseif indices < 24
-                aArray = cArrayCreateLocation023()
+                return cArrayCreateLocation023()
               else
-                aArray = cArrayCreateLocation024()
+                return cArrayCreateLocation024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateLocation025()
+                return cArrayCreateLocation025()
               elseif indices < 27
-                aArray = cArrayCreateLocation026()
+                return cArrayCreateLocation026()
               elseif indices < 28
-                aArray = cArrayCreateLocation027()
+                return cArrayCreateLocation027()
               else
-                aArray = cArrayCreateLocation028()
+                return cArrayCreateLocation028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateLocation029()
+                return cArrayCreateLocation029()
               elseif indices < 31
-                aArray = cArrayCreateLocation030()
+                return cArrayCreateLocation030()
               elseif indices < 32
-                aArray = cArrayCreateLocation031()
+                return cArrayCreateLocation031()
               else
-                aArray = cArrayCreateLocation032()
+                return cArrayCreateLocation032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bo
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateLocation033()
+                return cArrayCreateLocation033()
               elseif indices < 35
-                aArray = cArrayCreateLocation034()
+                return cArrayCreateLocation034()
               elseif indices < 36
-                aArray = cArrayCreateLocation035()
+                return cArrayCreateLocation035()
               else
-                aArray = cArrayCreateLocation036()
+                return cArrayCreateLocation036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateLocation037()
+                return cArrayCreateLocation037()
               elseif indices < 39
-                aArray = cArrayCreateLocation038()
+                return cArrayCreateLocation038()
               elseif indices < 40
-                aArray = cArrayCreateLocation039()
+                return cArrayCreateLocation039()
               else
-                aArray = cArrayCreateLocation040()
+                return cArrayCreateLocation040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateLocation041()
+                return cArrayCreateLocation041()
               elseif indices < 43
-                aArray = cArrayCreateLocation042()
+                return cArrayCreateLocation042()
               elseif indices < 44
-                aArray = cArrayCreateLocation043()
+                return cArrayCreateLocation043()
               else
-                aArray = cArrayCreateLocation044()
+                return cArrayCreateLocation044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateLocation045()
+                return cArrayCreateLocation045()
               elseif indices < 47
-                aArray = cArrayCreateLocation046()
+                return cArrayCreateLocation046()
               elseif indices < 48
-                aArray = cArrayCreateLocation047()
+                return cArrayCreateLocation047()
               else
-                aArray = cArrayCreateLocation048()
+                return cArrayCreateLocation048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bo
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateLocation049()
+                return cArrayCreateLocation049()
               elseif indices < 51
-                aArray = cArrayCreateLocation050()
+                return cArrayCreateLocation050()
               elseif indices < 52
-                aArray = cArrayCreateLocation051()
+                return cArrayCreateLocation051()
               else
-                aArray = cArrayCreateLocation052()
+                return cArrayCreateLocation052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateLocation053()
+                return cArrayCreateLocation053()
               elseif indices < 55
-                aArray = cArrayCreateLocation054()
+                return cArrayCreateLocation054()
               elseif indices < 56
-                aArray = cArrayCreateLocation055()
+                return cArrayCreateLocation055()
               else
-                aArray = cArrayCreateLocation056()
+                return cArrayCreateLocation056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateLocation057()
+                return cArrayCreateLocation057()
               elseif indices < 59
-                aArray = cArrayCreateLocation058()
+                return cArrayCreateLocation058()
               elseif indices < 60
-                aArray = cArrayCreateLocation059()
+                return cArrayCreateLocation059()
               else
-                aArray = cArrayCreateLocation060()
+                return cArrayCreateLocation060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateLocation061()
+                return cArrayCreateLocation061()
               elseif indices < 63
-                aArray = cArrayCreateLocation062()
+                return cArrayCreateLocation062()
               elseif indices < 64
-                aArray = cArrayCreateLocation063()
+                return cArrayCreateLocation063()
               else
-                aArray = cArrayCreateLocation064()
+                return cArrayCreateLocation064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bo
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateLocation065()
+                return cArrayCreateLocation065()
               elseif indices < 67
-                aArray = cArrayCreateLocation066()
+                return cArrayCreateLocation066()
               elseif indices < 68
-                aArray = cArrayCreateLocation067()
+                return cArrayCreateLocation067()
               else
-                aArray = cArrayCreateLocation068()
+                return cArrayCreateLocation068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateLocation069()
+                return cArrayCreateLocation069()
               elseif indices < 71
-                aArray = cArrayCreateLocation070()
+                return cArrayCreateLocation070()
               elseif indices < 72
-                aArray = cArrayCreateLocation071()
+                return cArrayCreateLocation071()
               else
-                aArray = cArrayCreateLocation072()
+                return cArrayCreateLocation072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateLocation073()
+                return cArrayCreateLocation073()
               elseif indices < 75
-                aArray = cArrayCreateLocation074()
+                return cArrayCreateLocation074()
               elseif indices < 76
-                aArray = cArrayCreateLocation075()
+                return cArrayCreateLocation075()
               else
-                aArray = cArrayCreateLocation076()
+                return cArrayCreateLocation076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateLocation077()
+                return cArrayCreateLocation077()
               elseif indices < 79
-                aArray = cArrayCreateLocation078()
+                return cArrayCreateLocation078()
               elseif indices < 80
-                aArray = cArrayCreateLocation079()
+                return cArrayCreateLocation079()
               else
-                aArray = cArrayCreateLocation080()
+                return cArrayCreateLocation080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bo
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateLocation081()
+                return cArrayCreateLocation081()
               elseif indices < 83
-                aArray = cArrayCreateLocation082()
+                return cArrayCreateLocation082()
               elseif indices < 84
-                aArray = cArrayCreateLocation083()
+                return cArrayCreateLocation083()
               else
-                aArray = cArrayCreateLocation084()
+                return cArrayCreateLocation084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateLocation085()
+                return cArrayCreateLocation085()
               elseif indices < 87
-                aArray = cArrayCreateLocation086()
+                return cArrayCreateLocation086()
               elseif indices < 88
-                aArray = cArrayCreateLocation087()
+                return cArrayCreateLocation087()
               else
-                aArray = cArrayCreateLocation088()
+                return cArrayCreateLocation088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateLocation089()
+                return cArrayCreateLocation089()
               elseif indices < 91
-                aArray = cArrayCreateLocation090()
+                return cArrayCreateLocation090()
               elseif indices < 92
-                aArray = cArrayCreateLocation091()
+                return cArrayCreateLocation091()
               else
-                aArray = cArrayCreateLocation092()
+                return cArrayCreateLocation092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateLocation093()
+                return cArrayCreateLocation093()
               elseif indices < 95
-                aArray = cArrayCreateLocation094()
+                return cArrayCreateLocation094()
               elseif indices < 96
-                aArray = cArrayCreateLocation095()
+                return cArrayCreateLocation095()
               else
-                aArray = cArrayCreateLocation096()
+                return cArrayCreateLocation096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bo
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateLocation097()
+                return cArrayCreateLocation097()
               elseif indices < 99
-                aArray = cArrayCreateLocation098()
+                return cArrayCreateLocation098()
               elseif indices < 100
-                aArray = cArrayCreateLocation099()
+                return cArrayCreateLocation099()
               else
-                aArray = cArrayCreateLocation100()
+                return cArrayCreateLocation100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateLocation101()
+                return cArrayCreateLocation101()
               elseif indices < 103
-                aArray = cArrayCreateLocation102()
+                return cArrayCreateLocation102()
               elseif indices < 104
-                aArray = cArrayCreateLocation103()
+                return cArrayCreateLocation103()
               else
-                aArray = cArrayCreateLocation104()
+                return cArrayCreateLocation104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateLocation105()
+                return cArrayCreateLocation105()
               elseif indices < 107
-                aArray = cArrayCreateLocation106()
+                return cArrayCreateLocation106()
               elseif indices < 108
-                aArray = cArrayCreateLocation107()
+                return cArrayCreateLocation107()
               else
-                aArray = cArrayCreateLocation108()
+                return cArrayCreateLocation108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateLocation109()
+                return cArrayCreateLocation109()
               elseif indices < 111
-                aArray = cArrayCreateLocation110()
+                return cArrayCreateLocation110()
               elseif indices < 112
-                aArray = cArrayCreateLocation111()
+                return cArrayCreateLocation111()
               else
-                aArray = cArrayCreateLocation112()
+                return cArrayCreateLocation112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Location[] function cArrayCreateLocation(Int indices, Location filler = None, Bo
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateLocation113()
+                return cArrayCreateLocation113()
               elseif indices < 115
-                aArray = cArrayCreateLocation114()
+                return cArrayCreateLocation114()
               elseif indices < 116
-                aArray = cArrayCreateLocation115()
+                return cArrayCreateLocation115()
               else
-                aArray = cArrayCreateLocation116()
+                return cArrayCreateLocation116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateLocation117()
+                return cArrayCreateLocation117()
               elseif indices < 119
-                aArray = cArrayCreateLocation118()
+                return cArrayCreateLocation118()
               elseif indices < 120
-                aArray = cArrayCreateLocation119()
+                return cArrayCreateLocation119()
               else
-                aArray = cArrayCreateLocation120()
+                return cArrayCreateLocation120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateLocation121()
+                return cArrayCreateLocation121()
               elseif indices < 123
-                aArray = cArrayCreateLocation122()
+                return cArrayCreateLocation122()
               elseif indices < 124
-                aArray = cArrayCreateLocation123()
+                return cArrayCreateLocation123()
               else
-                aArray = cArrayCreateLocation124()
+                return cArrayCreateLocation124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateLocation125()
+                return cArrayCreateLocation125()
               elseif indices < 127
-                aArray = cArrayCreateLocation126()
+                return cArrayCreateLocation126()
               elseif indices < 128
-                aArray = cArrayCreateLocation127()
+                return cArrayCreateLocation127()
               else
-                aArray = cArrayCreateLocation128()
+                return cArrayCreateLocation128()
               endif
             endif
           endif

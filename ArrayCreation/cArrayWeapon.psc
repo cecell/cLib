@@ -1,22 +1,14 @@
 Scriptname cArrayWeapon Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Weapon[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Weapons
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateWeapon()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayWeapon::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool out
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateWeapon001()
+                return cArrayCreateWeapon001()
               elseif indices < 3
-                aArray = cArrayCreateWeapon002()
+                return cArrayCreateWeapon002()
               elseif indices < 4
-                aArray = cArrayCreateWeapon003()
+                return cArrayCreateWeapon003()
               else
-                aArray = cArrayCreateWeapon004()
+                return cArrayCreateWeapon004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateWeapon005()
+                return cArrayCreateWeapon005()
               elseif indices < 7
-                aArray = cArrayCreateWeapon006()
+                return cArrayCreateWeapon006()
               elseif indices < 8
-                aArray = cArrayCreateWeapon007()
+                return cArrayCreateWeapon007()
               else
-                aArray = cArrayCreateWeapon008()
+                return cArrayCreateWeapon008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateWeapon009()
+                return cArrayCreateWeapon009()
               elseif indices < 11
-                aArray = cArrayCreateWeapon010()
+                return cArrayCreateWeapon010()
               elseif indices < 12
-                aArray = cArrayCreateWeapon011()
+                return cArrayCreateWeapon011()
               else
-                aArray = cArrayCreateWeapon012()
+                return cArrayCreateWeapon012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateWeapon013()
+                return cArrayCreateWeapon013()
               elseif indices < 15
-                aArray = cArrayCreateWeapon014()
+                return cArrayCreateWeapon014()
               elseif indices < 16
-                aArray = cArrayCreateWeapon015()
+                return cArrayCreateWeapon015()
               else
-                aArray = cArrayCreateWeapon016()
+                return cArrayCreateWeapon016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool out
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateWeapon017()
+                return cArrayCreateWeapon017()
               elseif indices < 19
-                aArray = cArrayCreateWeapon018()
+                return cArrayCreateWeapon018()
               elseif indices < 20
-                aArray = cArrayCreateWeapon019()
+                return cArrayCreateWeapon019()
               else
-                aArray = cArrayCreateWeapon020()
+                return cArrayCreateWeapon020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateWeapon021()
+                return cArrayCreateWeapon021()
               elseif indices < 23
-                aArray = cArrayCreateWeapon022()
+                return cArrayCreateWeapon022()
               elseif indices < 24
-                aArray = cArrayCreateWeapon023()
+                return cArrayCreateWeapon023()
               else
-                aArray = cArrayCreateWeapon024()
+                return cArrayCreateWeapon024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateWeapon025()
+                return cArrayCreateWeapon025()
               elseif indices < 27
-                aArray = cArrayCreateWeapon026()
+                return cArrayCreateWeapon026()
               elseif indices < 28
-                aArray = cArrayCreateWeapon027()
+                return cArrayCreateWeapon027()
               else
-                aArray = cArrayCreateWeapon028()
+                return cArrayCreateWeapon028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateWeapon029()
+                return cArrayCreateWeapon029()
               elseif indices < 31
-                aArray = cArrayCreateWeapon030()
+                return cArrayCreateWeapon030()
               elseif indices < 32
-                aArray = cArrayCreateWeapon031()
+                return cArrayCreateWeapon031()
               else
-                aArray = cArrayCreateWeapon032()
+                return cArrayCreateWeapon032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool out
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateWeapon033()
+                return cArrayCreateWeapon033()
               elseif indices < 35
-                aArray = cArrayCreateWeapon034()
+                return cArrayCreateWeapon034()
               elseif indices < 36
-                aArray = cArrayCreateWeapon035()
+                return cArrayCreateWeapon035()
               else
-                aArray = cArrayCreateWeapon036()
+                return cArrayCreateWeapon036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateWeapon037()
+                return cArrayCreateWeapon037()
               elseif indices < 39
-                aArray = cArrayCreateWeapon038()
+                return cArrayCreateWeapon038()
               elseif indices < 40
-                aArray = cArrayCreateWeapon039()
+                return cArrayCreateWeapon039()
               else
-                aArray = cArrayCreateWeapon040()
+                return cArrayCreateWeapon040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateWeapon041()
+                return cArrayCreateWeapon041()
               elseif indices < 43
-                aArray = cArrayCreateWeapon042()
+                return cArrayCreateWeapon042()
               elseif indices < 44
-                aArray = cArrayCreateWeapon043()
+                return cArrayCreateWeapon043()
               else
-                aArray = cArrayCreateWeapon044()
+                return cArrayCreateWeapon044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateWeapon045()
+                return cArrayCreateWeapon045()
               elseif indices < 47
-                aArray = cArrayCreateWeapon046()
+                return cArrayCreateWeapon046()
               elseif indices < 48
-                aArray = cArrayCreateWeapon047()
+                return cArrayCreateWeapon047()
               else
-                aArray = cArrayCreateWeapon048()
+                return cArrayCreateWeapon048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool out
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateWeapon049()
+                return cArrayCreateWeapon049()
               elseif indices < 51
-                aArray = cArrayCreateWeapon050()
+                return cArrayCreateWeapon050()
               elseif indices < 52
-                aArray = cArrayCreateWeapon051()
+                return cArrayCreateWeapon051()
               else
-                aArray = cArrayCreateWeapon052()
+                return cArrayCreateWeapon052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateWeapon053()
+                return cArrayCreateWeapon053()
               elseif indices < 55
-                aArray = cArrayCreateWeapon054()
+                return cArrayCreateWeapon054()
               elseif indices < 56
-                aArray = cArrayCreateWeapon055()
+                return cArrayCreateWeapon055()
               else
-                aArray = cArrayCreateWeapon056()
+                return cArrayCreateWeapon056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateWeapon057()
+                return cArrayCreateWeapon057()
               elseif indices < 59
-                aArray = cArrayCreateWeapon058()
+                return cArrayCreateWeapon058()
               elseif indices < 60
-                aArray = cArrayCreateWeapon059()
+                return cArrayCreateWeapon059()
               else
-                aArray = cArrayCreateWeapon060()
+                return cArrayCreateWeapon060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateWeapon061()
+                return cArrayCreateWeapon061()
               elseif indices < 63
-                aArray = cArrayCreateWeapon062()
+                return cArrayCreateWeapon062()
               elseif indices < 64
-                aArray = cArrayCreateWeapon063()
+                return cArrayCreateWeapon063()
               else
-                aArray = cArrayCreateWeapon064()
+                return cArrayCreateWeapon064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool out
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateWeapon065()
+                return cArrayCreateWeapon065()
               elseif indices < 67
-                aArray = cArrayCreateWeapon066()
+                return cArrayCreateWeapon066()
               elseif indices < 68
-                aArray = cArrayCreateWeapon067()
+                return cArrayCreateWeapon067()
               else
-                aArray = cArrayCreateWeapon068()
+                return cArrayCreateWeapon068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateWeapon069()
+                return cArrayCreateWeapon069()
               elseif indices < 71
-                aArray = cArrayCreateWeapon070()
+                return cArrayCreateWeapon070()
               elseif indices < 72
-                aArray = cArrayCreateWeapon071()
+                return cArrayCreateWeapon071()
               else
-                aArray = cArrayCreateWeapon072()
+                return cArrayCreateWeapon072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateWeapon073()
+                return cArrayCreateWeapon073()
               elseif indices < 75
-                aArray = cArrayCreateWeapon074()
+                return cArrayCreateWeapon074()
               elseif indices < 76
-                aArray = cArrayCreateWeapon075()
+                return cArrayCreateWeapon075()
               else
-                aArray = cArrayCreateWeapon076()
+                return cArrayCreateWeapon076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateWeapon077()
+                return cArrayCreateWeapon077()
               elseif indices < 79
-                aArray = cArrayCreateWeapon078()
+                return cArrayCreateWeapon078()
               elseif indices < 80
-                aArray = cArrayCreateWeapon079()
+                return cArrayCreateWeapon079()
               else
-                aArray = cArrayCreateWeapon080()
+                return cArrayCreateWeapon080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool out
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateWeapon081()
+                return cArrayCreateWeapon081()
               elseif indices < 83
-                aArray = cArrayCreateWeapon082()
+                return cArrayCreateWeapon082()
               elseif indices < 84
-                aArray = cArrayCreateWeapon083()
+                return cArrayCreateWeapon083()
               else
-                aArray = cArrayCreateWeapon084()
+                return cArrayCreateWeapon084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateWeapon085()
+                return cArrayCreateWeapon085()
               elseif indices < 87
-                aArray = cArrayCreateWeapon086()
+                return cArrayCreateWeapon086()
               elseif indices < 88
-                aArray = cArrayCreateWeapon087()
+                return cArrayCreateWeapon087()
               else
-                aArray = cArrayCreateWeapon088()
+                return cArrayCreateWeapon088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateWeapon089()
+                return cArrayCreateWeapon089()
               elseif indices < 91
-                aArray = cArrayCreateWeapon090()
+                return cArrayCreateWeapon090()
               elseif indices < 92
-                aArray = cArrayCreateWeapon091()
+                return cArrayCreateWeapon091()
               else
-                aArray = cArrayCreateWeapon092()
+                return cArrayCreateWeapon092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateWeapon093()
+                return cArrayCreateWeapon093()
               elseif indices < 95
-                aArray = cArrayCreateWeapon094()
+                return cArrayCreateWeapon094()
               elseif indices < 96
-                aArray = cArrayCreateWeapon095()
+                return cArrayCreateWeapon095()
               else
-                aArray = cArrayCreateWeapon096()
+                return cArrayCreateWeapon096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool out
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateWeapon097()
+                return cArrayCreateWeapon097()
               elseif indices < 99
-                aArray = cArrayCreateWeapon098()
+                return cArrayCreateWeapon098()
               elseif indices < 100
-                aArray = cArrayCreateWeapon099()
+                return cArrayCreateWeapon099()
               else
-                aArray = cArrayCreateWeapon100()
+                return cArrayCreateWeapon100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateWeapon101()
+                return cArrayCreateWeapon101()
               elseif indices < 103
-                aArray = cArrayCreateWeapon102()
+                return cArrayCreateWeapon102()
               elseif indices < 104
-                aArray = cArrayCreateWeapon103()
+                return cArrayCreateWeapon103()
               else
-                aArray = cArrayCreateWeapon104()
+                return cArrayCreateWeapon104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateWeapon105()
+                return cArrayCreateWeapon105()
               elseif indices < 107
-                aArray = cArrayCreateWeapon106()
+                return cArrayCreateWeapon106()
               elseif indices < 108
-                aArray = cArrayCreateWeapon107()
+                return cArrayCreateWeapon107()
               else
-                aArray = cArrayCreateWeapon108()
+                return cArrayCreateWeapon108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateWeapon109()
+                return cArrayCreateWeapon109()
               elseif indices < 111
-                aArray = cArrayCreateWeapon110()
+                return cArrayCreateWeapon110()
               elseif indices < 112
-                aArray = cArrayCreateWeapon111()
+                return cArrayCreateWeapon111()
               else
-                aArray = cArrayCreateWeapon112()
+                return cArrayCreateWeapon112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Weapon[] function cArrayCreateWeapon(Int indices, Weapon filler = None, Bool out
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateWeapon113()
+                return cArrayCreateWeapon113()
               elseif indices < 115
-                aArray = cArrayCreateWeapon114()
+                return cArrayCreateWeapon114()
               elseif indices < 116
-                aArray = cArrayCreateWeapon115()
+                return cArrayCreateWeapon115()
               else
-                aArray = cArrayCreateWeapon116()
+                return cArrayCreateWeapon116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateWeapon117()
+                return cArrayCreateWeapon117()
               elseif indices < 119
-                aArray = cArrayCreateWeapon118()
+                return cArrayCreateWeapon118()
               elseif indices < 120
-                aArray = cArrayCreateWeapon119()
+                return cArrayCreateWeapon119()
               else
-                aArray = cArrayCreateWeapon120()
+                return cArrayCreateWeapon120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateWeapon121()
+                return cArrayCreateWeapon121()
               elseif indices < 123
-                aArray = cArrayCreateWeapon122()
+                return cArrayCreateWeapon122()
               elseif indices < 124
-                aArray = cArrayCreateWeapon123()
+                return cArrayCreateWeapon123()
               else
-                aArray = cArrayCreateWeapon124()
+                return cArrayCreateWeapon124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateWeapon125()
+                return cArrayCreateWeapon125()
               elseif indices < 127
-                aArray = cArrayCreateWeapon126()
+                return cArrayCreateWeapon126()
               elseif indices < 128
-                aArray = cArrayCreateWeapon127()
+                return cArrayCreateWeapon127()
               else
-                aArray = cArrayCreateWeapon128()
+                return cArrayCreateWeapon128()
               endif
             endif
           endif

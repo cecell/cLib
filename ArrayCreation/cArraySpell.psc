@@ -1,22 +1,14 @@
 Scriptname cArraySpell Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Spell[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Spells
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateSpell()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArraySpell::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool output
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateSpell001()
+                return cArrayCreateSpell001()
               elseif indices < 3
-                aArray = cArrayCreateSpell002()
+                return cArrayCreateSpell002()
               elseif indices < 4
-                aArray = cArrayCreateSpell003()
+                return cArrayCreateSpell003()
               else
-                aArray = cArrayCreateSpell004()
+                return cArrayCreateSpell004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateSpell005()
+                return cArrayCreateSpell005()
               elseif indices < 7
-                aArray = cArrayCreateSpell006()
+                return cArrayCreateSpell006()
               elseif indices < 8
-                aArray = cArrayCreateSpell007()
+                return cArrayCreateSpell007()
               else
-                aArray = cArrayCreateSpell008()
+                return cArrayCreateSpell008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateSpell009()
+                return cArrayCreateSpell009()
               elseif indices < 11
-                aArray = cArrayCreateSpell010()
+                return cArrayCreateSpell010()
               elseif indices < 12
-                aArray = cArrayCreateSpell011()
+                return cArrayCreateSpell011()
               else
-                aArray = cArrayCreateSpell012()
+                return cArrayCreateSpell012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateSpell013()
+                return cArrayCreateSpell013()
               elseif indices < 15
-                aArray = cArrayCreateSpell014()
+                return cArrayCreateSpell014()
               elseif indices < 16
-                aArray = cArrayCreateSpell015()
+                return cArrayCreateSpell015()
               else
-                aArray = cArrayCreateSpell016()
+                return cArrayCreateSpell016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool output
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateSpell017()
+                return cArrayCreateSpell017()
               elseif indices < 19
-                aArray = cArrayCreateSpell018()
+                return cArrayCreateSpell018()
               elseif indices < 20
-                aArray = cArrayCreateSpell019()
+                return cArrayCreateSpell019()
               else
-                aArray = cArrayCreateSpell020()
+                return cArrayCreateSpell020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateSpell021()
+                return cArrayCreateSpell021()
               elseif indices < 23
-                aArray = cArrayCreateSpell022()
+                return cArrayCreateSpell022()
               elseif indices < 24
-                aArray = cArrayCreateSpell023()
+                return cArrayCreateSpell023()
               else
-                aArray = cArrayCreateSpell024()
+                return cArrayCreateSpell024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateSpell025()
+                return cArrayCreateSpell025()
               elseif indices < 27
-                aArray = cArrayCreateSpell026()
+                return cArrayCreateSpell026()
               elseif indices < 28
-                aArray = cArrayCreateSpell027()
+                return cArrayCreateSpell027()
               else
-                aArray = cArrayCreateSpell028()
+                return cArrayCreateSpell028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateSpell029()
+                return cArrayCreateSpell029()
               elseif indices < 31
-                aArray = cArrayCreateSpell030()
+                return cArrayCreateSpell030()
               elseif indices < 32
-                aArray = cArrayCreateSpell031()
+                return cArrayCreateSpell031()
               else
-                aArray = cArrayCreateSpell032()
+                return cArrayCreateSpell032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool output
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateSpell033()
+                return cArrayCreateSpell033()
               elseif indices < 35
-                aArray = cArrayCreateSpell034()
+                return cArrayCreateSpell034()
               elseif indices < 36
-                aArray = cArrayCreateSpell035()
+                return cArrayCreateSpell035()
               else
-                aArray = cArrayCreateSpell036()
+                return cArrayCreateSpell036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateSpell037()
+                return cArrayCreateSpell037()
               elseif indices < 39
-                aArray = cArrayCreateSpell038()
+                return cArrayCreateSpell038()
               elseif indices < 40
-                aArray = cArrayCreateSpell039()
+                return cArrayCreateSpell039()
               else
-                aArray = cArrayCreateSpell040()
+                return cArrayCreateSpell040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateSpell041()
+                return cArrayCreateSpell041()
               elseif indices < 43
-                aArray = cArrayCreateSpell042()
+                return cArrayCreateSpell042()
               elseif indices < 44
-                aArray = cArrayCreateSpell043()
+                return cArrayCreateSpell043()
               else
-                aArray = cArrayCreateSpell044()
+                return cArrayCreateSpell044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateSpell045()
+                return cArrayCreateSpell045()
               elseif indices < 47
-                aArray = cArrayCreateSpell046()
+                return cArrayCreateSpell046()
               elseif indices < 48
-                aArray = cArrayCreateSpell047()
+                return cArrayCreateSpell047()
               else
-                aArray = cArrayCreateSpell048()
+                return cArrayCreateSpell048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool output
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateSpell049()
+                return cArrayCreateSpell049()
               elseif indices < 51
-                aArray = cArrayCreateSpell050()
+                return cArrayCreateSpell050()
               elseif indices < 52
-                aArray = cArrayCreateSpell051()
+                return cArrayCreateSpell051()
               else
-                aArray = cArrayCreateSpell052()
+                return cArrayCreateSpell052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateSpell053()
+                return cArrayCreateSpell053()
               elseif indices < 55
-                aArray = cArrayCreateSpell054()
+                return cArrayCreateSpell054()
               elseif indices < 56
-                aArray = cArrayCreateSpell055()
+                return cArrayCreateSpell055()
               else
-                aArray = cArrayCreateSpell056()
+                return cArrayCreateSpell056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateSpell057()
+                return cArrayCreateSpell057()
               elseif indices < 59
-                aArray = cArrayCreateSpell058()
+                return cArrayCreateSpell058()
               elseif indices < 60
-                aArray = cArrayCreateSpell059()
+                return cArrayCreateSpell059()
               else
-                aArray = cArrayCreateSpell060()
+                return cArrayCreateSpell060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateSpell061()
+                return cArrayCreateSpell061()
               elseif indices < 63
-                aArray = cArrayCreateSpell062()
+                return cArrayCreateSpell062()
               elseif indices < 64
-                aArray = cArrayCreateSpell063()
+                return cArrayCreateSpell063()
               else
-                aArray = cArrayCreateSpell064()
+                return cArrayCreateSpell064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool output
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateSpell065()
+                return cArrayCreateSpell065()
               elseif indices < 67
-                aArray = cArrayCreateSpell066()
+                return cArrayCreateSpell066()
               elseif indices < 68
-                aArray = cArrayCreateSpell067()
+                return cArrayCreateSpell067()
               else
-                aArray = cArrayCreateSpell068()
+                return cArrayCreateSpell068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateSpell069()
+                return cArrayCreateSpell069()
               elseif indices < 71
-                aArray = cArrayCreateSpell070()
+                return cArrayCreateSpell070()
               elseif indices < 72
-                aArray = cArrayCreateSpell071()
+                return cArrayCreateSpell071()
               else
-                aArray = cArrayCreateSpell072()
+                return cArrayCreateSpell072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateSpell073()
+                return cArrayCreateSpell073()
               elseif indices < 75
-                aArray = cArrayCreateSpell074()
+                return cArrayCreateSpell074()
               elseif indices < 76
-                aArray = cArrayCreateSpell075()
+                return cArrayCreateSpell075()
               else
-                aArray = cArrayCreateSpell076()
+                return cArrayCreateSpell076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateSpell077()
+                return cArrayCreateSpell077()
               elseif indices < 79
-                aArray = cArrayCreateSpell078()
+                return cArrayCreateSpell078()
               elseif indices < 80
-                aArray = cArrayCreateSpell079()
+                return cArrayCreateSpell079()
               else
-                aArray = cArrayCreateSpell080()
+                return cArrayCreateSpell080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool output
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateSpell081()
+                return cArrayCreateSpell081()
               elseif indices < 83
-                aArray = cArrayCreateSpell082()
+                return cArrayCreateSpell082()
               elseif indices < 84
-                aArray = cArrayCreateSpell083()
+                return cArrayCreateSpell083()
               else
-                aArray = cArrayCreateSpell084()
+                return cArrayCreateSpell084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateSpell085()
+                return cArrayCreateSpell085()
               elseif indices < 87
-                aArray = cArrayCreateSpell086()
+                return cArrayCreateSpell086()
               elseif indices < 88
-                aArray = cArrayCreateSpell087()
+                return cArrayCreateSpell087()
               else
-                aArray = cArrayCreateSpell088()
+                return cArrayCreateSpell088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateSpell089()
+                return cArrayCreateSpell089()
               elseif indices < 91
-                aArray = cArrayCreateSpell090()
+                return cArrayCreateSpell090()
               elseif indices < 92
-                aArray = cArrayCreateSpell091()
+                return cArrayCreateSpell091()
               else
-                aArray = cArrayCreateSpell092()
+                return cArrayCreateSpell092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateSpell093()
+                return cArrayCreateSpell093()
               elseif indices < 95
-                aArray = cArrayCreateSpell094()
+                return cArrayCreateSpell094()
               elseif indices < 96
-                aArray = cArrayCreateSpell095()
+                return cArrayCreateSpell095()
               else
-                aArray = cArrayCreateSpell096()
+                return cArrayCreateSpell096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool output
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateSpell097()
+                return cArrayCreateSpell097()
               elseif indices < 99
-                aArray = cArrayCreateSpell098()
+                return cArrayCreateSpell098()
               elseif indices < 100
-                aArray = cArrayCreateSpell099()
+                return cArrayCreateSpell099()
               else
-                aArray = cArrayCreateSpell100()
+                return cArrayCreateSpell100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateSpell101()
+                return cArrayCreateSpell101()
               elseif indices < 103
-                aArray = cArrayCreateSpell102()
+                return cArrayCreateSpell102()
               elseif indices < 104
-                aArray = cArrayCreateSpell103()
+                return cArrayCreateSpell103()
               else
-                aArray = cArrayCreateSpell104()
+                return cArrayCreateSpell104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateSpell105()
+                return cArrayCreateSpell105()
               elseif indices < 107
-                aArray = cArrayCreateSpell106()
+                return cArrayCreateSpell106()
               elseif indices < 108
-                aArray = cArrayCreateSpell107()
+                return cArrayCreateSpell107()
               else
-                aArray = cArrayCreateSpell108()
+                return cArrayCreateSpell108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateSpell109()
+                return cArrayCreateSpell109()
               elseif indices < 111
-                aArray = cArrayCreateSpell110()
+                return cArrayCreateSpell110()
               elseif indices < 112
-                aArray = cArrayCreateSpell111()
+                return cArrayCreateSpell111()
               else
-                aArray = cArrayCreateSpell112()
+                return cArrayCreateSpell112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Spell[] function cArrayCreateSpell(Int indices, Spell filler = None, Bool output
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateSpell113()
+                return cArrayCreateSpell113()
               elseif indices < 115
-                aArray = cArrayCreateSpell114()
+                return cArrayCreateSpell114()
               elseif indices < 116
-                aArray = cArrayCreateSpell115()
+                return cArrayCreateSpell115()
               else
-                aArray = cArrayCreateSpell116()
+                return cArrayCreateSpell116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateSpell117()
+                return cArrayCreateSpell117()
               elseif indices < 119
-                aArray = cArrayCreateSpell118()
+                return cArrayCreateSpell118()
               elseif indices < 120
-                aArray = cArrayCreateSpell119()
+                return cArrayCreateSpell119()
               else
-                aArray = cArrayCreateSpell120()
+                return cArrayCreateSpell120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateSpell121()
+                return cArrayCreateSpell121()
               elseif indices < 123
-                aArray = cArrayCreateSpell122()
+                return cArrayCreateSpell122()
               elseif indices < 124
-                aArray = cArrayCreateSpell123()
+                return cArrayCreateSpell123()
               else
-                aArray = cArrayCreateSpell124()
+                return cArrayCreateSpell124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateSpell125()
+                return cArrayCreateSpell125()
               elseif indices < 127
-                aArray = cArrayCreateSpell126()
+                return cArrayCreateSpell126()
               elseif indices < 128
-                aArray = cArrayCreateSpell127()
+                return cArrayCreateSpell127()
               else
-                aArray = cArrayCreateSpell128()
+                return cArrayCreateSpell128()
               endif
             endif
           endif

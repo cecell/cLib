@@ -1,22 +1,14 @@
 Scriptname cArrayTopicInfo Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   TopicInfo[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace TopicInfos
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateTopicInfo()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayTopicInfo::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None,
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateTopicInfo001()
+                return cArrayCreateTopicInfo001()
               elseif indices < 3
-                aArray = cArrayCreateTopicInfo002()
+                return cArrayCreateTopicInfo002()
               elseif indices < 4
-                aArray = cArrayCreateTopicInfo003()
+                return cArrayCreateTopicInfo003()
               else
-                aArray = cArrayCreateTopicInfo004()
+                return cArrayCreateTopicInfo004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateTopicInfo005()
+                return cArrayCreateTopicInfo005()
               elseif indices < 7
-                aArray = cArrayCreateTopicInfo006()
+                return cArrayCreateTopicInfo006()
               elseif indices < 8
-                aArray = cArrayCreateTopicInfo007()
+                return cArrayCreateTopicInfo007()
               else
-                aArray = cArrayCreateTopicInfo008()
+                return cArrayCreateTopicInfo008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateTopicInfo009()
+                return cArrayCreateTopicInfo009()
               elseif indices < 11
-                aArray = cArrayCreateTopicInfo010()
+                return cArrayCreateTopicInfo010()
               elseif indices < 12
-                aArray = cArrayCreateTopicInfo011()
+                return cArrayCreateTopicInfo011()
               else
-                aArray = cArrayCreateTopicInfo012()
+                return cArrayCreateTopicInfo012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateTopicInfo013()
+                return cArrayCreateTopicInfo013()
               elseif indices < 15
-                aArray = cArrayCreateTopicInfo014()
+                return cArrayCreateTopicInfo014()
               elseif indices < 16
-                aArray = cArrayCreateTopicInfo015()
+                return cArrayCreateTopicInfo015()
               else
-                aArray = cArrayCreateTopicInfo016()
+                return cArrayCreateTopicInfo016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None,
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateTopicInfo017()
+                return cArrayCreateTopicInfo017()
               elseif indices < 19
-                aArray = cArrayCreateTopicInfo018()
+                return cArrayCreateTopicInfo018()
               elseif indices < 20
-                aArray = cArrayCreateTopicInfo019()
+                return cArrayCreateTopicInfo019()
               else
-                aArray = cArrayCreateTopicInfo020()
+                return cArrayCreateTopicInfo020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateTopicInfo021()
+                return cArrayCreateTopicInfo021()
               elseif indices < 23
-                aArray = cArrayCreateTopicInfo022()
+                return cArrayCreateTopicInfo022()
               elseif indices < 24
-                aArray = cArrayCreateTopicInfo023()
+                return cArrayCreateTopicInfo023()
               else
-                aArray = cArrayCreateTopicInfo024()
+                return cArrayCreateTopicInfo024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateTopicInfo025()
+                return cArrayCreateTopicInfo025()
               elseif indices < 27
-                aArray = cArrayCreateTopicInfo026()
+                return cArrayCreateTopicInfo026()
               elseif indices < 28
-                aArray = cArrayCreateTopicInfo027()
+                return cArrayCreateTopicInfo027()
               else
-                aArray = cArrayCreateTopicInfo028()
+                return cArrayCreateTopicInfo028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateTopicInfo029()
+                return cArrayCreateTopicInfo029()
               elseif indices < 31
-                aArray = cArrayCreateTopicInfo030()
+                return cArrayCreateTopicInfo030()
               elseif indices < 32
-                aArray = cArrayCreateTopicInfo031()
+                return cArrayCreateTopicInfo031()
               else
-                aArray = cArrayCreateTopicInfo032()
+                return cArrayCreateTopicInfo032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None,
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateTopicInfo033()
+                return cArrayCreateTopicInfo033()
               elseif indices < 35
-                aArray = cArrayCreateTopicInfo034()
+                return cArrayCreateTopicInfo034()
               elseif indices < 36
-                aArray = cArrayCreateTopicInfo035()
+                return cArrayCreateTopicInfo035()
               else
-                aArray = cArrayCreateTopicInfo036()
+                return cArrayCreateTopicInfo036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateTopicInfo037()
+                return cArrayCreateTopicInfo037()
               elseif indices < 39
-                aArray = cArrayCreateTopicInfo038()
+                return cArrayCreateTopicInfo038()
               elseif indices < 40
-                aArray = cArrayCreateTopicInfo039()
+                return cArrayCreateTopicInfo039()
               else
-                aArray = cArrayCreateTopicInfo040()
+                return cArrayCreateTopicInfo040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateTopicInfo041()
+                return cArrayCreateTopicInfo041()
               elseif indices < 43
-                aArray = cArrayCreateTopicInfo042()
+                return cArrayCreateTopicInfo042()
               elseif indices < 44
-                aArray = cArrayCreateTopicInfo043()
+                return cArrayCreateTopicInfo043()
               else
-                aArray = cArrayCreateTopicInfo044()
+                return cArrayCreateTopicInfo044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateTopicInfo045()
+                return cArrayCreateTopicInfo045()
               elseif indices < 47
-                aArray = cArrayCreateTopicInfo046()
+                return cArrayCreateTopicInfo046()
               elseif indices < 48
-                aArray = cArrayCreateTopicInfo047()
+                return cArrayCreateTopicInfo047()
               else
-                aArray = cArrayCreateTopicInfo048()
+                return cArrayCreateTopicInfo048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None,
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateTopicInfo049()
+                return cArrayCreateTopicInfo049()
               elseif indices < 51
-                aArray = cArrayCreateTopicInfo050()
+                return cArrayCreateTopicInfo050()
               elseif indices < 52
-                aArray = cArrayCreateTopicInfo051()
+                return cArrayCreateTopicInfo051()
               else
-                aArray = cArrayCreateTopicInfo052()
+                return cArrayCreateTopicInfo052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateTopicInfo053()
+                return cArrayCreateTopicInfo053()
               elseif indices < 55
-                aArray = cArrayCreateTopicInfo054()
+                return cArrayCreateTopicInfo054()
               elseif indices < 56
-                aArray = cArrayCreateTopicInfo055()
+                return cArrayCreateTopicInfo055()
               else
-                aArray = cArrayCreateTopicInfo056()
+                return cArrayCreateTopicInfo056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateTopicInfo057()
+                return cArrayCreateTopicInfo057()
               elseif indices < 59
-                aArray = cArrayCreateTopicInfo058()
+                return cArrayCreateTopicInfo058()
               elseif indices < 60
-                aArray = cArrayCreateTopicInfo059()
+                return cArrayCreateTopicInfo059()
               else
-                aArray = cArrayCreateTopicInfo060()
+                return cArrayCreateTopicInfo060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateTopicInfo061()
+                return cArrayCreateTopicInfo061()
               elseif indices < 63
-                aArray = cArrayCreateTopicInfo062()
+                return cArrayCreateTopicInfo062()
               elseif indices < 64
-                aArray = cArrayCreateTopicInfo063()
+                return cArrayCreateTopicInfo063()
               else
-                aArray = cArrayCreateTopicInfo064()
+                return cArrayCreateTopicInfo064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None,
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateTopicInfo065()
+                return cArrayCreateTopicInfo065()
               elseif indices < 67
-                aArray = cArrayCreateTopicInfo066()
+                return cArrayCreateTopicInfo066()
               elseif indices < 68
-                aArray = cArrayCreateTopicInfo067()
+                return cArrayCreateTopicInfo067()
               else
-                aArray = cArrayCreateTopicInfo068()
+                return cArrayCreateTopicInfo068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateTopicInfo069()
+                return cArrayCreateTopicInfo069()
               elseif indices < 71
-                aArray = cArrayCreateTopicInfo070()
+                return cArrayCreateTopicInfo070()
               elseif indices < 72
-                aArray = cArrayCreateTopicInfo071()
+                return cArrayCreateTopicInfo071()
               else
-                aArray = cArrayCreateTopicInfo072()
+                return cArrayCreateTopicInfo072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateTopicInfo073()
+                return cArrayCreateTopicInfo073()
               elseif indices < 75
-                aArray = cArrayCreateTopicInfo074()
+                return cArrayCreateTopicInfo074()
               elseif indices < 76
-                aArray = cArrayCreateTopicInfo075()
+                return cArrayCreateTopicInfo075()
               else
-                aArray = cArrayCreateTopicInfo076()
+                return cArrayCreateTopicInfo076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateTopicInfo077()
+                return cArrayCreateTopicInfo077()
               elseif indices < 79
-                aArray = cArrayCreateTopicInfo078()
+                return cArrayCreateTopicInfo078()
               elseif indices < 80
-                aArray = cArrayCreateTopicInfo079()
+                return cArrayCreateTopicInfo079()
               else
-                aArray = cArrayCreateTopicInfo080()
+                return cArrayCreateTopicInfo080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None,
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateTopicInfo081()
+                return cArrayCreateTopicInfo081()
               elseif indices < 83
-                aArray = cArrayCreateTopicInfo082()
+                return cArrayCreateTopicInfo082()
               elseif indices < 84
-                aArray = cArrayCreateTopicInfo083()
+                return cArrayCreateTopicInfo083()
               else
-                aArray = cArrayCreateTopicInfo084()
+                return cArrayCreateTopicInfo084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateTopicInfo085()
+                return cArrayCreateTopicInfo085()
               elseif indices < 87
-                aArray = cArrayCreateTopicInfo086()
+                return cArrayCreateTopicInfo086()
               elseif indices < 88
-                aArray = cArrayCreateTopicInfo087()
+                return cArrayCreateTopicInfo087()
               else
-                aArray = cArrayCreateTopicInfo088()
+                return cArrayCreateTopicInfo088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateTopicInfo089()
+                return cArrayCreateTopicInfo089()
               elseif indices < 91
-                aArray = cArrayCreateTopicInfo090()
+                return cArrayCreateTopicInfo090()
               elseif indices < 92
-                aArray = cArrayCreateTopicInfo091()
+                return cArrayCreateTopicInfo091()
               else
-                aArray = cArrayCreateTopicInfo092()
+                return cArrayCreateTopicInfo092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateTopicInfo093()
+                return cArrayCreateTopicInfo093()
               elseif indices < 95
-                aArray = cArrayCreateTopicInfo094()
+                return cArrayCreateTopicInfo094()
               elseif indices < 96
-                aArray = cArrayCreateTopicInfo095()
+                return cArrayCreateTopicInfo095()
               else
-                aArray = cArrayCreateTopicInfo096()
+                return cArrayCreateTopicInfo096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None,
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateTopicInfo097()
+                return cArrayCreateTopicInfo097()
               elseif indices < 99
-                aArray = cArrayCreateTopicInfo098()
+                return cArrayCreateTopicInfo098()
               elseif indices < 100
-                aArray = cArrayCreateTopicInfo099()
+                return cArrayCreateTopicInfo099()
               else
-                aArray = cArrayCreateTopicInfo100()
+                return cArrayCreateTopicInfo100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateTopicInfo101()
+                return cArrayCreateTopicInfo101()
               elseif indices < 103
-                aArray = cArrayCreateTopicInfo102()
+                return cArrayCreateTopicInfo102()
               elseif indices < 104
-                aArray = cArrayCreateTopicInfo103()
+                return cArrayCreateTopicInfo103()
               else
-                aArray = cArrayCreateTopicInfo104()
+                return cArrayCreateTopicInfo104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateTopicInfo105()
+                return cArrayCreateTopicInfo105()
               elseif indices < 107
-                aArray = cArrayCreateTopicInfo106()
+                return cArrayCreateTopicInfo106()
               elseif indices < 108
-                aArray = cArrayCreateTopicInfo107()
+                return cArrayCreateTopicInfo107()
               else
-                aArray = cArrayCreateTopicInfo108()
+                return cArrayCreateTopicInfo108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateTopicInfo109()
+                return cArrayCreateTopicInfo109()
               elseif indices < 111
-                aArray = cArrayCreateTopicInfo110()
+                return cArrayCreateTopicInfo110()
               elseif indices < 112
-                aArray = cArrayCreateTopicInfo111()
+                return cArrayCreateTopicInfo111()
               else
-                aArray = cArrayCreateTopicInfo112()
+                return cArrayCreateTopicInfo112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ TopicInfo[] function cArrayCreateTopicInfo(Int indices, TopicInfo filler = None,
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateTopicInfo113()
+                return cArrayCreateTopicInfo113()
               elseif indices < 115
-                aArray = cArrayCreateTopicInfo114()
+                return cArrayCreateTopicInfo114()
               elseif indices < 116
-                aArray = cArrayCreateTopicInfo115()
+                return cArrayCreateTopicInfo115()
               else
-                aArray = cArrayCreateTopicInfo116()
+                return cArrayCreateTopicInfo116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateTopicInfo117()
+                return cArrayCreateTopicInfo117()
               elseif indices < 119
-                aArray = cArrayCreateTopicInfo118()
+                return cArrayCreateTopicInfo118()
               elseif indices < 120
-                aArray = cArrayCreateTopicInfo119()
+                return cArrayCreateTopicInfo119()
               else
-                aArray = cArrayCreateTopicInfo120()
+                return cArrayCreateTopicInfo120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateTopicInfo121()
+                return cArrayCreateTopicInfo121()
               elseif indices < 123
-                aArray = cArrayCreateTopicInfo122()
+                return cArrayCreateTopicInfo122()
               elseif indices < 124
-                aArray = cArrayCreateTopicInfo123()
+                return cArrayCreateTopicInfo123()
               else
-                aArray = cArrayCreateTopicInfo124()
+                return cArrayCreateTopicInfo124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateTopicInfo125()
+                return cArrayCreateTopicInfo125()
               elseif indices < 127
-                aArray = cArrayCreateTopicInfo126()
+                return cArrayCreateTopicInfo126()
               elseif indices < 128
-                aArray = cArrayCreateTopicInfo127()
+                return cArrayCreateTopicInfo127()
               else
-                aArray = cArrayCreateTopicInfo128()
+                return cArrayCreateTopicInfo128()
               endif
             endif
           endif

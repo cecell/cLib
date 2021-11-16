@@ -1,22 +1,14 @@
 Scriptname cArrayShout Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Shout[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Shouts
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateShout()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayShout::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool output
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateShout001()
+                return cArrayCreateShout001()
               elseif indices < 3
-                aArray = cArrayCreateShout002()
+                return cArrayCreateShout002()
               elseif indices < 4
-                aArray = cArrayCreateShout003()
+                return cArrayCreateShout003()
               else
-                aArray = cArrayCreateShout004()
+                return cArrayCreateShout004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateShout005()
+                return cArrayCreateShout005()
               elseif indices < 7
-                aArray = cArrayCreateShout006()
+                return cArrayCreateShout006()
               elseif indices < 8
-                aArray = cArrayCreateShout007()
+                return cArrayCreateShout007()
               else
-                aArray = cArrayCreateShout008()
+                return cArrayCreateShout008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateShout009()
+                return cArrayCreateShout009()
               elseif indices < 11
-                aArray = cArrayCreateShout010()
+                return cArrayCreateShout010()
               elseif indices < 12
-                aArray = cArrayCreateShout011()
+                return cArrayCreateShout011()
               else
-                aArray = cArrayCreateShout012()
+                return cArrayCreateShout012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateShout013()
+                return cArrayCreateShout013()
               elseif indices < 15
-                aArray = cArrayCreateShout014()
+                return cArrayCreateShout014()
               elseif indices < 16
-                aArray = cArrayCreateShout015()
+                return cArrayCreateShout015()
               else
-                aArray = cArrayCreateShout016()
+                return cArrayCreateShout016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool output
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateShout017()
+                return cArrayCreateShout017()
               elseif indices < 19
-                aArray = cArrayCreateShout018()
+                return cArrayCreateShout018()
               elseif indices < 20
-                aArray = cArrayCreateShout019()
+                return cArrayCreateShout019()
               else
-                aArray = cArrayCreateShout020()
+                return cArrayCreateShout020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateShout021()
+                return cArrayCreateShout021()
               elseif indices < 23
-                aArray = cArrayCreateShout022()
+                return cArrayCreateShout022()
               elseif indices < 24
-                aArray = cArrayCreateShout023()
+                return cArrayCreateShout023()
               else
-                aArray = cArrayCreateShout024()
+                return cArrayCreateShout024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateShout025()
+                return cArrayCreateShout025()
               elseif indices < 27
-                aArray = cArrayCreateShout026()
+                return cArrayCreateShout026()
               elseif indices < 28
-                aArray = cArrayCreateShout027()
+                return cArrayCreateShout027()
               else
-                aArray = cArrayCreateShout028()
+                return cArrayCreateShout028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateShout029()
+                return cArrayCreateShout029()
               elseif indices < 31
-                aArray = cArrayCreateShout030()
+                return cArrayCreateShout030()
               elseif indices < 32
-                aArray = cArrayCreateShout031()
+                return cArrayCreateShout031()
               else
-                aArray = cArrayCreateShout032()
+                return cArrayCreateShout032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool output
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateShout033()
+                return cArrayCreateShout033()
               elseif indices < 35
-                aArray = cArrayCreateShout034()
+                return cArrayCreateShout034()
               elseif indices < 36
-                aArray = cArrayCreateShout035()
+                return cArrayCreateShout035()
               else
-                aArray = cArrayCreateShout036()
+                return cArrayCreateShout036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateShout037()
+                return cArrayCreateShout037()
               elseif indices < 39
-                aArray = cArrayCreateShout038()
+                return cArrayCreateShout038()
               elseif indices < 40
-                aArray = cArrayCreateShout039()
+                return cArrayCreateShout039()
               else
-                aArray = cArrayCreateShout040()
+                return cArrayCreateShout040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateShout041()
+                return cArrayCreateShout041()
               elseif indices < 43
-                aArray = cArrayCreateShout042()
+                return cArrayCreateShout042()
               elseif indices < 44
-                aArray = cArrayCreateShout043()
+                return cArrayCreateShout043()
               else
-                aArray = cArrayCreateShout044()
+                return cArrayCreateShout044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateShout045()
+                return cArrayCreateShout045()
               elseif indices < 47
-                aArray = cArrayCreateShout046()
+                return cArrayCreateShout046()
               elseif indices < 48
-                aArray = cArrayCreateShout047()
+                return cArrayCreateShout047()
               else
-                aArray = cArrayCreateShout048()
+                return cArrayCreateShout048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool output
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateShout049()
+                return cArrayCreateShout049()
               elseif indices < 51
-                aArray = cArrayCreateShout050()
+                return cArrayCreateShout050()
               elseif indices < 52
-                aArray = cArrayCreateShout051()
+                return cArrayCreateShout051()
               else
-                aArray = cArrayCreateShout052()
+                return cArrayCreateShout052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateShout053()
+                return cArrayCreateShout053()
               elseif indices < 55
-                aArray = cArrayCreateShout054()
+                return cArrayCreateShout054()
               elseif indices < 56
-                aArray = cArrayCreateShout055()
+                return cArrayCreateShout055()
               else
-                aArray = cArrayCreateShout056()
+                return cArrayCreateShout056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateShout057()
+                return cArrayCreateShout057()
               elseif indices < 59
-                aArray = cArrayCreateShout058()
+                return cArrayCreateShout058()
               elseif indices < 60
-                aArray = cArrayCreateShout059()
+                return cArrayCreateShout059()
               else
-                aArray = cArrayCreateShout060()
+                return cArrayCreateShout060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateShout061()
+                return cArrayCreateShout061()
               elseif indices < 63
-                aArray = cArrayCreateShout062()
+                return cArrayCreateShout062()
               elseif indices < 64
-                aArray = cArrayCreateShout063()
+                return cArrayCreateShout063()
               else
-                aArray = cArrayCreateShout064()
+                return cArrayCreateShout064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool output
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateShout065()
+                return cArrayCreateShout065()
               elseif indices < 67
-                aArray = cArrayCreateShout066()
+                return cArrayCreateShout066()
               elseif indices < 68
-                aArray = cArrayCreateShout067()
+                return cArrayCreateShout067()
               else
-                aArray = cArrayCreateShout068()
+                return cArrayCreateShout068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateShout069()
+                return cArrayCreateShout069()
               elseif indices < 71
-                aArray = cArrayCreateShout070()
+                return cArrayCreateShout070()
               elseif indices < 72
-                aArray = cArrayCreateShout071()
+                return cArrayCreateShout071()
               else
-                aArray = cArrayCreateShout072()
+                return cArrayCreateShout072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateShout073()
+                return cArrayCreateShout073()
               elseif indices < 75
-                aArray = cArrayCreateShout074()
+                return cArrayCreateShout074()
               elseif indices < 76
-                aArray = cArrayCreateShout075()
+                return cArrayCreateShout075()
               else
-                aArray = cArrayCreateShout076()
+                return cArrayCreateShout076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateShout077()
+                return cArrayCreateShout077()
               elseif indices < 79
-                aArray = cArrayCreateShout078()
+                return cArrayCreateShout078()
               elseif indices < 80
-                aArray = cArrayCreateShout079()
+                return cArrayCreateShout079()
               else
-                aArray = cArrayCreateShout080()
+                return cArrayCreateShout080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool output
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateShout081()
+                return cArrayCreateShout081()
               elseif indices < 83
-                aArray = cArrayCreateShout082()
+                return cArrayCreateShout082()
               elseif indices < 84
-                aArray = cArrayCreateShout083()
+                return cArrayCreateShout083()
               else
-                aArray = cArrayCreateShout084()
+                return cArrayCreateShout084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateShout085()
+                return cArrayCreateShout085()
               elseif indices < 87
-                aArray = cArrayCreateShout086()
+                return cArrayCreateShout086()
               elseif indices < 88
-                aArray = cArrayCreateShout087()
+                return cArrayCreateShout087()
               else
-                aArray = cArrayCreateShout088()
+                return cArrayCreateShout088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateShout089()
+                return cArrayCreateShout089()
               elseif indices < 91
-                aArray = cArrayCreateShout090()
+                return cArrayCreateShout090()
               elseif indices < 92
-                aArray = cArrayCreateShout091()
+                return cArrayCreateShout091()
               else
-                aArray = cArrayCreateShout092()
+                return cArrayCreateShout092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateShout093()
+                return cArrayCreateShout093()
               elseif indices < 95
-                aArray = cArrayCreateShout094()
+                return cArrayCreateShout094()
               elseif indices < 96
-                aArray = cArrayCreateShout095()
+                return cArrayCreateShout095()
               else
-                aArray = cArrayCreateShout096()
+                return cArrayCreateShout096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool output
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateShout097()
+                return cArrayCreateShout097()
               elseif indices < 99
-                aArray = cArrayCreateShout098()
+                return cArrayCreateShout098()
               elseif indices < 100
-                aArray = cArrayCreateShout099()
+                return cArrayCreateShout099()
               else
-                aArray = cArrayCreateShout100()
+                return cArrayCreateShout100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateShout101()
+                return cArrayCreateShout101()
               elseif indices < 103
-                aArray = cArrayCreateShout102()
+                return cArrayCreateShout102()
               elseif indices < 104
-                aArray = cArrayCreateShout103()
+                return cArrayCreateShout103()
               else
-                aArray = cArrayCreateShout104()
+                return cArrayCreateShout104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateShout105()
+                return cArrayCreateShout105()
               elseif indices < 107
-                aArray = cArrayCreateShout106()
+                return cArrayCreateShout106()
               elseif indices < 108
-                aArray = cArrayCreateShout107()
+                return cArrayCreateShout107()
               else
-                aArray = cArrayCreateShout108()
+                return cArrayCreateShout108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateShout109()
+                return cArrayCreateShout109()
               elseif indices < 111
-                aArray = cArrayCreateShout110()
+                return cArrayCreateShout110()
               elseif indices < 112
-                aArray = cArrayCreateShout111()
+                return cArrayCreateShout111()
               else
-                aArray = cArrayCreateShout112()
+                return cArrayCreateShout112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Shout[] function cArrayCreateShout(Int indices, Shout filler = None, Bool output
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateShout113()
+                return cArrayCreateShout113()
               elseif indices < 115
-                aArray = cArrayCreateShout114()
+                return cArrayCreateShout114()
               elseif indices < 116
-                aArray = cArrayCreateShout115()
+                return cArrayCreateShout115()
               else
-                aArray = cArrayCreateShout116()
+                return cArrayCreateShout116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateShout117()
+                return cArrayCreateShout117()
               elseif indices < 119
-                aArray = cArrayCreateShout118()
+                return cArrayCreateShout118()
               elseif indices < 120
-                aArray = cArrayCreateShout119()
+                return cArrayCreateShout119()
               else
-                aArray = cArrayCreateShout120()
+                return cArrayCreateShout120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateShout121()
+                return cArrayCreateShout121()
               elseif indices < 123
-                aArray = cArrayCreateShout122()
+                return cArrayCreateShout122()
               elseif indices < 124
-                aArray = cArrayCreateShout123()
+                return cArrayCreateShout123()
               else
-                aArray = cArrayCreateShout124()
+                return cArrayCreateShout124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateShout125()
+                return cArrayCreateShout125()
               elseif indices < 127
-                aArray = cArrayCreateShout126()
+                return cArrayCreateShout126()
               elseif indices < 128
-                aArray = cArrayCreateShout127()
+                return cArrayCreateShout127()
               else
-                aArray = cArrayCreateShout128()
+                return cArrayCreateShout128()
               endif
             endif
           endif

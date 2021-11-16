@@ -1,22 +1,14 @@
 Scriptname cArrayOutfit Hidden
 
-Int function cGetVersion() global
-  return 9001
-endfunction
 
-Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool outputTrace = TRUE, \
-  Bool useConsoleUtil = TRUE) global
+Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool outputTrace = TRUE) global
   {Requirements: None}
   Outfit[] aArray
   if indices > 128 || indices < 1
     ; outputTrace = False    ; uncomment to stop trace Outfits
-    ; useConsoleUtil = TRUE ; uncomment to stop ConsoleUtil use
     if outputTrace
       String msg = "cArrayCreateOutfit()::Arg 'indices' (" + indices + ") out of bounds! (>128)"
       Debug.Trace("cArrayOutfit::" + msg + " Returning ArrayNone", 2)
-      if useConsoleUtil && clibUse.cUseConsoleUtil()
-        ConsoleUtil.PrintMessage(msg)
-      endif
     endif
   else
     if indices < 65
@@ -25,45 +17,45 @@ Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool out
           if indices < 9
             if indices < 5
               if indices < 2
-                aArray = cArrayCreateOutfit001()
+                return cArrayCreateOutfit001()
               elseif indices < 3
-                aArray = cArrayCreateOutfit002()
+                return cArrayCreateOutfit002()
               elseif indices < 4
-                aArray = cArrayCreateOutfit003()
+                return cArrayCreateOutfit003()
               else
-                aArray = cArrayCreateOutfit004()
+                return cArrayCreateOutfit004()
               endif
             else
               if indices < 6
-                aArray = cArrayCreateOutfit005()
+                return cArrayCreateOutfit005()
               elseif indices < 7
-                aArray = cArrayCreateOutfit006()
+                return cArrayCreateOutfit006()
               elseif indices < 8
-                aArray = cArrayCreateOutfit007()
+                return cArrayCreateOutfit007()
               else
-                aArray = cArrayCreateOutfit008()
+                return cArrayCreateOutfit008()
               endif
             endif
           else
             if indices < 13
               if indices < 10
-                aArray = cArrayCreateOutfit009()
+                return cArrayCreateOutfit009()
               elseif indices < 11
-                aArray = cArrayCreateOutfit010()
+                return cArrayCreateOutfit010()
               elseif indices < 12
-                aArray = cArrayCreateOutfit011()
+                return cArrayCreateOutfit011()
               else
-                aArray = cArrayCreateOutfit012()
+                return cArrayCreateOutfit012()
               endif
             else
               if indices < 14
-                aArray = cArrayCreateOutfit013()
+                return cArrayCreateOutfit013()
               elseif indices < 15
-                aArray = cArrayCreateOutfit014()
+                return cArrayCreateOutfit014()
               elseif indices < 16
-                aArray = cArrayCreateOutfit015()
+                return cArrayCreateOutfit015()
               else
-                aArray = cArrayCreateOutfit016()
+                return cArrayCreateOutfit016()
               endif
             endif
           endif
@@ -71,45 +63,45 @@ Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool out
           if indices < 25
             if indices < 21
               if indices < 18
-                aArray = cArrayCreateOutfit017()
+                return cArrayCreateOutfit017()
               elseif indices < 19
-                aArray = cArrayCreateOutfit018()
+                return cArrayCreateOutfit018()
               elseif indices < 20
-                aArray = cArrayCreateOutfit019()
+                return cArrayCreateOutfit019()
               else
-                aArray = cArrayCreateOutfit020()
+                return cArrayCreateOutfit020()
               endif
             else
               if indices < 22
-                aArray = cArrayCreateOutfit021()
+                return cArrayCreateOutfit021()
               elseif indices < 23
-                aArray = cArrayCreateOutfit022()
+                return cArrayCreateOutfit022()
               elseif indices < 24
-                aArray = cArrayCreateOutfit023()
+                return cArrayCreateOutfit023()
               else
-                aArray = cArrayCreateOutfit024()
+                return cArrayCreateOutfit024()
               endif
             endif
           else
             if indices < 29
               if indices < 26
-                aArray = cArrayCreateOutfit025()
+                return cArrayCreateOutfit025()
               elseif indices < 27
-                aArray = cArrayCreateOutfit026()
+                return cArrayCreateOutfit026()
               elseif indices < 28
-                aArray = cArrayCreateOutfit027()
+                return cArrayCreateOutfit027()
               else
-                aArray = cArrayCreateOutfit028()
+                return cArrayCreateOutfit028()
               endif
             else
               if indices < 30
-                aArray = cArrayCreateOutfit029()
+                return cArrayCreateOutfit029()
               elseif indices < 31
-                aArray = cArrayCreateOutfit030()
+                return cArrayCreateOutfit030()
               elseif indices < 32
-                aArray = cArrayCreateOutfit031()
+                return cArrayCreateOutfit031()
               else
-                aArray = cArrayCreateOutfit032()
+                return cArrayCreateOutfit032()
               endif
             endif
           endif
@@ -119,45 +111,45 @@ Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool out
           if indices < 41
             if indices < 37
               if indices < 34
-                aArray = cArrayCreateOutfit033()
+                return cArrayCreateOutfit033()
               elseif indices < 35
-                aArray = cArrayCreateOutfit034()
+                return cArrayCreateOutfit034()
               elseif indices < 36
-                aArray = cArrayCreateOutfit035()
+                return cArrayCreateOutfit035()
               else
-                aArray = cArrayCreateOutfit036()
+                return cArrayCreateOutfit036()
               endif
             else
               if indices < 38
-                aArray = cArrayCreateOutfit037()
+                return cArrayCreateOutfit037()
               elseif indices < 39
-                aArray = cArrayCreateOutfit038()
+                return cArrayCreateOutfit038()
               elseif indices < 40
-                aArray = cArrayCreateOutfit039()
+                return cArrayCreateOutfit039()
               else
-                aArray = cArrayCreateOutfit040()
+                return cArrayCreateOutfit040()
               endif
             endif
           else
             if indices < 45
               if indices < 42
-                aArray = cArrayCreateOutfit041()
+                return cArrayCreateOutfit041()
               elseif indices < 43
-                aArray = cArrayCreateOutfit042()
+                return cArrayCreateOutfit042()
               elseif indices < 44
-                aArray = cArrayCreateOutfit043()
+                return cArrayCreateOutfit043()
               else
-                aArray = cArrayCreateOutfit044()
+                return cArrayCreateOutfit044()
               endif
             else
               if indices < 46
-                aArray = cArrayCreateOutfit045()
+                return cArrayCreateOutfit045()
               elseif indices < 47
-                aArray = cArrayCreateOutfit046()
+                return cArrayCreateOutfit046()
               elseif indices < 48
-                aArray = cArrayCreateOutfit047()
+                return cArrayCreateOutfit047()
               else
-                aArray = cArrayCreateOutfit048()
+                return cArrayCreateOutfit048()
               endif
             endif
           endif
@@ -165,45 +157,45 @@ Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool out
           if indices < 57
             if indices < 53
               if indices < 50
-                aArray = cArrayCreateOutfit049()
+                return cArrayCreateOutfit049()
               elseif indices < 51
-                aArray = cArrayCreateOutfit050()
+                return cArrayCreateOutfit050()
               elseif indices < 52
-                aArray = cArrayCreateOutfit051()
+                return cArrayCreateOutfit051()
               else
-                aArray = cArrayCreateOutfit052()
+                return cArrayCreateOutfit052()
               endif
             else
               if indices < 54
-                aArray = cArrayCreateOutfit053()
+                return cArrayCreateOutfit053()
               elseif indices < 55
-                aArray = cArrayCreateOutfit054()
+                return cArrayCreateOutfit054()
               elseif indices < 56
-                aArray = cArrayCreateOutfit055()
+                return cArrayCreateOutfit055()
               else
-                aArray = cArrayCreateOutfit056()
+                return cArrayCreateOutfit056()
               endif
             endif
           else
             if indices < 61
               if indices < 58
-                aArray = cArrayCreateOutfit057()
+                return cArrayCreateOutfit057()
               elseif indices < 59
-                aArray = cArrayCreateOutfit058()
+                return cArrayCreateOutfit058()
               elseif indices < 60
-                aArray = cArrayCreateOutfit059()
+                return cArrayCreateOutfit059()
               else
-                aArray = cArrayCreateOutfit060()
+                return cArrayCreateOutfit060()
               endif
             else
               if indices < 62
-                aArray = cArrayCreateOutfit061()
+                return cArrayCreateOutfit061()
               elseif indices < 63
-                aArray = cArrayCreateOutfit062()
+                return cArrayCreateOutfit062()
               elseif indices < 64
-                aArray = cArrayCreateOutfit063()
+                return cArrayCreateOutfit063()
               else
-                aArray = cArrayCreateOutfit064()
+                return cArrayCreateOutfit064()
               endif
             endif
           endif
@@ -215,45 +207,45 @@ Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool out
           if indices < 73
             if indices < 69
               if indices < 66
-                aArray = cArrayCreateOutfit065()
+                return cArrayCreateOutfit065()
               elseif indices < 67
-                aArray = cArrayCreateOutfit066()
+                return cArrayCreateOutfit066()
               elseif indices < 68
-                aArray = cArrayCreateOutfit067()
+                return cArrayCreateOutfit067()
               else
-                aArray = cArrayCreateOutfit068()
+                return cArrayCreateOutfit068()
               endif
             else
               if indices < 70
-                aArray = cArrayCreateOutfit069()
+                return cArrayCreateOutfit069()
               elseif indices < 71
-                aArray = cArrayCreateOutfit070()
+                return cArrayCreateOutfit070()
               elseif indices < 72
-                aArray = cArrayCreateOutfit071()
+                return cArrayCreateOutfit071()
               else
-                aArray = cArrayCreateOutfit072()
+                return cArrayCreateOutfit072()
               endif
             endif
           else
             if indices < 77
               if indices < 74
-                aArray = cArrayCreateOutfit073()
+                return cArrayCreateOutfit073()
               elseif indices < 75
-                aArray = cArrayCreateOutfit074()
+                return cArrayCreateOutfit074()
               elseif indices < 76
-                aArray = cArrayCreateOutfit075()
+                return cArrayCreateOutfit075()
               else
-                aArray = cArrayCreateOutfit076()
+                return cArrayCreateOutfit076()
               endif
             else
               if indices < 78
-                aArray = cArrayCreateOutfit077()
+                return cArrayCreateOutfit077()
               elseif indices < 79
-                aArray = cArrayCreateOutfit078()
+                return cArrayCreateOutfit078()
               elseif indices < 80
-                aArray = cArrayCreateOutfit079()
+                return cArrayCreateOutfit079()
               else
-                aArray = cArrayCreateOutfit080()
+                return cArrayCreateOutfit080()
               endif
             endif
           endif
@@ -261,45 +253,45 @@ Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool out
           if indices < 89
             if indices < 85
               if indices < 82
-                aArray = cArrayCreateOutfit081()
+                return cArrayCreateOutfit081()
               elseif indices < 83
-                aArray = cArrayCreateOutfit082()
+                return cArrayCreateOutfit082()
               elseif indices < 84
-                aArray = cArrayCreateOutfit083()
+                return cArrayCreateOutfit083()
               else
-                aArray = cArrayCreateOutfit084()
+                return cArrayCreateOutfit084()
               endif
             else
               if indices < 86
-                aArray = cArrayCreateOutfit085()
+                return cArrayCreateOutfit085()
               elseif indices < 87
-                aArray = cArrayCreateOutfit086()
+                return cArrayCreateOutfit086()
               elseif indices < 88
-                aArray = cArrayCreateOutfit087()
+                return cArrayCreateOutfit087()
               else
-                aArray = cArrayCreateOutfit088()
+                return cArrayCreateOutfit088()
               endif
             endif
           else
             if indices < 93
               if indices < 90
-                aArray = cArrayCreateOutfit089()
+                return cArrayCreateOutfit089()
               elseif indices < 91
-                aArray = cArrayCreateOutfit090()
+                return cArrayCreateOutfit090()
               elseif indices < 92
-                aArray = cArrayCreateOutfit091()
+                return cArrayCreateOutfit091()
               else
-                aArray = cArrayCreateOutfit092()
+                return cArrayCreateOutfit092()
               endif
             else
               if indices < 94
-                aArray = cArrayCreateOutfit093()
+                return cArrayCreateOutfit093()
               elseif indices < 95
-                aArray = cArrayCreateOutfit094()
+                return cArrayCreateOutfit094()
               elseif indices < 96
-                aArray = cArrayCreateOutfit095()
+                return cArrayCreateOutfit095()
               else
-                aArray = cArrayCreateOutfit096()
+                return cArrayCreateOutfit096()
               endif
             endif
           endif
@@ -309,45 +301,45 @@ Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool out
           if indices < 105
             if indices < 101
               if indices < 98
-                aArray = cArrayCreateOutfit097()
+                return cArrayCreateOutfit097()
               elseif indices < 99
-                aArray = cArrayCreateOutfit098()
+                return cArrayCreateOutfit098()
               elseif indices < 100
-                aArray = cArrayCreateOutfit099()
+                return cArrayCreateOutfit099()
               else
-                aArray = cArrayCreateOutfit100()
+                return cArrayCreateOutfit100()
               endif
             else
               if indices < 102
-                aArray = cArrayCreateOutfit101()
+                return cArrayCreateOutfit101()
               elseif indices < 103
-                aArray = cArrayCreateOutfit102()
+                return cArrayCreateOutfit102()
               elseif indices < 104
-                aArray = cArrayCreateOutfit103()
+                return cArrayCreateOutfit103()
               else
-                aArray = cArrayCreateOutfit104()
+                return cArrayCreateOutfit104()
               endif
             endif
           else
             if indices < 109
               if indices < 106
-                aArray = cArrayCreateOutfit105()
+                return cArrayCreateOutfit105()
               elseif indices < 107
-                aArray = cArrayCreateOutfit106()
+                return cArrayCreateOutfit106()
               elseif indices < 108
-                aArray = cArrayCreateOutfit107()
+                return cArrayCreateOutfit107()
               else
-                aArray = cArrayCreateOutfit108()
+                return cArrayCreateOutfit108()
               endif
             else
               if indices < 110
-                aArray = cArrayCreateOutfit109()
+                return cArrayCreateOutfit109()
               elseif indices < 111
-                aArray = cArrayCreateOutfit110()
+                return cArrayCreateOutfit110()
               elseif indices < 112
-                aArray = cArrayCreateOutfit111()
+                return cArrayCreateOutfit111()
               else
-                aArray = cArrayCreateOutfit112()
+                return cArrayCreateOutfit112()
               endif
             endif
           endif
@@ -355,45 +347,45 @@ Outfit[] function cArrayCreateOutfit(Int indices, Outfit filler = None, Bool out
           if indices < 121
             if indices < 117
               if indices < 114
-                aArray = cArrayCreateOutfit113()
+                return cArrayCreateOutfit113()
               elseif indices < 115
-                aArray = cArrayCreateOutfit114()
+                return cArrayCreateOutfit114()
               elseif indices < 116
-                aArray = cArrayCreateOutfit115()
+                return cArrayCreateOutfit115()
               else
-                aArray = cArrayCreateOutfit116()
+                return cArrayCreateOutfit116()
               endif
             else
               if indices < 118
-                aArray = cArrayCreateOutfit117()
+                return cArrayCreateOutfit117()
               elseif indices < 119
-                aArray = cArrayCreateOutfit118()
+                return cArrayCreateOutfit118()
               elseif indices < 120
-                aArray = cArrayCreateOutfit119()
+                return cArrayCreateOutfit119()
               else
-                aArray = cArrayCreateOutfit120()
+                return cArrayCreateOutfit120()
               endif
             endif
           else
             if indices < 125
               if indices < 122
-                aArray = cArrayCreateOutfit121()
+                return cArrayCreateOutfit121()
               elseif indices < 123
-                aArray = cArrayCreateOutfit122()
+                return cArrayCreateOutfit122()
               elseif indices < 124
-                aArray = cArrayCreateOutfit123()
+                return cArrayCreateOutfit123()
               else
-                aArray = cArrayCreateOutfit124()
+                return cArrayCreateOutfit124()
               endif
             else
               if indices < 126
-                aArray = cArrayCreateOutfit125()
+                return cArrayCreateOutfit125()
               elseif indices < 127
-                aArray = cArrayCreateOutfit126()
+                return cArrayCreateOutfit126()
               elseif indices < 128
-                aArray = cArrayCreateOutfit127()
+                return cArrayCreateOutfit127()
               else
-                aArray = cArrayCreateOutfit128()
+                return cArrayCreateOutfit128()
               endif
             endif
           endif
