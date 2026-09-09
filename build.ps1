@@ -28,9 +28,7 @@
 [CmdletBinding()]
 param(
     [string]$SkyrimPath = $env:SKYRIM_SE_PATH,
-    [string]$OutputPath = "$PSScriptRoot\dist\Scripts",
-    [ValidateSet('Monolithic', 'Split', 'All')]
-    [string]$Variant = 'All'
+    [string]$OutputPath = "$PSScriptRoot\dist\Scripts"
 )
 
 $ErrorActionPreference = 'Stop'
@@ -57,9 +55,8 @@ $imports = @(
 
 New-Item -ItemType Directory -Force -Path $OutputPath | Out-Null
 
-$targets = @()
-if ($Variant -in @('Monolithic', 'All')) { $targets += $PSScriptRoot }
-if ($Variant -in @('Split', 'All'))      { $targets += (Join-Path $PSScriptRoot 'ArrayCreation') }
+# root scripts only - see .NOTES above
+$targets = @($PSScriptRoot)
 
 $failed = $false
 foreach ($t in $targets) {

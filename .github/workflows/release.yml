@@ -48,21 +48,24 @@ jobs:
           # Set SKYRIM_SE_PATH as an environment variable on the runner itself,
           # or define it as a repository variable. Do not hardcode it here.
           SKYRIM_SE_PATH: ${{ vars.SKYRIM_SE_PATH }}
-        run: ./build.ps1 -Variant All
+        run: ./build.ps1
 
       - name: Verify output
         shell: powershell
         run: |
+          $expected = @('cArrayCreateBase','cGetCell','clib','clibUse')
           $pex = Get-ChildItem dist/Scripts -Filter *.pex
-          Write-Host "$($pex.Count) .pex compiled"
-          if ($pex.Count -lt 50) { throw "Expected at least 50 .pex, got $($pex.Count)" }
+          Write-Host "$($pex.Count) .pex compiled: $($pex.BaseName -join ', ')"
+          $missing = $expected | Where-Object { $_ -notin $pex.BaseName }
+          if ($missing) { throw "Missing expected scripts: $($missing -join ', ')" }
+          if ($pex.Count -ne $expected.Count) { throw "Expected exactly $($expected.Count) .pex, got $($pex.Count)" }
 
-      - name: Stage source alongside binaries
+      # Layout mirrors the published FOMOD: compiled scripts in Scripts\,
+      # sources namespaced under Scripts\Source\_clib      - name: Stage sources in release layout
         shell: powershell
         run: |
-          New-Item -ItemType Directory -Force -Path dist/Source/Scripts | Out-Null
-          Copy-Item *.psc dist/Source/Scripts/
-          Copy-Item ArrayCreation/*.psc dist/Source/Scripts/
+          New-Item -ItemType Directory -Force -Path dist/Scripts/Source/_clib | Out-Null
+          Copy-Item cArrayCreateBase.psc,cGetCell.psc,clib.psc,clibUse.psc dist/Scripts/Source/_clib/
           Copy-Item README.md dist/
 
       - uses: actions/upload-artifact@v4
@@ -134,4 +137,6 @@ jobs:
             ## Contents
 
             - `Scripts/` — compiled `.pex`
-            - `Source/Scripts/` — Papyrus sources
+            - `Scripts/Source/_clib/` — Papyrus sources
+
+            Drop the contents into your `Data` folder.
