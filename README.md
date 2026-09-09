@@ -4,7 +4,7 @@ An SKSE optional library
 The version posted here is the SKSE+ version
 
 What this is:
-This is an attempt of a person with just enough knowledge to be dangerous to learn enough to be not dangerous.  An attempt is what this is.  It begame as more of a proof of concept so be nice please
+This is an attempt of a person with just enough knowledge to be dangerous to learn enough to be not dangerous.  An attempt is what this is.  It became as more of a proof of concept so be nice please
 
 What this is *not*:
 A recommendation to operate without SKSE. Heaven knows I won't...
