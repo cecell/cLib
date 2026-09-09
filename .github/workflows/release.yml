@@ -60,8 +60,9 @@ jobs:
           if ($missing) { throw "Missing expected scripts: $($missing -join ', ')" }
           if ($pex.Count -ne $expected.Count) { throw "Expected exactly $($expected.Count) .pex, got $($pex.Count)" }
 
-      # Layout mirrors the published FOMOD: compiled scripts in Scripts\,
-      # sources namespaced under Scripts\Source\_clib      - name: Stage sources in release layout
+      # Layout mirrors the published FOMOD (cLib 0.9028):
+      #   Scripts/*.pex  and  Scripts/Source/_clib/*.psc
+      - name: Stage sources in release layout
         shell: powershell
         run: |
           New-Item -ItemType Directory -Force -Path dist/Scripts/Source/_clib | Out-Null
