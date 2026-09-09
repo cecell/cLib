@@ -1,0 +1,137 @@
+name: Release
+
+# SECURITY NOTE -- this workflow uses a self-hosted runner.
+# There is deliberately NO `pull_request` trigger. A self-hosted runner executes
+# workflow code on a machine you own, so allowing fork PRs to trigger it would let
+# anyone run arbitrary code on that machine. Keep the triggers below limited to
+# things only a repo collaborator can cause.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag to build (e.g. v1.0.0). Used for the artifact name only.'
+        required: true
+        default: 'v0.0.0-dev'
+
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1. Compile on the self-hosted runner, which has the Creation Kit.
+  #    Nothing licensed leaves this machine -- only the .pex output is uploaded.
+  # ---------------------------------------------------------------------------
+  build:
+    runs-on: [self-hosted, windows, skyrim-ck]
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: ver
+        shell: pwsh
+        run: |
+          $v = if ($env:GITHUB_REF -like 'refs/tags/*') {
+                 $env:GITHUB_REF -replace '^refs/tags/',''
+               } else {
+                 '${{ github.event.inputs.version }}'
+               }
+          "version=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Building $v"
+
+      - name: Compile Papyrus
+        shell: pwsh
+        env:
+          # Set SKYRIM_SE_PATH as an environment variable on the runner itself,
+          # or define it as a repository variable. Do not hardcode it here.
+          SKYRIM_SE_PATH: ${{ vars.SKYRIM_SE_PATH }}
+        run: ./build.ps1 -Variant All
+
+      - name: Verify output
+        shell: pwsh
+        run: |
+          $pex = Get-ChildItem dist/Scripts -Filter *.pex
+          Write-Host "$($pex.Count) .pex compiled"
+          if ($pex.Count -lt 50) { throw "Expected at least 50 .pex, got $($pex.Count)" }
+
+      - name: Stage source alongside binaries
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist/Source/Scripts | Out-Null
+          Copy-Item *.psc dist/Source/Scripts/
+          Copy-Item ArrayCreation/*.psc dist/Source/Scripts/
+          Copy-Item README.md dist/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clib-build
+          path: dist/
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # 2. Package, sign and publish on a GitHub-hosted runner.
+  #    Provenance generated here is stronger evidence than provenance generated
+  #    on a machine the repo owner controls.
+  # ---------------------------------------------------------------------------
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # create the release
+      id-token: write        # Sigstore OIDC token
+      attestations: write    # store the provenance attestation
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: clib-build
+          path: dist
+
+      - name: Package
+        id: pkg
+        run: |
+          V="${{ needs.build.outputs.version }}"
+          mkdir -p out
+          ( cd dist && zip -r "../out/cLib-${V}.zip" . )
+          ( cd out && sha256sum "cLib-${V}.zip" > SHA256SUMS )
+          echo "zip=out/cLib-${V}.zip" >> "$GITHUB_OUTPUT"
+          cat out/SHA256SUMS
+
+      # Sigstore-backed SLSA build provenance. Binds the artifact digest to this
+      # commit, this workflow file and this runner identity.
+      # Verify with:  gh attestation verify cLib-<version>.zip --repo ${{ github.repository }}
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: ${{ steps.pkg.outputs.zip }}
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build.outputs.version }}
+          name: cLib ${{ needs.build.outputs.version }}
+          generate_release_notes: true
+          files: |
+            out/cLib-${{ needs.build.outputs.version }}.zip
+            out/SHA256SUMS
+          body: |
+            ## Verifying this release
+
+            Every artifact carries a Sigstore-signed [build provenance attestation](https://docs.github.com/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds)
+            tying it to the exact commit and workflow that produced it:
+
+            ```bash
+            gh attestation verify cLib-${{ needs.build.outputs.version }}.zip --repo ${{ github.repository }}
+            ```
+
+            Or check the hash only:
+
+            ```bash
+            sha256sum -c SHA256SUMS
+            ```
+
+            ## Contents
+
+            - `Scripts/` — compiled `.pex`
+            - `Source/Scripts/` — Papyrus sources
