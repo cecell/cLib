@@ -8574,7 +8574,7 @@ String[] function cMapSet(String keyName, String aValue, String[] aArray) global
     if aIndex == -1
       cErrInvalidArg("cMapSet", "aArray.Find(keyName) == -1")
     else
-      aArray[aIndex] = aValue
+      aArray[aIndex + 1] = aValue
     endif
   endif
   return aArray
