@@ -32,7 +32,7 @@ jobs:
 
       - name: Resolve version
         id: ver
-        shell: pwsh
+        shell: powershell
         run: |
           $v = if ($env:GITHUB_REF -like 'refs/tags/*') {
                  $env:GITHUB_REF -replace '^refs/tags/',''
@@ -43,7 +43,7 @@ jobs:
           Write-Host "Building $v"
 
       - name: Compile Papyrus
-        shell: pwsh
+        shell: powershell
         env:
           # Set SKYRIM_SE_PATH as an environment variable on the runner itself,
           # or define it as a repository variable. Do not hardcode it here.
@@ -51,14 +51,14 @@ jobs:
         run: ./build.ps1 -Variant All
 
       - name: Verify output
-        shell: pwsh
+        shell: powershell
         run: |
           $pex = Get-ChildItem dist/Scripts -Filter *.pex
           Write-Host "$($pex.Count) .pex compiled"
           if ($pex.Count -lt 50) { throw "Expected at least 50 .pex, got $($pex.Count)" }
 
       - name: Stage source alongside binaries
-        shell: pwsh
+        shell: powershell
         run: |
           New-Item -ItemType Directory -Force -Path dist/Source/Scripts | Out-Null
           Copy-Item *.psc dist/Source/Scripts/
